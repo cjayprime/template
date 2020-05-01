@@ -1,0 +1,16 @@
+fragment PatientInfo on PatientsConnection {
+    nodes: source {
+        id
+        firstName
+        lastName
+        email
+        phoneNumber
+        patientCasesByPatientId {
+            nodes: source {
+                id
+                status
+            }
+        }
+    }
+    totalCount
+}

@@ -1,0 +1,1 @@
+export const getQueueState = state => state.queue || state
