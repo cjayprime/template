@@ -4,7 +4,7 @@ body {
   .app-sidebar-heading {
     padding: $spacer $spacer ($spacer / 1.1);
     font-weight: bold;
-    color: $blue;
+    color: $white;
     text-transform: uppercase;
     font-size: $font-size-sm;
     white-space: nowrap;
@@ -29,13 +29,15 @@ body {
     width: 100%;
     font-weight: normal;
     transition: $transition-base;
-    color: $blue;
+    color: $gray-300;
     white-space: nowrap;
+    background: transparent;
 
     &.active,
     &:hover {
-      color: $primary;
-      background: $gray-300;
+      color: $white;
+      background: transparent;
+   
     }
   }
 
@@ -53,17 +55,17 @@ body {
     }
 
     font-size: 14px;
-    color: $blue;
+    color: $white;
 
     &.active,
     &:hover {
-      background: none;
-      color: $primary;
+      background: transparent;
+      color: $white;
     }
   }
 
   .app-sidebar-icon {
-    color: theme-color($primary);
+    color: theme-color($white);
     display: flex;
     align-items: center;
     margin-right: 16px;
@@ -89,10 +91,10 @@ body {
   }
 
   .active-item {
-    color: $primary;
+    color: $white;
     font-weight: 500;
     .app-sidebar-icon {
-      color: $primary;
+      color: $white;
     }
   }
 }

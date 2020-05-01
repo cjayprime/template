@@ -14,11 +14,12 @@ const LeftSidebar = props => {
     footerFixed,
     contentBackground
   } = props;
+  
 
   return (
     <Fragment>
       <div className={clsx('app-wrapper', contentBackground)}>
-        <Header />
+         { false ? <Header /> : null}
         <div
           className={clsx('app-main', {
             'app-main-sidebar-static': !sidebarFixed

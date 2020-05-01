@@ -70,7 +70,7 @@ const Header = props => {
               <Hidden smDown>
                 <Box className="app-logo-text">Carolina</Box>
               </Hidden>
-            </Box>
+            </Box> }
           </Hidden>
           <Hidden mdDown>
             <Box className="d-flex align-items-center">

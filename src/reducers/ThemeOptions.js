@@ -8,11 +8,17 @@ export const SET_SIDEBAR_FOOTER = 'THEME_OPTIONS/SET_SIDEBAR_FOOTER';
 export const SET_SIDEBAR_TOGGLE = 'THEME_OPTIONS/SET_SIDEBAR_TOGGLE';
 export const SET_SIDEBAR_USERBOX = 'THEME_OPTIONS/SET_SIDEBAR_USERBOX';
 export const SET_SIDEBAR_HOVER = 'THEME_OPTIONS/SET_SIDEBAR_HOVER';
+export const SET_SHOW_HEADER = 'THEME_OPTIONS/SHOW_HEADER'
 
 export const setSidebarShadow = sidebarShadow => ({
   type: SET_SIDEBAR_SHADOW,
   sidebarShadow
 });
+
+export const setShowHeader = showHeader => ({
+  type: SET_SHOW_HEADER,
+  showHeader
+})
 export const setSidebarFixed = sidebarFixed => ({
   type: SET_SIDEBAR_FIXED,
   sidebarFixed
@@ -35,7 +41,8 @@ export const setSidebarHover = sidebarHover => ({
 });
 export const setSidebarUserbox = sidebarUserbox => ({
   type: SET_SIDEBAR_USERBOX,
-  sidebarUserbox
+  sidebarUserbox,
+
 });
 // Header
 
@@ -127,13 +134,14 @@ export default function reducer(
     sidebarFixed: true,
     sidebarToggleMobile: false,
     sidebarFooter: true,
-    sidebarUserbox: true,
+    sidebarUserbox: false,
     sidebarToggle: false,
     sidebarHover: false,
+    showHeader: false,
     // Header
 
     headerFixed: true,
-    headerShadow: true,
+    headerShadow: false,
     headerSearchHover: false,
 
     // Main content
@@ -142,7 +150,7 @@ export default function reducer(
     themeConfiguratorToggle: false,
     // Footer
 
-    footerFixed: false,
+    footerFixed: true,
     footerShadow: false,
     // Page title
 
@@ -150,8 +158,8 @@ export default function reducer(
     pageTitleBackground: '',
     pageTitleShadow: false,
     pageTitleBreadcrumb: false,
-    pageTitleIconBox: true,
-    pageTitleDescription: true
+    pageTitleIconBox: false, //reset later
+    pageTitleDescription: false
   },
   action
 ) {
@@ -163,6 +171,13 @@ export default function reducer(
         ...state,
         sidebarShadow: action.sidebarShadow
       };
+
+    case SET_SHOW_HEADER:
+      return {
+        ...state,
+        showHeader: action.showHeader
+      };
+
     case SET_SIDEBAR_FIXED:
       return {
         ...state,

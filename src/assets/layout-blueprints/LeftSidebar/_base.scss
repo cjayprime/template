@@ -16,6 +16,7 @@ body {
 .app-wrapper {
   display: flex;
   flex-direction: column;
+  background-color: $background-color-primary;
   flex: 1;
   transition: all 0.5s $app-sidebar-transition;
 }
@@ -30,6 +31,7 @@ body {
   display: flex;
   padding: 0;
   flex-direction: column;
+  background-color: $background-color-primary;
   transition: all 0.5s $app-sidebar-transition;
   padding-top: $header-height;
 
@@ -47,7 +49,7 @@ body {
 
 .app-content-sidebar-fixed {
   min-height: 100vh;
-
+  background-color: $background-color-primary;
   @include media-breakpoint-up(lg) {
     padding-left: $sidebar-width;
   }
@@ -55,9 +57,11 @@ body {
 
 .app-main-sidebar-static {
   display: flex;
+  background-color: #2C2E42;
 }
 
 .app-content-footer-fixed {
+  background-color: $background-color-primary;
   padding-bottom: $footer-height;
   height: auto;
 }

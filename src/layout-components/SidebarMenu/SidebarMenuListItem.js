@@ -52,6 +52,8 @@ const SidebarMenuListItem = props => {
         disableGutters>
         <Button
           color="primary"
+          disableRipple
+      
           className={clsx('app-sidebar-button', { active: open })}
           onClick={handleToggle}
           style={style}>
@@ -79,6 +81,7 @@ const SidebarMenuListItem = props => {
           activeClassName="active-item"
           color="primary"
           disableRipple
+          disableElevation
           variant="text"
           className={clsx('app-sidebar-button-wrapper', `depth-${depth}`)}
           component={CustomRouterLink}

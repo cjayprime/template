@@ -16,7 +16,7 @@ import MenuRoundedIcon from '@material-ui/icons/MenuRounded';
 
 const SidebarHeader = props => {
   const toggleSidebar = () => {
-    setSidebarToggle(!sidebarToggle);
+    // setSidebarToggle(!sidebarToggle);
   };
   const toggleSidebarMobile = () => {
     setSidebarToggleMobile(!sidebarToggleMobile);
@@ -39,7 +39,7 @@ const SidebarHeader = props => {
         <Box
           className="header-logo-wrapper"
           title="Carolina React Admin Dashboard with Material-UI PRO">
-          <Link to="/DashboardDefault" className="header-logo-wrapper-link">
+          { /*<Link to="/DashboardDefault" className="header-logo-wrapper-link">
             <IconButton
               color="primary"
               size="medium"
@@ -50,8 +50,10 @@ const SidebarHeader = props => {
                 src={projectLogo}
               />
             </IconButton>
-          </Link>
-          <Box className="header-logo-text">Carolina</Box>
+          </Link> */}
+          <Box className="header-logo-text">
+            Emmergency Reponse
+          </Box>
         </Box>
         <Box
           className={clsx('app-sidebar-header-btn', {
@@ -59,7 +61,7 @@ const SidebarHeader = props => {
           })}>
           <Tooltip title="Toggle Sidebar" placement="right">
             <IconButton color="inherit" onClick={toggleSidebar} size="medium">
-              {sidebarToggle ? <MenuRoundedIcon /> : <MenuOpenRoundedIcon />}
+              { /* sidebarToggle ? <MenuRoundedIcon /> : <MenuOpenRoundedIcon /> */}
             </IconButton>
           </Tooltip>
         </Box>
@@ -72,8 +74,8 @@ const SidebarHeader = props => {
               {sidebarToggleMobile ? (
                 <MenuOpenRoundedIcon />
               ) : (
-                <MenuRoundedIcon />
-              )}
+                  <MenuRoundedIcon />
+                )}
             </IconButton>
           </Tooltip>
         </Box>

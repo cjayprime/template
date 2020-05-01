@@ -6,7 +6,8 @@ body {
     width: $sidebar-width;
     display: flex;
     align-items: center;
-    background: rgba(255, 255, 255, 1);
+    //#background: rgba(255, 255, 255, 1);
+    background-color: #2C2E42;
     padding-left: ($spacer);
     padding-right: ($spacer);
     justify-content: space-between;

@@ -55,7 +55,7 @@ const Sidebar = props => {
         />
       ))}
     </div>
-  );
+  ); 
 
   return (
     <Fragment>
@@ -95,7 +95,7 @@ const Sidebar = props => {
               'app-sidebar-collapsed': sidebarToggle && !sidebarHover
             })}>
             <PerfectScrollbar options={{ wheelPropagation: false }}>
-              {sidebarUserbox && <SidebarUserbox />}
+               {sidebarUserbox && <SidebarUserbox /> } 
               {sidebarMenuContent}
               {sidebarFooter && <SidebarFooter />}
             </PerfectScrollbar>

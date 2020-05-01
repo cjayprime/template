@@ -13,6 +13,7 @@ body {
 
   .app-sidebar-menu {
     height: calc(100vh - #{$header-height});
+    background-color: $background-color-primary;
   }
 
   .app-sidebar-wrapper {
@@ -20,6 +21,7 @@ body {
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    background-color: $background-color-primary;
     z-index: 60;
     position: static;
     width: $sidebar-width;
@@ -51,7 +53,7 @@ body {
     button span span {
       transition: $transition-base;
       white-space: nowrap;
-      opacity: 0;
+      color: #fff;
       margin-bottom: $spacer;
       visibility: hidden;
     }

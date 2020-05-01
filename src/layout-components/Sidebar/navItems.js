@@ -41,7 +41,7 @@ var iconsMap = {
 
 const allowedViews = [
   {
-    label: 'Navigation Menu',
+    label: '',
     content: [
       {
         label: 'Dashboards',

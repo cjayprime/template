@@ -19,9 +19,10 @@ body {
     justify-content: space-between;
     padding-left: ($spacer);
     padding-right: ($spacer);
+    background-color: $background-color-primary;
 
     .btn-inverse:hover {
-      background: rgba(255,255,255,.07);
+      background: $background-color-primary;
     }
   }
 
@@ -53,15 +54,16 @@ body {
 
   .app-logo-btn {
     padding: $spacer / 2;
-    background: rgba(255,255,255,.05);
+    background: $background-color-primary;
 
     &:hover {
-      background: rgba(255,255,255,.08);
+      background: $background-color-primary;
     }
   }
 
   .app-logo-link {
     text-decoration: none;
+    background-color: $background-color-primary;
     @include media-breakpoint-up(lg) {
       margin-top: ($spacer * 2);
     }
