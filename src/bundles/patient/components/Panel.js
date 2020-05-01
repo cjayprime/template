@@ -90,7 +90,7 @@ const Panel = ({ patients }) => {
                             </ButtonBase>
                         </Grid>
                         <Grid item xs={4} lg={4}>
-                            
+
                             <ButtonBase to="/CreateTriage" component={Link}>
                                 Create Triage
                             </ButtonBase>
@@ -106,6 +106,4 @@ const Panel = ({ patients }) => {
 export default compose(
     withPatient
 )(Panel)
-
-
 

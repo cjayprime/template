@@ -70,6 +70,16 @@ const allowedViews = [
         to: "/Kpi"
       },
       {
+        label: 'Appointment',
+        icon: ReceiptIcon,
+        to: "/Appointment"
+      },
+      {
+        label: 'Lab',
+        icon: ReceiptIcon,
+        to: "/Lab"
+      },
+      {
         label: 'Bed Management',
         icon: ChatIcon,
         to: "/BedManagement"

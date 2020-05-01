@@ -26,8 +26,6 @@ const withPatient = (WrappedComponent) => {
         )
     }
 
-
-
     const withPatientData = graphql(ALL_PATIENTS, {
         name: 'allPatients',
         options: ({ filter, orderBy, offset }) => ({
