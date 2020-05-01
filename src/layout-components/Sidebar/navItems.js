@@ -70,6 +70,11 @@ const allowedViews = [
         to: "/Queue"
       },
       {
+        label: 'KPI',
+        icon: MailIcon,
+        to: "/Kpi"
+      },
+      {
         label: 'Settings',
         icon: SettingsIcon,
         content: [
