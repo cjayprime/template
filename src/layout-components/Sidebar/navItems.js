@@ -55,11 +55,6 @@ const allowedViews = [
         ]
       },
       {
-        label: 'Applications',
-        icon: LockOpenIcon,
-        to: "/ApplicationsCalendar"
-      },
-      {
         label: 'Patient',
         icon: ChatIcon,
         to: "/Patient"
@@ -73,6 +68,11 @@ const allowedViews = [
         label: 'KPI',
         icon: MailIcon,
         to: "/Kpi"
+      },
+      {
+        label: 'Bed Management',
+        icon: ChatIcon,
+        to: "/BedManagement"
       },
       {
         label: 'Settings',

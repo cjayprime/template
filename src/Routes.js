@@ -91,6 +91,7 @@ const Location = lazy(() => import('./bundles/location/components/View'))
 const CreateLocation = lazy(() => import('./bundles/location/components/Create'))
 const Staff = lazy(() => import('./bundles/setting/components/Staff')) 
 const Kpi = lazy(() => import('./bundles/kpi/components/View'))
+const BedManagement = lazy(() => import('./bundles/bedmanagement/components/View'))
 
 
 
@@ -252,7 +253,8 @@ const Routes = () => {
                 '/Location',
                 '/CreateLocation', 
                 '/Staff',
-                '/Kpi'
+                '/Kpi',
+                '/BedManagement'
               ]}>
                    <LeftSidebar>
               { /* <CollapsedSidebar> */} 
@@ -290,6 +292,10 @@ const Routes = () => {
                      <Route
                       path="/Kpi"
                       component={Kpi}
+                    />
+                    <Route
+                      path="/BedManagement"
+                      component={BedManagement}
                     />
                     <Route
                       path="/Staff"
