@@ -11,17 +11,9 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Typography from '@material-ui/core/Typography';
-// import FormControl from '@material-ui/core/FormControl';
-// import FormLabel from '@material-ui/core/FormLabel';
 
-const DateQuestionType = ({ question }) => {
-  const [selectedDate, setSelectedDate] = React.useState(
-    new Date('2014-08-18')
-  );
-
-  const handleDateChange = date => {
-    setSelectedDate(date);
-  };
+const DateQuestionType = ({ question, questionKey, answer, onAnswer }) => {
+  const selectedDate = answer ? new Date(answer) : null;
 
   return (
     <Fragment>
@@ -35,12 +27,12 @@ const DateQuestionType = ({ question }) => {
               disableToolbar
               variant="inline"
               inputVariant="outlined"
-              format="MM/dd/yyyy"
+              format="dd/MM/yyyy"
               margin="normal"
-              id="date-picker-inline"
+              id={questionKey}
               label="Date picker inline"
               value={selectedDate}
-              onChange={handleDateChange}
+              onChange={date => onAnswer(questionKey, date)}
               fullWidth={true}
               KeyboardButtonProps={{
                 'aria-label': 'change date'
