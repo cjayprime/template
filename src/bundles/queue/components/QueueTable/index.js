@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import clsx from 'clsx';
 import {
   Container,
@@ -17,7 +17,8 @@ import {
   TagStyles,
   teamSectionStyles,
   PatientMetadatumStyles,
-  HeaderStyles
+  HeaderStyles,
+  FilterViewStyles
 } from './index.style';
 
 // TODO {H.Ezekiel} Refactor this to lib/shared/components
@@ -76,6 +77,7 @@ const PatientMetadatumView = props => {
 const Header = () => {
   const classes = HeaderStyles();
   const [selectedTab, setSelectedTab] = useState('RRT');
+  // select RRT tab on mount
   return (
     <Grid container className={classes.HeaderContainer}>
       <Grid container item xs={2}>
@@ -87,9 +89,8 @@ const Header = () => {
       <Grid container item xs={5} className={classes.TabsContainer}>
         <Tabs
           onChange={(e, value) => setSelectedTab(value)}
-          textColor="white"
           value={selectedTab}
-          indicatorColor={'white'}
+          defaultValue={'RRT'}
           classes={{
             root: classes.RootTabsContainer,
             flexContainer: classes.TabsFlexContainer,
@@ -97,12 +98,14 @@ const Header = () => {
           }}>
           <Tab
             label={'RRT'}
+            selected={selectedTab === 'RRT'}
             classes={{
               root: classes.TabContainer,
               selected: classes.SelectedTabContainer
             }}></Tab>
           <Tab
             label={'My tasks'}
+            selected={selectedTab === 'My Tabs'}
             classes={{
               root: classes.TabContainer,
               selected: classes.SelectedTabContainer
@@ -149,6 +152,46 @@ const Header = () => {
   );
 };
 
+// TODO{H.Ezekiel} Prop Types!
+const FilterSelectView = props => {
+  const { selector, options } = props;
+  const classes = FilterViewStyles();
+  return (
+    <Container className={classes.FilterContainer}>
+      <Grid container>
+        <Grid item xs={4}>
+          <Typography
+            className={
+              classes.TabCaption
+            }>{`Filter by ${selector}:`}</Typography>
+        </Grid>
+        <Grid item xs={8}>
+          <TextField
+            select
+            variant="filled"
+            fullWidth
+            className={classes.TextInputContainer}
+            InputProps={{
+              classes: { root: classes.InputView },
+              disableUnderline: true,
+              defaultValue: 'Choose from list'
+            }}
+            SelectProps={{
+              IconComponent: () => (
+                <KeyboardArrowDownIcon className={classes.SelectInputIcon} />
+              ),
+              classes: { filled: classes.SelectInput }
+            }}>
+            {[{ value: 'Choose from list' }, ...options].map(opt => (
+              <option value={opt.value}>{opt.value}</option>
+            ))}
+          </TextField>
+        </Grid>
+      </Grid>
+    </Container>
+  );
+};
+
 export const QueueTableView = () => {
   const classes = pageStyles();
 
@@ -185,25 +228,33 @@ export const QueueTableView = () => {
     { name: 'ACCEPTED BY', accessor: 'task.acceptedBy' },
     { name: 'ACTION', accessor: renderActionComponent }
   ];
-  const buildTables = ({ store }) => {
-    return <DataTable headers={headers} data={store} />;
-  };
+
   return (
     <Fragment>
       <Header />
       <Container className={classes.PageContainer}>
         <Container className={classes.TableContainer}>
-          <Typography className={classes.TextContainer}>
-            {'2 Pending'}
-          </Typography>
-          {buildTables({ store: pendingStore })}
+          <Grid container>
+            <Grid item xs={7}>
+              <Typography className={classes.TextContainer}>
+                {'2 Pending'}
+              </Typography>
+            </Grid>
+            <Grid item xs={5}>
+              <FilterSelectView
+                selector="LGA"
+                options={[{ value: 'Lagos Mainland' }]}
+              />
+            </Grid>
+          </Grid>
+          <DataTable headers={headers} data={pendingStore} />
         </Container>
 
         <Container className={classes.TableContainer}>
           <Typography className={classes.TextContainer}>
             {'6 Patients'}
           </Typography>
-          {buildTables({ store: patientStore })}
+          <DataTable headers={headers} data={patientStore} />
         </Container>
       </Container>
     </Fragment>
