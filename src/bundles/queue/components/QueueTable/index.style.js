@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const DEFAULT_TAG_COLOR = '#8E8CA7';
 const DEFAULT_GREEN = '#80C9CE';
+const DEFAULT_GREY = '#8E8CA7';
 
 export const tableStyles = makeStyles(theme => ({
   TableContainer: {
@@ -113,6 +114,9 @@ export const HeaderStyles = makeStyles(theme => ({
     padding: `${theme.spacing(2)}px`,
     color: 'white'
   },
+  HeaderItemContent: {
+    padding: '1.5%'
+  },
   HeaderCaption: {
     fontSize: '15px',
     fontWeight: 'bold',
@@ -137,9 +141,41 @@ export const HeaderStyles = makeStyles(theme => ({
     color: DEFAULT_GREEN,
     textTransform: 'none',
     minWidth: '32px',
-    fontSize: '14px',
+    fontSize: '14px'
   },
   SelectedTabContainer: {
     color: 'white'
+  },
+  SelectInput: {
+    justifyContent: 'flex-end',
+    padding: 0,
+    paddingRight: '3px !important',
+    textAlign: 'end'
+  },
+  DateContextInput: {
+    width: '90%',
+    color: DEFAULT_GREEN,
+    paddingRight: `${theme.spacing(1)}px`,
+    borderRight: `.5px solid #FDFDFE70`
+  },
+  DateContextInputBase: {
+    color: DEFAULT_GREEN,
+    fontWeight: '800',
+    fontSize: '14px',
+    textTransform: 'uppercase',
+    '&:before': {
+      borderBottom: 'none',
+    }
+  },
+  SelectInputIcon: {
+    color: DEFAULT_GREY
+  },
+  SearchContextInput: {
+    color: DEFAULT_GREY,
+    fontSize: '16px',
+    position: 'relative',
+    bottom: `${theme.spacing(0.5)}px`,
+    right: `${theme.spacing(2)}px`,
+    textTransform: 'capitalize',
   }
 }));

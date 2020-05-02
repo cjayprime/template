@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core';
 import { DataTable } from './Table';
 import { pendingStore, patientStore } from './store';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import {
   pageStyles,
   TagStyles,
@@ -108,11 +109,41 @@ const Header = () => {
             }}></Tab>
         </Tabs>
       </Grid>
-      <Grid item xs={2}>
-        <TextField select placeholder={'Today'} />
+      <Grid item xs={2} className={clsx(classes.HeaderItemContent)}>
+        <TextField
+          select
+          fullWidth
+          type="string"
+          SelectProps={{
+            IconComponent: () => (
+              <KeyboardArrowDownIcon className={classes.SelectInputIcon} />
+            ),
+            classes: { root: classes.SelectInput }
+          }}
+          InputProps={{
+            classes: { root: classes.DateContextInputBase },
+            defaultValue: 'TODAY',
+            disableUnderline: true
+          }}
+          classes={{
+            root: classes.DateContextInput
+          }}>
+          {['TODAY'].map(opt => (
+            <option key={opt} value={opt}>
+              {opt}
+            </option>
+          ))}
+        </TextField>
       </Grid>
-      <Grid item xs={3}>
-        <TextField placeholder={'Search by Patient, EPID'} />
+      <Grid item xs={3} className={clsx(classes.HeaderItemContent)}>
+        <TextField
+          placeholder={'Search by Patient, EPID'}
+          fullWidth
+          InputProps={{
+            classes: { root: classes.SearchContextInput },
+            disableUnderline: true
+          }}
+        />
       </Grid>
     </Grid>
   );
