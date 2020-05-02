@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 // TODO Refactor these colors to the theme
 
 const DEFAULT_TAG_COLOR = '#8E8CA7';
+const DEFAULT_GREEN = '#80C9CE';
 
 export const tableStyles = makeStyles(theme => ({
   TableContainer: {
@@ -30,8 +31,11 @@ export const pageStyles = makeStyles(theme => ({
     color: '#FDFDFE',
     marginBottom: `${theme.spacing(2)}px`
   },
+  TableContainer: {
+    marginBottom: `${theme.spacing(4)}px`
+  },
   ActionButton: {
-    color: '#80C9CE',
+    color: DEFAULT_GREEN,
     fontWeight: '800',
     '&:hover': {
       cursor: 'pointer'
@@ -51,7 +55,7 @@ export const PatientMetadatumStyles = makeStyles(theme => {
   };
   return {
     Nametext: {
-      color: '#80C9CE',
+      color: DEFAULT_GREEN,
       fontWeight: 'bold',
       fontSize: `14px`
     },
@@ -67,10 +71,7 @@ export const PatientMetadatumStyles = makeStyles(theme => {
       justifyContent: 'center',
       fontWeight: 'bold',
       maxWidth: '70px',
-      color:
-        props.riskLevel === 'Medium'
-          ? '#2C2E42'
-          : 'white'
+      color: props.riskLevel === 'Medium' ? '#2C2E42' : 'white'
     })
   };
 });
@@ -102,3 +103,43 @@ export const teamSectionStyles = makeStyles(theme => {
     })
   };
 });
+
+export const HeaderStyles = makeStyles(theme => ({
+  HeaderContainer: {
+    position: 'fixed',
+    top: '-13%' //TODO{H.Ezekiel} we should not need to do this
+  },
+  HeaderItem: {
+    padding: `${theme.spacing(2)}px`,
+    color: 'white'
+  },
+  HeaderCaption: {
+    fontSize: '15px',
+    fontWeight: 'bold',
+    textAlign: 'center'
+  },
+  TabsContainer: {
+    position: 'relative',
+    top: '5px'
+  },
+  TabsFlexContainer: {
+    justifyContent: 'space-evenly'
+  },
+  RootTabsContainer: {
+    color: 'white',
+    width: '40%'
+  },
+  TabIndicator: {
+    color: 'white',
+    backgroundColor: 'white'
+  },
+  TabContainer: {
+    color: DEFAULT_GREEN,
+    textTransform: 'none',
+    minWidth: '32px',
+    fontSize: '14px',
+  },
+  SelectedTabContainer: {
+    color: 'white'
+  }
+}));

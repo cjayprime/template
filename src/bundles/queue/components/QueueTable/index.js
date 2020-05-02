@@ -1,56 +1,23 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import clsx from 'clsx';
-import { Container, Typography, Chip, Grid } from '@material-ui/core';
+import {
+  Container,
+  Typography,
+  Chip,
+  Grid,
+  Tab,
+  Tabs,
+  TextField
+} from '@material-ui/core';
 import { DataTable } from './Table';
+import { pendingStore, patientStore } from './store';
 import {
   pageStyles,
   TagStyles,
   teamSectionStyles,
-  PatientMetadatumStyles
+  PatientMetadatumStyles,
+  HeaderStyles
 } from './index.style';
-
-const store = [
-  {
-    patient: {
-      firstName: 'Test',
-      lastName: 'User',
-      sex: 'Male',
-      age: '42'
-    },
-    patientCase: {
-      riskLevel: 'High'
-    },
-    team: {
-      name: 'RRT'
-    },
-    task: {
-      status: 'Awaiting sample pickup',
-      acceptedBy: 'Jolade Adewale',
-      waitTime: '4 hours',
-      requestDate: '31 Mar, 7:34PM'
-    }
-  },
-  {
-    patient: {
-      firstName: 'Test',
-      lastName: 'User',
-      sex: 'Male',
-      age: '42'
-    },
-    patientCase: {
-      riskLevel: 'High'
-    },
-    team: {
-      name: 'RRT'
-    },
-    task: {
-      status: 'Sample Collected',
-      acceptedBy: 'Jolade Adewale',
-      waitTime: '4 hours',
-      requestDate: '31 Mar, 7:34PM'
-    }
-  }
-];
 
 // TODO {H.Ezekiel} Refactor this to lib/shared/components
 const TeamTag = ({ tagLabel, text, classes = {}, spacing }) => {
@@ -76,9 +43,10 @@ const TeamTag = ({ tagLabel, text, classes = {}, spacing }) => {
   );
 };
 
-const PatientMetadatumView = (props) => {
+const PatientMetadatumView = props => {
   const { name, sex, age, riskLevel } = props;
   const classes = PatientMetadatumStyles(props);
+
   return (
     <Grid container>
       <Grid container item direction="column" xs={7}>
@@ -99,6 +67,52 @@ const PatientMetadatumView = (props) => {
           label={`${riskLevel} Risk`}
           className={classes.TagContainer}
         />
+      </Grid>
+    </Grid>
+  );
+};
+
+const Header = () => {
+  const classes = HeaderStyles();
+  const [selectedTab, setSelectedTab] = useState('RRT');
+  return (
+    <Grid container className={classes.HeaderContainer}>
+      <Grid container item xs={2}>
+        <Grid item xs={6} className={classes.HeaderItem}></Grid>
+        <Grid item xs={6} className={classes.HeaderItem}>
+          <Typography className={classes.HeaderCaption}>{'Queue'}</Typography>
+        </Grid>
+      </Grid>
+      <Grid container item xs={5} className={classes.TabsContainer}>
+        <Tabs
+          onChange={(e, value) => setSelectedTab(value)}
+          textColor="white"
+          value={selectedTab}
+          indicatorColor={'white'}
+          classes={{
+            root: classes.RootTabsContainer,
+            flexContainer: classes.TabsFlexContainer,
+            indicator: classes.TabIndicator
+          }}>
+          <Tab
+            label={'RRT'}
+            classes={{
+              root: classes.TabContainer,
+              selected: classes.SelectedTabContainer
+            }}></Tab>
+          <Tab
+            label={'My tasks'}
+            classes={{
+              root: classes.TabContainer,
+              selected: classes.SelectedTabContainer
+            }}></Tab>
+        </Tabs>
+      </Grid>
+      <Grid item xs={2}>
+        <TextField select placeholder={'Today'} />
+      </Grid>
+      <Grid item xs={3}>
+        <TextField placeholder={'Search by Patient, EPID'} />
       </Grid>
     </Grid>
   );
@@ -140,18 +154,26 @@ export const QueueTableView = () => {
     { name: 'ACCEPTED BY', accessor: 'task.acceptedBy' },
     { name: 'ACTION', accessor: renderActionComponent }
   ];
-  const buildPendingSection = () => {
+  const buildTables = ({ store }) => {
     return <DataTable headers={headers} data={store} />;
   };
   return (
     <Fragment>
+      <Header />
       <Container className={classes.PageContainer}>
-        <Fragment>
+        <Container className={classes.TableContainer}>
           <Typography className={classes.TextContainer}>
-            {'2 pending'}
+            {'2 Pending'}
           </Typography>
-          {buildPendingSection()}
-        </Fragment>
+          {buildTables({ store: pendingStore })}
+        </Container>
+
+        <Container className={classes.TableContainer}>
+          <Typography className={classes.TextContainer}>
+            {'6 Patients'}
+          </Typography>
+          {buildTables({ store: patientStore })}
+        </Container>
       </Container>
     </Fragment>
   );
