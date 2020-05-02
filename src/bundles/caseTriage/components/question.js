@@ -45,6 +45,11 @@ const DateQuestionType = ({ question, questionKey, answer, onAnswer }) => {
   );
 };
 
+DateQuestionType.defaultProps = {
+  answer: null,
+  onAnswer: () => {}
+};
+
 const StringQuestionType = ({ question, answer, questionKey, onAnswer }) => {
   return (
     <Fragment>
@@ -67,6 +72,11 @@ const StringQuestionType = ({ question, answer, questionKey, onAnswer }) => {
   );
 };
 
+StringQuestionType.defaultProps = {
+  answer: '',
+  onAnswer: () => {}
+};
+
 const SelectQuestionType = ({ question }) => {
   return (
     <Fragment>
@@ -80,6 +90,11 @@ const SelectQuestionType = ({ question }) => {
       </Grid>
     </Fragment>
   );
+};
+
+SelectQuestionType.defaultProps = {
+  answer: '',
+  onAnswer: () => {}
 };
 
 const MultiChoiceQuestionType = ({
@@ -116,6 +131,11 @@ const MultiChoiceQuestionType = ({
       </Grid>
     </Fragment>
   );
+};
+
+MultiChoiceQuestionType.defaultProps = {
+  answer: '',
+  onAnswer: () => {}
 };
 
 const Question = props => {
