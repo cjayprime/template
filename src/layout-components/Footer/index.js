@@ -1,13 +1,47 @@
 import React, { Fragment } from 'react';
-
 import clsx from 'clsx';
-import { Link } from 'react-router-dom';
-
-import { Paper, List, ListItem, ListItemText } from '@material-ui/core';
-
+import {
+  Paper,
+  Grid,
+  FormControlLabel,
+  Checkbox,
+  Typography,
+  Button
+} from '@material-ui/core';
 import { connect } from 'react-redux';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(theme => ({
+  labelText: {
+    fontSize: 20,
+    color: '#d7d7d7'
+  },
+  container: {
+    marginBottom: 20,
+    padding: theme.spacing(2)
+  },
+  icon: {},
+  button: {
+    color: '#fff',
+    borderRadius: 32,
+    '&:hover': {
+      backgroundColor: '#FF5B66'
+    },
+    width: 250,
+    height: 50
+  },
+  buttons: {
+    color: '#fff',
+    borderRadius: 32,
+    backgroundColor: '#28BAC0',
+    width: 250,
+    height: 50
+  }
+}));
 
 const Footer = props => {
+  const classes = useStyles();
+
   const { footerShadow, sidebarToggle, footerFixed } = props;
   return (
     <Fragment>
@@ -18,40 +52,24 @@ const Footer = props => {
           'app-footer--fixed': footerFixed,
           'app-footer--fixed__collapsed': sidebarToggle
         })}>
-        <div className="app-footer--inner">
-          <div className="app-footer--first">
-            <List dense className="d-flex align-items-center">
-              <ListItem
-                className="rounded-sm text-nowrap"
-                button
-                component={Link}
-                to="/DashboardAnalytics">
-                <ListItemText primary="Analytics" />
-              </ListItem>
-              <ListItem
-                className="rounded-sm text-nowrap"
-                button
-                component={Link}
-                to="/FormsWizard">
-                <ListItemText primary="Wizards" />
-              </ListItem>
-              <ListItem
-                className="rounded-sm text-nowrap"
-                button
-                component={Link}
-                to="/DashboardCrmManager">
-                <ListItemText primary="CRM Manager" />
-              </ListItem>
-            </List>
-          </div>
-          <div className="app-footer--second">
-            <span>Carolina React Admin Dashboard with Material-UI PRO</span> ©
-            2020 - crafted with <span className="text-danger px-1">❤</span> by{' '}
-            <a href="https://uifort.com" title="UiFort.com">
-              UiFort.com
-            </a>
-          </div>
-        </div>
+        <Grid container className={classes.container} direction="row">
+          <Grid item xs={6}>
+            <FormControlLabel
+              control={<Checkbox color="primary" name="checkedC" />}
+              label={
+                <Typography className={classes.labelText}>
+                  {' '}
+                  Send Emmergency Number to caller{' '}
+                </Typography>
+              }
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <Grid container style={{ paddingRight: 10 }} justify="flex-end">
+              <Button className={classes.buttons}>Save</Button>
+            </Grid>
+          </Grid>
+        </Grid>
       </Paper>
     </Fragment>
   );

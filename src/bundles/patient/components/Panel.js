@@ -1,109 +1,100 @@
-import React, { Fragment, useState } from 'react';
-import withPatient from 'bundles/patient/hoc/withPatient';
+import React, { useState } from 'react';
 import {
     Grid,
-    FormControlLabel,
-    Checkbox,
-    Card,
-    MenuItem,
-    TextField,
-    FormControl,
-    FormHelperText,
-    Divider,
-    Table,
-    TableContainer,
-    TableBody,
-    ButtonBase,
-    Paper,
-    Collapse,
-    TableHead,
-    TableRow,
-    TableCell,
-    TableSortLabel
+    Box,
+    Typography,
+    ButtonBase
 } from '@material-ui/core';
+import CustomText from './custom/TextInput';
 import { Link } from 'react-router-dom';
-import {
-    makeStyles
-} from '@material-ui/styles';
-const compose = require('lodash')?.flowRight
+import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles({
-    table: {
-        minWidth: 650,
+const useStyles = makeStyles((theme) => ({
+    textPatient: {
+        color: '#6A6981',
+        fontSize: 24,
+        textAlign: 'center'
     },
-});
+    text: {
+        color: '#6A6981',
+        fontSize: 20,
+        fontWeight: 'bold',
+        textAlign: 'center'
+    },
+    button: {
+        color: '#fff',
+        backgroundColor: '#7768CB',
+        borderRadius: 32,
+        width: 300,
+        height: 50
+    }
 
-const Panel = ({ patients }) => {
+}))
 
-    const classes = useStyles();
-    const [collapse, setCollapse] = useState(false)
-
-    if (!patients) return null // Should be loader
-
+const Panel = () => {
+    const [search, setSearch] = useState('');
     return (
-        <Fragment>
-            <Grid container spacing={4}>
-                <Grid item xs={12} lg={12}>
-                    <Card className="p-4 mb-4">
-                        <div className="font-size-lg font-weight-bold"></div>
-                        <TextField
-                            fullWidth
-                            placeholder="Search Name, Number, email"
-                        />
-
-                        <TableContainer component={Paper}>
-                            <Table className={classes.table} aria-label="simple table">
-                                <TableHead>
-                                    <TableRow>
-
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {patients.map((row) => (
-                                        <Fragment key={row.firstname}>
-                                            <TableRow hover
-                                                style={{ cursor: 'pointer' }} onClick={() => setCollapse(!collapse)}>
-                                                <TableCell component="th" scope="row">
-                                                    {row.firstname}
-                                                </TableCell>
-                                                <TableCell align="right">{row.lastname}</TableCell>
-                                                <TableCell align="right">{row.email}</TableCell>
-                                                <TableCell align="right">{row.phoneNumber}
-                                                </TableCell>
-                                                <TableCell align="right">{row.email}</TableCell>
-                                                <TableCell align="right">{row.email}</TableCell>
-
-                                            </TableRow>
-
-                                        </Fragment>
-                                    ))}
-
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-
-                    </Card>
-                    <Grid item xs={12} lg={12}>
-                        <Grid item xs={4} lg={4}>
-                            <ButtonBase to="/CreatePatient" component={Link}>
-                                Create Patient
-                            </ButtonBase>
-                        </Grid>
-                        <Grid item xs={4} lg={4}>
-
-                            <ButtonBase to="/CreateTriage" component={Link}>
-                                Create Triage
-                            </ButtonBase>
-                        </Grid>
-                    </Grid>
-                </Grid>
-            </Grid>
-        </Fragment>
-
+        <Grid
+            container
+            spacing={8}
+            direction="column"
+            alignItems="center"
+            justify="center"
+            style={{ minHeight: (search.length < 5) ? '80vh' : '' }}
+        >
+            <CustomText change={setSearch} disableUnderline={(search.length > 4)} />
+            {(search.length > 4) ? <ErrorContainer /> : null}
+        </Grid>
     )
 }
 
-export default compose(
-    withPatient
-)(Panel)
 
+const ErrorContainer = () => {
+    const classes = useStyles();
+
+    return (
+        <Grid
+            container
+            item
+            direction="column"
+            alignItems="center"
+            justify="center"
+            spacing={6}
+        >
+            <Grid 
+                item 
+                xs={6}
+                sm={6}
+                lg={6}
+            >
+                <Typography className={classes.textPatient}>
+                    No patient found
+                </Typography>
+            </Grid>
+            <Grid 
+                item 
+                xs={3}
+                sm={3}
+                lg={3}
+                >
+                <Typography className={classes.text}>
+                    We couldn't find a patient with this phone number.
+                    You can register new patient while logging a call
+                </Typography>
+            </Grid>
+            <Grid item >
+                <ButtonBase to="/CreatePatient" className={classes.button} component={Link}>
+                    <Typography>
+                        LOG A CALL
+                    </Typography>      
+                </ButtonBase>
+
+            </Grid>
+
+        </Grid>
+    )
+}
+
+
+
+export default Panel

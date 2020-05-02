@@ -65,9 +65,9 @@ const Sidebar = props => {
           open={sidebarToggleMobile}
           onClose={closeDrawer}
           variant="temporary"
-          elevation={4}
+          
           className="app-sidebar-wrapper-lg">
-          <SidebarHeader />
+           { /*<SidebarHeader /> */}
           <PerfectScrollbar>
             {sidebarUserbox && <SidebarUserbox />}
             {sidebarMenuContent}
@@ -87,7 +87,7 @@ const Sidebar = props => {
           })}
           square
           open={sidebarToggle}
-          elevation={sidebarShadow ? 11 : 3}>
+          >
           <SidebarHeader />
           <div
             className={clsx({

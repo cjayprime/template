@@ -19,7 +19,6 @@ const withQueue = (WrappedComponent) => {
             queues = allQueues.allQueues.nodes
         }
         
-       
         return (
             <WrappedComponent queues={queues} {...props} />
         )

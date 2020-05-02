@@ -17,7 +17,6 @@ const LeftSidebar = props => {
     showFooter
   } = props;
 
-
   return (
     <Fragment>
       <div className={clsx('app-wrapper', contentBackground)}>
@@ -36,7 +35,7 @@ const LeftSidebar = props => {
             <div className="app-content--inner">
               <div className="app-content--inner__wrapper">{children}</div>
             </div>
-          { showFooter ?  <Footer /> : null }
+            {showFooter ? <Footer /> : <Footer />}
           </div>
         </div>
       </div>

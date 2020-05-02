@@ -7,5 +7,5 @@ export const actionTypes = mirrorCreator([
 ], {prefix: 'QUEUE_'});
 
 export const SORT_ENUM = {
-    last: 'LASTNAME_ASC'
+    last: ''
 }
