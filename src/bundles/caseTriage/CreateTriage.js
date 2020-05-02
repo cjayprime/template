@@ -69,7 +69,6 @@ const CreateTriage = ({ createTriage }) => {
   };
 
   const handleInputChange = (questionKey, answer) => {
-    console.log(questionKey, answer, 'questionKey', 'answer');
     setAnswers({
       ...answers,
       [questionKey]: answer
@@ -106,7 +105,10 @@ const CreateTriage = ({ createTriage }) => {
                       onAnswer={handleInputChange}
                       answer={answers[questions.questionKey]}
                     />
-                    {questions.children && questions.children.length > 0 ? (
+                    {questions.children &&
+                    questions.children.length > 0 &&
+                    answers[questions.questionKey] ===
+                      questions.displayChildrenOn ? (
                       <Fragment>
                         {questions.children.map(childQuestion => (
                           <Fragment key={childQuestion.questionKey}>
