@@ -16,8 +16,7 @@ const withQueue = (WrappedComponent) => {
         let queues = []
 
         if (!allQueues.loading) {
-           queues = []
-            // queues = allQueues.allQueues.nodes
+            queues = allQueues.allQueues.nodes
         }
 
 
