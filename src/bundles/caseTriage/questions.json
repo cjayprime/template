@@ -18,7 +18,7 @@
       "type": "MULTI_TYPE",
       "displayChildrenOn": "yes",
       "children": [
-        { "question": "When did it start?", "questionKey": "feverOnset", "type": "DATE_TYPE" }
+        { "question": "When did it start?", "questionKey": "soreThroatOnset", "type": "DATE_TYPE" }
       ]
     },
     {
@@ -28,7 +28,7 @@
       "type": "MULTI_TYPE",
       "displayChildrenOn": "yes",
       "children": [
-        { "question": "When did it start?", "questionKey": "feverOnset", "type": "DATE_TYPE" }
+        { "question": "When did it start?", "questionKey": "runnyNoseOnset", "type": "DATE_TYPE" }
       ]
     },
     {
@@ -38,7 +38,7 @@
       "type": "MULTI_TYPE",
       "displayChildrenOn": "yes",
       "children": [
-        { "question": "When did it start?", "questionKey": "feverOnset", "type": "DATE_TYPE" }
+        { "question": "When did it start?", "questionKey": "shortnessOfBreadthOnset", "type": "DATE_TYPE" }
       ]
     },
     {
