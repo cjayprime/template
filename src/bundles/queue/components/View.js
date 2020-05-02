@@ -1,3 +1,4 @@
+
 import React, { Fragment, useState } from 'react';
 import withQueue from 'bundles/queue/hoc/withQueue';
 import createQueue from 'bundles/queue/hoc/createQueue'
@@ -24,6 +25,7 @@ import {
     TableSortLabel
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import { QueueTableView } from './QueueTable'
 import {
     makeStyles
 } from '@material-ui/styles';
@@ -61,64 +63,7 @@ const Queue = ({ queues, addQueue }) => {
 
     return (
         <Fragment>
-            <Grid container spacing={4}>
-                <Grid item xs={12} lg={12}>
-                    <Card className="p-4 mb-4">
-                        <div className="font-size-lg font-weight-bold"></div>
-                        <TextField
-                            fullWidth
-                            placeholder="Search Name, Number, email"
-                        />
-
-                        <TableContainer component={Paper}>
-                            <Table className={classes.table} aria-label="simple table">
-                                <TableHead>
-                                    <TableRow>
-
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {queues.map((row) => {
-                                        const patientObj = row.patientByPatientId
-
-                                        return (<Fragment key={patientObj.firstname}>
-                                            <TableRow hover
-                                                style={{ cursor: 'pointer' }} onClick={() => setCollapse(!collapse)}>
-                                                <TableCell component="th" scope="row">
-                                                    {patientObj.firstname}
-                                                </TableCell>
-                                                <TableCell align="right">{patientObj.lastname}</TableCell>
-                                                <TableCell align="right">{row.email}</TableCell>
-                                                <TableCell align="right">{row.phoneNumber}
-                                                </TableCell>
-                                                <TableCell align="right">{row.email}</TableCell>
-                                                <TableCell align="right">
-                                                    <Button onClick={sendStatus}>
-                                                        Change Status
-                                                   </Button>
-                                                </TableCell>
-
-                                            </TableRow>
-
-                                        </Fragment>
-                                        )
-                                    })}
-
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-
-                    </Card>
-                    <Grid item xs={12} lg={12}>
-                        <Grid item xs={4} lg={4}>
-
-                        </Grid>
-                        <Grid item xs={4} lg={4}>
-
-                        </Grid>
-                    </Grid>
-                </Grid>
-            </Grid>
+          <QueueTableView />
         </Fragment>
 
     )
@@ -128,7 +73,3 @@ export default compose(
     withQueue,
     createQueue
 )(Queue)
-
-
-
-

@@ -4,14 +4,14 @@ import { graphql } from '@apollo/react-hoc';
 import { ALL_PATIENTS } from 'graphql/Patient/PatientData.js';
 import {
     buildQuery, buildOrder
-} from 'bundles/patient/utilities/search'; 
+} from 'bundles/patient/utilities/search';
 
 const compose = require('lodash').flowRight
 
 const withPatient = (WrappedComponent) => {
 
     const withPatients = ({ allPatients , ...props}) => {
-       
+
         if (allPatients.loading) return <div> Loading</div>
 
         let patients = []
@@ -19,8 +19,8 @@ const withPatient = (WrappedComponent) => {
         if (!allPatients.loading) {
             patients = allPatients.allPatients.nodes
         }
-        
-       
+
+
         return (
             <WrappedComponent patients={patients} {...props} />
         )
@@ -45,11 +45,9 @@ const withPatient = (WrappedComponent) => {
             filter,
             orderBy
         }
-    } 
+    }
 
     return compose(connect(mapStateToProps), withPatientData)(withPatients)
 }
 
 export default withPatient;
-
-
