@@ -4,22 +4,23 @@ import { graphql } from '@apollo/react-hoc';
 import { ALL_QUEUES } from 'graphql/Queue/QueueData';
 import {
     buildQuery, buildOrder
-} from 'bundles/queue/utilities/search';  
-const compose = require('lodash').flowRight 
+} from 'bundles/queue/utilities/search';
+const compose = require('lodash').flowRight
 
 const withQueue = (WrappedComponent) => {
 
     const withQueue = ({ allQueues , ...props}) => {
-       
+
         if (allQueues.loading) return <div> Loading</div>
 
         let queues = []
 
         if (!allQueues.loading) {
-            queues = allQueues.allQueues.nodes
+           queues = []
+            // queues = allQueues.allQueues.nodes
         }
-        
-       
+
+
         return (
             <WrappedComponent queues={queues} {...props} />
         )
@@ -44,7 +45,7 @@ const withQueue = (WrappedComponent) => {
             filter,
             orderBy
         }
-    } 
+    }
 
     return compose(connect(mapStateToProps), withQueueData)(withQueue)
 }
