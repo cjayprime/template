@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import { Grid, Typography, Divider } from '@material-ui/core/';
 import { useStyles } from './index.style';
+import clsx from 'clsx';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -17,7 +18,7 @@ export const DataTable = props => {
     return (
       <Fragment>
         {headers.map(item => (
-          <TableCell>{item.name}</TableCell>
+          <TableCell className={classes.TableCell}>{item.name}</TableCell>
         ))}
       </Fragment>
     );
@@ -60,7 +61,11 @@ export const DataTable = props => {
           <TableRow>
             {headers.map(header => {
               return (
-                <TableCell key={genKey()}>{genCellPayload(header)}</TableCell>
+                <TableCell
+                  className={clsx(classes.TableCell, classes.TableItem)}
+                  key={genKey()}>
+                  {genCellPayload(header)}
+                </TableCell>
               );
             })}
           </TableRow>
@@ -71,18 +76,16 @@ export const DataTable = props => {
 
   return (
     <Fragment>
-      <TableContainer component={Paper}>
-        <Table className={classes.Table}>
-          <TableHead>
-            <TableRow>{buildHeaderCells()}</TableRow>
-          </TableHead>
-          <TableBody>
-            {data.map((row, i) => (
-              <Row key={`item-${i}`} row={row} />
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <Table className={classes.Table}>
+        <TableHead>
+          <TableRow className={classes.HeaderRow}>{buildHeaderCells()}</TableRow>
+        </TableHead>
+        <TableBody>
+          {data.map((row, i) => (
+            <Row key={`item-${i}`} row={row} />
+          ))}
+        </TableBody>
+      </Table>
     </Fragment>
   );
 };

@@ -23,6 +23,26 @@ const store = [
       waitTime: '4 hours',
       requestDate: '31 Mar, 7:34PM'
     }
+  },
+  {
+    patient: {
+      firstName: 'Test',
+      lastName: 'User',
+      sex: 'Male',
+      age: '42'
+    },
+    patientCase: {
+      riskLevel: 'High'
+    },
+    team: {
+      name: 'RRT'
+    },
+    task: {
+      status: 'Awaiting pickup',
+      acceptedBy: 'Jolade Adewale',
+      waitTime: '4 hours',
+      requestDate: '31 Mar, 7:34PM'
+    }
   }
 ];
 
@@ -41,7 +61,7 @@ export const QueueTableView = () => {
 
   const headers = [
     { name: 'PATIENT', accessor: renderPatientCell },
-    { name: 'REQUEST DATE', accessor: 'requestDate' },
+    { name: 'REQUEST DATE', accessor: 'task.requestDate' },
     { name: 'WAIT TIME', accessor: 'task.waitTime' },
     { name: 'TEAM', accessor: renderTeamCell },
     { name: 'ACCEPTED BY', accessor: 'task.acceptedBy' },
