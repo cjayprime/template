@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { Grid, Typography, Divider } from '@material-ui/core/';
-import { useStyles } from './index.style';
+import { tableStyles } from './index.style';
 import clsx from 'clsx';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -13,7 +13,7 @@ import Paper from '@material-ui/core/Paper';
 
 export const DataTable = props => {
   const { headers, data, customRowRender } = props;
-  const classes = useStyles();
+  const classes = tableStyles();
   const buildHeaderCells = () => {
     return (
       <Fragment>

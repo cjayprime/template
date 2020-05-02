@@ -1,11 +1,9 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-export const useStyles = makeStyles(theme => ({
+// TODO Refactor these colors to the theme
+export const tableStyles = makeStyles(theme => ({
   TableContainer: {
      backgroundColor: "#2C2E42"
-  },
-  PageContainer: {
-
   },
   HeaderRow: {
     borderBottom: 'none'
@@ -22,3 +20,14 @@ export const useStyles = makeStyles(theme => ({
     color: "#FDFDFE"
   }
 }));
+
+
+export const pageStyles = makeStyles(theme => ({
+  PageContainer: {
+
+  },
+  TextContainer: {
+    color: "#FDFDFE",
+    marginBottom: `${theme.spacing(2)}px`
+  }
+}))

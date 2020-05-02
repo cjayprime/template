@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { Container, Typography } from '@material-ui/core';
 import { DataTable } from './Table';
-import { useStyles } from './index.style';
+import { pageStyles } from './index.style';
 
 const store = [
   {
@@ -43,7 +43,7 @@ const store = [
       waitTime: '4 hours',
       requestDate: '31 Mar, 7:34PM'
     }
-  }
+  },
 ];
 
 export const QueueTableView = () => {
@@ -67,7 +67,7 @@ export const QueueTableView = () => {
     { name: 'ACCEPTED BY', accessor: 'task.acceptedBy' },
     { name: 'ACTION', accessor: renderActionComponent }
   ];
-  const classes = useStyles();
+  const classes = pageStyles();
   const buildPendingSection = () => {
     return <DataTable headers={headers} data={store} />;
   };
@@ -75,7 +75,7 @@ export const QueueTableView = () => {
     <Fragment>
       <Container className={classes.PageContainer}>
         <Fragment>
-          <Typography>{'2 pending'}</Typography>
+          <Typography className={classes.TextContainer}>{'2 pending'}</Typography>
           {buildPendingSection()}
         </Fragment>
       </Container>
