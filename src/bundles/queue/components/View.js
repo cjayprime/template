@@ -25,7 +25,7 @@ import {
     TableSortLabel
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import { QueueTableView } from './QueueTable'
+import { QueueTableView } from './Views/QueueTable'
 import {
     makeStyles
 } from '@material-ui/styles';
