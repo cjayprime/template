@@ -1,18 +1,17 @@
 import React, { Fragment } from 'react';
-import { Grid, Typography, Divider } from '@material-ui/core/';
-import { tableStyles } from './index.style';
 import clsx from 'clsx';
+import PropTypes from 'prop-types';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import PropTypes from 'prop-types';
-import Paper from '@material-ui/core/Paper';
+
+import { tableStyles } from './index.style';
+import { CollapsibleRow } from '../CollapsibleRow';
 
 export const DataTable = props => {
-  const { headers, data, customRowRender } = props;
+  const { headers, data, customRowRender, renderCollapsible } = props;
   const classes = tableStyles();
   const buildHeaderCells = () => {
     return (
@@ -54,11 +53,14 @@ export const DataTable = props => {
           return row[name];
       }
     };
+    const CustomTableRow = renderCollapsible ? CollapsibleRow : TableRow;
     return (
       <Fragment>
-        {customRowRender && customRowRender(row)}
-        {!customRowRender && (
-          <TableRow>
+        {customRowRender ? (
+          customRowRender(row)
+        ) : (
+          <CustomTableRow
+            collapsibleComponent={renderCollapsible && renderCollapsible(row)}>
             {headers.map(header => {
               return (
                 <TableCell
@@ -68,7 +70,7 @@ export const DataTable = props => {
                 </TableCell>
               );
             })}
-          </TableRow>
+          </CustomTableRow>
         )}
       </Fragment>
     );
@@ -78,7 +80,9 @@ export const DataTable = props => {
     <Fragment>
       <Table className={classes.Table}>
         <TableHead>
-          <TableRow className={classes.HeaderRow}>{buildHeaderCells()}</TableRow>
+          <TableRow className={classes.HeaderRow}>
+            {buildHeaderCells()}
+          </TableRow>
         </TableHead>
         <TableBody>
           {data.map((row, i) => (
@@ -93,7 +97,8 @@ export const DataTable = props => {
 DataTable.propTypes = {
   headers: PropTypes.array.isRequired,
   data: PropTypes.array.isRequired,
-  customRowRender: PropTypes.func
+  customRowRender: PropTypes.func,
+  renderCollapsible: PropTypes.func
 };
 
 DataTable.defaultProps = {
