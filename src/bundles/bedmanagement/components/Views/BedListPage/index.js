@@ -1,7 +1,8 @@
 import React, { Fragment } from 'react';
-import { Container, Grid, TypoGraphy } from '@material-ui/core';
+import { Container, Grid, Typography } from '@material-ui/core';
 import clsx from 'clsx';
 import { BedListPageStyles } from './index.style';
+import { summaryNumbers, store } from './store';
 import {
   Header,
   DataTable,
@@ -11,21 +12,27 @@ import {
 
 export const BedListPage = props => {
   const classes = BedListPageStyles();
-  const summaryNumbers = [
-    {
-      header: { label: 'Total # of Beds', color: '#A99FEC' },
-      value: { label: '27', color: 'white' }
-    },
-    {
-      header: { label: 'Assigned', color: '#BA9E7C' },
-      value: { label: '14', color: 'white' }
-    },
-    {
-      header: { label: 'Available', color: '#C49FA6' },
-      value: { label: '4', color: 'white' }
-    }
-  ];
 
+  const renderPatientCell = row => (
+    <PatientMetadatum
+      name={`${row.patient.firstName} ${row.patient.lastName}`}
+      sex={row.patient.sex}
+      age={row.patient.age}
+      textRowDirection={'row'}
+      riskLevel={row.patient.case.riskLevel}
+    />
+  );
+
+  const renderActionComponent = row => (
+    <Typography className={classes.ActionButton}>{'VIEW CASE'}</Typography>
+  );
+
+  const tableHeaders = [
+    { name: 'PATIENT', accessor: renderPatientCell },
+    { name: 'EPID NO', accessor: 'patient.epidNumber' },
+    { name: 'ADMITTED', accessor: 'patient.case.admittedAt' },
+    { name: 'ACTION', accessor: renderActionComponent }
+  ];
   return (
     <Fragment>
       <Header
@@ -55,6 +62,9 @@ export const BedListPage = props => {
               </Grid>
             );
           })}
+        </Grid>
+        <Grid container direction="column" className={classes.TableContainer}>
+          <DataTable headers={tableHeaders} data={store} />
         </Grid>
       </Container>
     </Fragment>
