@@ -1,13 +1,14 @@
 import React, { Fragment } from 'react';
 
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import { Grid, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { Grid, Container } from '@material-ui/core';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 
 import {
   DataTable,
-  TeamMetadatum,
-  PatientMetadatum
+  Header,
+  PatientMetadatum,
+  TeamMetadatum
 } from '../../../bundles/shared/components';
 import KPICard from './Card';
 import { patientStore } from './store';
@@ -59,47 +60,59 @@ const KpiView = () => {
 
   return (
     <Fragment>
-      <Grid container spacing={4}>
-        <Grid item xs={12} sm={6} md={3}>
-          <KPICard
-            text="High risk patients awaiting pickup"
-            count="1,450"
-            buttonColor="rgb(101, 80, 190)"
-            buttonContent={<ExpandMore />}
-            buttonOnClick={() => console.log('Clicked')}
-          />
+      <Header
+        pageTitle="KPI"
+        contexts={{
+          dateSelect: {
+            defaultValue: 'TODAY',
+            options: ['TODAY', 'YESTERDAY'],
+            handleInputChange: _newInput => {}
+          }
+        }}
+      />
+      <Container className={classes.PageContainer}>
+        <Grid container spacing={4}>
+          <Grid item xs={12} sm={6} md={3}>
+            <KPICard
+              text="High risk patients awaiting pickup"
+              count="1,450"
+              buttonColor="rgb(101, 80, 190)"
+              buttonContent={<ExpandMore />}
+              buttonOnClick={() => console.log('Clicked')}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <KPICard
+              text="Lab results pending for more than a day"
+              count="15"
+              buttonColor="rgb(88, 184, 190)"
+              buttonContent="show"
+              buttonOnClick={() => console.log('Clicked')}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <KPICard
+              text="high risk patients awaiting pickup for more than a day"
+              count="1"
+              buttonColor="rgb(88, 184, 190)"
+              buttonContent="show"
+              buttonOnClick={() => console.log('Clicked')}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <KPICard
+              text="Patients awaiting sample collection for more than a day"
+              count="245"
+              buttonColor="rgb(88, 184, 190)"
+              buttonContent="show"
+              buttonOnClick={() => console.log('Clicked')}
+            />
+          </Grid>
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <KPICard
-            text="Lab results pending for more than a day"
-            count="15"
-            buttonColor="rgb(88, 184, 190)"
-            buttonContent="show"
-            buttonOnClick={() => console.log('Clicked')}
-          />
+        <Grid container spacing={4}>
+          <DataTable headers={headers} data={patientStore} />
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <KPICard
-            text="high risk patients awaiting pickup for more than a day"
-            count="1"
-            buttonColor="rgb(88, 184, 190)"
-            buttonContent="show"
-            buttonOnClick={() => console.log('Clicked')}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <KPICard
-            text="Patients awaiting sample collection for more than a day"
-            count="245"
-            buttonColor="rgb(88, 184, 190)"
-            buttonContent="show"
-            buttonOnClick={() => console.log('Clicked')}
-          />
-        </Grid>
-      </Grid>
-      <Grid container spacing={4}>
-        <DataTable headers={headers} data={patientStore} />
-      </Grid>
+      </Container>
     </Fragment>
   );
 };
