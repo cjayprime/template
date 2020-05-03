@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 
-import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Container } from '@material-ui/core';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 
@@ -13,25 +12,7 @@ import {
 import KPICard from './Card';
 import { patientStore } from './store';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex'
-  },
-  expand: {
-    transform: 'rotate(0deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest
-    })
-  },
-  tableCell: {
-    color: 'white'
-  }
-}));
-
-const KpiView = () => {
-  const classes = useStyles();
-
+export default () => {
   const renderPatientCell = row => (
     <PatientMetadatum
       name={`${row.patient.firstName} ${row.patient.lastName}`}
@@ -47,7 +28,6 @@ const KpiView = () => {
       text={row.team.name}
       tagLabel={row.task.status}
       spacing={{ mainText: 3, label: 3 }}
-      classes={classes}
     />
   );
 
@@ -70,7 +50,7 @@ const KpiView = () => {
           }
         }}
       />
-      <Container className={classes.PageContainer}>
+      <Container>
         <Grid container spacing={4}>
           <Grid item xs={12} sm={6} md={3}>
             <KPICard
@@ -116,5 +96,3 @@ const KpiView = () => {
     </Fragment>
   );
 };
-
-export default KpiView;
