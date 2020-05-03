@@ -30,7 +30,8 @@ export const QUESTIONS = [
       {
         label: 'Phone no.',
         type: 'phone',
-        placeholder: ['000', 'Enter Phone Number']
+        placeholder: 'Enter Phone Number',
+        fields: ['+234']
       },
       {
         label: 'Email',

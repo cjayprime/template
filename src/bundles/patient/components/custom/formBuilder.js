@@ -14,6 +14,27 @@ import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
 
 const TransformIcon = () => <KeyboardArrowDown color="primary" />;
 
+const days = [
+  { label: '1', value: '1' },
+  { label: '2', value: '2' },
+  { label: '3', value: '3' },
+  { label: '4', value: '4' },
+  { label: '5', value: '6' },
+  { label: '7', value: '7' }
+];
+const month = [
+  { label: '1', value: 'January' },
+  { label: '2', value: 'February' },
+  { label: '3', value: 'March' },
+  { label: '4', value: 'April' }
+];
+
+const year = [
+  { label: '1988', value: '1988' },
+  { label: '1989', value: '1989' },
+  { label: '1990', value: '1990' }
+];
+
 const useStyles = makeStyles(theme => ({
   icon: {
     color: '#fff',
@@ -28,6 +49,7 @@ const useStyles = makeStyles(theme => ({
     marginBottom: 10
   },
   select: {
+    color: '#fff',
     backgroundColor: '#474562',
     '&:focus': {
       borderColor: 'transparent !important'
@@ -67,311 +89,189 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const InputTextComp = (classes, input) => {
+  let rows = null;
+  const multiline = input.type === 'textArea' ? true : false;
+  if (multiline) rows = 5;
+
+  return (
+    <OutlinedInput
+      fullWidth
+      placeholder={input.placeholder || ''}
+      style={{ color: 'white' }}
+      multiline={multiline}
+      rows={rows}
+      classes={{
+        root: classes.cssOutlinedInput,
+        focused: classes.cssFocused,
+        notchedOutline: classes.notchedOutline
+      }}
+    />
+  );
+}; 
+
 const TextTransform = ({ input }) => {
   const classes = useStyles();
+
   return (
     <Grid container style={{ marginBottom: 15 }}>
       <Grid xs={4}>
         <Typography className={classes.labelText}>{input.label}</Typography>
       </Grid>
       <Grid xs={8} className={classes.container}>
-        <OutlinedInput
-          fullWidth
-          style={{ color: 'white' }}
-          classes={{
-            root: classes.cssOutlinedInput,
-            focused: classes.cssFocused,
-            notchedOutline: classes.notchedOutline
-          }}
-        />
+        {InputTextComp(classes, input )}
       </Grid>
     </Grid>
   );
 };
 
-const TextAreaTransform = ({ input }) => {
-  const classes = useStyles();
+const remapField = input =>
+  input.fields.map(field => ({ label: field, value: field }));
+
+const SelectFieldComp = (classes, input, mappedValue) => {
+  const value = mappedValue || (input.fields && remapField(input));
   return (
-    <Grid container style={{ marginBottom: 15 }}>
-      <Grid xs={4}>
-        <Typography className={classes.labelText}>{input.label}</Typography>
-      </Grid>
-      <Grid xs={8} className={classes.container}>
-        <OutlinedInput
-          fullWidth
-          multiline={true}
-          rows={5}
-          style={{ color: 'white' }}
-          classes={{
-            root: classes.cssOutlinedInput,
-            focused: classes.cssFocused,
-            notchedOutline: classes.notchedOutline
-          }}
-        />
-      </Grid>
-    </Grid>
+    <TextField
+      select
+      fullWidth
+      onChange={() => ''}
+      InputProps={{
+        className: classes.select
+      }}
+      SelectProps={{
+        native: false,
+        IconComponent: TransformIcon,
+        icon: classes.icon
+      }}
+      variant="outlined">
+      {value.map(option => (
+        <MenuItem key={`${option.value}--${input.label}`} value={option.value}>
+          {option.label}
+        </MenuItem>
+      ))}
+    </TextField>
   );
 };
 
-const DateTransform = ({ input }) => {
-  const classes = useStyles();
-  return (
-    <Grid container style={{ marginBottom: 15 }}>
-      <Grid xs={4}>
-        <Typography className={classes.labelText}>{input.label}</Typography>
-      </Grid>
-      <Grid xs={8}>
-        <Grid container direction="row" xs={12} spacing={0}>
-          <Grid item xs={3}>
-            <TextField
-              select
-              onChange={() => ''}
-              fullWidth
-              InputProps={{
-                className: classes.select
-              }}
-              SelectProps={{
-                native: false,
-                IconComponent: TransformIcon,
-                icon: classes.icon
-              }}
-              variant="outlined">
-              {[
-                { value: '1' },
-                { value: '2' },
-                { value: '3' },
-                { value: '4' }
-              ].map(option => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.value + 'mm'}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
-          <Grid item xs={3}>
-            <TextField
-              select
-              fullWidth
-              onChange={() => ''}
-              SelectProps={{
-                native: false,
-                IconComponent: TransformIcon,
-                icon: classes.icon
-              }}
-              InputProps={{
-                className: classes.select
-              }}
-              variant="outlined">
-              {[
-                { value: '1' },
-                { value: '2' },
-                { value: '3' },
-                { value: '4' }
-              ].map(option => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.value + 'dd'}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
-              select
-              fullWidth
-              onChange={() => ''}
-              SelectProps={{
-                native: false,
-                IconComponent: TransformIcon,
-                icon: classes.icon
-              }}
-              InputProps={{
-                className: classes.select
-              }}
-              variant="outlined">
-              {[
-                { value: '1' },
-                { value: '2' },
-                { value: '3' },
-                { value: '4' }
-              ].map(option => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.value + 'yy'}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
-        </Grid>
-      </Grid>
-    </Grid>
-  );
-};
+const generateDateTypes = (input, classes) => {
+  return input.fields.map((date, index) => {
+    const spacing = index < 2 ? 3 : 6;
+    let mappedValue = year;
 
-const RadioTransform = ({ input }) => {
-  const classes = useStyles();
-  return (
-    <Grid container style={{ marginBottom: 15 }}>
-      <Grid xs={4}>
-        <Typography className={classes.labelText}>{input.label}</Typography>
-      </Grid>
-      <Grid xs={8}>
-        <RadioGroup
-          style={{ display: 'flex', flexDirection: 'row' }}
-          aria-label="gender"
-          name={input.label}
-          onChange={() => ''}>
-          {input.fields.map((field, i) => {
-            return (
-              <FormControlLabel
-                key={`${input.label}${i}`}
-                value={field}
-                classes={{
-                  root: classes.radio
-                }}
-                control={
-                  <Radio
-                    color="primary"
-                    classes={{
-                      colorPrimary: classes.radio
-                    }}
-                  />
-                }
-                label={field}
-              />
-            );
-          })}
-        </RadioGroup>
-      </Grid>
-    </Grid>
-  );
-};
+    if (date == 'DD') mappedValue = days;
 
-const SelectFields = ({ input }) => {
-  const classes = useStyles();
+    if (date == 'MM') mappedValue = month;
 
-  return (
-    <Grid container style={{ marginBottom: 15 }}>
-      <Grid xs={4}>
-        <Typography className={classes.labelText}>{input.label}</Typography>
-      </Grid>
-
-      <Grid xs={8}>
-        <Grid container direction="row" xs={12} spacing={0}>
-          <TextField
-            select
-            fullWidth
-            onChange={() => ''}
-            InputProps={{
-              className: classes.select
-            }}
-            SelectProps={{
-              native: false,
-              IconComponent: TransformIcon,
-              icon: classes.icon
-            }}
-            variant="outlined">
-            {[
-              { value: 'Lagos' },
-              { value: 'Lagos'  },
-              { value: '3' },
-              { value: '4' }
-            ].map(option => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.value + 'mm'}
-              </MenuItem>
-            ))}
-          </TextField>
-        </Grid>
-      </Grid>
-    </Grid>
-  );
-};
-
-const PhoneNumber = ({input}) => {
-
-    const classes = useStyles();
     return (
-      <Grid container style={{ marginBottom: 15 }}>
-        <Grid xs={4}>
-          <Typography className={classes.labelText}>{input.label}</Typography>
-        </Grid>
-        <Grid xs={8}>
-          <Grid container direction="row" xs={12} spacing={0}>
-            <Grid item xs={3}>
-              <TextField
-                select
-                fullWidth
-                onChange={() => ''}
-                SelectProps={{
-                  native: false,
-                  IconComponent: TransformIcon,
-                  icon: classes.icon
-                }}
-                InputProps={{
-                  className: classes.select
-                }}
-                variant="outlined">
-                {[
-                  { value: '1' },
-                  { value: '2' },
-                  { value: '3' },
-                  { value: '4' }
-                ].map(option => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.value + 'dd'}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Grid>
-            <Grid item xs={9}>
-              <TextField
-                select
-                fullWidth
-                onChange={() => ''}
-                SelectProps={{
-                  native: false,
-                  IconComponent: TransformIcon,
-                  icon: classes.icon
-                }}
-                InputProps={{
-                  className: classes.select
-                }}
-                variant="outlined">
-                {[
-                  { value: '1' },
-                  { value: '2' },
-                  { value: '3' },
-                  { value: '4' }
-                ].map(option => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.value + 'yy'}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Grid>
-          </Grid>
-        </Grid>
+      <Grid item xs={spacing}>
+        {' '}
+        {SelectFieldComp(classes, input, mappedValue)}
       </Grid>
     );
+  });
+};
+
+const generateRadioType = (input, classes) => {
+  return (
+    <RadioGroup
+      style={{ display: 'flex', flexDirection: 'row' }}
+      name={input.label}
+      onChange={() => ''}>
+      {input.fields.map((field, i) => {
+        return (
+          <FormControlLabel
+            key={`${input.label}${i}`}
+            value={field}
+            classes={{
+              root: classes.radio
+            }}
+            control={
+              <Radio
+                color="primary"
+                classes={{
+                  colorPrimary: classes.radio
+                }}
+              />
+            }
+            label={field}
+          />
+        );
+      })}
+    </RadioGroup>
+  );
+};
+
+const generateSelectType = (input, classes) => {
+  const remap = input.fields && remapField(input);
+
+  return (
+    <Grid item xs={12}>
+      {' '}
+      {SelectFieldComp(classes, input, remap)}
+    </Grid>
+  );
+};
+
+const SelectTransform = ({ input }) => {
+  const classes = useStyles();
+
+  const selectType = {
+    select: generateSelectType(input, classes),
+    date: generateDateTypes(input, classes),
+    radio: generateRadioType(input, classes)
   };
 
+  return (
+    <Grid container style={{ marginBottom: 15 }}>
+      <Grid xs={4}>
+        <Typography className={classes.labelText}>{input.label}</Typography>
+      </Grid>
+      <Grid xs={8}>
+        <Grid container direction="row" xs={12} spacing={0}>
+          {selectType[input.type]}
+        </Grid>
+      </Grid>
+    </Grid>
+  );
+};
+
+const PhoneNumber = ({ input }) => {
+  const classes = useStyles();
+  return (
+    <Grid container style={{ marginBottom: 15 }}>
+      <Grid xs={4}>
+        <Typography className={classes.labelText}>{input.label}</Typography>
+      </Grid>
+      <Grid xs={8}>
+        <Grid container direction="row" xs={12} spacing={0}>
+          <Grid item xs={3}>
+            {SelectFieldComp(classes, input)}
+          </Grid>
+          <Grid item xs={9}>
+            {InputTextComp(classes, input)}
+          </Grid>
+        </Grid>
+      </Grid>
+    </Grid>
+  );
+};
 
 const renderType = input => {
-
   switch (input.type) {
     case 'text':
       return <TextTransform input={input} />;
 
     case 'date':
-      return <DateTransform input={input} />;
+      return <SelectTransform input={input} />;
 
     case 'radio':
-      return <RadioTransform input={input} />;
+      return <SelectTransform input={input} />;
 
     case 'select':
-      return <SelectFields input={input} />;
+      return <SelectTransform input={input} />;
 
     case 'textArea':
-      return <TextAreaTransform input={input} />;
+      return <TextTransform input={input} />;
 
     case 'phone':
       return <PhoneNumber input={input} />;

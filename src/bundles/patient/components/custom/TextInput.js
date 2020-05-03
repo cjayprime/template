@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   FormControl,
@@ -6,20 +6,16 @@ import {
   InputAdornment,
   IconButton
 } from '@material-ui/core';
-import Paper from '@material-ui/core/Paper';
-import InputBase from '@material-ui/core/InputBase';
-import Divider from '@material-ui/core/Divider';
-import MenuIcon from '@material-ui/icons/Menu';
+
 import SearchIcon from '@material-ui/icons/Search';
 import CloseIcon from '@material-ui/icons/Close';
 import Arrow from '@material-ui/icons/ChevronRight';
-import DirectionsIcon from '@material-ui/icons/Directions';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     padding: '2px 4px',
     display: 'flex',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   padding: {
     padding: 10
@@ -30,11 +26,11 @@ const useStyles = makeStyles((theme) => ({
     width: '100%'
   },
   iconButton: {
-    padding: 10,
+    padding: 10
   },
   searchIcon: {
     color: '#fff',
-    fontSize: 35,
+    fontSize: 35
   },
   margin: {
     paddingLeft: 100,
@@ -42,64 +38,76 @@ const useStyles = makeStyles((theme) => ({
   },
   divider: {
     height: 28,
-    margin: 4,
+    margin: 4
   },
   roundedButton: {
     borderRadius: 50,
     backgroundColor: '#28BAC0',
-    "&:hover": {
+    '&:hover': {
       backgroundColor: '#28BAC0'
-    },
+    }
   },
   roundedIcon: {
     fontSize: 35,
-    color: '#fff',
+    color: '#fff'
   },
   underline: {
-    "&:before": {
-      borderBottom: '2px solid #6A6981'
+    '&:before': {
+      borderBottom: '1px solid #6A6981'
     },
-    "&:hover": {
-      borderBottom: '2px solid #6A6981'
+    '&:hover': {
+      borderBottom: '1px solid #6A6981'
     },
-    "&:after": {
-      borderBottom: '2px solid #6A6981' // make white
+    '&:after': {
+      borderBottom: '1px solid #6A6981' // make white
+    },
+    '&:hover:not($disabled):not($focused):not($error):before': {
+      borderBottom: 'none !important'
     }
-  }//  "&:hover:not($disabled):not($focused):not($error):before": {
-
+  } //  "&:hover:not($disabled):not($focused):not($error):before": {
 }));
+
+/*
+.MuiInput-underline:hover:not(.Mui-disabled):before
+*/
 
 export default function CustomizedInputBase({ change, disableUnderline }) {
   const classes = useStyles();
 
-  const showEnter = (<IconButton className={classes.roundedButton}>
-                        <Arrow className={classes.roundedIcon} />
-                    </IconButton>)
+  const showEnter = (
+    <IconButton className={classes.roundedButton}>
+      <Arrow className={classes.roundedIcon} />
+    </IconButton>
+  );
 
-  const showClose = ( <IconButton> <CloseIcon /> </IconButton> )
+  const showClose = (
+    <IconButton>
+      {' '}
+      <CloseIcon />{' '}
+    </IconButton>
+  );
 
   return (
-    <FormControl fullWidth className={classes.margin} >
+    <FormControl fullWidth className={classes.margin}>
       <Input
         style={{ padding: 20, fontSize: 20, color: '#fff', fontWeight: 'bold' }}
-        onChange={(e) => change(e.target.value)}
+        onChange={e => change(e.target.value)}
         classes={{
-          underline: classes.underline,
+          underline: classes.underline
         }}
         disableUnderline={disableUnderline}
-
         startAdornment={
-          <InputAdornment style={{ marginLeft: 20 }} position='start'>
+          <InputAdornment style={{ marginLeft: 20 }} position="start">
             <SearchIcon className={classes.searchIcon} />
           </InputAdornment>
         }
-
         endAdornment={
-          <InputAdornment style={{ marginRight: 20, marginBottom: 5 }} position='end'>
-            {disableUnderline ?  showClose  :  showEnter }
+          <InputAdornment
+            style={{ marginRight: 20, marginBottom: 5 }}
+            position="end">
+            {disableUnderline ? showClose : showEnter}
           </InputAdornment>
         }
-
       />
     </FormControl>
   );
