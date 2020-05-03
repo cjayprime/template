@@ -7,7 +7,7 @@ const DEFAULT_GREY = '#8E8CA7';
 export const HeaderStyles = makeStyles(theme => ({
   HeaderContainer: {
     position: 'fixed',
-    top: '-13%' //TODO{H.Ezekiel} we should not need to do this
+    top: '-103px' //TODO{H.Ezekiel} we should not need to do this
   },
   HeaderItem: {
     padding: `${theme.spacing(2)}px`,
@@ -71,10 +71,11 @@ export const HeaderStyles = makeStyles(theme => ({
   },
   SearchContextInput: {
     color: DEFAULT_GREY,
-    fontSize: '16px',
+    fontSize: '13px',
+    width: '100%',
     position: 'relative',
-    bottom: `${theme.spacing(0.5)}px`,
-    right: `${theme.spacing(2)}px`,
+    bottom: `${theme.spacing(0.4)}px`,
+    right: `${theme.spacing(3)}px`,
     textTransform: 'capitalize'
   }
 }));

@@ -1,11 +1,8 @@
 import React from 'react';
+import { BedListPage } from './Views/BedListPage';
 
 const BedManagement = () => {
-    return (
-        <div> 
-            Haastrup
-        </div>
-    )
-}
+  return <BedListPage />;
+};
 
 export default BedManagement;

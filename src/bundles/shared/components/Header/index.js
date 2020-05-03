@@ -4,7 +4,7 @@ import { Grid, Tabs, Typography, Tab, TextField } from '@material-ui/core';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import { HeaderStyles } from './index.style';
 
-export const Header = ({ pageTitle, contexts, pageIcon }) => {
+export const Header = ({ pageTitle, contexts, pageIcon, styles = {} }) => {
   const classes = HeaderStyles();
   const [selectedTab, setSelectedTab] = useState('RRT');
   const [searchInput, setSearchInput] = useState('');
@@ -17,7 +17,7 @@ export const Header = ({ pageTitle, contexts, pageIcon }) => {
       context.handleInputChange(newValue);
     };
     return (
-      <Grid item xs={3} className={clsx(classes.HeaderItemContent)}>
+      <Grid item xs={2} className={clsx(classes.HeaderItemContent)}>
         <TextField
           placeholder={context.placeholder}
           fullWidth
@@ -82,7 +82,7 @@ export const Header = ({ pageTitle, contexts, pageIcon }) => {
             value={selectedTab}
             defaultValue={context.defaultTab}
             classes={{
-              root: classes.RootTabsContainer,
+              root: clsx(classes.RootTabsContainer, styles.RootTabsContainer),
               flexContainer: classes.TabsFlexContainer,
               indicator: classes.TabIndicator
             }}>
@@ -109,11 +109,11 @@ export const Header = ({ pageTitle, contexts, pageIcon }) => {
 
   return (
     <Grid container className={classes.HeaderContainer}>
-      <Grid container item xs={2}>
-        <Grid item xs={6} className={classes.HeaderItem}>
+      <Grid container item xs={3}>
+        <Grid item xs={3} className={classes.HeaderItem}>
           {pageIcon && pageIcon}
         </Grid>
-        <Grid item xs={6} className={classes.HeaderItem}>
+        <Grid item xs={9} className={classes.HeaderItem}>
           <Typography className={classes.HeaderCaption}>{pageTitle}</Typography>
         </Grid>
       </Grid>
