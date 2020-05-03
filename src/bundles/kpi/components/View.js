@@ -1,16 +1,16 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
 
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import {
-  Grid,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow
-} from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import ExpandMore from '@material-ui/icons/ExpandMore';
+
+import {
+  DataTable,
+  TeamMetadatum,
+  PatientMetadatum
+} from '../../../bundles/shared/components';
 import KPICard from './Card';
+import { patientStore } from './store';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -28,28 +28,34 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const HeadTableCell = withStyles(theme => ({
-  root: {
-    borderBottom: 'none'
-  },
-  head: {
-    color: 'rgb(160, 157, 185)'
-  }
-}))(TableCell);
-
 const KpiView = () => {
-  const [collapse, setCollapse] = useState(false);
   const classes = useStyles();
 
-  const collapseComponent = props => (
-    <tr>
-      <td colSpan={3}>
-        {' '}
-        {/* put the number of col of your table in this field */}
-        <div className={props.className}>{props.children}</div>
-      </td>
-    </tr>
+  const renderPatientCell = row => (
+    <PatientMetadatum
+      name={`${row.patient.firstName} ${row.patient.lastName}`}
+      sex={row.patient.sex}
+      age={row.patient.age}
+      riskLevel={row.patientCase.riskLevel}
+      textRowDirection="row"
+    />
   );
+
+  const renderTeamCell = row => (
+    <TeamMetadatum
+      text={row.team.name}
+      tagLabel={row.task.status}
+      spacing={{ mainText: 3, label: 3 }}
+      classes={classes}
+    />
+  );
+
+  const headers = [
+    { name: 'PATIENT', accessor: renderPatientCell },
+    { name: 'REQUEST DATE', accessor: 'task.requestDate' },
+    { name: 'WAIT TIME', accessor: 'task.waitTime' },
+    { name: 'TEAM', accessor: renderTeamCell }
+  ];
 
   return (
     <Fragment>
@@ -92,60 +98,7 @@ const KpiView = () => {
         </Grid>
       </Grid>
       <Grid container spacing={4}>
-        <Table className={classes.table}>
-          <TableHead>
-            <TableRow hover>
-              <HeadTableCell>Patient</HeadTableCell>
-              <HeadTableCell align="left">Request Date</HeadTableCell>
-              <HeadTableCell align="left">Wait Time</HeadTableCell>
-              <HeadTableCell align="left">Team</HeadTableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            <TableRow>
-              <TableCell className={classes.tableCell}>
-                <span>Alan Smith</span>
-              </TableCell>
-              <TableCell className={classes.tableCell}>
-                <span>31 Mar, 7:34 AM</span>
-              </TableCell>
-              <TableCell className={classes.tableCell}>
-                <span>11h 59min</span>
-              </TableCell>
-              <TableCell className={classes.tableCell}>
-                <span>Case Management</span>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className={classes.tableCell}>
-                <span>Alan Smith</span>
-              </TableCell>
-              <TableCell className={classes.tableCell}>
-                <span>31 Mar, 7:34 AM</span>
-              </TableCell>
-              <TableCell className={classes.tableCell}>
-                <span>11h 59min</span>
-              </TableCell>
-              <TableCell className={classes.tableCell}>
-                <span>Case Management</span>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className={classes.tableCell}>
-                <span>Alan Smith</span>
-              </TableCell>
-              <TableCell className={classes.tableCell}>
-                <span>31 Mar, 7:34 AM</span>
-              </TableCell>
-              <TableCell className={classes.tableCell}>
-                <span>11h 59min</span>
-              </TableCell>
-              <TableCell className={classes.tableCell}>
-                <span>Case Management</span>
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
+        <DataTable headers={headers} data={patientStore} />
       </Grid>
     </Fragment>
   );

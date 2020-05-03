@@ -21,7 +21,8 @@ export const PatientMetadatumStyles = makeStyles(theme => {
     },
     MetaCaption: {
       color: '#8E8CA7',
-      fontSize: `12px`
+      fontSize: 14,
+      marginLeft: 10
     },
     TagContainer: props => ({
       backgroundColor: backdropColor(props),
