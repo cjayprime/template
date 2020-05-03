@@ -33,8 +33,6 @@ const useStyles = makeStyles(theme => ({
     fontSize: 35
   },
   margin: {
-    paddingLeft: 100,
-    paddingRight: 100
   },
   divider: {
     height: 28,
@@ -88,7 +86,7 @@ export default function CustomizedInputBase({ change, disableUnderline }) {
   );
 
   return (
-    <FormControl fullWidth className={classes.margin}>
+    <FormControl fullWidth >
       <Input
         style={{ padding: 20, fontSize: 20, color: '#fff', fontWeight: 'bold' }}
         onChange={e => change(e.target.value)}

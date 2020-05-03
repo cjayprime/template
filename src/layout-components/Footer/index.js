@@ -39,6 +39,29 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const RegisterPatient = ({ classes }) => {
+  return (
+    <Grid container className={classes.container} direction="row">
+      <Grid item xs={6}>
+        <FormControlLabel
+          control={<Checkbox color="primary" name="checkedC" />}
+          label={
+            <Typography className={classes.labelText}>
+              {' '}
+              Send Emmergency Number to caller{' '}
+            </Typography>
+          }
+        />
+      </Grid>
+      <Grid item xs={6}>
+        <Grid container style={{ paddingRight: 10 }} justify="flex-end">
+          <Button className={classes.buttons}>Save</Button>
+        </Grid>
+      </Grid>
+    </Grid>
+  );
+};
+
 const Footer = props => {
   const classes = useStyles();
 
@@ -51,26 +74,8 @@ const Footer = props => {
         className={clsx('app-footer text-black-50', {
           'app-footer--fixed': footerFixed,
           'app-footer--fixed__collapsed': sidebarToggle
-        })}>
-        <Grid container className={classes.container} direction="row">
-          <Grid item xs={6}>
-            <FormControlLabel
-              control={<Checkbox color="primary" name="checkedC" />}
-              label={
-                <Typography className={classes.labelText}>
-                  {' '}
-                  Send Emmergency Number to caller{' '}
-                </Typography>
-              }
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <Grid container style={{ paddingRight: 10 }} justify="flex-end">
-              <Button className={classes.buttons}>Save</Button>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Paper>
+        })}></Paper>
+        { false ? <RegisterPatient classes={classes} /> : null }
     </Fragment>
   );
 };

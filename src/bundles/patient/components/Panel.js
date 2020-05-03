@@ -3,6 +3,15 @@ import { Grid, Typography, ButtonBase } from '@material-ui/core';
 import CustomText from './custom/TextInput';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
+import { QueuePageStyles } from 'bundles/queue/components/Views/QueueTable/index.style';
+import { pendingStore } from 'bundles/queue/components/Views/QueueTable/store';
+import {
+    DataTable,
+    Header,
+    PatientMetadatum,
+    TeamMetadatum,
+    FilterList
+  } from 'bundles/shared/components';  
 
 const useStyles = makeStyles(theme => ({
   textPatient: {
@@ -59,6 +68,47 @@ const ErrorContainer = () => {
   );
 };
 
+const Patients = () => {
+    const classes = QueuePageStyles();
+
+    const renderPatientCell = row => (
+        <PatientMetadatum
+          name={`${row.patient.firstName} ${row.patient.lastName}`}
+          sex={row.patient.sex}
+          age={row.patient.age}
+          riskLevel={row.patientCase.riskLevel}
+        />
+      );
+    
+      const renderTeamCell = row => {
+        return (
+          <TeamMetadatum
+            text={row.team.name}
+            tagLabel={row.task.status}
+            spacing={{ mainText: 3, label: 3 }}
+            classes={classes}
+          />
+        );
+      };
+    
+      const renderActionComponent = row => (
+        <Typography className={classes.ActionButton}>{'ACCEPT'}</Typography>
+      );
+
+    const headers = [
+        { name: 'PATIENT', accessor: renderPatientCell },
+        { name: 'REQUEST DATE', accessor: 'task.requestDate' },
+        { name: 'WAIT TIME', accessor: 'task.waitTime' },
+        { name: 'TEAM', accessor: renderTeamCell },
+        { name: 'ACCEPTED BY', accessor: 'task.acceptedBy' },
+        { name: 'ACTION', accessor: renderActionComponent }
+      ];
+
+    return (
+        <DataTable headers={headers} data={pendingStore} renderCollapsible={(row) => <div>Hello world</div>} />
+    )
+}
+
 const Panel = () => {
   const [search, setSearch] = useState('');
 
@@ -71,7 +121,7 @@ const Panel = () => {
       <Grid item xs={search.length > 4 ? 12: 9}>
         <Grid item xs={12}>
           <CustomText change={setSearch} disableUnderline={search.length > 4} />
-          {search.length > 4 ? <ErrorContainer /> : null}
+          {search.length > 4 ? <Patients /> : null}
         </Grid>
       </Grid>
     </Grid>
