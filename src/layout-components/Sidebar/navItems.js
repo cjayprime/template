@@ -44,17 +44,6 @@ const allowedViews = [
     label: '',
     content: [
       {
-        label: 'Dashboards',
-        icon: DashboardTwoToneIcon,
-        content: [
-          {
-            label: "Default",
-            description: "This is a dashboard page example built using this template.",
-            to: "/DashboardDefault"
-          },
-        ]
-      },
-      {
         label: 'Patient',
         icon: ChatIcon,
         to: "/Patient"

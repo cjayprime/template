@@ -74,7 +74,7 @@ const SidebarCollapsed = props => {
       </Hidden>
       <Hidden mdDown>
         <Paper elevation={7} square className="app-sidebar-collapsed-wrapper">
-          <AppBar color="secondary" position="relative" elevation={0}>
+         {/* <AppBar color="secondary" position="relative" elevation={0}>
             <div className="sidebar-collapsed-logo">
               <Box
                 className="header-logo-wrapper"
@@ -95,7 +95,7 @@ const SidebarCollapsed = props => {
                 </Link>
               </Box>
             </div>
-          </AppBar>
+          </AppBar> */}
           <div className="app-sidebar--content">
             <PerfectScrollbar>
               <ul className="sidebar-menu-collapsed">

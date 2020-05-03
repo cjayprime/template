@@ -7,7 +7,7 @@ import {
   PatientMetadatum,
   TeamMetadatum,
   FilterList
-} from '../../../../../bundles/shared/components';
+} from 'bundles/shared/components'; 
 import { pendingStore, patientStore } from './store';
 import { QueuePageStyles } from './index.style';
 

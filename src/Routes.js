@@ -100,6 +100,7 @@ const Lab = lazy(() => import('./bundles/lab/components/View'))
 
 
 
+
 const ApplicationsChat = lazy(() => import('./example-pages/ApplicationsChat'));
 const ApplicationsContacts = lazy(() =>
   import('./example-pages/ApplicationsContacts')
