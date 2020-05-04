@@ -1,17 +1,9 @@
 import React, { Fragment } from 'react';
-import {
-  Button,
-  Chip,
-  Container,
-  FormControl,
-  Grid,
-	InputLabel,
-	TextField,
-  Typography
-} from '@material-ui/core';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { Button, Chip, Container, Grid, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
 import { DataTable, Header } from '../../../bundles/shared/components';
+import FormBuilder from '../../../bundles/patient/components/custom/formBuilder';
 import { pendingStore, patientStore } from './store';
 
 const useStyles = makeStyles(theme => ({
@@ -25,13 +17,8 @@ const useStyles = makeStyles(theme => ({
     color: '#80C9CE',
     fontWeight: '700',
     textTransform: 'uppercase'
-  },
-  collapsible: {
-    padding: 20
-  },
-  input: {}
+  }
 }));
-
 
 export default () => {
   const classes = useStyles();
@@ -44,12 +31,9 @@ export default () => {
   );
 
   const renderCollapsibleComponent = row => (
-    <Grid className={classes.collapsible} container>
+    <Grid container>
       <form>
-        <FormControl className={classes.margin}>
-          <InputLabel shrink htmlFor="notes">Notes</InputLabel>
-          <TextField id="notes" />
-        </FormControl>
+        <FormBuilder formInput={{ type: 'text', label: 'note' }} />
       </form>
     </Grid>
   );

@@ -15,7 +15,7 @@ import { patientStore } from './store';
 export default () => {
   const renderPatientCell = row => (
     <PatientMetadatum
-      name={`${row.patient.firstName} ${row.patient.lastName}`}
+      name={`${row.patient.firstName} ${row.patient.lastName} `}
       sex={row.patient.sex}
       age={row.patient.age}
       riskLevel={row.patientCase.riskLevel}
