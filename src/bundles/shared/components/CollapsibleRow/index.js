@@ -1,6 +1,14 @@
 import React, { useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Collapse, TableRow, TableCell } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(theme => ({
+  collapseTableCell: {
+    padding: 0,
+    borderBottom: 'none'
+  }
+}));
 
 export const CollapsibleRow = ({
   children,
@@ -9,6 +17,7 @@ export const CollapsibleRow = ({
   ...props
 }) => {
   const [open, setOpen] = useState(false);
+  const classes = useStyles();
 
   return (
     <Fragment>
@@ -21,7 +30,7 @@ export const CollapsibleRow = ({
         {children}
       </TableRow>
       <TableRow>
-        <TableCell padding={'none'} colSpan={12}>
+        <TableCell className={classes.collapseTableCell} colSpan={12}>
           <Collapse in={open} {...collapseProps}>
             {collapsibleComponent}
           </Collapse>
