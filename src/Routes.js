@@ -85,7 +85,7 @@ const ApplicationsCalendar = lazy(() =>
 
 const PatientPanel  = lazy(() => import('./bundles/patient/components/Panel'))  
 const CreatePatient = lazy(() => import('./bundles/patient/components/CreatePatient'))  
-const CreateTriage = lazy(() => import('./bundles/patient/components/CreateTriage'))
+const CreateTriage = lazy(() => import('./bundles/caseTriage/CreateTriage'))
 const Queue = lazy(() => import('./bundles/queue/components/View'))
 const Location = lazy(() => import('./bundles/location/components/View'))
 const CreateLocation = lazy(() => import('./bundles/location/components/Create'))
