@@ -6,7 +6,8 @@ import {
   Step,
   StepButton,
   Button,
-  Box
+  Box,
+  makeStyles
 } from '@material-ui/core';
 
 import Question from './components/question';
@@ -20,6 +21,30 @@ import triageQuestions from './questions.json';
 const compose = require('lodash')?.flowRight;
 const steps = Reflect.ownKeys(triageQuestions);
 steps.push('Result');
+
+const useStyles = makeStyles(theme => ({
+  nextButton: {
+    backgroundColor: '#27BAC0',
+    color: '#fff',
+    fontSize: 13,
+    fontWeight: 'bold',
+    padding: '11.5px 34px',
+    borderRadius: 50,
+    textTransform: 'uppercase',
+    boxShadow:
+      '0 6px 16px rgba(39, 186, 192, 0.20), 0 2px 10px rgba(39, 186, 192, 0.10)'
+  },
+  backButton: {
+    backgroundColor: 'transparent',
+    color: '#fff',
+    fontSize: 13,
+    fontWeight: 'bold',
+    padding: '11.5px 34px',
+    borderRadius: 50,
+    textTransform: 'uppercase',
+    boxShadow: 'none'
+  }
+}));
 
 function getStepContent(step) {
   const questionCategory = steps[step];
@@ -36,6 +61,7 @@ const CreateTriage = ({ createTriage }) => {
   const [completed] = useState({});
   const [answers, setAnswers] = useState({});
   const questionCategory = steps;
+  const classes = useStyles();
 
   const totalSteps = () => {
     return questionCategory.length;
@@ -127,24 +153,32 @@ const CreateTriage = ({ createTriage }) => {
               </div>
             )}
             <Box display="flex" flexDirection="row-reverse">
-              <Button
-                disabled={activeStep === 0}
-                onClick={handleBack}
-                variant="contained">
-                Back
-              </Button>
               {!isLastStep() ? (
                 <Button
                   variant="contained"
                   color="primary"
+                  classes={{ root: classes.nextButton }}
                   onClick={handleNext}>
                   Next
                 </Button>
               ) : (
-                <Button variant="contained" color="primary">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  classes={{ root: classes.nextButton }}>
                   Close the Case
                 </Button>
               )}
+              <Button
+                disabled={activeStep === 0}
+                classes={{
+                  root: classes.backButton,
+                  focusVisible: classes.BackButton
+                }}
+                onClick={handleBack}
+                variant="contained">
+                Back
+              </Button>
             </Box>
           </Fragment>
         </Grid>
