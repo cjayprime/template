@@ -12,7 +12,6 @@ import MuiTheme from './theme';
 
 import {
   LeftSidebar,
-  CollapsedSidebar,
   MinimalLayout,
   PresentationLayout
 } from './layout-blueprints';
@@ -83,23 +82,28 @@ const ApplicationsCalendar = lazy(() =>
   import('./example-pages/ApplicationsCalendar')
 );
 
-const PatientPanel  = lazy(() => import('./bundles/patient/components/Panel'))  
-const CreatePatient = lazy(() => import('./bundles/patient/components/CreatePatient'))  
-const CreateTriage = lazy(() => import('./bundles/patient/components/CreateTriage'))
-const Queue = lazy(() => import('./bundles/queue/components/View'))
-const Location = lazy(() => import('./bundles/location/components/View'))
-const CreateLocation = lazy(() => import('./bundles/location/components/Create'))
-const Staff = lazy(() => import('./bundles/setting/components/Staff')) 
-const Kpi = lazy(() => import('./bundles/kpi/components/View'))
-const BedManagement = lazy(() => import('./bundles/bedmanagement/components/View'))
-const Appointment = lazy(() => import('./bundles/appointment/components/View'))
-const Lab = lazy(() => import('./bundles/lab/components/View'))
-
-
-
-
-
-
+const PatientPanel = lazy(() => import('./bundles/patient/components/Panel'));
+const CreatePatient = lazy(() =>
+  import('./bundles/patient/components/CreatePatient')
+);
+const CreateTriage = lazy(() =>
+  import('./bundles/patient/components/CreateTriage')
+);
+const Queue = lazy(() => import('./bundles/queue/components/View'));
+const Location = lazy(() => import('./bundles/location/components/View'));
+const CreateLocation = lazy(() =>
+  import('./bundles/location/components/Create')
+);
+const Staff = lazy(() => import('./bundles/setting/components/Staff'));
+const Kpi = lazy(() => import('./bundles/kpi/components/View'));
+const BedManagement = lazy(() =>
+  import('./bundles/bedmanagement/components/View')
+);
+const Appointment = lazy(() => import('./bundles/appointment/components/View'));
+const Lab = lazy(() => import('./bundles/lab/components/View'));
+const Dashboard = lazy(() =>
+  import('./bundles/dashboard/components/dashboard')
+);
 
 const ApplicationsChat = lazy(() => import('./example-pages/ApplicationsChat'));
 const ApplicationsContacts = lazy(() =>
@@ -245,20 +249,21 @@ const Routes = () => {
 
             <Route
               path={[
+                '/Dashboard',
                 '/Patient',
                 '/CreatePatient',
                 '/CreateTriage',
                 '/Queue',
                 '/Location',
-                '/CreateLocation', 
+                '/CreateLocation',
                 '/Staff',
                 '/Kpi',
                 '/BedManagement',
                 '/Appointment',
                 '/Lab'
               ]}>
-                   <LeftSidebar>
-              { /* <CollapsedSidebar> */} 
+              <LeftSidebar>
+                {/* <CollapsedSidebar> */}
                 <Switch location={location} key={location.pathname}>
                   <motion.div
                     initial="initial"
@@ -266,57 +271,24 @@ const Routes = () => {
                     exit="out"
                     variants={pageVariants}
                     transition={pageTransition}>
-                    <Route
-                      path="/Patient"
-                      component={PatientPanel}  
-                    />
-                    <Route
-                      path="/CreatePatient"
-                      component={CreatePatient}  
-                    />
-                    <Route
-                      path="/CreateTriage"
-                      component={CreateTriage} 
-                    />
-                    <Route
-                      path="/Queue"
-                      component={Queue}
-                    />
-                    <Route
-                      path="/Location"
-                      component={Location}
-                    />
-                    <Route
-                      path="/CreateLocation"
-                      component={CreateLocation}
-                    />
-                     <Route
-                      path="/Kpi"
-                      component={Kpi}
-                    />
-                    <Route
-                      path="/BedManagement"
-                      component={BedManagement}
-                    />
-                    <Route
-                      path="/Staff"
-                      component={Staff}
-                    />
-                    <Route
-                      path="/Appointment"
-                      component={Appointment}
-                    />
-                     <Route
-                      path="/Lab"
-                      component={Lab}
-                    />
-                    
+                    <Route path="/Dashboard" component={Dashboard} />
+                    <Route path="/Patient" component={PatientPanel} />
+                    <Route path="/CreatePatient" component={CreatePatient} />
+                    <Route path="/CreateTriage" component={CreateTriage} />
+                    <Route path="/Queue" component={Queue} />
+                    <Route path="/Location" component={Location} />
+                    <Route path="/CreateLocation" component={CreateLocation} />
+                    <Route path="/Kpi" component={Kpi} />
+                    <Route path="/BedManagement" component={BedManagement} />
+                    <Route path="/Staff" component={Staff} />
+                    <Route path="/Appointment" component={Appointment} />
+                    <Route path="/Lab" component={Lab} />
                   </motion.div>
                 </Switch>
-             {/* </CollapsedSidebar> */}
-             </LeftSidebar>
+                {/* </CollapsedSidebar> */}
+              </LeftSidebar>
             </Route>
- 
+
             <Route
               path={[
                 '/PagesLogin',

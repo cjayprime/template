@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
   },
   labelText: {
     fontSize: 16,
-    color: '#8E8CA7',
+    color: '#fff',
     paddingTop: 10
   },
   container: {
@@ -89,7 +89,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const InputTextComp = (classes, input) => {
+const InputTextComp = (classes, input, setFormState) => {
   let rows = null;
   const multiline = input.type === 'textArea' ? true : false;
   if (multiline) rows = 5;
@@ -100,6 +100,7 @@ const InputTextComp = (classes, input) => {
       placeholder={input.placeholder || ''}
       style={{ color: 'white' }}
       multiline={multiline}
+      onChange={e => setFormState({ [input.key]: e.target.value })}
       rows={rows}
       classes={{
         root: classes.cssOutlinedInput,
@@ -108,9 +109,9 @@ const InputTextComp = (classes, input) => {
       }}
     />
   );
-}; 
+};
 
-const TextTransform = ({ input }) => {
+const TextTransform = ({ input, setFormState }) => {
   const classes = useStyles();
 
   return (
@@ -119,7 +120,7 @@ const TextTransform = ({ input }) => {
         <Typography className={classes.labelText}>{input.label}</Typography>
       </Grid>
       <Grid xs={8} className={classes.container}>
-        {InputTextComp(classes, input )}
+        {InputTextComp(classes, input, setFormState)}
       </Grid>
     </Grid>
   );
@@ -128,16 +129,38 @@ const TextTransform = ({ input }) => {
 const remapField = input =>
   input.fields.map(field => ({ label: field, value: field }));
 
-const SelectFieldComp = (classes, input, mappedValue) => {
+const SelectFieldComp = (
+  classes,
+  input,
+  mappedValue,
+  setFormState,
+  formState,
+  keyValue
+) => {
   const value = mappedValue || (input.fields && remapField(input));
+
+  let enteredValue = '';
+  let addedValue = '';
+  if (keyValue) {
+    addedValue = `-${keyValue}`;
+  } 
+
+  if (formState && formState[`${input.key}${addedValue}`]) {
+    enteredValue = formState[`${input.key}${addedValue}`];
+  }
+
   return (
     <TextField
       select
       fullWidth
-      onChange={() => ''}
       InputProps={{
         className: classes.select
       }}
+      onChange={e =>
+        setFormState({ [`${input.key}${addedValue}`]: e.target.value })
+      }
+      value={enteredValue}
+      placeholder={'DD'}
       SelectProps={{
         native: false,
         IconComponent: TransformIcon,
@@ -153,25 +176,40 @@ const SelectFieldComp = (classes, input, mappedValue) => {
   );
 };
 
-const generateDateTypes = (input, classes) => {
+const generateDateTypes = (input, classes, setFormState, formState) => {
   return input.fields.map((date, index) => {
     const spacing = index < 2 ? 3 : 6;
+    let value = 'y';
+
     let mappedValue = year;
 
-    if (date == 'DD') mappedValue = days;
+    if (date == 'DD') {
+      mappedValue = days;
+      value = 'd';
+    }
 
-    if (date == 'MM') mappedValue = month;
+    if (date == 'MM') {
+      mappedValue = month;
+      value = 'm';
+    }
 
     return (
-      <Grid item xs={spacing}>
+      <Grid key={`${index}--${input.label}`} item xs={spacing}>
         {' '}
-        {SelectFieldComp(classes, input, mappedValue)}
+        {SelectFieldComp(
+          classes,
+          input,
+          mappedValue,
+          setFormState,
+          formState,
+          value
+        )}
       </Grid>
     );
   });
 };
 
-const generateRadioType = (input, classes) => {
+const generateRadioType = (input, classes, setFormState) => {
   return (
     <RadioGroup
       style={{ display: 'flex', flexDirection: 'row' }}
@@ -187,6 +225,7 @@ const generateRadioType = (input, classes) => {
             }}
             control={
               <Radio
+                onChange={e => setFormState({ [input.key]: e.target.value })}
                 color="primary"
                 classes={{
                   colorPrimary: classes.radio
@@ -201,24 +240,24 @@ const generateRadioType = (input, classes) => {
   );
 };
 
-const generateSelectType = (input, classes) => {
+const generateSelectType = (input, classes, setFormState, formState) => {
   const remap = input.fields && remapField(input);
 
   return (
     <Grid item xs={12}>
       {' '}
-      {SelectFieldComp(classes, input, remap)}
+      {SelectFieldComp(classes, input, remap, setFormState, formState)}
     </Grid>
   );
 };
 
-const SelectTransform = ({ input }) => {
+const SelectTransform = ({ input, setFormState, formState }) => {
   const classes = useStyles();
 
   const selectType = {
-    select: generateSelectType(input, classes),
-    date: generateDateTypes(input, classes),
-    radio: generateRadioType(input, classes)
+    select: generateSelectType(input, classes, setFormState, formState),
+    date: generateDateTypes(input, classes, setFormState, formState),
+    radio: generateRadioType(input, classes, setFormState)
   };
 
   return (
@@ -235,7 +274,7 @@ const SelectTransform = ({ input }) => {
   );
 };
 
-const PhoneNumber = ({ input }) => {
+const PhoneNumber = ({ input, setFormState, formState }) => {
   const classes = useStyles();
   return (
     <Grid container style={{ marginBottom: 15 }}>
@@ -245,10 +284,10 @@ const PhoneNumber = ({ input }) => {
       <Grid xs={8}>
         <Grid container direction="row" xs={12} spacing={0}>
           <Grid item xs={3}>
-            {SelectFieldComp(classes, input)}
+            {SelectFieldComp(classes, input, [], setFormState, formState)}
           </Grid>
           <Grid item xs={9}>
-            {InputTextComp(classes, input)}
+            {InputTextComp(classes, input, setFormState)}
           </Grid>
         </Grid>
       </Grid>
@@ -256,33 +295,75 @@ const PhoneNumber = ({ input }) => {
   );
 };
 
-const renderType = input => {
+const renderType = (input, setFormState, formState) => {
   switch (input.type) {
     case 'text':
-      return <TextTransform input={input} />;
+      return (
+        <TextTransform
+          setFormState={setFormState}
+          input={input}
+          formState={formState}
+        />
+      );
 
     case 'date':
-      return <SelectTransform input={input} />;
+      return (
+        <SelectTransform
+          setFormState={setFormState}
+          input={input}
+          formState={formState}
+        />
+      );
 
     case 'radio':
-      return <SelectTransform input={input} />;
+      return (
+        <SelectTransform
+          setFormState={setFormState}
+          input={input}
+          formState={formState}
+        />
+      );
 
     case 'select':
-      return <SelectTransform input={input} />;
+      return (
+        <SelectTransform
+          setFormState={setFormState}
+          input={input}
+          formState={formState}
+        />
+      );
 
     case 'textArea':
-      return <TextTransform input={input} />;
+      return (
+        <TextTransform
+          setFormState={setFormState}
+          input={input}
+          formState={formState}
+        />
+      );
 
     case 'phone':
-      return <PhoneNumber input={input} />;
+      return (
+        <PhoneNumber
+          setFormState={setFormState}
+          input={input}
+          formState={formState}
+        />
+      );
 
     default:
-      return <TextTransform input={input} />;
+      return (
+        <TextTransform
+          setFormState={setFormState}
+          input={input}
+          formState={formState}
+        />
+      );
   }
 };
 
-const FormBuilder = ({ formInput }) => {
-  return <Fragment>{renderType(formInput)}</Fragment>;
+const FormBuilder = ({ formInput, setFormState, formState }) => {
+  return <Fragment>{renderType(formInput, setFormState, formState)}</Fragment>;
 };
 
 export default FormBuilder;

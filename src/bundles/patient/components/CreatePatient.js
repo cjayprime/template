@@ -44,7 +44,7 @@ const useStyles = makeStyles(theme => ({
   },
   buttonGroup: {
     height: 70,
-    border: '2px solid #7768CB',
+    border: '2px solid #7868CA',
     marginBottom: 50
   },
   button: {
@@ -55,17 +55,17 @@ const useStyles = makeStyles(theme => ({
   buttons: {
     fontSize: 16,
     color: '#8E8CA7',
-    backgroundColor: '#7768CB',
+    backgroundColor: '#7868CA',
     '&:hover': {
-      backgroundColor: '#7768CB'
+      backgroundColor: '#7868CA'
     }
   }
 }));
 
 const caller = [
   'Direct Contact',
-  'Third Party',
-  'Health Facility',
+  'Third-Party',
+  'Health-Facility',
   'Other states',
   'Port of Entry',
   'LASHMA'
@@ -73,10 +73,17 @@ const caller = [
 
 const CreatePatient = () => {
   const [selected, setSelected] = useState('');
+  const [formState, setFormState] = useState({});
+
+  // console.log(formState)
+
+  const setFormInitialState = (value) => {
+
+    setFormState({...formState, ...value})
+  }
 
   const classes = useStyles();
 
- 
   return (
     <Fragment>
       <Grid
@@ -95,14 +102,13 @@ const CreatePatient = () => {
             alignItems="center">
             <Grid>
               <Grid container direction="column">
-               
-                  <ContactStatus
-                    classes={classes}
-                    caller={caller}
-                    selected={selected}
-                    setSelected={setSelected}
-                  />
-                   <PerfectScrollbar>
+                <ContactStatus
+                  classes={classes}
+                  caller={caller}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <PerfectScrollbar style={{height: '80vh'}}>
                   {QUESTIONS.map(item => {
                     return (
                       <Grid key={item.title}>
@@ -115,6 +121,8 @@ const CreatePatient = () => {
                               <FormBuilder
                                 key={index}
                                 formInput={formElements}
+                                setFormState={setFormInitialState}
+                                formState={formState}
                               />
                             );
                           })}

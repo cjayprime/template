@@ -44,6 +44,11 @@ const allowedViews = [
     label: '',
     content: [
       {
+        label: 'Dashboard',
+        icon: PeopleIcon,
+        to: '/Dashboard'
+      },
+      {
         label: 'Patient',
         icon: ChatIcon,
         to: "/Patient"

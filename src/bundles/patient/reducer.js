@@ -2,9 +2,9 @@ import Immutable from 'immutable';
 import { actionTypes } from './constants';
 
 const initialSearchFilters = Immutable.Map({
-    searchText: ''
+    searchText: 'a'
 });
-
+ 
 const initialState = Immutable.Map({
     searchFilters: initialSearchFilters
 });
@@ -25,7 +25,8 @@ const reducer = (state = initialState, action) => {
  
 const handleAddSearch = (state, action) => {
     const { value } = action.payload;
-
+    
+    console.log('Search...', value)
     return state.setIn(['searchFilters', 'searchText'], value)
 }
 
