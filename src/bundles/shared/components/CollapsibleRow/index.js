@@ -1,6 +1,6 @@
 import React, { useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Collapse, TableRow } from '@material-ui/core';
+import { Collapse, TableRow, TableCell } from '@material-ui/core';
 
 export const CollapsibleRow = ({
   children,
@@ -20,9 +20,13 @@ export const CollapsibleRow = ({
         hover>
         {children}
       </TableRow>
-      <Collapse in={open} {...collapseProps}>
-        {collapsibleComponent}
-      </Collapse>
+      <TableRow>
+        <TableCell padding={'none'} colSpan={12}>
+          <Collapse in={open} {...collapseProps}>
+            {collapsibleComponent}
+          </Collapse>
+        </TableCell>
+      </TableRow>
     </Fragment>
   );
 };
