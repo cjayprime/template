@@ -36,7 +36,6 @@ const CardButton = ({
       width: '100%'
     }
   }))();
-  console.log(classes.root);
   return (
     <Button className={classnames(classes.root, buttonClassName)} {...props}>
       {children}
