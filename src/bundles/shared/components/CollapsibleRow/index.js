@@ -14,6 +14,8 @@ export const CollapsibleRow = ({
   children,
   collapsibleComponent,
   collapseProps,
+  onCollapseStart,
+  onCollapseEnd,
   ...props
 }) => {
   const [open, setOpen] = useState(false);
@@ -31,7 +33,11 @@ export const CollapsibleRow = ({
       </TableRow>
       <TableRow>
         <TableCell className={classes.collapseTableCell} colSpan={12}>
-          <Collapse in={open} {...collapseProps}>
+          <Collapse
+            in={open}
+            {...collapseProps}
+            onEnter={onCollapseStart}
+            onExit={onCollapseEnd}>
             {collapsibleComponent}
           </Collapse>
         </TableCell>
