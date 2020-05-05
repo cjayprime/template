@@ -1,35 +1,31 @@
 import gql from 'graphql-tag';
 
-export const ALL_LOCATION = gql`query allLocations(
-    $filter: LocationFilter
-    $offset: Int
-) {
-    allLocations(
-        filter: $filter
-        offset: $offset
-    ) {
-        nodes {
+export const ALL_LOCATION = gql`
+  query allLocations($filter: LocationFilter, $offset: Int) {
+    allLocations(filter: $filter, offset: $offset) {
+      nodes {
         name
         numberOfBeds
         createdAt
         patientsByPatientLocationLocationIdAndPatientId {
-          nodes{
+          nodes {
             firstname
             lastname
             phoneNumber
             sex
           }
+          totalCount
         }
         patientLocationsByLocationId {
-        
           nodes {
             patientId
             status
             dischargeReason
           }
+          totalCount
         }
       }
       totalCount
     }
-}`
-
+  }
+`;

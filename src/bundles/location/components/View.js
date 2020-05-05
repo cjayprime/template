@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import withLocations from 'bundles/location/hoc/withLocation';
 import {
   Grid,
@@ -12,6 +12,7 @@ import {
 } from '@material-ui/core';
 
 import { DataTable } from '../../shared/components';
+import createLocationMutation from 'bundles/location/hoc/createLocation';
 
 import { makeStyles } from '@material-ui/styles';
 const compose = require('lodash')?.flowRight;
@@ -35,7 +36,12 @@ const useStyles = makeStyles(theme => ({
     borderRadius: 50,
     textTransform: 'uppercase',
     boxShadow:
-      '0 6px 16px rgba(39, 186, 192, 0.20), 0 2px 10px rgba(39, 186, 192, 0.10)'
+      '0 6px 16px rgba(39, 186, 192, 0.20), 0 2px 10px rgba(39, 186, 192, 0.10)',
+    '&:hover': {
+      backgroundColor: '#27BAC0',
+      color: '#fff',
+      fontSize: 13
+    }
   },
   secondaryButton: {
     backgroundColor: 'transparent',
@@ -45,7 +51,13 @@ const useStyles = makeStyles(theme => ({
     padding: '11.5px 34px',
     borderRadius: 50,
     textTransform: 'uppercase',
-    boxShadow: 'none'
+    boxShadow: 'none',
+    '&:hover': {
+      backgroundColor: 'transparent',
+      color: '#fff',
+      fontSize: 13,
+      boxShadow: 'none'
+    }
   },
   dialog: {
     backgroundColor: 'transparent',
@@ -70,35 +82,36 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export const store = [
-  {
-    location: {
-      name: 'Gbaga Isolation Center',
-      numberOfBeds: 135,
-      patientLocationsByLocationId: {
-        nodes: [
-          {
-            patientId: 2,
-            status: 'ADMITTED',
-            dischargeReason: null
-          }
-        ],
-        totalCount: 1
-      }
-    }
-  }
-];
-
-const Location = ({ locationData }) => {
+const Location = ({ locationData, createLocation }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const [formInput, setFormInput] = useState({});
 
-  // const handleClickOpen = () => {
-  //   setOpen(true);
-  // };
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleChange = (key, value) => {
+    setFormInput({ ...formInput, [key]: value });
+  };
+
+  const createBed = async () => {
+    const response = await createLocation({
+      variables: {
+        input: {
+          location: {
+            ...formInput
+          }
+        }
+      }
+    });
+
+    console.log(response);
+    handleClose();
   };
 
   const renderActionComponent = () => (
@@ -111,20 +124,24 @@ const Location = ({ locationData }) => {
     </Fragment>
   );
 
+  const data = locationData.map(location => {
+    return {
+      location: {
+        name: location.name,
+        numberOfBeds: location.numberOfBeds,
+        openBeds:
+          location.numberOfBeds -
+          location.patientLocationsByLocationId.totalCount
+      }
+    };
+  });
+
   const tableHeaders = [
     { name: 'CENTER', accessor: 'location.name' },
     { name: 'NO. OF BEDS', accessor: 'location.numberOfBeds' },
     {
       name: 'OPEN',
-      accessor: row => {
-        const { location } = row;
-        const { numberOfBeds, patientLocationsByLocationId } = location;
-        return (
-          <Fragment>
-            {numberOfBeds - patientLocationsByLocationId.totalCount}
-          </Fragment>
-        );
-      }
+      accessor: 'location.openBeds'
     },
     { name: 'ACTIONS', accessor: renderActionComponent }
   ];
@@ -135,16 +152,25 @@ const Location = ({ locationData }) => {
     <Fragment>
       <Grid container>
         <Grid item>
-          <Typography className={classes.text}> Locations</Typography>
+          <Typography className={classes.text}>3 Locations</Typography>
         </Grid>
       </Grid>
       <Grid container spacing={4}>
         <Grid item xs={12} lg={12}>
-          <DataTable headers={tableHeaders} data={store} />
+          <DataTable headers={tableHeaders} data={data} />
+        </Grid>
+        <Grid item xs>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleClickOpen}
+            classes={{ root: classes.primaryButton }}>
+            New Location
+          </Button>
         </Grid>
       </Grid>
       <Dialog
-        open={true}
+        open={open}
         onClose={handleClose}
         fullWidth={true}
         classes={{
@@ -168,6 +194,7 @@ const Location = ({ locationData }) => {
                   focused: classes.cssFocused,
                   notchedOutline: classes.notchedOutline
                 }}
+                onChange={e => handleChange('name', e.target.value)}
               />
             </div>
           </div>
@@ -176,11 +203,15 @@ const Location = ({ locationData }) => {
             <div style={{ marginTop: 10 }}>
               <OutlinedInput
                 fullWidth
+                type="number"
                 classes={{
                   root: classes.cssOutlinedInput,
                   focused: classes.cssFocused,
                   notchedOutline: classes.notchedOutline
                 }}
+                onChange={e =>
+                  handleChange('numberOfBeds', parseInt(e.target.value, 10))
+                }
               />
             </div>
           </div>
@@ -190,8 +221,9 @@ const Location = ({ locationData }) => {
             <Button
               variant="contained"
               color="primary"
+              onClick={createBed}
               classes={{ root: classes.primaryButton }}>
-              Next
+              ADD
             </Button>
           </Box>
           <Box display="flex" justifyContent="center" style={{ marginTop: 15 }}>
@@ -200,8 +232,9 @@ const Location = ({ locationData }) => {
                 root: classes.secondaryButton,
                 focusVisible: classes.secondaryButton
               }}
+              onClick={handleClose}
               variant="contained">
-              Back
+              CANCEL
             </Button>
           </Box>
         </div>
@@ -210,4 +243,4 @@ const Location = ({ locationData }) => {
   );
 };
 
-export default compose(withLocations)(Location);
+export default compose(withLocations, createLocationMutation)(Location);
