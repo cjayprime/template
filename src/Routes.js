@@ -48,6 +48,7 @@ import RegularTables5 from './example-pages/RegularTables5';
 import FormsControls from './example-pages/FormsControls';
 import FormsDualListbox from './example-pages/FormsDualListbox';
 import FormsToggleSwitch from './example-pages/FormsToggleSwitch';
+import logo from 'images/lagos.png'
 
 const DashboardDefault = lazy(() => import('./example-pages/DashboardDefault'));
 const DashboardAnalytics = lazy(() =>
@@ -182,6 +183,7 @@ const SparklinesCharts = lazy(() => import('./example-pages/SparklinesCharts'));
 const Maps = lazy(() => import('./example-pages/Maps'));
 const ListGroups = lazy(() => import('./example-pages/ListGroups'));
 
+
 const Routes = () => {
   const location = useLocation();
 
@@ -209,13 +211,14 @@ const Routes = () => {
   const SuspenseLoading = () => {
     return (
       <Fragment>
-        <div className="d-flex align-items-center flex-column vh-100 justify-content-center text-center py-3">
+        <div className="d-flex align-items-center flex-column vh-100 justify-content-center text-center py-3" style={{backgroundColor: "#2D2E42"}}>
           <div className="d-flex align-items-center flex-column px-4">
-            <ClimbingBoxLoader color={'#5383ff'} loading={true} />
+            { /*<ClimbingBoxLoader color={'#5383ff'} loading={true} /> */}
+            <img src={logo} width={50} height={50}/>
           </div>
           <div className="text-muted font-size-xl text-center pt-3">
-            Please wait while we load the live preview examples
-            <span className="font-size-lg d-block text-dark">
+            Please wait while we load your data
+            <span style={{color: '#fff'}} className="font-size-lg d-block text-dark">
               This live preview instance can be slower than a real production
               build!
             </span>

@@ -33,7 +33,7 @@ body {
   flex-direction: column;
   background-color: $background-color-primary;
   transition: all 0.5s $app-sidebar-transition;
-  // padding-top: $header-height;
+  padding-top: $header-height; //test
 
   &--inner {
     padding: $layout-spacer $layout-spacer ($layout-spacer / 2);

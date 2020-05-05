@@ -20,7 +20,7 @@ const LeftSidebar = props => {
   return (
     <Fragment>
       <div className={clsx('app-wrapper', contentBackground)}>
-        {showHeader ? <Header /> : null}
+        {true ? <Header /> : null}
         <div
           className={clsx('app-main', {
             'app-main-sidebar-static': !sidebarFixed
@@ -35,7 +35,7 @@ const LeftSidebar = props => {
             <div className="app-content--inner">
               <div className="app-content--inner__wrapper">{children}</div>
             </div>
-            {showFooter ? <Footer /> : <Footer />}
+            {showFooter ? <Footer /> : null}
           </div>
         </div>
       </div>
@@ -55,9 +55,8 @@ const mapStateToProps = state => ({
   headerFixed: state.ThemeOptions.headerFixed,
   headerSearchHover: state.ThemeOptions.headerSearchHover,
   headerDrawerToggle: state.ThemeOptions.headerDrawerToggle,
-
+  showFooter: state.ThemeOptions.showFooter,
   footerFixed: state.ThemeOptions.footerFixed,
-
   contentBackground: state.ThemeOptions.contentBackground
 });
 

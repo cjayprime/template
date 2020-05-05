@@ -89,16 +89,24 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const InputTextComp = (classes, input, setFormState) => {
+const InputTextComp = (classes, input, setFormState, formState) => {
   let rows = null;
   const multiline = input.type === 'textArea' ? true : false;
   if (multiline) rows = 5;
+
+  let nonValid = false;
+
+  if (formState[input.key] !== undefined && formState[input.key] == '' && input.required) {
+    
+    nonValid = true;
+  }
 
   return (
     <OutlinedInput
       fullWidth
       placeholder={input.placeholder || ''}
       style={{ color: 'white' }}
+      error={nonValid}
       multiline={multiline}
       onChange={e => setFormState({ [input.key]: e.target.value })}
       rows={rows}
@@ -111,7 +119,7 @@ const InputTextComp = (classes, input, setFormState) => {
   );
 };
 
-const TextTransform = ({ input, setFormState }) => {
+const TextTransform = ({ input, setFormState, formState }) => {
   const classes = useStyles();
 
   return (
@@ -120,7 +128,7 @@ const TextTransform = ({ input, setFormState }) => {
         <Typography className={classes.labelText}>{input.label}</Typography>
       </Grid>
       <Grid xs={8} className={classes.container}>
-        {InputTextComp(classes, input, setFormState)}
+        {InputTextComp(classes, input, setFormState, formState)}
       </Grid>
     </Grid>
   );
@@ -143,7 +151,7 @@ const SelectFieldComp = (
   let addedValue = '';
   if (keyValue) {
     addedValue = `-${keyValue}`;
-  } 
+  }
 
   if (formState && formState[`${input.key}${addedValue}`]) {
     enteredValue = formState[`${input.key}${addedValue}`];
@@ -284,10 +292,16 @@ const PhoneNumber = ({ input, setFormState, formState }) => {
       <Grid xs={8}>
         <Grid container direction="row" xs={12} spacing={0}>
           <Grid item xs={3}>
-            {SelectFieldComp(classes, input, [], setFormState, formState)}
+            {SelectFieldComp(
+              classes,
+              input,
+              [{ label: '+234', value: '+234' }],
+              setFormState,
+              formState
+            )}
           </Grid>
           <Grid item xs={9}>
-            {InputTextComp(classes, input, setFormState)}
+            {InputTextComp(classes, input, setFormState, formState)}
           </Grid>
         </Grid>
       </Grid>

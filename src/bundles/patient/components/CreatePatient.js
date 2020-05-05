@@ -1,66 +1,15 @@
-import React, { Fragment, useState } from 'react';
-
+import React, { Fragment, useState, useEffect } from 'react';
 import { Grid, Typography } from '@material-ui/core';
 import Header from './custom/header';
 import ContactStatus from './custom/contactStatus';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import FormBuilder from './custom/formBuilder';
-import { makeStyles } from '@material-ui/core/styles';
+import createPatientHoc from 'bundles/patient/hoc/createPatient';
+import { setShowFooter, setDispatchFunction } from 'reducers/ThemeOptions';
+import { connect } from 'react-redux';
+import { useStyles } from 'bundles/patient/components/custom/patient/index.style';
 import { QUESTIONS } from './custom/questions';
-
 const compose = require('lodash')?.flowRight;
-
-const useStyles = makeStyles(theme => ({
-  stickToBottom: {
-    width: '100%',
-    position: 'fixed',
-    bottom: 0
-  },
-  container: {
-    minHeight: 600
-    //maxheight: 300
-  },
-  childGrid: {
-    padding: theme.spacing(2)
-  },
-  text: {
-    color: '#d7d7d7',
-    fontSize: 25,
-    textAlign: 'center',
-    marginLeft: 20
-  },
-  labelText: {
-    fontSize: 12
-  },
-  description: {
-    marginTop: 25,
-    color: '#dad9e1',
-    fontSize: 25,
-    marginBottom: 40
-  },
-  icon: {
-    paddingTop: 5,
-    color: '#fff'
-  },
-  buttonGroup: {
-    height: 70,
-    border: '2px solid #7868CA',
-    marginBottom: 50
-  },
-  button: {
-    border: '2px solid transparent',
-    fontSize: 16,
-    color: '#8E8CA7'
-  },
-  buttons: {
-    fontSize: 16,
-    color: '#8E8CA7',
-    backgroundColor: '#7868CA',
-    '&:hover': {
-      backgroundColor: '#7868CA'
-    }
-  }
-}));
 
 const caller = [
   'Direct Contact',
@@ -71,16 +20,53 @@ const caller = [
   'LASHMA'
 ];
 
-const CreatePatient = () => {
+const CreatePatient = ({ showFooter, setDispatchFunc, createPatientPG }) => {
   const [selected, setSelected] = useState('');
   const [formState, setFormState] = useState({});
+  const [isFooter, setFooter] = useState(false);
 
-  // console.log(formState)
+  const registerPatient = async () => {
+    const key = 'birthDate';
+    const day = formState[`${key}-d`];
+    const month = formState[`${key}-m`];
+    const year = formState[`${key}-y`];
 
-  const setFormInitialState = (value) => {
+    const parseObject = { ...formState };
+    delete parseObject[`${key}-d`];
+    delete parseObject[`${key}-m`];
+    delete parseObject[`${key}-y`];
 
-    setFormState({...formState, ...value})
-  }
+    parseObject['birthDate'] = `${year}-${day}-${month}`;
+    parseObject['epidNumber'] = `${Math.floor(Math.random() * 999999)}`;
+
+    console.log('State Passed is ', parseObject);
+
+    const response = await createPatientPG({
+      variables: {
+        input: {
+          patient : {
+            ...parseObject
+          }
+        }
+      }
+    });
+    console.log(response, '------>');
+    // setFormState({})
+  };
+
+  useEffect(() => {
+    if (Object.keys(formState).length > 5 && !isFooter) {
+      showFooter(true);
+      setFooter(true);
+    }
+    setDispatchFunc(registerPatient);
+  }, [formState, isFooter, registerPatient, setDispatchFunc, showFooter]);
+
+  useEffect(() => {}, [selected]);
+
+  const setFormInitialState = value => {
+    setFormState({ ...formState, ...value });
+  };
 
   const classes = useStyles();
 
@@ -91,7 +77,7 @@ const CreatePatient = () => {
         spacing={2}
         direction="column"
         className={classes.container}>
-        <Header classes={classes} text={'Register New Patient'} />
+         { /* <Header classes={classes} text={'Register New Patient'} /> */}
         <Grid container xs={12} className={classes.childGrid} justify="center">
           <Grid
             container
@@ -108,7 +94,7 @@ const CreatePatient = () => {
                   selected={selected}
                   setSelected={setSelected}
                 />
-                <PerfectScrollbar style={{height: '80vh'}}>
+                <PerfectScrollbar style={{ height: '80vh' }}>
                   {QUESTIONS.map(item => {
                     return (
                       <Grid key={item.title}>
@@ -140,4 +126,12 @@ const CreatePatient = () => {
   );
 };
 
-export default CreatePatient;
+const mapDispatchToProps = dispatch => ({
+  showFooter: value => dispatch(setShowFooter(value)),
+  setDispatchFunc: value => dispatch(setDispatchFunction(value))
+});
+
+export default compose(
+  connect(null, mapDispatchToProps),
+  createPatientHoc
+)(CreatePatient);

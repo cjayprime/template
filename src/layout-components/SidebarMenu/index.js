@@ -1,6 +1,6 @@
 import React from 'react';
 import { matchPath } from 'react-router-dom';
-
+import clsx from 'clsx';
 import PropTypes from 'prop-types';
 
 import { List, Typography } from '@material-ui/core';
@@ -12,7 +12,12 @@ const SidebarMenuList = props => {
   const { pages, ...rest } = props;
 
   return (
-    <List className="p-0">
+    <List className={clsx('p-0')} style={{
+      padding: 10,
+    }} 
+    onFocus={() => console.log('')}
+    
+    >
       {pages.reduce(
         (items, page) => reduceChildRoutes({ items, page, ...rest }),
         []
@@ -37,6 +42,9 @@ const reduceChildRoutes = props => {
 
     items.push(
       <SidebarMenuListItem
+      style={{
+        padding: 10,
+      }}
         depth={depth}
         icon={page.icon}
         key={page.label}
@@ -55,6 +63,9 @@ const reduceChildRoutes = props => {
   } else {
     items.push(
       <SidebarMenuListItem
+        style={{
+          padding: 17,     
+        }}
         depth={depth}
         href={page.to}
         icon={page.icon}
@@ -74,7 +85,7 @@ const SidebarMenu = props => {
   const router = useRouter();
 
   return (
-    <Component {...rest} className={className}>
+    <Component {...rest} className={ clsx(className, 'app-bar-custom-background ')} >
       {title && (
         <Typography className="app-sidebar-heading">{title}</Typography>
       )}

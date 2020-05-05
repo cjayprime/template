@@ -6,6 +6,7 @@ import withPatient from 'bundles/patient/hoc/withPatient';
 import { Typography, ButtonBase, Grid } from '@material-ui/core';
 import { useStyles } from 'bundles/patient/components/custom/filter/index.style';
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
+import notfound from 'images/notfound.png';
 // import moment from 'moment';
 
 const compose = require('lodash')?.flowRight;
@@ -59,6 +60,9 @@ const ErrorContainer = () => {
           No patient found
         </Typography>
       </Grid>
+      <Grid item>
+        <img src={notfound} />
+      </Grid>
 
       <Grid item>
         <ButtonBase
@@ -67,7 +71,7 @@ const ErrorContainer = () => {
           component={Link}>
           <Typography
             color="primary"
-            style={{ fontSize: 20, fontWeight: 'bold' }}>
+            style={{ fontSize: 20, fontWeight: 'bold', color: '#fff' }}>
             LOG A CALL
           </Typography>
         </ButtonBase>

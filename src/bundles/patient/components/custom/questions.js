@@ -19,7 +19,7 @@ export const QUESTIONS = [
       {
         label: 'Gender',
         type: 'radio',
-        fields: ['male', 'female'],
+        fields: ['MALE', 'FEMALE'],
         key: 'sex',
         required: true
       },

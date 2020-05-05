@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const RegisterPatient = ({ classes }) => {
+const RegisterPatient = ({ classes, func }) => {
   return (
     <Grid container className={classes.container} direction="row">
       <Grid item xs={6}>
@@ -55,7 +55,7 @@ const RegisterPatient = ({ classes }) => {
       </Grid>
       <Grid item xs={6}>
         <Grid container style={{ paddingRight: 10 }} justify="flex-end">
-          <Button className={classes.buttons}>Save</Button>
+          <Button onClick={() => func()} className={classes.buttons}>Save</Button>
         </Grid>
       </Grid>
     </Grid>
@@ -64,7 +64,6 @@ const RegisterPatient = ({ classes }) => {
 
 const Footer = props => {
   const classes = useStyles();
-
   const { footerShadow, sidebarToggle, footerFixed } = props;
   return (
     <Fragment>
@@ -74,8 +73,9 @@ const Footer = props => {
         className={clsx('app-footer text-black-50', {
           'app-footer--fixed': footerFixed,
           'app-footer--fixed__collapsed': sidebarToggle
-        })}></Paper>
-        { false ? <RegisterPatient classes={classes} /> : null }
+        })}>
+        <RegisterPatient classes={classes} func={props.dispatchFunc} />
+      </Paper>
     </Fragment>
   );
 };
@@ -83,6 +83,7 @@ const Footer = props => {
 const mapStateToProps = state => ({
   footerFixed: state.ThemeOptions.footerFixed,
   footerShadow: state.ThemeOptions.footerShadow,
+  dispatchFunc: state.ThemeOptions.dispatchFunc,
   sidebarToggle: state.ThemeOptions.sidebarToggle
 });
 export default connect(mapStateToProps)(Footer);
