@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import withLocations from 'bundles/location/hoc/withLocation';
 import {
   Grid,
@@ -110,10 +110,25 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const formatData = locationData => {
+  return locationData.map(location => {
+    return {
+      location: {
+        name: location.name,
+        numberOfBeds: location.numberOfBeds,
+        openBeds:
+          location.numberOfBeds -
+          location.patientLocationsByLocationId.totalCount
+      }
+    };
+  });
+}
+
 const Location = ({ locationData, createLocation }) => {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const [formInput, setFormInput] = useState({});
+  const [tableData, setTableData] = useState([]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -139,6 +154,11 @@ const Location = ({ locationData, createLocation }) => {
     });
 
     console.log(response);
+
+    const newTableData = formatData(
+      response.data.createLocation.query.allLocations.nodes
+    );
+    setTableData(newTableData);
     handleClose();
   };
 
@@ -179,18 +199,6 @@ const Location = ({ locationData, createLocation }) => {
     </Fragment>
   );
 
-  const data = locationData.map(location => {
-    return {
-      location: {
-        name: location.name,
-        numberOfBeds: location.numberOfBeds,
-        openBeds:
-          location.numberOfBeds -
-          location.patientLocationsByLocationId.totalCount
-      }
-    };
-  });
-
   const tableHeaders = [
     { name: 'CENTER', accessor: 'location.name' },
     { name: 'NO. OF BEDS', accessor: 'location.numberOfBeds' },
@@ -201,18 +209,26 @@ const Location = ({ locationData, createLocation }) => {
     { name: 'ACTIONS', accessor: renderActionComponent }
   ];
 
+  useEffect(() => {
+    const data = formatData(locationData);
+
+    if (data.length > 0) {
+      setTableData(data);
+    }
+  }, []);
+
   if (!locationData) return null; // Should be loader
 
   return (
     <Fragment>
       <Grid container>
         <Grid item>
-          <Typography className={classes.text}>3 Locations</Typography>
+          {/* <Typography className={classes.text}>3 Locations</Typography> */}
         </Grid>
       </Grid>
       <Grid container spacing={4}>
         <Grid item xs={12} lg={12}>
-          <DataTable headers={tableHeaders} data={data} />
+          <DataTable headers={tableHeaders} data={tableData} />
         </Grid>
         <Grid item xs>
           <Button
