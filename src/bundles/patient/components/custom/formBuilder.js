@@ -121,7 +121,7 @@ const InputTextComp = (classes, input, setFormState, formState) => {
 
 const TextTransform = ({ input, setFormState, formState }) => {
   const classes = useStyles();
-
+ 
   return (
     <Grid
       container
