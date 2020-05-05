@@ -79,6 +79,34 @@ const useStyles = makeStyles(theme => ({
     borderWidth: '1px',
     borderColor: 'transparent !important',
     color: 'white'
+  },
+  actionButtons: {
+    backgroundColor: 'transparent',
+    fontSize: 13,
+    fontWeight: 'bold',
+    padding: '11.5px 0',
+    borderRadius: 50,
+    marginRight: 5,
+    textTransform: 'uppercase',
+    color: '#8EE2E5',
+    '&:hover': {
+      backgroundColor: 'transparent',
+      color: '#8EE2E5'
+    }
+  },
+  actionDeleteButton: {
+    backgroundColor: 'transparent',
+    fontSize: 13,
+    fontWeight: 'bold',
+    padding: '11.5px 0',
+    borderRadius: 50,
+    marginRight: 5,
+    textTransform: 'uppercase',
+    color: '#EEBEC2',
+    '&:hover': {
+      backgroundColor: 'transparent',
+      color: '#EEBEC2'
+    }
   }
 }));
 
@@ -117,9 +145,36 @@ const Location = ({ locationData, createLocation }) => {
   const renderActionComponent = () => (
     <Fragment>
       <Box display="flex">
-        <Typography>{'SHOW'}</Typography>
-        <Typography>{'EDIT'}</Typography>
-        <Typography>{'DELETE'}</Typography>
+        <Button
+          disableElevation
+          classes={{
+            root: classes.actionButtons,
+            focusVisible: classes.actionButtons
+          }}
+          onClick={handleClose}
+          variant="contained">
+          {'SHOW'}
+        </Button>
+        <Button
+          disableElevation
+          classes={{
+            root: classes.actionButtons,
+            focusVisible: classes.actionButtons
+          }}
+          onClick={handleClose}
+          variant="contained">
+          {'EDIT'}
+        </Button>
+        <Button
+          disableElevation
+          classes={{
+            root: classes.actionDeleteButton,
+            focusVisible: classes.actionDeleteButton
+          }}
+          onClick={handleClose}
+          variant="contained">
+          {'DELETE'}
+        </Button>
       </Box>
     </Fragment>
   );
