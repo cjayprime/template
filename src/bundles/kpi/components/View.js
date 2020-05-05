@@ -1,160 +1,98 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
+
+import { Grid, Container } from '@material-ui/core';
+import ExpandMore from '@material-ui/icons/ExpandMore';
 
 import {
-    Grid,
-    Card,
-    Table,
-    TableHead,
-    TableRow,
-    TableCell,
-    Collapse
-} from '@material-ui/core';
+  DataTable,
+  Header,
+  PatientMetadatum,
+  TeamMetadatum
+} from '../../../bundles/shared/components';
+import KPICard from './Card';
+import { patientStore } from './store';
 
-const KpiView = () => {
+export default () => {
+  const renderPatientCell = row => (
+    <PatientMetadatum
+      name={`${row.patient.firstName} ${row.patient.lastName} `}
+      sex={row.patient.sex}
+      age={row.patient.age}
+      riskLevel={row.patientCase.riskLevel}
+      textRowDirection="row"
+    />
+  );
 
-    const [ collapse, setCollapse] = useState(false) 
+  const renderTeamCell = row => (
+    <TeamMetadatum
+      text={row.team.name}
+      tagLabel={row.task.status}
+      spacing={{ mainText: 3, label: 3 }}
+    />
+  );
 
-    const collapseComponent = (props) => (
-        <tr>
-            <td colSpan={3}> {/* put the number of col of your table in this field */}
-                <div className={props.className}>
-                    {props.children}
-                </div>
+  const headers = [
+    { name: 'PATIENT', accessor: renderPatientCell },
+    { name: 'REQUEST DATE', accessor: 'task.requestDate' },
+    { name: 'WAIT TIME', accessor: 'task.waitTime' },
+    { name: 'TEAM', accessor: renderTeamCell }
+  ];
 
-            </td>
-        </tr>
-    )
-
-    return (
-        <Fragment>
-            <Grid container spacing={4}>
-                <Grid item xs={12} sm={6} md={3}>
-                    <Card className="card-box text-black-50 bg-secondary mb-4 p-3">
-                        <div className="display-3 text-black font-weight-bold">
-                            31
-                    </div>
-                        <div className="divider mt-2 mb-3 border-2 w-25 bg-first rounded border-warning" />
-                        <div className="font-weight-bold font-size-sm text-uppercase">
-                            Implemented
-                      <br />
-                      bugfixes
-                    </div>
-                    </Card>
-                </Grid>
-                <Grid item xs={12} sm={6} md={3}>
-                    <Card className="card-box text-black-50 bg-secondary mb-4 p-3">
-                        <div className="display-3 text-black font-weight-bold">
-                            31
-                    </div>
-                        <div className="divider mt-2 mb-3 border-2 w-25 bg-first rounded border-warning" />
-                        <div className="font-weight-bold font-size-sm text-uppercase">
-                            Implemented
-                      <br />
-                      bugfixes
-                    </div>
-                    </Card>
-                </Grid>
-                <Grid item xs={12} sm={6} md={3}>
-                    <Card className="card-box text-black-50 bg-secondary mb-4 p-3">
-                        <div className="display-3 text-black font-weight-bold">
-                            68
-                    </div>
-                        <div className="divider mt-2 mb-3 border-2 w-25 bg-success rounded border-success" />
-                        <div className="font-weight-bold font-size-sm text-uppercase">
-                            Unresolved
-                      <br />
-                      tickets
-                    </div>
-                    </Card>
-                </Grid>
-                <Grid item xs={12} md={3}>
-                    <Card className="card-box text-black-50 bg-secondary mb-4 p-3">
-                        <div className="display-3 text-black font-weight-bold">
-                            57
-                    </div>
-                        <div className="divider mt-2 mb-3 border-2 w-25 bg-warning rounded border-warning" />
-                        <div className="font-weight-bold font-size-sm text-uppercase">
-                            Support
-                      <br />
-                      requests
-                    </div>
-                    </Card>
-                </Grid>
-            </Grid>
-            <Grid container spacing={4}>
-                <Table>
-                    <TableHead>
-
-                        <TableRow
-                            hover
-                            style={{ cursor: 'pointer' }}
-                            onClick={() => setCollapse(!collapse)}
-                        >
-                            <TableCell>
-                                <span>Hello world</span>
-                              
-                            </TableCell>
-                            <TableCell>
-                                <span>thanks world</span>
-                              
-                            </TableCell>
-                            <TableCell>
-                                <span>yeah world</span>
-                               
-                            </TableCell>
-                            
-
-                        </TableRow>
-                        <TableRow
-                            hover
-                            style={{ cursor: 'pointer' }}
-                            onClick={() => setCollapse(!collapse)}
-                        >
-                            <TableCell>
-                                <span>Hello world</span>
-                              
-                            </TableCell>
-                            <TableCell>
-                                <span>thanks world</span>
-                              
-                            </TableCell>
-                            <TableCell>
-                                <span>yeah world</span>
-                               
-                            </TableCell>
-                            
-
-                        </TableRow>
-                      
-                        <TableRow
-                            hover
-                            style={{ cursor: 'pointer' }}
-                            onClick={() => setCollapse(!collapse)}
-                        >
-                            <TableCell>
-                                <span>Hello world</span>
-                              
-                            </TableCell>
-                            <TableCell>
-                                <span>thanks world</span>
-                              
-                            </TableCell>
-                            <TableCell>
-                                <span>yeah world</span>
-                               
-                            </TableCell>
-                            
-
-                        </TableRow>
-                      
-                      
-                              
-                        
-                    </TableHead>
-                </Table>
-            </Grid>
-        </Fragment>
-    )
-}
-
-export default KpiView;
+  return (
+    <Fragment>
+      <Header
+        pageTitle="KPI"
+        contexts={{
+          dateSelect: {
+            defaultValue: 'TODAY',
+            options: ['TODAY', 'YESTERDAY'],
+            handleInputChange: _newInput => {}
+          }
+        }}
+      />
+      <Container>
+        <Grid container spacing={4}>
+          <Grid item xs={12} sm={6} md={3}>
+            <KPICard
+              text="High risk patients awaiting pickup"
+              count="1,450"
+              buttonColor="rgb(101, 80, 190)"
+              buttonContent={<ExpandMore />}
+              buttonOnClick={() => console.log('Clicked')}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <KPICard
+              text="Lab results pending for more than a day"
+              count="15"
+              buttonColor="rgb(88, 184, 190)"
+              buttonContent="show"
+              buttonOnClick={() => console.log('Clicked')}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <KPICard
+              text="high risk patients awaiting pickup for more than a day"
+              count="1"
+              buttonColor="rgb(88, 184, 190)"
+              buttonContent="show"
+              buttonOnClick={() => console.log('Clicked')}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <KPICard
+              text="Patients awaiting sample collection for more than a day"
+              count="245"
+              buttonColor="rgb(88, 184, 190)"
+              buttonContent="show"
+              buttonOnClick={() => console.log('Clicked')}
+            />
+          </Grid>
+        </Grid>
+        <Grid container spacing={4}>
+          <DataTable headers={headers} data={patientStore} />
+        </Grid>
+      </Container>
+    </Fragment>
+  );
+};
