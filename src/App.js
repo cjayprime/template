@@ -260,7 +260,7 @@ library.add(
 class App extends Component {
   render() {
     return (
-      <ReduxProvider >
+      <ReduxProvider>
         <ApolloProvider>
           <BrowserRouter basename="/carolina-react-admin-dashboard-pro/">
             <CssBaseline />

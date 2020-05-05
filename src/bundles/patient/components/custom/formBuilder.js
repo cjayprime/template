@@ -123,11 +123,14 @@ const TextTransform = ({ input, setFormState, formState }) => {
   const classes = useStyles();
 
   return (
-    <Grid container style={{ marginBottom: 15 }}>
-      <Grid xs={4}>
+    <Grid
+      container
+      style={{ marginBottom: 15 }}
+      direction={input.labelDirection}>
+      <Grid xs={!input.labelDirection && 4}>
         <Typography className={classes.labelText}>{input.label}</Typography>
       </Grid>
-      <Grid xs={8} className={classes.container}>
+      <Grid xs={!input.labelDirection && 8} className={classes.container}>
         {InputTextComp(classes, input, setFormState, formState)}
       </Grid>
     </Grid>
@@ -269,11 +272,14 @@ const SelectTransform = ({ input, setFormState, formState }) => {
   };
 
   return (
-    <Grid container style={{ marginBottom: 15 }}>
-      <Grid xs={4}>
+    <Grid
+      container
+      style={{ marginBottom: 15 }}
+      direction={input.labelDirection}>
+      <Grid xs={!input.labelDirection && 4}>
         <Typography className={classes.labelText}>{input.label}</Typography>
       </Grid>
-      <Grid xs={8}>
+      <Grid xs={!input.labelDirection && 8}>
         <Grid container direction="row" xs={12} spacing={0}>
           {selectType[input.type]}
         </Grid>

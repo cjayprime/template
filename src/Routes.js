@@ -103,6 +103,16 @@ const Lab = lazy(() => import('./bundles/lab/components/View'));
 const Dashboard = lazy(() =>
   import('./bundles/dashboard/components/dashboard')
 );
+/*
+const Queue = lazy(() => import('./bundles/queue/components/View'))
+const Location = lazy(() => import('./bundles/location/components/View'))
+const CreateLocation = lazy(() => import('./bundles/location/components/Create'))
+const Staff = lazy(() => import('./bundles/setting/components/Staff')) 
+const Kpi = lazy(() => import('./bundles/kpi/components/View'))
+const BedManagement = lazy(() => import('./bundles/bedmanagement/components/View'))
+const Appointment = lazy(() => import('./bundles/appointment/components/View'))
+const Lab = lazy(() => import('./bundles/lab/components/View'))
+*/
 
 const ApplicationsChat = lazy(() => import('./example-pages/ApplicationsChat'));
 const ApplicationsContacts = lazy(() =>

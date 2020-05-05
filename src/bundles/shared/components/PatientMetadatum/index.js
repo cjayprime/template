@@ -7,11 +7,11 @@ export const PatientMetadatum = props => {
   const classes = PatientMetadatumStyles(props);
   return (
     <Grid container>
-      <Grid container item direction="column" xs={7}>
-        <Grid item direction={textRowDirection || 'column'}>
+      <Grid container item direction={textRowDirection || 'column'} xs={7}>
+        <Grid item>
           <Typography className={classes.Nametext}>{name}</Typography>
         </Grid>
-        <Grid item >
+        <Grid item>
           <Typography
             className={
               classes.MetaCaption
