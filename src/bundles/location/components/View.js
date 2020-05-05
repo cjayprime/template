@@ -1,108 +1,85 @@
 import React, { Fragment, useState } from 'react';
 import withLocations from 'bundles/location/hoc/withLocation';
-import {
-    Grid,
-    FormControlLabel,
-    Checkbox,
-    Card,
-    MenuItem,
-    TextField,
-    FormControl,
-    FormHelperText,
-    Divider,
-    Table,
-    TableContainer,
-    TableBody,
-    ButtonBase,
-    Button,
-    Paper,
-    Collapse,
-    TableHead,
-    TableRow,
-    TableCell,
-    TableSortLabel
-} from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { Grid, Typography, Box } from '@material-ui/core';
 
-import {
-    makeStyles
-} from '@material-ui/styles';
-const compose = require('lodash')?.flowRight
+import { DataTable } from '../../shared/components';
 
-const useStyles = makeStyles({
-    table: {
-        minWidth: 650,
-    },
-});
+import { makeStyles } from '@material-ui/styles';
+const compose = require('lodash')?.flowRight;
+
+const useStyles = makeStyles(() => ({
+  headerText: {
+    fontSize: 15,
+    color: '#fff'
+  }
+}));
+
+export const store = [
+  {
+    location: {
+      name: 'Gbaga Isolation Center',
+      numberOfBeds: 135,
+      patientLocationsByLocationId: {
+        nodes: [
+          {
+            patientId: 2,
+            status: 'ADMITTED',
+            dischargeReason: null
+          }
+        ],
+        totalCount: 1
+      }
+    }
+  }
+];
 
 const Location = ({ locationData }) => {
+  const classes = useStyles();
 
-    const classes = useStyles();
-    const [collapse, setCollapse] = useState(false)
+  const renderActionComponent = () => (
+    <Fragment>
+      <Box display="flex">
+        <Typography>{'SHOW'}</Typography>
+        <Typography>{'EDIT'}</Typography>
+        <Typography>{'DELETE'}</Typography>
+      </Box>
+    </Fragment>
+  );
 
+  const tableHeaders = [
+    { name: 'CENTER', accessor: 'location.name' },
+    { name: 'NO. OF BEDS', accessor: 'location.numberOfBeds' },
+    {
+      name: 'OPEN',
+      accessor: row => {
+        const { location } = row;
+        const { numberOfBeds, patientLocationsByLocationId } = location;
+        return (
+          <Fragment>
+            {numberOfBeds - patientLocationsByLocationId.totalCount}
+          </Fragment>
+        );
+      }
+    },
+    { name: 'ACTIONS', accessor: renderActionComponent }
+  ];
 
-    if (!locationData) return null // Should be loader
+  if (!locationData) return null; // Should be loader
 
+  return (
+    <Fragment>
+      <Grid container>
+        <Grid item>
+          <Typography className={classes.headerText}> Locations</Typography>
+        </Grid>
+      </Grid>
+      <Grid container spacing={4}>
+        <Grid item xs={12} lg={12}>
+          <DataTable headers={tableHeaders} data={store} />
+        </Grid>
+      </Grid>
+    </Fragment>
+  );
+};
 
-    return (
-        <Fragment>
-            <Grid container spacing={4}>
-                <Grid item xs={12} lg={12}>
-                    <Card className="p-4 mb-4">
-                        <div className="font-size-lg font-weight-bold"></div>
-                        <TextField
-                            fullWidth
-                            placeholder="Search Name, Number, email"
-                        />
-
-                        <TableContainer component={Paper}>
-                            <Table className={classes.table} aria-label="simple table">
-                                <TableHead>
-                                    <TableRow>
-
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {locationData.map((row) => {
-
-
-                                        return (<Fragment key={row.name}>
-                                            <TableRow hover
-                                                style={{ cursor: 'pointer' }} onClick={() => setCollapse(!collapse)}>
-                                                <TableCell component="th" scope="row">
-                                                    {row.name}
-                                                </TableCell>
-                                                <TableCell component="th" scope="row">
-                                                    {row.numberOfBeds}
-                                                </TableCell>
-                                                <TableCell align="right">
-                                                    Edit
-                                                </TableCell>
-
-                                            </TableRow>
-
-                                        </Fragment>
-                                        )
-                                    })}
-
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </Card>
-                    <ButtonBase to="/CreateLocation" component={Link}>
-                        Create Location
-                    </ButtonBase>
-                </Grid>
-            </Grid>
-        </Fragment>
-
-    )
-}
-
-export default compose(
-    withLocations,
-)(Location)
-
-
-
-
+export default compose(withLocations)(Location);
