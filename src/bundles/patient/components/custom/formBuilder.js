@@ -89,15 +89,23 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const InputTextComp = (classes, input, setFormState, formState) => {
+const InputTextComp = (
+  classes,
+  input,
+  setFormState = () => '',
+  formState = {}
+) => {
   let rows = null;
   const multiline = input.type === 'textArea' ? true : false;
   if (multiline) rows = 5;
 
   let nonValid = false;
 
-  if (formState[input.key] !== undefined && formState[input.key] == '' && input.required) {
-    
+  if (
+    formState[input.key] !== undefined &&
+    formState[input.key] == '' &&
+    input.required
+  ) {
     nonValid = true;
   }
 
@@ -121,7 +129,7 @@ const InputTextComp = (classes, input, setFormState, formState) => {
 
 const TextTransform = ({ input, setFormState, formState }) => {
   const classes = useStyles();
- 
+
   return (
     <Grid
       container
@@ -144,8 +152,8 @@ const SelectFieldComp = (
   classes,
   input,
   mappedValue,
-  setFormState,
-  formState,
+  setFormState = () => '',
+  formState = {},
   keyValue
 ) => {
   const value = mappedValue || (input.fields && remapField(input));
