@@ -13,6 +13,9 @@ export const OverviewPageStyles = makeStyles(theme => ({
     backgroundColor: '#3A3C4F',
     boxShadow: `5px 5px 10px 10px ${SHADOW_BACKDROP}`
   },
+  PageItem: {
+    marginBottom: '5%'
+  },
   OverviewInfoContainer: {
     color: 'white'
   },
@@ -48,5 +51,11 @@ export const OverviewPageStyles = makeStyles(theme => ({
     bottom: '10px',
     left: '20px',
     justifyContent: 'space-evenly'
+  },
+  LargeSummaryHolder: {
+    left: '35px !important'
+  },
+  LargeEntryHolder: {
+    left: '35px !important'
   }
 }));

@@ -39,3 +39,24 @@ export const basicInfoStore = [
     }
   }
 ];
+
+export const SectionTwoStore = {
+  DischargedPatients: {
+    title: 'Discharged Patients',
+    entries: {
+      New: 2,
+      TOTAL: 132
+    }
+  },
+  Admissions: {
+    title: 'Admissions',
+    entries: {
+      'New Isolation': 3,
+      'New ICU': 2,
+      'Valid Calls': 10,
+      'Current ICU': 5,
+      'Red Flagged': 13,
+      'Avg Days': 12
+    }
+  }
+};
