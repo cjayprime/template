@@ -52,6 +52,9 @@ export const OverviewPageStyles = makeStyles(theme => ({
     left: '20px',
     justifyContent: 'space-evenly'
   },
+  SectionTwo: {
+    height: '20vh'
+  },
   LargeSummaryHolder: {
     left: '35px !important'
   },

@@ -81,7 +81,10 @@ export const Overview = () => {
         ))}
       </Grid>
       {/* Section 2 */}
-      <Grid item container className={clsx(classes.PageItem)}>
+      <Grid
+        item
+        container
+        className={clsx(classes.PageItem, classes.SectionTwo)}>
         <Grid item xs={5}></Grid>
         <Grid item direction="column" xs={7}>
           <Grid item container>
