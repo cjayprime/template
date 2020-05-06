@@ -1,6 +1,8 @@
 import React, { Fragment } from 'react';
 import { Header } from '../../../shared/components';
+import { Container } from '@material-ui/core';
 import { DashboardPageStyles } from './index.style';
+import * as sections from './sections';
 
 export const DashboardPageView = () => {
   const headerTabs = [
@@ -40,7 +42,9 @@ export const DashboardPageView = () => {
           TabContainer: classes.TabContainer
         }}
       />
-      <div></div>
+      <Container className={classes.MainPageContainer}>
+      <sections.Overview />
+      </Container>
     </Fragment>
   );
 };
