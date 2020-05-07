@@ -5,7 +5,9 @@ export const CaseManagementStyles = makeStyles(theme => ({
   PageItem: {
     marginBottom: '3%',
   },
-  SectionOne: {},
+  SectionOne: {
+    width: '67vw'
+  },
   SectionOneItem: {},
   SectionOneTextContainer: {
     marginBottom: '2%'

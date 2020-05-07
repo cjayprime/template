@@ -16,7 +16,7 @@ export const SummaryBoxStyles = makeStyles(theme => ({
     fontWeight: '800'
   },
   Header: props => ({
-    fontSize: `${theme.spacing(2)}px`,
+    fontSize: `${theme.spacing(1.5)}px`,
     color: props.colors.header
   }),
   Caption: props => ({
