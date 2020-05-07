@@ -10,7 +10,7 @@ export const ChartHolderStyles = makeStyles(theme => ({
     marginRight: `${theme.spacing(1.5)}px`,
     backgroundColor: '#3A3C4F',
     boxShadow: `5px 5px 10px 10px ${SHADOW_BACKDROP}`,
-    flexDirection: 'row',
+    flexDirection: 'column',
     flexWrap: 'nowrap'
   },
   HeaderSection: {
@@ -22,26 +22,33 @@ export const ChartHolderStyles = makeStyles(theme => ({
     fontWeight: 'bold'
   },
   HeaderLegendContainer: {
-    top: '3px'
+    top: '4.5px',
+    position: 'relative'
   },
   FooterLegendContainer: {},
   LegendContainer: {
-    width: '100%'
+    width: '100%',
+    justifyContent: 'center'
   },
   LegendHolder: {
-    marginLeft: '-4px'
+    marginLeft: '-4px',
+    width: '100%'
   },
   LegendIconContainer: {},
   LegendTextContainer: {},
   LegendText: {
-    fontSize: '10.5px',
-    minWidth: '50px'
+    fontSize: '9.5px'
   },
   ChartSection: {
     height: '60%'
   },
   FooterSection: {
-    height: '25%'
+    height: '25%',
+    position: 'absolute',
+    bottom: '3px',
+    alignItems: 'flex-end',
+    justifyContent: 'flex-start',
+    paddingBottom: '2px'
   },
   FooterTextContainer: {},
   FooterText: { fontWeight: '11px' }

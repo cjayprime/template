@@ -55,7 +55,7 @@ export const DataContainerWithMetadata = props => {
                 {...(itemSpacing ? { xs: itemSpacing } : {})}
                 className={classes.EntryContainer}
                 style={{
-                  ...(k.includes('Red Flagged', 'Deaths')
+                  ...(['Red Flagged', 'Deaths'].some(i => k.includes(i))
                     ? { color: '#E74C3C', fontWeight: 'bold' }
                     : {})
                 }}>

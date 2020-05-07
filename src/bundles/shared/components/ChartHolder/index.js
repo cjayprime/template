@@ -6,7 +6,7 @@ import { ChartHolderStyles } from './index.style';
 export const ChartHolder = props => {
   const classes = ChartHolderStyles();
   const { _data, legend = {}, title, footerText, styles = {} } = props;
-  const { entries, position } = legend;
+  const { entries, position, spacing = 2 } = legend;
 
   const Legend = () => {
     if (!Object.keys(legend).length) return null;
@@ -20,7 +20,8 @@ export const ChartHolder = props => {
               <Grid
                 item
                 container
-                xs={4}
+                wrap="nowrap"
+                xs={spacing}
                 className={clsx(classes.LegendHolder, styles.LegendHolder)}
                 style={{ color: entry.color }}>
                 {entry.icon && (
@@ -53,7 +54,7 @@ export const ChartHolder = props => {
   return (
     <Grid
       container
-      direction
+      direction="column"
       justify="space-between"
       className={clsx(classes.BaseContainer, styles.BaseContainer)}>
       <Grid
@@ -102,7 +103,7 @@ export const ChartHolder = props => {
           {position === 'bottom' && (
             <Grid
               item
-              xs={7}
+              xs={footerText ? 7 : 12}
               className={clsx(
                 classes.FooterLegendContainer,
                 styles.FooterLegendContainer

@@ -11,15 +11,19 @@ export const FilterListStyles = makeStyles(theme => ({
   },
   TabCaption: {
     color: DEFAULT_GREY,
-    fontSize: `${theme.spacing(1.7)}px`,
+    fontSize: `${theme.spacing(1.5)}px`,
+    textAlign: 'center',
+    position: 'relative',
+    alignSelf: 'center',
+    top: '3px'
 
   },
   FilterContainer: {},
   TextInputContainer: {
       width: '100%',
       backgroundColor: LIGHT_LILAC,
-      height: '40px',
-      borderRadius: '5px',
+      height: '35px',
+      borderRadius: '8px',
       position: 'relative',
       bottom: '5px'
   },
@@ -29,8 +33,8 @@ export const FilterListStyles = makeStyles(theme => ({
   InputView: {
     color: DEFAULT_GREY,
     fontWeight: '800',
-    height: '40px',
-    fontSize: '14px',
+    height: '35px',
+    fontSize: '13px',
     textTransform: 'capitalize',
     paddingBottom: '20px',
     borderRadius: '3px',

@@ -43,7 +43,7 @@ export const DashboardPageView = () => {
         }}
       />
       <Container className={classes.MainPageContainer}>
-      <sections.Overview />
+      <sections.Surveillance />
       </Container>
     </Fragment>
   );
