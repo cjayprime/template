@@ -100,10 +100,8 @@ const BedManagement = lazy(() =>
 );
 const Appointment = lazy(() => import('./bundles/appointment/components/View'));
 const Lab = lazy(() => import('./bundles/lab/components/View'));
-/*const Dashboard = lazy(() =>
-  import('./bundles/dashboard/components/dashboard')
-);  */
 const Dashboard = lazy(() => import('./bundles/dashboard'))
+
 /*
 const Queue = lazy(() => import('./bundles/queue/components/View'))
 const Location = lazy(() => import('./bundles/location/components/View'))
@@ -113,6 +111,9 @@ const Kpi = lazy(() => import('./bundles/kpi/components/View'))
 const BedManagement = lazy(() => import('./bundles/bedmanagement/components/View'))
 const Appointment = lazy(() => import('./bundles/appointment/components/View'))
 const Lab = lazy(() => import('./bundles/lab/components/View'))
+<<<<<<< HEAD
+*/
+
 
 
 const ApplicationsChat = lazy(() => import('./example-pages/ApplicationsChat'));
@@ -276,13 +277,12 @@ const Routes = ({history}) => {
                 '/Dashboard',
                 '/Lab'
               ]}>
-<<<<<<< HEAD
+
               <LeftSidebar history={history}>
                 {/* <CollapsedSidebar> */}
-=======
-                   <LeftSidebar>
+    
               { /* <CollapsedSidebar> */}
->>>>>>> master
+
                 <Switch location={location} key={location.pathname}>
                   <motion.div
                     initial="initial"
@@ -290,7 +290,6 @@ const Routes = ({history}) => {
                     exit="out"
                     variants={pageVariants}
                     transition={pageTransition}>
-<<<<<<< HEAD
                     <Route path="/Dashboard" component={Dashboard} />
                     <Route path="/Patient" component={PatientPanel} />
                     <Route path="/CreatePatient" component={CreatePatient} />
@@ -303,57 +302,6 @@ const Routes = ({history}) => {
                     <Route path="/Staff" component={Staff} />
                     <Route path="/Appointment" component={Appointment} />
                     <Route path="/Lab" component={Lab} />
-=======
-                    <Route
-                      path="/Patient"
-                      component={PatientPanel}
-                    />
-                    <Route
-                      path="/CreatePatient"
-                      component={CreatePatient}
-                    />
-                    <Route
-                      path="/CreateTriage"
-                      component={CreateTriage}
-                    />
-                    <Route
-                      path="/Queue"
-                      component={Queue}
-                    />
-                    <Route
-                      path="/Location"
-                      component={Location}
-                    />
-                    <Route
-                      path="/CreateLocation"
-                      component={CreateLocation}
-                    />
-                     <Route
-                      path="/Kpi"
-                      component={Kpi}
-                    />
-                    <Route
-                      path="/BedManagement"
-                      component={BedManagement}
-                    />
-                    <Route
-                      path="/Staff"
-                      component={Staff}
-                    />
-                    <Route
-                      path="/Appointment"
-                      component={Appointment}
-                    />
-                      <Route
-                      path="/Dashboard"
-                      component={Dashboard}
-                    />
-                     <Route
-                      path="/Lab"
-                      component={Lab}
-                    />
-
->>>>>>> master
                   </motion.div>
                 </Switch>
                 {/* </CollapsedSidebar> */}
@@ -686,4 +634,4 @@ const Routes = ({history}) => {
   );
 };
 
-export default withRouter(Routes);
+export default withRouter(Routes); 

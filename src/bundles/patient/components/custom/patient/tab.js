@@ -1,7 +1,8 @@
 import React, { Fragment } from 'react';
-import { Grid, Tabs, Tab, Typography, Box } from '@material-ui/core';
+import { Grid, Tabs, Tab, Typography, Box, Button, Chip } from '@material-ui/core';
 import Formbuilder from 'bundles/patient/components/custom/formBuilder';
 import { makeStyles } from '@material-ui/core/styles';
+import { DataTable } from 'bundles/shared/components/Datatable'
 
 const HeaderStyles = makeStyles(theme => ({
   HeaderContainer: {
@@ -20,6 +21,8 @@ const HeaderStyles = makeStyles(theme => ({
     color: 'white'
   }
 }));
+
+
 
 export const PATIENT_DETAILS = [
   {
@@ -42,13 +45,80 @@ export const PATIENT_DETAILS = [
   },
   {
     type: 'detail',
-    content: [{ Nationality: 'Nigeria', 'Occupation': 'Health Worker' }]
+    content: [{ Nationality: 'Nigeria', Occupation: 'Health Worker' }]
   },
   {
     type: 'detail',
-    content: [{ Location: 'Location Name', 'Other': 'Other info' }]
+    content: [{ Location: 'Location Name', Other: 'Other info' }]
   }
 ];
+
+export const CALL_SUMMARY = [
+  {
+    title: '21 March , 2015',
+    fullWidth: true,
+    type: 'detail',
+    content: [{ key: '09097438705' }]
+  },
+  {
+    title: '23 March , 2015',
+    fullWidth: true,
+    type: 'detail',
+    content: [{ key: '31 Adebiyi street, Adress 2, State, City' }]
+  },
+  {
+    title: '28 March , 2015',
+    fullWidth: true,
+    type: 'detail',
+    content: [{ key: 'Lores ipsum' }]
+  },
+  {
+    title: '28 March , 2015',
+    fullWidth: true,
+    type: 'detail',
+    content: [{ key: 'Nigeria' }]
+  }
+];
+
+export const patientStore = [
+  {
+    sampleNumber: '400',
+    testName: 'Test 1',
+    status: 'Completed',
+    requestedBy: 'Dr. G. Jenkins',
+    waitTime: '4 hours',
+    requestDate: '31 Mar, 7:34PM'
+  },
+  {
+    sampleNumber: '430',
+    testName: 'Test 1',
+    status: 'Completed',
+    requestedBy: 'Jolade Adewale',
+    waitTime: '4 hours',
+    requestDate: '31 Mar, 7:34PM'
+  },
+  {
+    sampleNumber: '404',
+    testName: 'Test 1',
+    status: 'Completed',
+    requestedBy: 'Dr. G. Jenkins',
+    waitTime: '4 hours',
+    requestDate: '31 Mar, 7:34PM'
+  }
+];
+
+
+/*
+const caseHeader = [
+  { name: 'DATE', accessor: 'sampleNumber' },
+  { name: 'SUBMITTED BY', accessor: 'requestDate' },
+  { name: 'EPID NO', accessor: 'testName' },
+  { name: 'TYPE', accessor: 'type' },
+  { name: 'NOTES', accessor: 'requestedBy' },
+  { name: 'ACTION', accessor: renderActionComponent }
+]; */
+
+
 
 const PatientTab = () => {
   const [value, setValue] = React.useState(0);
@@ -57,6 +127,46 @@ const PatientTab = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  const renderActionComponent = (row) => (
+    <Button className={classes.actionButton}>Submit Result</Button>
+  );
+
+  const labHeader = [
+    { name: 'DATE REQUESTED.', accessor: 'dateRequested' },
+    { name: 'NAME OF TEST', accessor: 'requestDate' },
+    { name: 'STATUS', accessor: 'status' },
+    { name: 'RESULT', accessor: 'result' },
+    { name: 'CREATED BY', accessor: 'createdBy' },
+    { name: 'ACTION', accessor: renderActionComponent }
+  ];
+  
+  
+  const testStore = [
+    {
+      dateRequested: '400',
+      requestDate: '20-20-10',
+      status: 'Completed',
+      result: 'Dr. G. Jenkins',
+      createdBy: '4 hours',
+      requestDate: '31 Mar, 7:34PM'
+    },
+    {
+      dateRequested: '400',
+      requestDate: '20-20-10',
+      status: 'Completed',
+      result: 'Dr. G. Jenkins',
+      createdBy: '4 hours',
+      requestDate: '31 Mar, 7:34PM'
+    },
+  ];
+
+ 
+  
+  const renderStatusComponent = row => (
+    <Chip label={row.status} variant="default" size="small" />
+  );
+  
 
   function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -129,13 +239,19 @@ const PatientTab = () => {
             </Grid>
           </TabPanel>
           <TabPanel value={value} index={1}>
-            Hello
+            <Grid container xs={12}>
+              <Fragment>
+                {CALL_SUMMARY.map(data => {
+                  return <Formbuilder formInput={data} />;
+                })}
+              </Fragment>
+            </Grid>
           </TabPanel>
           <TabPanel value={value} index={2}>
-            thanks
+              <DataTable headers={labHeader} noBorder={true}  data={testStore} />
           </TabPanel>
           <TabPanel value={value} index={3}>
-            thanks
+            <DataTable headers={labHeader}  noBorder={true} data={testStore} />
           </TabPanel>
           <TabPanel value={value} index={4}>
             Appointments

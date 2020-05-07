@@ -380,17 +380,24 @@ const TextFormDetail = ({ input }) => {
       <Grid item xs={3}>
         <Typography className={classes.labelText}>{input.title}</Typography>
       </Grid>
-       
+
       {input.content.map((item, index) => {
         const key = Object.keys(item);
-        return (
-          <Grid item key={`text--${item.firstLabel}-${index}`} xs={3}>
-            <Grid>
-              <Typography >{key}</Typography>
+
+        if (input.fullWidth) {
+          return (
+            <Grid item key={`text--${item[key]}-${index}`} xs={8}>
+              <Typography className={classes.labelText}>{item[key]}</Typography>
+            </Grid>
+          );
+        } else {
+          return (
+            <Grid item key={`text--${item[key]}-${index}`} xs={3}>
+              <Typography>{key}</Typography>
               <Typography>{item[key]}</Typography>
             </Grid>
-          </Grid>
-        );
+          );
+        }
       })}
     </Grid>
   );
@@ -462,9 +469,7 @@ const renderType = (input, setFormState, formState) => {
       );
 
     case 'detail':
-      return (
-        <TextFormDetail input={input} />
-      )
+      return <TextFormDetail input={input} />;
 
     default:
       return (

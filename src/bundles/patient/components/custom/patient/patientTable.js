@@ -1,11 +1,12 @@
+
 import React, { Fragment } from 'react';
 import classnames from 'classnames';
 import { Button, Chip, Container, Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { DataTable, Header } from '../../../bundles/shared/components';
-import FormBuilder from '../../../bundles/patient/components/custom/formBuilder';
-import { pendingStore, patientStore } from './store';
+import { DataTable, Header } from 'bundles/shared/components';
+import FormBuilder from 'bundles/patient/components/custom/formBuilder';
+// import { pendingStore, patientStore } from './store';
 
 const useStyles = makeStyles(theme => ({
   tableTitle: {
@@ -47,6 +48,8 @@ const useStyles = makeStyles(theme => ({
     }
   }
 }));
+
+
 
 export default () => {
   const classes = useStyles();
@@ -97,6 +100,33 @@ export default () => {
     </Grid>
   );
 
+  export const patientStore = [
+    {
+      sampleNumber: '400',
+      testName: 'Test 1',
+      status: 'Completed',
+      requestedBy: 'Dr. G. Jenkins',
+      waitTime: '4 hours',
+      requestDate: '31 Mar, 7:34PM'
+    },
+    {
+      sampleNumber: '430',
+      testName: 'Test 1',
+      status: 'Completed',
+      requestedBy: 'Jolade Adewale',
+      waitTime: '4 hours',
+      requestDate: '31 Mar, 7:34PM'
+    },
+    {
+      sampleNumber: '404',
+      testName: 'Test 1',
+      status: 'Completed',
+      requestedBy: 'Dr. G. Jenkins',
+      waitTime: '4 hours',
+      requestDate: '31 Mar, 7:34PM'
+    }
+  ];
+
   const headers = [
     { name: 'SAMPLE NO.', accessor: 'sampleNumber' },
     { name: 'REQUEST DATE', accessor: 'requestDate' },
@@ -106,45 +136,9 @@ export default () => {
     { name: 'ACTION', accessor: renderActionComponent }
   ];
 
-  return (
-    <Fragment>
-      <Header
-        pageTitle="Lab Requests"
-        contexts={{
-          tabs: {
-            tabItems: ['All Requests', 'My Lab Requests'],
-            defaultTab: 'All Requests',
-            handleTabChange: _selectedTab => {}
-          },
-          dateSelect: {
-            defaultValue: 'TODAY',
-            options: ['TODAY', 'YESTERDAY'],
-            handleInputChange: _newInput => {}
-          },
-          search: {
-            handleInputChange: _newValue => {},
-            placeholder: 'Search by sample no.'
-          }
-        }}
-      />
-      <Container>
-        <Container className={classes.tableContainer}>
-          <Grid container>
-            <Typography className={classes.tableTitle}>
-              7 Pending Lab Requests
-            </Typography>
-          </Grid>
-          <DataTable
-            headers={headers}
-            data={pendingStore}
-            renderCollapsible={renderCollapsibleComponent}
-          />
-        </Container>
-        <Container className={classes.tableContainer}>
-          <Typography className={classes.tableTitle}>120 Completed</Typography>
-          <DataTable headers={headers} data={patientStore} />
-        </Container>
-      </Container>
-    </Fragment>
-  );
-};
+
+ return (
+  <DataTable headers={headers} data={patientStore} />
+ )
+ 
+}
