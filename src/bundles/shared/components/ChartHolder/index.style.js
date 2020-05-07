@@ -19,9 +19,11 @@ export const ChartHolderStyles = makeStyles(theme => ({
   },
   HeaderText: {
     fontSize: '13.5px',
-    fontWeight: 'bold',
+    fontWeight: 'bold'
   },
-  HeaderLegendContainer: {},
+  HeaderLegendContainer: {
+    top: '3px'
+  },
   FooterLegendContainer: {},
   LegendContainer: {
     width: '100%'

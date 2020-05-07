@@ -82,6 +82,31 @@ export const Overview = () => {
           </Grid>
         </Grid>
       </Grid>
+      <Grid
+        item
+        className={clsx(classes.PageItem, classes.ConfirmedCasesSection)}>
+        <ChartHolder
+          title="Distribution of confirmed cases"
+          styles={{
+            BaseContainer: classes.BaseSection
+          }}
+        />
+      </Grid>
+      <Grid
+        item
+        className={clsx(classes.PageItem, classes.DailyAdmissionsSection)}>
+        <ChartHolder
+          title="Daily Admissions"
+          legend={{
+            entries: [{ name: 'Admissions', color: '#8EE2E5' }],
+            position: 'top'
+          }}
+          styles={{
+            BaseContainer: classes.BaseSection,
+            HeaderLegendContainer: classes.AdmissionLegend
+          }}
+        />
+      </Grid>
     </Grid>
   );
 };

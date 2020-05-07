@@ -14,7 +14,7 @@ export const OverviewPageStyles = makeStyles(theme => ({
     boxShadow: `5px 5px 10px 10px ${SHADOW_BACKDROP}`
   },
   PageItem: {
-    marginBottom: '5%'
+    marginBottom: '3%'
   },
   SectionTwo: {
     height: '40vh'
@@ -46,5 +46,20 @@ export const OverviewPageStyles = makeStyles(theme => ({
   TableCell: {
     fontSize: '11.5px',
     color: 'white'
+  },
+  BaseSection: {
+    height: '100%'
+  },
+  ConfirmedCasesSection: {
+    height: '22vh',
+    marginBottom: '2%'
+  },
+  DailyAdmissionsSection: {
+    height: '26vh'
+  },
+  AdmissionLegend: {
+    position: 'relative',
+    width: '10%',
+    right: '20%'
   }
 }));
