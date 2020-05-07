@@ -60,11 +60,13 @@ export const SurveillanceSectionStyles = makeStyles(theme => ({
     height: '200px'
   },
   SectionTwoItem: {
-    height: '200px'
+    height: '200px',
+    marginRight: `${theme.spacing(2.2)}px`
   },
   SectionTwoNode: {
     height: '200px',
-    paddingTop: '5%'
+    paddingTop: '5%',
+    paddingLeft: '14px'
   },
   SectionTwoLegendHolder: {
     minWidth: '120px'

@@ -77,14 +77,15 @@ export const Surveillance = () => {
           />
         </Grid>
       </Grid>
-      <Grid container item className={classes.sectionTwo}>
+      <Grid container wrap={'nowrap'} item className={classes.sectionTwo}>
         {SectionTwoRows.map(node => (
-          <Grid item xs={2} className={classes.SectionTwoItem}>
+          <Grid item xs={3} className={classes.SectionTwoItem}>
             <ChartHolder
               title={node.title}
               legend={node.legend}
+              footerText={node.footerText}
               styles={{
-                BaseContainer: classes.SectionTwoNode,
+                BaseContainer: classes.SectionTwoNode
               }}
             />
           </Grid>

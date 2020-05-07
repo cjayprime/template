@@ -29,6 +29,14 @@ export const Legends = {
       color: '#8EE2E5'
     },
     { name: 'Female', color: '#EEBEC2' }
+  ],
+  'C/C': [
+    {
+      name: 'Yes',
+      color: '#8EE2E5'
+    },
+    { name: 'No', color: '#EEBEC2' },
+    { name: 'Unkown', color: '#EEBEC2' }
   ]
 };
 
@@ -39,6 +47,30 @@ export const SectionTwoRows = [
       entries: Legends.gender,
       position: 'bottom',
       spacing: 6
+    }
+  },
+  {
+    title: 'Age',
+    legend: {}
+  },
+  {
+    title: 'Case/Contact',
+    legend: {
+      entries: Legends['C/C'],
+      position: 'bottom',
+      spacing: 4
+    }
+  },
+  {
+    title: 'Nationality',
+    footerText: 'Hover to see details'
+  },
+  {
+    title: 'Travel History',
+    legend: {
+      entries: Legends['C/C'],
+      position: 'bottom',
+      spacing: 4
     }
   }
 ];

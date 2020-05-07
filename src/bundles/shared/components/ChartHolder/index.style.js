@@ -50,6 +50,11 @@ export const ChartHolderStyles = makeStyles(theme => ({
     justifyContent: 'flex-start',
     paddingBottom: '2px'
   },
-  FooterTextContainer: {},
-  FooterText: { fontWeight: '11px' }
+  FooterTextContainer: { textAlign: 'center', paddingRight: '15px' },
+  FooterText: {
+    fontSize: '9.5px',
+    color: 'white',
+    textAlign: 'center',
+    paddingRight: '15px'
+  }
 }));

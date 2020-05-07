@@ -89,7 +89,7 @@ export const ChartHolder = props => {
           {footerText && (
             <Grid
               item
-              xs={5}
+              xs={position ? 5 : 12}
               className={clsx(
                 classes.FooterTextContainer,
                 styles.FooterTextContainer
