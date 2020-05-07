@@ -6,7 +6,7 @@ import { HeaderStyles } from './index.style';
 
 export const Header = ({ pageTitle, contexts, pageIcon, styles = {} }) => {
   const classes = HeaderStyles();
-  const [selectedTab, setSelectedTab] = useState('RRT');
+  const [selectedTab, setSelectedTab] = useState(0);
   const [searchInput, setSearchInput] = useState('');
   const [dateSelectInput, setDateSelectInput] = useState('');
   // select RRT tab on mount
@@ -17,7 +17,10 @@ export const Header = ({ pageTitle, contexts, pageIcon, styles = {} }) => {
       context.handleInputChange(newValue);
     };
     return (
-      <Grid item xs={2} className={clsx(classes.HeaderItemContent)}>
+      <Grid
+        item
+        xs={context.spacing || 2}
+        className={clsx(classes.HeaderItemContent)}>
         <TextField
           placeholder={context.placeholder}
           fullWidth
@@ -39,7 +42,10 @@ export const Header = ({ pageTitle, contexts, pageIcon, styles = {} }) => {
     };
 
     return (
-      <Grid item xs={2} className={clsx(classes.HeaderItemContent)}>
+      <Grid
+        item
+        xs={context.spacing || 2}
+        className={clsx(classes.HeaderItemContent)}>
         <TextField
           select
           fullWidth
@@ -76,21 +82,26 @@ export const Header = ({ pageTitle, contexts, pageIcon, styles = {} }) => {
 
     return (
       <Fragment>
-        <Grid container item xs={5} className={classes.TabsContainer}>
+        <Grid
+          container
+          item
+          xs={context.spacing || 5}
+          className={clsx(classes.TabsContainer, styles.TabsContainer)}>
           <Tabs
             onChange={handleSelectTab}
             value={selectedTab}
-            defaultValue={context.defaultTab}
+            defaultValue={0}
             classes={{
               root: clsx(classes.RootTabsContainer, styles.RootTabsContainer),
               flexContainer: classes.TabsFlexContainer,
               indicator: classes.TabIndicator
             }}>
-            {context.tabItems.map(tab => (
+            {context.tabItems.map((tab, index) => (
               <Tab
                 label={tab}
+                selected={selectedTab === index}
                 classes={{
-                  root: classes.TabContainer,
+                  root: clsx(classes.TabContainer, styles.TabContainer),
                   selected: classes.SelectedTabContainer
                 }}
               />
@@ -108,7 +119,7 @@ export const Header = ({ pageTitle, contexts, pageIcon, styles = {} }) => {
   };
 
   return (
-    <Grid container className={classes.HeaderContainer}>
+    <Grid container className={clsx(classes.HeaderContainer, styles.root)}>
       <Grid container item xs={3}>
         <Grid item xs={3} className={classes.HeaderItem}>
           {pageIcon && pageIcon}
