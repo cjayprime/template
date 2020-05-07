@@ -372,6 +372,30 @@ const PhoneNumber = ({ input, setFormState, formState }) => {
   );
 };
 
+const TextFormDetail = ({ input }) => {
+  const classes = useStyles();
+
+  return (
+    <Grid container xs={12}>
+      <Grid item xs={3}>
+        <Typography className={classes.labelText}>{input.title}</Typography>
+      </Grid>
+       
+      {input.content.map((item, index) => {
+        const key = Object.keys(item);
+        return (
+          <Grid item key={`text--${item.firstLabel}-${index}`} xs={3}>
+            <Grid>
+              <Typography >{key}</Typography>
+              <Typography>{item[key]}</Typography>
+            </Grid>
+          </Grid>
+        );
+      })}
+    </Grid>
+  );
+};
+
 const renderType = (input, setFormState, formState) => {
   switch (input.type) {
     case 'text':
@@ -436,6 +460,11 @@ const renderType = (input, setFormState, formState) => {
           formState={formState}
         />
       );
+
+    case 'detail':
+      return (
+        <TextFormDetail input={input} />
+      )
 
     default:
       return (
