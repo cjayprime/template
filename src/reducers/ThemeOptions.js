@@ -1,3 +1,15 @@
+
+// Route change
+
+export const SET_ROUTE_TITLE = 'THEME_OPTIONS/SET_ROUTE_TITLE';
+
+export const setRouteTitle = title => ({
+  type: SET_ROUTE_TITLE,
+  title
+})
+
+
+
 // Sidebar
 
 export const SET_SIDEBAR_SHADOW = 'THEME_OPTIONS/SET_SIDEBAR_SHADOW';
@@ -144,6 +156,8 @@ export const setPageTitleDescription = pageTitleDescription => ({
   pageTitleDescription
 });
 
+
+// Function to call
 export const SET_DISPATCH_FUNCTION =
   'THEME_OPTIONS/SET_DISPATCH_FUNCTION';
 
@@ -151,6 +165,8 @@ export const setDispatchFunction = func => ({
   type: SET_DISPATCH_FUNCTION,
   func: func
 })
+
+
 export default function reducer(
   state = {
 
@@ -165,13 +181,14 @@ export default function reducer(
     sidebarToggle: false,
     sidebarHover: true,
     showHeader: false,
-    showFooter: false,
+    showFooter: true,
     footerContent: 'patient',
     // Header
 
     headerFixed: true,
     headerShadow: true,
     headerSearchHover: false,
+    routeTitle: 'default',
 
     // Main content
 
@@ -180,7 +197,7 @@ export default function reducer(
     // Footer
 
     footerFixed: true,
-    footerShadow: false,
+    footerShadow: true,
     // Page title
 
     pageTitleStyle: '',
@@ -193,6 +210,12 @@ export default function reducer(
   action
 ) {
   switch (action.type) {
+
+    case SET_ROUTE_TITLE:
+      return {
+        ...state,
+        routeTitle: action.title
+      }
 
     case SET_DISPATCH_FUNCTION:
       return {

@@ -5,19 +5,24 @@ import {
   Stepper,
   Step,
   Typography,
+  IconButton,
+  ButtonBase,
   Button,
   Radio,
-  Box,
-  makeStyles,
-  withStyles
+  makeStyles
 } from '@material-ui/core';
+import { withStyles } from '@material-ui/styles';
 import StepLabel from '@material-ui/core/StepLabel';
 import { connect } from 'react-redux';
+import Arrow from '@material-ui/icons/ChevronRight';
+import ArrowLeft from '@material-ui/icons/ChevronLeft';
 import StepConnector from '@material-ui/core/StepConnector';
 import { setShowFooter, setDispatchFunction } from 'reducers/ThemeOptions';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import Question from './components/question';
-
+import TriageImage from 'images/triage.png';
+import triageInfo from 'images/triageinfo.png';
+import { Link } from 'react-router-dom'
 // Mutations
 import createTriageMutation from 'bundles/patient/hoc/createTriageAnswers';
 
@@ -26,11 +31,12 @@ import triageQuestions from './questions.json';
 
 const compose = require('lodash')?.flowRight;
 
+
 const QontoConnector = withStyles({
   alternativeLabel: {
     //top: 10,
-    left: 'calc(-50% + 16px)',
-    right: 'calc(50% + 16px)'
+    //left: 'calc(-50% + 16px)',
+    // right: 'calc(50% + 16px)'
   },
   active: {
     '& $line': {
@@ -52,7 +58,7 @@ const QontoConnector = withStyles({
     borderWidth: 5,
     borderRadius: 1
   }
-})(StepConnector);
+})(StepConnector); 
 
 const useQontoStepIconStyles = makeStyles({
   root: {
@@ -62,7 +68,7 @@ const useQontoStepIconStyles = makeStyles({
     alignItems: 'center'
   },
   radio: {
-    color: '#FFFFFF'
+    color: '#8EE2E5'
   },
   active: {
     color: '#784af4'
@@ -77,36 +83,13 @@ const useQontoStepIconStyles = makeStyles({
     color: '#784af4',
     zIndex: 1,
     fontSize: 18
-  }
+  },
+  green: {
+    backgroundColor: '#28BAC0'
+  },
 });
 
-function QontoStepIcon(props) {
-  const classes = useQontoStepIconStyles();
-  const { active, completed } = props;
 
-  return (
-    <div
-      className={clsx(classes.root, {
-        [classes.active]: active
-      })}>
-      {completed ? (
-        <Radio
-          color="primary"
-          classes={{
-            colorPrimary: classes.radio
-          }}
-        />
-      ) : (
-        <Radio
-          color="primary"
-          classes={{
-            colorPrimary: classes.radio
-          }}
-        />
-      )}
-    </div>
-  );
-}
 
 const steps = Reflect.ownKeys(triageQuestions);
 steps.push('Result');
@@ -123,7 +106,10 @@ const useStyles = makeStyles(theme => ({
     borderRadius: 50,
     textTransform: 'uppercase',
     boxShadow:
-      '0 6px 16px rgba(39, 186, 192, 0.20), 0 2px 10px rgba(39, 186, 192, 0.10)'
+      '0 6px 16px rgba(39, 186, 192, 0.20), 0 2px 10px rgba(39, 186, 192, 0.10)',
+    '&:hover': {
+      backgroundColor: '#27BAC0',
+    }
   },
   backButton: {
     backgroundColor: 'transparent',
@@ -136,7 +122,42 @@ const useStyles = makeStyles(theme => ({
     borderRadius: 50,
     textTransform: 'uppercase',
     boxShadow: 'none'
-  }
+  },
+  resultText: {
+    color: '#fff',
+    fontSize: 16
+  },
+  noRiskResult: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 20
+  },
+  centerText: {
+    textAlign: 'center'
+  },
+  roundedButton: {
+    borderRadius: 50,
+    backgroundColor: '#28BAC0',
+    '&:hover': {
+      backgroundColor: '#28BAC0'
+    }
+  },
+  roundedButtonBack: {
+    borderRadius: 50,
+    marginRight: 30,
+    backgroundColor: 'transparent',
+    '&:hover': {
+      backgroundColor: 'rgb(113, 106, 158)'
+    }
+  },
+  endIcon: {
+    marginRight: 20,
+    marginBottom: 5
+  },
+  roundedIcon: {
+    fontSize: 15,
+    color: '#fff'
+  },
 }));
 
 function getStepContent(step) {
@@ -149,6 +170,49 @@ function getStepContent(step) {
   return triageQuestions[questionCategory];
 }
 
+const ResultContainer = ({classes}) => {
+
+
+  return (
+    <Grid
+      container
+      spacing={8}
+      alignItems="center"
+      direction="column"
+      justify="center">
+      <Grid item xs={4} md={4} style={{ marginTop: 100}}>
+        <img src={TriageImage} />
+      </Grid>
+      <Grid item xs={5} md={5} style={{ textAlign: 'center' }}>
+        <Typography style={{ color: '#fff', fontWeight: 'bold', fontSize: 25 }}>
+          No Risk
+        </Typography>
+        <Typography style={{ color: '#fff', fontSize: 20 }}>
+          {' '}
+          The patient has been classified as low risk
+        </Typography>
+      </Grid>
+      <Grid item xs={5} md={5} style={{ textAlign: 'center' }}>
+        <img src={triageInfo} />
+        <Typography style={{ color: '#fff', fontSize: 20 }}>
+          {' '}
+          Advise patient to self medicate and observe signs and symptoms
+        </Typography>
+      </Grid>
+      <Grid item md={5} xs={5}>
+          <ButtonBase
+            variant="contained"
+            to="/Patient"
+            component={Link}
+            color="primary"
+            classes={{ root: classes.nextButton }}>
+            Close the Case
+          </ButtonBase>
+      </Grid>
+    </Grid>
+  );
+};
+
 const CreateTriage = ({ createTriage, showFooter, setDispatchFunc }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [completed] = useState({});
@@ -157,8 +221,39 @@ const CreateTriage = ({ createTriage, showFooter, setDispatchFunc }) => {
   const classes = useStyles();
 
   useEffect(() => {
-    showFooter(false);
+    showFooter(true);
   }, [showFooter]);
+
+  const QontoStepIcon = (props)  => {
+    const classes = useQontoStepIconStyles();
+    const { active, completed } = props;
+  
+    
+    return (
+      <div
+        className={clsx(classes.root, {
+          [classes.active]: active
+        })}>
+        {completed ? (
+          <Radio
+            color="primary"
+            classes={{
+              colorPrimary: classes.radio
+  
+            }}
+          />
+        ) : (
+          <Radio
+            color="primary"
+            classes={{
+              colorPrimary: classes.radio,
+              root: classes.green
+            }}
+          />
+        )}
+      </div>
+    );
+  }
 
   const totalSteps = () => {
     return questionCategory.length;
@@ -211,13 +306,15 @@ const CreateTriage = ({ createTriage, showFooter, setDispatchFunc }) => {
             {questionCategory.map((label, index) => (
               <Step key={label}>
                 <StepLabel
+                  completed={completed[index]}
                   StepIconComponent={QontoStepIcon}
+
                   disabled={label === 'Result'}
                   onClick={handleStep(index)}
-                  completed={completed[index]}>
+                 >
                   <Typography
                     style={{
-                      color: completed[index] ? '#8EE2E5' : '#716A9E',
+                      color: completed[index] ? '#8EE2E5' : '#8EE2E5',
                       fontWeight: 'bold'
                     }}>
                     {label}
@@ -227,63 +324,95 @@ const CreateTriage = ({ createTriage, showFooter, setDispatchFunc }) => {
             ))}
           </Stepper>
         </Grid>
-        <Grid item md={9} lg={7} style={{ padding: 33 }}>
+        <Grid item md={8} lg={7} style={{ padding: 33, overflowX: 'hidden' }}>
           <Fragment>
             {steps[activeStep] === 'Result' ? (
-              'Oreofe'
+              <ResultContainer classes={classes} />
             ) : (
               <div>
-                  <Grid style={{ marginBottom: 20 }}>
-                    <Typography
-                      style={{
-                        fontWeight: 'bold',
-                        color: '#fff',
-                        fontSize: 18
-                      }}>
-                      {' '}
-                      Please select all the statements that apply to you
-                    </Typography>
-                    <Typography style={{ color: '#716A9E', fontSize: 15 }}>
-                      {' '}
-                      Select one answer in each row
-                    </Typography>
-                  </Grid>
-                  {getStepContent(activeStep).map(questions => (
-                    <Fragment key={questions.questionKey}>
-                      <Question
-                        {...questions}
-                        onAnswer={handleInputChange}
-                        answer={answers[questions.questionKey]}
-                      />
-                      {questions.children &&
-                      questions.children.length > 0 &&
-                      answers[questions.questionKey] ===
-                        questions.displayChildrenOn ? (
+                <Grid item xs={12}>
+                    <Grid container>
+                      <Grid item xs={6} style={{ marginBottom: 20 }}>
+                      <Grid container direction="column" >
+                        <Typography
+                          style={{
+                            fontWeight: 'bold',
+                            color: '#fff',
+                            fontSize: 18
+                          }}>
+                          {' '}
+                          Please select all the statements that apply to you
+                        </Typography>
+                        <Typography style={{ color: '#716A9E', fontSize: 15 }}>
+                          {' '}
+                          Select one answer in each row
+                        </Typography>
+                        </Grid>
+                      </Grid>
+                      <Grid item xs={6}  >
+                        <Grid container justify="flex-end" alignItems="flex-end" className="p-4" spacing={4} >
                         <Fragment>
-                          {questions.children.map(childQuestion => (
-                            <Fragment key={childQuestion.questionKey}>
-                              <Question
-                                {...childQuestion}
-                                isChild={true}
-                                onAnswer={handleInputChange}
-                                answer={answers[childQuestion.questionKey]}
-                              />
-                            </Fragment>
-                          ))}
-                        </Fragment>
-                      ) : null}
-                    </Fragment>
-                  ))}
+                            <IconButton disabled={activeStep === 0}  onClick={handleBack} className={classes.roundedButtonBack}>
+                              <ArrowLeft className={classes.roundedIcon} />
+                          </IconButton>
+                          </Fragment>    
+                          <Fragment>
+                            <IconButton onClick={handleNext} className={classes.roundedButton}>
+                              <Arrow className={classes.roundedIcon} />
+                          </IconButton>
+                          </Fragment>       
+                        </Grid>
+                      </Grid>
+                   </Grid>
+                   
+
+                </Grid>
+
+                <PerfectScrollbar
+                  options={{ suppressScrollX: true }}
+                  style={{
+                    borderRight: '4px solid #716A9E',
+                    height: '70vh',
+                    paddingRight: 10
+                  }}>
+                  <div>
+                    {getStepContent(activeStep).map(questions => (
+                      <div>
+                        <Question
+                          {...questions}
+                          onAnswer={handleInputChange}
+                          answer={answers[questions.questionKey]}
+                        />
+                        {questions.children &&
+                        questions.children.length > 0 &&
+                        answers[questions.questionKey] ===
+                          questions.displayChildrenOn ? (
+                          <Fragment>
+                            {questions.children.map(childQuestion => (
+                              <Fragment key={childQuestion.questionKey}>
+                                <Question
+                                  {...childQuestion}
+                                  isChild={true}
+                                  onAnswer={handleInputChange}
+                                  answer={answers[childQuestion.questionKey]}
+                                />
+                              </Fragment>
+                            ))}
+                          </Fragment>
+                        ) : null}
+                      </div>
+                    ))}
+                  </div>
+                </PerfectScrollbar>
               </div>
             )}
           </Fragment>
-        </Grid>
-      </Grid>
-      <Box
+          {/* <Box
         display="flex"
-        className={'app-footer text-black-50 app-footer---fixed'}
+      //  className={'app-footer text-black-50 app-footer---fixed'}
         style={{ padding: 10 }}
-        flexDirection="row-reverse">
+        flexDirection="row-reverse"
+        >
         {!isLastStep() ? (
           <Button
             variant="contained"
@@ -310,7 +439,9 @@ const CreateTriage = ({ createTriage, showFooter, setDispatchFunc }) => {
           variant="contained">
           Back
         </Button>
-      </Box>
+      </Box> */}
+        </Grid>
+      </Grid>
     </Fragment>
   );
 };

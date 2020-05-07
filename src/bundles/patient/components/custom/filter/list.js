@@ -6,6 +6,7 @@ import withPatient from 'bundles/patient/hoc/withPatient';
 import { Typography, ButtonBase, Grid } from '@material-ui/core';
 import { useStyles } from 'bundles/patient/components/custom/filter/index.style';
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
+import PatientTab from 'bundles/patient/components/custom/patient/tab';
 import notfound from 'images/notfound.png';
 // import moment from 'moment';
 
@@ -35,10 +36,10 @@ const List = ({ header, data }) => {
     <DataTable
       headers={header}
       data={data}
-      renderCollapsible={row => <div>Hello world</div>}
+      renderCollapsible={row => <PatientTab />}
     />
   );
-};
+}; 
 
 const expand = () => {
   return <KeyboardArrowDown />;

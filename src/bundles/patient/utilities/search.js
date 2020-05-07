@@ -21,6 +21,17 @@ export const buildQuery = state => {
     pgQuery = pgQuery.set('or', presentList);
   };
 
+
+  const addAndClause = clause => {
+    let presentList = pgQuery.get('and') || clause;
+
+    if (presentList) {
+      presentList = presentList.concat(clause);
+    }
+
+    pgQuery = pgQuery.set('and', presentList);
+  }
+
   const searchText = searchFilter.getSearchText(state);
 
   if (searchText) {
@@ -51,6 +62,21 @@ export const buildQuery = state => {
 
     addOrClause(equalsToFilter);
   }
+
+  const lga = searchFilter.getLGA(state);
+
+  if (lga.length) {
+    const hasLGA = lga.map((data) => {
+      return Immutable.Map({
+         'lga': Immutable.Map({
+          equalTo: data
+        })
+      })
+    })
+
+    addOrClause(hasLGA)
+  }
+
 
   console.log(pgQuery.toJS());
 

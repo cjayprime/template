@@ -12,6 +12,8 @@ import {
 import KPICard from './Card';
 import { patientStore } from './store';
 
+
+
 export default () => {
   const renderPatientCell = row => (
     <PatientMetadatum
@@ -89,7 +91,7 @@ export default () => {
             />
           </Grid>
         </Grid>
-        <Grid container spacing={4}>
+        <Grid container style={{marginTop: 60}} spacing={4}>
           <DataTable headers={headers} data={patientStore} />
         </Grid>
       </Container>

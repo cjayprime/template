@@ -7,14 +7,16 @@ export const QUESTIONS = [
         placeholder: 'Enter First Name',
         type: 'text',
         key: 'firstname',
-        required: true
+        required: true,
+        capitalize: true
       },
       {
         label: 'Last Name',
         placeholder: 'Enter Last Name',
         type: 'text',
         key: 'lastname',
-        required: true
+        required: true,
+        capitalize: true
       },
       {
         label: 'Gender',
@@ -52,19 +54,22 @@ export const QUESTIONS = [
         label: 'Address',
         type: 'text',
         placeholder: 'Street name',
-        key: 'streetName'
+        key: 'streetName',
+        capitalize: true
       },
       {
         label: '',
         type: 'text',
         placeholder: 'Street name line 2',
-        key: 'streetName2'
+        key: 'streetName2',
+        capitalize: true
       },
       {
         label: 'City',
         type: 'text',
         placeholder: 'Enter city',
-        key: 'city'
+        key: 'city',
+        capitalize: true
       },
       {
         label: 'State',
@@ -84,7 +89,7 @@ export const QUESTIONS = [
         label: 'LGA',
         type: 'select',
         placeholder: 'Choose from dropdown',
-        fields: ['Kosofe', 'Eti-Osa', 'Alimosho'],
+        fields: ['Kosofe', 'Eti-Osa', 'Alimosho', 'Lagos Island'],
         key: 'lga',
         required: true
       },
@@ -113,13 +118,14 @@ export const QUESTIONS = [
         label: 'Other',
         placeholder: 'Write a note',
         type: 'textArea',
-        key: 'notes'
+        key: 'notes',
       },
       {
         label: 'Location',
         type: 'text',
         placeholder: 'Enter location',
-        key: 'location'
+        key: 'location',
+        capitalize: true
       },
     ],
   },
@@ -130,7 +136,7 @@ export const QUESTIONS = [
         label: 'Queue',
         type: 'select',
         placeholder: 'No queue',
-        fields: ['No queue', 'RRT', 'Pychosocial', 'Evac & Decon', 'EPID/Surveillance'],
+        fields: ['No queue', 'RRT', 'Psychosocial', 'Evac & Decon', 'EPID/Surveillance'],
         key: 'queue',
         required: true
       }

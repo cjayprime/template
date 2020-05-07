@@ -17,12 +17,19 @@ import PersonIcon from '@material-ui/icons/PersonOutlined';
 import ReceiptIcon from '@material-ui/icons/ReceiptOutlined';
 import SettingsIcon from '@material-ui/icons/SettingsOutlined';
 import ViewModuleIcon from '@material-ui/icons/ViewModule';
-import dashboard from 'images/icon1.png'
-import dashboard1 from 'images/icon2.png'
+import queue from 'images/rectangle.png';
+import dashboard from 'images/rectangle1.png';
+import lab from 'images/rectangle3.png';
+import kpi from 'images/rectangle5.png';
+import appointment from 'images/rectangle6.png';
+import setting from 'images/rectangle8.png';
+import bedmanagement from 'images/rectangle7.png';
+//import dashboard from 'images/icon1.png'
+// import dashboard1 from 'images/icon2.png'
 import dashboard2 from 'images/icon3.png'
-import dashboard3 from 'images/icon4.png'
-import dashboard4 from 'images/icon5.png'
-import dashboard5 from 'images/icon6.png'
+// import dashboard3 from 'images/icon4.png'
+// import dashboard4 from 'images/icon5.png'
+// import dashboard5 from 'images/icon6.png'
 
 var iconsMap = {
   BarChartIcon: BarChartIcon,
@@ -52,7 +59,7 @@ const allowedViews = [
     content: [
       {
         label: 'Dashboard',
-        icon: <img className="app-sidebar-icon" src={dashboard2} />,
+        icon: <img className="app-sidebar-icon" src={dashboard} />,
         to: '/Dashboard'
       },
       {
@@ -62,32 +69,32 @@ const allowedViews = [
       },
       {
         label: 'Queue',
-        icon: <img className="app-sidebar-icon" src={dashboard2} />,
+        icon: <img className="app-sidebar-icon" src={queue} />,
         to: "/Queue"
       },
       {
         label: 'KPI',
-        icon: <img className="app-sidebar-icon" src={dashboard2} />,
+        icon: <img className="app-sidebar-icon" src={kpi} />,
         to: "/Kpi"
       },
       {
         label: 'Appointment',
-        icon: <img className="app-sidebar-icon" src={dashboard2} />,
+        icon: <img className="app-sidebar-icon" src={appointment} />,
         to: "/Appointment"
       },
       {
         label: 'Lab',
-        icon: <img className="app-sidebar-icon" src={dashboard2} />,
+        icon: <img className="app-sidebar-icon" src={lab} />,
         to: "/Lab"
       },
       {
         label: 'Bed Management',
-        icon: <img className="app-sidebar-icon" src={dashboard2} />,
+        icon: <img className="app-sidebar-icon" src={bedmanagement} />,
         to: "/BedManagement"
       },
       {
         label: 'Settings',
-        icon: <img className="app-sidebar-icon" src={dashboard2} />,
+        icon: <img className="app-sidebar-icon" src={setting} />,
         content: [
           {
             label: "Location",

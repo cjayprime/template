@@ -1,6 +1,16 @@
 import React, { Fragment } from 'react';
 import { Typography, Grid, Paper } from '@material-ui/core';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { Card } from '@material-ui/core';
+
+import { BarLoader } from 'react-spinners';
+
+import {
+  BeatLoader,
+  BounceLoader,
+  CircleLoader,
+  ClimbingBoxLoader
+} from 'react-spinners';
 
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -406,74 +416,74 @@ const Dashboard = () => {
     setValue(newValue);
   };
 
-  return (
-    <Grid container>
-      <Grid container justify="center" alignItems="center" spacing={4}>
-        <Grid item xs={3}>
-          <Typography> Dashboard </Typography>
-        </Grid>
-        <Grid item xs={6}>
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            indicatorColor="primary"
-            textColor="primary"
-            centered>
-            <Tab label="Overview" />
-            <Tab label="Surveilence" />
-            <Tab label="Case Management" />
-            <Tab label="Laboratory" />
-          </Tabs>
-        </Grid>
-        <Grid item xs={3}>
-          <Grid container justify="flex-end">
-            <Typography> Dashboard </Typography>
-          </Grid>
-        </Grid>
-      </Grid>
-      <Grid item lg={12} md={12} xs={12} style={{ marginTop: 20 }}>
-        <TabPanel value={value} index={0}>
-          <Grid container justify="center" spacing={3}>
-            {sumaryContent.map((summary, index) => {
-              return (
-                <SummaryGrid
-                  key={`${index.toString()}--${summary.title}`}
-                  size={summary.size}
-                  rows={summary.rows}
-                  title={summary.title}
-                  classes={classes}
-                />
-              );
-            })}
-          </Grid>
-          <Grid
-            container
-            justify="center"
-            style={{ marginTop: 30 }}
-            spacing={3}
-            xs={12}
-            direction="row">
-            <Grid item xs={4}>
-              <TableTransformer />
-            </Grid>
-            <Grid xs={6}>
-              <Grid></Grid>
-              <Grid> yo</Grid>
-            </Grid>
-          </Grid>
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <div className="d-block p-4">
-            <Line
-              data={data4MultipleData}
-              height={255}
-              options={data4MultipleOptions}
-            />
-          </div>
-        </TabPanel>
-      </Grid>
-    </Grid>
-  );
+  // return (
+  //   <Grid container>
+  //     <Grid container justify="center" alignItems="center" spacing={4}>
+  //       <Grid item xs={3}>
+  //         <Typography> Dashboard </Typography>
+  //       </Grid>
+  //       <Grid item xs={6}>
+  //         <Tabs
+  //           value={value}
+  //           onChange={handleChange}
+  //           indicatorColor="primary"
+  //           textColor="primary"
+  //           centered>
+  //           <Tab label="Overview" />
+  //           <Tab label="Surveilence" />
+  //           <Tab label="Case Management" />
+  //           <Tab label="Laboratory" />
+  //         </Tabs>
+  //       </Grid>
+  //       <Grid item xs={3}>
+  //         <Grid container justify="flex-end">
+  //           <Typography> Dashboard </Typography>
+  //         </Grid>
+  //       </Grid>
+  //     </Grid>
+  //     <Grid item lg={12} md={12} xs={12} style={{ marginTop: 20 }}>
+  //       <TabPanel value={value} index={0}>
+  //         <Grid container justify="center" spacing={3}>
+  //           {sumaryContent.map((summary, index) => {
+  //             return (
+  //               <SummaryGrid
+  //                 key={`${index.toString()}--${summary.title}`}
+  //                 size={summary.size}
+  //                 rows={summary.rows}
+  //                 title={summary.title}
+  //                 classes={classes}
+  //               />
+  //             );
+  //           })}
+  //         </Grid>
+  //         <Grid
+  //           container
+  //           justify="center"
+  //           style={{ marginTop: 30 }}
+  //           spacing={3}
+  //           xs={12}
+  //           direction="row">
+  //           <Grid item xs={4}>
+  //             <TableTransformer />
+  //           </Grid>
+  //           <Grid xs={6}>
+  //             <Grid></Grid>
+  //             <Grid> yo</Grid>
+  //           </Grid>
+  //         </Grid>
+  //       </TabPanel>
+  //       <TabPanel value={value} index={1}>
+  //         <div className="d-block p-4">
+  //           <Line
+  //             data={data4MultipleData}
+  //             height={255}
+  //             options={data4MultipleOptions}
+  //           />
+  //         </div>
+  //       </TabPanel>
+  //     </Grid>
+  //   </Grid>
+  // );
 
   return (
     <div className={classes.root}>
@@ -508,6 +518,56 @@ const Dashboard = () => {
         <Grid item xs={12}>
           <Paper className={classes.paper}>xs=12</Paper>
         </Grid>
+
+
+    <Fragment>
+      <div className="d-flex flex-row text-center flex-wrap justify-content-center">
+        <Card className="rounded-sm card-box p-3 m-3">
+          <div
+            className="d-flex align-items-center justify-content-center"
+            style={{ width: '150px', height: '80px' }}>
+            <BarLoader color={'var(--danger)'} loading={true} />
+          </div>
+          <p className="mb-0 pt-3 text-black-50 text-center">Danger</p>
+        </Card>
+
+        <Card className="rounded-sm card-box p-3 m-3">
+          <div
+            className="d-flex align-items-center justify-content-center"
+            style={{ width: '150px', height: '80px' }}>
+            <BeatLoader color={'var(--first)'} loading={true} />
+          </div>
+          <p className="mb-0 pt-3 text-black-50 text-center">First</p>
+        </Card>
+
+        <Card className="rounded-sm card-box p-3 m-3">
+          <div
+            className="d-flex align-items-center justify-content-center"
+            style={{ width: '150px', height: '80px' }}>
+            <BounceLoader color={'var(--success)'} loading={true} />
+          </div>
+          <p className="mb-0 pt-3 text-black-50 text-center">Success</p>
+        </Card>
+
+        <Card className="rounded-sm card-box p-3 m-3">
+          <div
+            className="d-flex align-items-center justify-content-center"
+            style={{ width: '150px', height: '80px' }}>
+            <CircleLoader color={'var(--warning)'} loading={true} />
+          </div>
+          <p className="mb-0 pt-3 text-black-50 text-center">Warning</p>
+        </Card>
+
+        <Card className="rounded-sm card-box p-3 m-3">
+          <div
+            className="d-flex align-items-center justify-content-center"
+            style={{ width: '150px', height: '80px' }}>
+            <ClimbingBoxLoader color={'var(--info)'} loading={true} />
+          </div>
+          <p className="mb-0 pt-3 text-black-50 text-center">Info</p>
+        </Card>
+      </div>
+    </Fragment>
       </Grid>
     </div>
   );

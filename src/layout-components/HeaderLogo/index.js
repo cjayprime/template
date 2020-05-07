@@ -21,7 +21,7 @@ const HeaderLogo = props => {
         })}>
         <Box
           className="header-logo-wrapper"
-          title="Carolina React Admin Dashboard with Material-UI PRO">
+          title="Lasphers">
           <Link to="/Dashboard" className="header-logo-wrapper-link">
             <IconButton
               color="primary"

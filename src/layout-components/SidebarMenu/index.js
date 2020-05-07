@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { matchPath } from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
@@ -7,19 +7,34 @@ import { List, Typography } from '@material-ui/core';
 
 import useRouter from 'utils/useRouter';
 import SidebarMenuListItem from './SidebarMenuListItem';
+import { useStyles } from './index.style';
 
 const SidebarMenuList = props => {
   const { pages, ...rest } = props;
+  const [navbarHover, setNavbarHover] = useState({});
+  const [activeNavbar, setActiveNavbar] = useState();
+  const classes = useStyles();
 
   return (
-    <List className={clsx('p-0')} style={{
-      padding: 10,
-    }} 
-    onFocus={() => console.log('')}
-    
-    >
+    <List
+      className={clsx('p-0')}
+      style={{
+        padding: 10
+      }}
+      onFocus={() => console.log('')}>
       {pages.reduce(
-        (items, page) => reduceChildRoutes({ items, page, ...rest }),
+        (items, page, index) =>
+          reduceChildRoutes({
+            items,
+            page,
+            index,
+            navbarHover,
+            setNavbarHover,
+            setActiveNavbar,
+            activeNavbar,
+            classes,
+            ...rest
+          }),
         []
       )}
     </List>
@@ -32,7 +47,18 @@ SidebarMenuList.propTypes = {
 };
 
 const reduceChildRoutes = props => {
-  const { router, items, page, depth } = props;
+  const {
+    router,
+    items,
+    page,
+    depth,
+    index,
+    navbarHover,
+    setNavbarHover,
+    setActiveNavbar,
+    activeNavbar,
+    classes
+  } = props;
 
   if (page.content) {
     const open = matchPath(router.location.pathname, {
@@ -42,19 +68,30 @@ const reduceChildRoutes = props => {
 
     items.push(
       <SidebarMenuListItem
-      style={{
-        padding: 10,
-      }}
+        style={{
+          padding: 10,
+          cursor: 'pointer'
+        }}
         depth={depth}
+        onMouseEnter={() => setNavbarHover({ [`navbar-${index}`]: true })}
+        onClick={() => setActiveNavbar(`navbar-${index}`)}
+        onMouseLeave={() => setNavbarHover({ [`navbar-${index}`]: false })}
+        className={
+          navbarHover[`navbar-${index}`]
+            ? classes.navBarHover
+            : ( activeNavbar == `navbar-${index}`) ? classes.navBarClicked  : classes.navBarDefault
+        }
         icon={page.icon}
         key={page.label}
         label={page.badge}
         open={Boolean(open)}
+        textColor={( activeNavbar == `navbar-${index}`) ? '#fff' : '#BDB8D9'}
         title={page.label}>
         <div className="sidebar-menu-children py-2">
           <SidebarMenuList
             depth={depth + 1}
             pages={page.content}
+            textColor={( activeNavbar == `navbar-${index}`) ? '#fff' : '#BDB8D9'}
             router={router}
           />
         </div>
@@ -64,14 +101,24 @@ const reduceChildRoutes = props => {
     items.push(
       <SidebarMenuListItem
         style={{
-          padding: 17,     
+          padding: 17,
+          cursor: 'pointer'
         }}
+        onMouseEnter={() => setNavbarHover({ [`navbar-${index}`]: true })}
+        onClick={() => setActiveNavbar(`navbar-${index}`)}
+        onMouseLeave={() => setNavbarHover({ [`navbar-${index}`]: false })}
+        className={
+          navbarHover[`navbar-${index}`]
+            ? classes.navBarHover
+            : ( activeNavbar == `navbar-${index}`) ? classes.navBarClicked  : classes.navBarDefault
+        }
         depth={depth}
         href={page.to}
         icon={page.icon}
         key={page.label}
         label={page.badge}
         title={page.label}
+        textColor={ ( activeNavbar == `navbar-${index}`) ? '#fff' : '#BDB8D9' }
       />
     );
   }
@@ -85,7 +132,9 @@ const SidebarMenu = props => {
   const router = useRouter();
 
   return (
-    <Component {...rest} className={ clsx(className, 'app-bar-custom-background ')} >
+    <Component
+      {...rest}
+      className={clsx(className, 'app-bar-custom-background ')}>
       {title && (
         <Typography className="app-sidebar-heading">{title}</Typography>
       )}

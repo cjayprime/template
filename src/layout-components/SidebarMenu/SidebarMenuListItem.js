@@ -22,6 +22,7 @@ const SidebarMenuListItem = props => {
     depth,
     children,
     icon: Icon,
+    textColor,
     className,
     open: openProp,
     label: Label,
@@ -29,6 +30,7 @@ const SidebarMenuListItem = props => {
   } = props;
 
   const [open, setOpen] = useState(openProp);
+  
 
   const handleToggle = () => {
     setOpen(open => !open);
@@ -67,7 +69,7 @@ const SidebarMenuListItem = props => {
           style={parentStyle}>
              {Icon}
           {/*Icon && <Icon className="app-sidebar-icon" />*/}
-          <span style={{color: '#BDB8D9'}}>{title}</span>
+          <span style={{color: textColor}}>{title}</span>
           {open ? (
             <ExpandLessIcon className="sidebar-expand-icon" color="inherit" />
           ) : (
@@ -88,7 +90,6 @@ const SidebarMenuListItem = props => {
         disableGutters>
         <Button
           activeClassName="active-item"
-          
           disableRipple
           disableElevation
           variant="text"
@@ -99,7 +100,7 @@ const SidebarMenuListItem = props => {
           to={href}>
             {Icon}
           {/*Icon && <Icon className="app-sidebar-icon" />*/}
-          <span style={{color: '#BDB8D9'}}>{title}</span>
+          <span style={{color: textColor}}>{title}</span>
           {Label && (
             <span className="menu-item-label">
               <Label  />

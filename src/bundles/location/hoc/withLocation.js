@@ -3,13 +3,14 @@ import { connect } from 'react-redux';
 import { graphql } from '@apollo/react-hoc';
 import { ALL_LOCATION } from 'graphql/Location/LocationData';
 import { buildQuery, buildOrder } from 'bundles/location/utilities/search';
+import Loader from 'bundles/shared/components/Loader';
 
 const compose = require('lodash').flowRight;
 
 const withLocation = WrappedComponent => {
   const withLocation = ({ allLocations, ...props }) => {
       
-    if (allLocations.loading) return <div> Loading</div>;
+    if (allLocations.loading) return <Loader status={true} />
 
     let locationPG = [];
 

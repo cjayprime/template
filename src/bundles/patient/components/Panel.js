@@ -7,7 +7,7 @@ const Panel = () => {
   return (
     <Grid container justify="center" alignItems="center">
       <Grid item xs={12}>
-        <Grid item xs={12}>
+        <Grid item xs={12} >
           <Search />
           <List />
         </Grid>
@@ -17,3 +17,4 @@ const Panel = () => {
 };
 
 export default Panel;
+ 

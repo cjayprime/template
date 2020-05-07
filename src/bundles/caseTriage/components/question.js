@@ -19,6 +19,7 @@ import {
 import DateFnsUtils from '@date-io/date-fns';
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
 import { ThemeProvider } from '@material-ui/styles';
+import EventAvailable from '@material-ui/icons/EventAvailable';
 import pointer from 'images/pointer.png';
 
 const useStyles = makeStyles(theme => ({
@@ -179,11 +180,13 @@ const DateQuestionType = ({
                 inputVariant="filled"
                 format="dd/MM/yyyy"
                 margin="normal"
+                
                 id={questionKey}
                 value={selectedDate}
                 onChange={date => onAnswer(questionKey, date)}
                 fullWidth={true}
                 views={['year', 'date', '']}
+                keyboardIcon={<EventAvailable style={{color: '#fff'}} />}
                 animateYearScrolling
                 autoOk
                 maxDate={new Date()}

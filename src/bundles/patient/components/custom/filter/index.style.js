@@ -6,7 +6,7 @@ export const useStyles = makeStyles(theme => ({
     padding: 20,
     fontSize: 20,
     color: '#fff',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   searchIcon: {
     color: '#fff',
@@ -49,14 +49,15 @@ export const useStyles = makeStyles(theme => ({
     marginLeft: 20 
   },
   underline: {
+    
     '&:before': {
-      borderBottom: '1px solid #6A6981'
+      borderBottom: '2px solid #6A6981'
     },
     '&:hover': {
-      borderBottom: '1px solid #6A6981'
+      borderBottom: '2px solid #6A6981'
     },
     '&:after': {
-      borderBottom: '1px solid #6A6981'
+      borderBottom: '2px solid #6A6981'
     },
     '&:hover:not($disabled):not($focused):not($error):before': {
       borderBottom: 'none !important'

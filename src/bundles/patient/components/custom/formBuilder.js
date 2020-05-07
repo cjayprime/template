@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import {
   Grid,
   Typography,
@@ -6,10 +6,11 @@ import {
   TextField,
   RadioGroup,
   FormControlLabel,
+  Checkbox,
   Radio
 } from '@material-ui/core';
 import MenuItem from '@material-ui/core/MenuItem';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
 
 const TransformIcon = () => <KeyboardArrowDown color="primary" />;
@@ -34,6 +35,16 @@ const year = [
   { label: '1989', value: '1989' },
   { label: '1990', value: '1990' }
 ];
+
+export const DefaultCheckbox = withStyles({
+  root: {
+    color: '#fff',
+    '&$checked': {
+      color: '#fff'
+    }
+  },
+  checked: {}
+})(props => <Checkbox color="default" {...props} />);
 
 const useStyles = makeStyles(theme => ({
   icon: {
@@ -89,6 +100,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const capitalizeFirstWord = word =>
+  word && word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+
 const InputTextComp = (
   classes,
   input,
@@ -116,13 +130,36 @@ const InputTextComp = (
       style={{ color: 'white' }}
       error={nonValid}
       multiline={multiline}
-      onChange={e => setFormState({ [input.key]: e.target.value })}
+      onChange={e =>
+        input.capitalize
+          ? setFormState({ [input.key]: capitalizeFirstWord(e.target.value) })
+          : setFormState({ [input.key]: e.target.value })
+      }
       rows={rows}
       classes={{
         root: classes.cssOutlinedInput,
         focused: classes.cssFocused,
         notchedOutline: classes.notchedOutline
       }}
+    />
+  );
+};
+
+const CheckBoxComp = (
+  classes,
+  input,
+  setFormState = () => '',
+  formState = {}
+) => {
+  return (
+    <FormControlLabel
+      control={
+        <DefaultCheckbox
+          checked={formState[input.key] ? true : false}
+          onChange={e => setFormState({ [input.key]: e.target.checked })}
+        />
+      }
+      label={<Typography style={{ color: '#fff' }}> {input.label}</Typography>}
     />
   );
 };
@@ -142,6 +179,18 @@ const TextTransform = ({ input, setFormState, formState }) => {
         {InputTextComp(classes, input, setFormState, formState)}
       </Grid>
     </Grid>
+  );
+};
+
+const CheckBoxTransform = ({ input, setFormState, formState }) => {
+  const classes = useState();
+
+  return (
+    <Fragment>
+      <Grid xs={6} md={6} className={classes.container}>
+        {CheckBoxComp(classes, input, setFormState, formState)}
+      </Grid>
+    </Fragment>
   );
 };
 
@@ -373,6 +422,15 @@ const renderType = (input, setFormState, formState) => {
     case 'phone':
       return (
         <PhoneNumber
+          setFormState={setFormState}
+          input={input}
+          formState={formState}
+        />
+      );
+
+    case 'checkbox':
+      return (
+        <CheckBoxTransform
           setFormState={setFormState}
           input={input}
           formState={formState}

@@ -1,7 +1,7 @@
 import React, { lazy, Suspense, Fragment } from 'react';
 import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-
+import { withRouter } from 'react-router'
 import { ThemeProvider } from '@material-ui/styles';
 
 import { ClimbingBoxLoader } from 'react-spinners';
@@ -194,7 +194,8 @@ const Maps = lazy(() => import('./example-pages/Maps'));
 const ListGroups = lazy(() => import('./example-pages/ListGroups'));
 
 
-const Routes = () => {
+const Routes = ({history}) => {
+  
   const location = useLocation();
 
   const pageVariants = {
@@ -273,7 +274,7 @@ const Routes = () => {
                 '/Appointment',
                 '/Lab'
               ]}>
-              <LeftSidebar>
+              <LeftSidebar history={history}>
                 {/* <CollapsedSidebar> */}
                 <Switch location={location} key={location.pathname}>
                   <motion.div
@@ -626,4 +627,4 @@ const Routes = () => {
   );
 };
 
-export default Routes;
+export default withRouter(Routes);

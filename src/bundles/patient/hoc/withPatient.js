@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { graphql } from '@apollo/react-hoc';
 import { ALL_PATIENTS } from 'graphql/Patient/PatientData.js';
 import { buildQuery, buildOrder } from 'bundles/patient/utilities/search';
+import Loader from 'bundles/shared/components/Loader';
 
 const compose = require('lodash').flowRight;
 
@@ -11,7 +12,7 @@ const withPatient = WrappedComponent => {
     const {
       allPatients: { loading }
     } = props;
-    if (loading) return <div> Loading</div>;
+    if (loading) return <Loader status={true} />;
 
     const {
       allPatients: { nodes }

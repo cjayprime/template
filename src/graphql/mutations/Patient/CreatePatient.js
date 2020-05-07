@@ -8,6 +8,7 @@ export const CREATE_PATIENT = gql`mutation(
     ) {
         patient {
             id
+            epidNumber
         }
     }
 }

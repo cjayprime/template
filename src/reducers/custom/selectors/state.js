@@ -1,0 +1,1 @@
+export const getRouterState = state => state.router || state
