@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/styles';
 export const CaseManagementStyles = makeStyles(theme => ({
   CaseContainer: {},
   PageItem: {
-    marginBottom: '3%'
+    marginBottom: '3%',
   },
   SectionOne: {},
   SectionOneItem: {},
@@ -47,5 +47,17 @@ export const CaseManagementStyles = makeStyles(theme => ({
   },
   SectionThreeItem: {
     marginRight: `${theme.spacing(2.2)}px`
+  },
+
+  SectionFour: {
+    height: '30vh',
+    width: '67vw'
+  },
+
+  ChartContainer: {
+    marginRight: '2%'
+  },
+  SectionFourChart: {
+    height: '30vh'
   }
 }));

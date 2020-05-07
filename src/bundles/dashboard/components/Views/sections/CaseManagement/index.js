@@ -59,7 +59,8 @@ export const CaseManagement = () => {
         ))}
       </Grid>
       <Grid
-        container={clsx(classes.PageItem, classes.SectionThree)}
+        container
+        className={clsx(classes.PageItem, classes.SectionThree)}
         direction="column">
         <Grid
           item
@@ -87,6 +88,27 @@ export const CaseManagement = () => {
               />
             </Grid>
           ))}
+        </Grid>
+      </Grid>
+      <Grid
+        container
+        wrap="nowrap"
+        className={clsx(classes.PageItem, classes.SectionFour)}>
+        <Grid item xs={9} className={classes.ChartContainer}>
+          <ChartHolder
+            title={'Symptoms on Admission'}
+            styles={{
+              BaseContainer: classes.SectionFourChart
+            }}
+          />
+        </Grid>
+        <Grid item xs={3}>
+          <ChartHolder
+            title={'Presenting symptoms'}
+            styles={{
+              BaseContainer: classes.SectionFourChart
+            }}
+          />
         </Grid>
       </Grid>
     </Container>
