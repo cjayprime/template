@@ -98,6 +98,17 @@ export const Laboratory = () => {
           })}
         </Grid>
       </Grid>
+      <Grid
+        container
+        direction="column"
+        className={clsx(classes.PageItem, classes.SectionFour)}>
+        <ChartHolder
+          styles={{
+            BaseContainer: classes.SectionFourChart
+          }}
+          {...{ title: 'Sample testing & test positivity (absolute)' }}
+        />
+      </Grid>
     </Container>
   );
 };

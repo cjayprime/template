@@ -48,5 +48,13 @@ export const LaboratoryStyles = makeStyles(theme => ({
   },
   GridContainer: {
     width: '96%'
+  },
+  SectionFour: {
+    height: '25vh',
+    width: '67.5vw'
+  },
+  SectionFourChart: {
+    height: '100%',
+    width: '67.5vw'
   }
 }));
