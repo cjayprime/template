@@ -27,7 +27,7 @@ import { Link } from 'react-router-dom'
 import createTriageMutation from 'bundles/patient/hoc/createTriageAnswers';
 
 // Assets
-import triageQuestions from './questions.json';
+import { triageQuestions, triageQuestionWeights } from './triageQuestions.js';
 
 const compose = require('lodash')?.flowRight;
 
