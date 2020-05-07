@@ -7,7 +7,6 @@ import {
   Typography,
   IconButton,
   ButtonBase,
-  Button,
   Radio,
   makeStyles
 } from '@material-ui/core';
@@ -22,7 +21,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import Question from './components/question';
 import TriageImage from 'images/triage.png';
 import triageInfo from 'images/triageinfo.png';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 // Mutations
 import createTriageMutation from 'bundles/patient/hoc/createTriageAnswers';
 
@@ -30,7 +29,6 @@ import createTriageMutation from 'bundles/patient/hoc/createTriageAnswers';
 import { triageQuestions, triageQuestionWeights } from './triageQuestions.js';
 
 const compose = require('lodash')?.flowRight;
-
 
 const QontoConnector = withStyles({
   alternativeLabel: {
@@ -58,7 +56,7 @@ const QontoConnector = withStyles({
     borderWidth: 5,
     borderRadius: 1
   }
-})(StepConnector); 
+})(StepConnector);
 
 const useQontoStepIconStyles = makeStyles({
   root: {
@@ -86,10 +84,8 @@ const useQontoStepIconStyles = makeStyles({
   },
   green: {
     backgroundColor: '#28BAC0'
-  },
+  }
 });
-
-
 
 const steps = Reflect.ownKeys(triageQuestions);
 steps.push('Result');
@@ -108,7 +104,7 @@ const useStyles = makeStyles(theme => ({
     boxShadow:
       '0 6px 16px rgba(39, 186, 192, 0.20), 0 2px 10px rgba(39, 186, 192, 0.10)',
     '&:hover': {
-      backgroundColor: '#27BAC0',
+      backgroundColor: '#27BAC0'
     }
   },
   backButton: {
@@ -157,7 +153,7 @@ const useStyles = makeStyles(theme => ({
   roundedIcon: {
     fontSize: 15,
     color: '#fff'
-  },
+  }
 }));
 
 function getStepContent(step) {
@@ -170,8 +166,20 @@ function getStepContent(step) {
   return triageQuestions[questionCategory];
 }
 
-const ResultContainer = ({classes}) => {
+const ResultContainer = ({ classes, triageScore = 0 }) => {
+  let riskLevel = 'no risk';
+  let message =
+    'Advise patient to self medicate and observe signs and symptoms';
 
+  // set the message accordingly based on the score
+  if (triageScore >= 5 && triageScore <= 9) {
+    message =
+      'Advice patient to hydrate properly, use over the counter medication, maintain good hygiene. Observe and re-evaluate after 2 days';
+  } else if (triageScore >= 10 && triageScore <= 39) {
+    riskLevel = 'High Risk';
+    message =
+      'The Evacuation & Decon has been notified of this case. Please transfer the call to the Evacuation & Decon team and close call log.';
+  }
 
   return (
     <Grid
@@ -180,34 +188,40 @@ const ResultContainer = ({classes}) => {
       alignItems="center"
       direction="column"
       justify="center">
-      <Grid item xs={4} md={4} style={{ marginTop: 100}}>
+      <Grid item xs={4} md={4} style={{ marginTop: 100 }}>
         <img src={TriageImage} />
       </Grid>
       <Grid item xs={5} md={5} style={{ textAlign: 'center' }}>
-        <Typography style={{ color: '#fff', fontWeight: 'bold', fontSize: 25 }}>
-          No Risk
+        <Typography
+          style={{
+            color: '#fff',
+            fontWeight: 'bold',
+            fontSize: 25,
+            textTransform: 'capitalize'
+          }}>
+          {riskLevel}
         </Typography>
         <Typography style={{ color: '#fff', fontSize: 20 }}>
           {' '}
-          The patient has been classified as low risk
+          The patient has been classified as {riskLevel}
         </Typography>
       </Grid>
       <Grid item xs={5} md={5} style={{ textAlign: 'center' }}>
         <img src={triageInfo} />
         <Typography style={{ color: '#fff', fontSize: 20 }}>
           {' '}
-          Advise patient to self medicate and observe signs and symptoms
+          {message}
         </Typography>
       </Grid>
       <Grid item md={5} xs={5}>
-          <ButtonBase
-            variant="contained"
-            to="/Patient"
-            component={Link}
-            color="primary"
-            classes={{ root: classes.nextButton }}>
-            Close the Case
-          </ButtonBase>
+        <ButtonBase
+          variant="contained"
+          to="/Patient"
+          component={Link}
+          color="primary"
+          classes={{ root: classes.nextButton }}>
+          Close the Case
+        </ButtonBase>
       </Grid>
     </Grid>
   );
@@ -217,6 +231,8 @@ const CreateTriage = ({ createTriage, showFooter, setDispatchFunc }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [completed] = useState({});
   const [answers, setAnswers] = useState({});
+  const [triageAnswerResult, setTriageAnswerResult] = useState({});
+  const [triageScore, setTriageScore] = useState(0);
   const questionCategory = steps;
   const classes = useStyles();
 
@@ -224,11 +240,10 @@ const CreateTriage = ({ createTriage, showFooter, setDispatchFunc }) => {
     showFooter(true);
   }, [showFooter]);
 
-  const QontoStepIcon = (props)  => {
+  const QontoStepIcon = props => {
     const classes = useQontoStepIconStyles();
     const { active, completed } = props;
-  
-    
+
     return (
       <div
         className={clsx(classes.root, {
@@ -239,7 +254,6 @@ const CreateTriage = ({ createTriage, showFooter, setDispatchFunc }) => {
             color="primary"
             classes={{
               colorPrimary: classes.radio
-  
             }}
           />
         ) : (
@@ -253,7 +267,7 @@ const CreateTriage = ({ createTriage, showFooter, setDispatchFunc }) => {
         )}
       </div>
     );
-  }
+  };
 
   const totalSteps = () => {
     return questionCategory.length;
@@ -292,7 +306,30 @@ const CreateTriage = ({ createTriage, showFooter, setDispatchFunc }) => {
       ...answers,
       [questionKey]: answer
     });
+
+    // get the question weight
+    const questionWeight = triageQuestionWeights[questionKey];
+
+    // set the value of the question based on the weight and the answer
+    if (questionWeight) {
+      setTriageAnswerResult({
+        ...triageAnswerResult,
+        [questionKey]: questionWeight * (answer.toLowerCase() === 'yes' ? 1 : 0)
+      });
+    }
   };
+
+  // calculate the triage score
+  useEffect(() => {
+    if (isLastStep()) {
+      const score = Reflect.ownKeys(triageAnswerResult).reduce((agg, curr) => {
+        agg += parseInt(triageAnswerResult[curr], 10);
+        return agg;
+      }, 0);
+
+      setTriageScore(score);
+    }
+  }, [activeStep, triageScore, triageAnswerResult, isLastStep]);
 
   return (
     <Fragment>
@@ -308,10 +345,8 @@ const CreateTriage = ({ createTriage, showFooter, setDispatchFunc }) => {
                 <StepLabel
                   completed={completed[index]}
                   StepIconComponent={QontoStepIcon}
-
                   disabled={label === 'Result'}
-                  onClick={handleStep(index)}
-                 >
+                  onClick={handleStep(index)}>
                   <Typography
                     style={{
                       color: completed[index] ? '#8EE2E5' : '#8EE2E5',
@@ -327,13 +362,13 @@ const CreateTriage = ({ createTriage, showFooter, setDispatchFunc }) => {
         <Grid item md={8} lg={7} style={{ padding: 33, overflowX: 'hidden' }}>
           <Fragment>
             {steps[activeStep] === 'Result' ? (
-              <ResultContainer classes={classes} />
+              <ResultContainer classes={classes} triageScore={triageScore} />
             ) : (
               <div>
                 <Grid item xs={12}>
-                    <Grid container>
-                      <Grid item xs={6} style={{ marginBottom: 20 }}>
-                      <Grid container direction="column" >
+                  <Grid container>
+                    <Grid item xs={6} style={{ marginBottom: 20 }}>
+                      <Grid container direction="column">
                         <Typography
                           style={{
                             fontWeight: 'bold',
@@ -347,25 +382,33 @@ const CreateTriage = ({ createTriage, showFooter, setDispatchFunc }) => {
                           {' '}
                           Select one answer in each row
                         </Typography>
-                        </Grid>
                       </Grid>
-                      <Grid item xs={6}  >
-                        <Grid container justify="flex-end" alignItems="flex-end" className="p-4" spacing={4} >
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Grid
+                        container
+                        justify="flex-end"
+                        alignItems="flex-end"
+                        className="p-4"
+                        spacing={4}>
                         <Fragment>
-                            <IconButton disabled={activeStep === 0}  onClick={handleBack} className={classes.roundedButtonBack}>
-                              <ArrowLeft className={classes.roundedIcon} />
+                          <IconButton
+                            disabled={activeStep === 0}
+                            onClick={handleBack}
+                            className={classes.roundedButtonBack}>
+                            <ArrowLeft className={classes.roundedIcon} />
                           </IconButton>
-                          </Fragment>    
-                          <Fragment>
-                            <IconButton onClick={handleNext} className={classes.roundedButton}>
-                              <Arrow className={classes.roundedIcon} />
+                        </Fragment>
+                        <Fragment>
+                          <IconButton
+                            onClick={handleNext}
+                            className={classes.roundedButton}>
+                            <Arrow className={classes.roundedIcon} />
                           </IconButton>
-                          </Fragment>       
-                        </Grid>
+                        </Fragment>
                       </Grid>
-                   </Grid>
-                   
-
+                    </Grid>
+                  </Grid>
                 </Grid>
 
                 <PerfectScrollbar
