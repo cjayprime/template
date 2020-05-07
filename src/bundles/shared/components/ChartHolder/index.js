@@ -1,67 +1,81 @@
 import React from 'react';
 import clsx from 'clsx';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography, Container } from '@material-ui/core';
 import { ChartHolderStyles } from './index.style';
 
 export const ChartHolder = props => {
   const classes = ChartHolderStyles();
-  const {
-    _data,
-    legend: { entries, position },
-    title,
-    footerText,
-    styles = {}
-  } = props;
+  const { _data, legend = {}, title, footerText, styles = {} } = props;
+  const { entries, position } = legend;
 
   const Legend = () => {
+    if (!Object.keys(legend).length) return null;
+
     return (
-      <Grid
-        item
-        container
+      <Container
         className={clsx(classes.LegendContainer, styles.LegendContainer)}>
-        {entries.map(entry => {
-          return (
-            <Grid
-              item
-              container
-              xs={position === 'top' || footerText ? 5 : 12}
-              className={clsx(classes.LegendContainer, styles.LegendContainer)}
-              style={{ color: entry.color }}>
-              <Grid item xs={4} className={clsx(classes.LegendIconContainer)}>
-                {entry.icon}
-              </Grid>
+        <Grid item container>
+          {entries.map(entry => {
+            return (
               <Grid
                 item
-                xs={8}
-                className={clsx(
-                  classes.LegendTextContainer,
-                  styles.LegendTextContainer
-                )}>
-                <Typography
-                  className={clsx(classes.LegendText, styles.LegendText)}>
-                  {entry.name}
-                </Typography>
+                container
+                xs={4}
+                className={clsx(classes.LegendHolder, styles.LegendHolder)}
+                style={{ color: entry.color }}>
+                {entry.icon && (
+                  <Grid
+                    item
+                    xs={2}
+                    className={clsx(classes.LegendIconContainer)}>
+                    {entry.icon}
+                  </Grid>
+                )}
+                <Grid
+                  item
+                  xs={10}
+                  className={clsx(
+                    classes.LegendTextContainer,
+                    styles.LegendTextContainer
+                  )}>
+                  <Typography
+                    className={clsx(classes.LegendText, styles.LegendText)}>
+                    {entry.name}
+                  </Typography>
+                </Grid>
               </Grid>
-            </Grid>
-          );
-        })}
-      </Grid>
+            );
+          })}
+        </Grid>
+      </Container>
     );
   };
   return (
     <Grid
       container
-      directionclassName={clsx(classes.BaseContainer, styles.BaseContainer)}>
+      direction
+      justify="space-between"
+      className={clsx(classes.BaseContainer, styles.BaseContainer)}>
       <Grid
         item
         container
         className={clsx(classes.HeaderSection, styles.HeaderSection)}>
-        <Grid item xs={position && position === 'top' ? 7 : 12}>
+        <Grid item xs={position && position === 'top' ? 4 : 12}>
           <Typography className={clsx(classes.HeaderText, styles.HeaderText)}>
             {title}
           </Typography>
         </Grid>
-        {position && position === 'top' && <Legend />}
+        {position && position === 'top' && (
+          <Grid
+            item
+            xs={8}
+            className={clsx(
+              classes.HeaderLegendContainer,
+              styles.HeaderLegendContainer
+            )}>
+            <Legend />
+          </Grid>
+        )}
       </Grid>
       <Grid item className={clsx(classes.ChartSection, styles.ChartSection)}>
         {/* Charts go in here */}
@@ -85,7 +99,17 @@ export const ChartHolder = props => {
               </Typography>
             </Grid>
           )}
-          {position === 'bottom' && <Legend />}
+          {position === 'bottom' && (
+            <Grid
+              item
+              xs={7}
+              className={clsx(
+                classes.FooterLegendContainer,
+                styles.FooterLegendContainer
+              )}>
+              <Legend />
+            </Grid>
+          )}
         </Grid>
       )}
     </Grid>

@@ -16,49 +16,35 @@ export const OverviewPageStyles = makeStyles(theme => ({
   PageItem: {
     marginBottom: '5%'
   },
-  OverviewInfoContainer: {
-    color: 'white'
-  },
-  OverviewFlexContainer: {
-    flexFlow: 'row'
-  },
-  SummaryBoxTitle: {
-    width: '150px',
-    fontWeight: '500',
-    fontSize: '13.5px'
-  },
-  SummaryBoxCaption: {
-    width: '150px',
-    fontSize: '11.5px'
-  },
-  SummaryHeaderContainer: {
-    position: 'absolute',
-    left: '20px'
-  },
-  EntryContainer: {
-    fontSize: '12px',
-    width: '200px !important',
-    marginTop: '4px'
-  },
-  EntryKey: {},
-  EntryValue: {
-    fontWeight: 'bold',
-    position: 'relative',
-    right: '20px'
-  },
-  EntryHolder: {
-    position: 'absolute',
-    bottom: '10px',
-    left: '20px',
-    justifyContent: 'space-evenly'
-  },
   SectionTwo: {
-    height: '20vh'
+    height: '40vh'
   },
   LargeSummaryHolder: {
     left: '35px !important'
   },
   LargeEntryHolder: {
     left: '35px !important'
+  },
+  EpidInfoContainer: {
+    height: '60%',
+    marginTop: '2%'
+  },
+  EpidInfoLegend: {
+    height: '100%',
+    width: '94%',
+    position: 'relative',
+    left: '4.5%'
+  },
+  TableContainer: {
+    height: '97%',
+    paddingTop: '0',
+    marginRight: '8%'
+  },
+  Table: {
+    backgroundColor: '#3A3C4F'
+  },
+  TableCell: {
+    fontSize: '11.5px',
+    color: 'white'
   }
 }));

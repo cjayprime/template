@@ -60,3 +60,29 @@ export const SectionTwoStore = {
     }
   }
 };
+
+export const Legends = {
+  epidCurve: [
+    { name: 'Positive Cases', color: '#FAD7A0' },
+    { name: 'Recovered', color: '#7FB3D5' },
+    { name: 'Fatalities', color: '#E74C3C' }
+  ]
+};
+
+export const TableData = [
+  {
+    'S/M': 0,
+    LGA: 'Eti Osa',
+    count: 12
+  },
+  {
+    'S/M': 0,
+    LGA: 'Eti Osa',
+    count: 12
+  },
+  {
+    'S/M': 0,
+    LGA: 'Lagos Mainland',
+    count: 12
+  }
+];
