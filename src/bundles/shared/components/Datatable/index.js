@@ -11,13 +11,21 @@ import { tableStyles } from './index.style';
 import { CollapsibleRow } from '../CollapsibleRow';
 
 export const DataTable = props => {
-  const { headers, data, customRowRender, renderCollapsible } = props;
+  const {
+    headers,
+    data,
+    customRowRender,
+    renderCollapsible,
+    styles = {}
+  } = props;
   const classes = tableStyles();
   const buildHeaderCells = () => {
     return (
       <Fragment>
         {headers.map(item => (
-          <TableCell className={classes.TableCell}>{item.name}</TableCell>
+          <TableCell className={clsx(classes.TableCell, styles.TableCell)}>
+            {item.name}
+          </TableCell>
         ))}
       </Fragment>
     );
@@ -64,7 +72,11 @@ export const DataTable = props => {
             {headers.map(header => {
               return (
                 <TableCell
-                  className={clsx(classes.TableCell, classes.TableItem)}
+                  className={clsx(
+                    classes.TableCell,
+                    classes.TableItem,
+                    styles.TableCell
+                  )}
                   key={genKey()}>
                   {genCellPayload(header)}
                 </TableCell>
@@ -78,9 +90,9 @@ export const DataTable = props => {
 
   return (
     <Fragment>
-      <Table className={classes.Table}>
+      <Table className={clsx(classes.Table, styles.Table)}>
         <TableHead>
-          <TableRow className={classes.HeaderRow}>
+          <TableRow className={clsx(classes.HeaderRow, styles.HeaderRow)}>
             {buildHeaderCells()}
           </TableRow>
         </TableHead>

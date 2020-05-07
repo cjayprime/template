@@ -1,19 +1,20 @@
 import React from 'react';
 import { Grid, Container, TextField, Typography } from '@material-ui/core';
+import clsx from 'clsx';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import { FilterListStyles } from './index.style';
 
 export const FilterList = props => {
-  const { selector, options } = props;
+  const { selector, options, dafaultValue, selectorText, styles = {} } = props;
   const classes = FilterListStyles();
   return (
-    <Container className={classes.FilterContainer}>
+    <Container
+      className={clsx(classes.FilterContainer, styles.FilterContainer)}>
       <Grid container>
         <Grid item xs={4}>
-          <Typography
-            className={
-              classes.TabCaption
-            }>{`Filter by ${selector}:`}</Typography>
+          <Typography className={classes.TabCaption}>
+            {selectorText ? selectorText : `Filter by ${selector}:`}
+          </Typography>
         </Grid>
         <Grid item xs={8}>
           <TextField
@@ -24,7 +25,7 @@ export const FilterList = props => {
             InputProps={{
               classes: { root: classes.InputView },
               disableUnderline: true,
-              defaultValue: 'Choose from list'
+              defaultValue: dafaultValue || 'Choose from list'
             }}
             SelectProps={{
               IconComponent: () => (

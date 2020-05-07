@@ -83,17 +83,18 @@ const ApplicationsCalendar = lazy(() =>
   import('./example-pages/ApplicationsCalendar')
 );
 
-const PatientPanel  = lazy(() => import('./bundles/patient/components/Panel'))  
-const CreatePatient = lazy(() => import('./bundles/patient/components/CreatePatient'))  
+const PatientPanel  = lazy(() => import('./bundles/patient/components/Panel'))
+const CreatePatient = lazy(() => import('./bundles/patient/components/CreatePatient'))
 const CreateTriage = lazy(() => import('./bundles/caseTriage/CreateTriage'))
 const Queue = lazy(() => import('./bundles/queue/components/View'))
 const Location = lazy(() => import('./bundles/location/components/View'))
 const CreateLocation = lazy(() => import('./bundles/location/components/Create'))
-const Staff = lazy(() => import('./bundles/setting/components/Staff')) 
+const Staff = lazy(() => import('./bundles/setting/components/Staff'))
 const Kpi = lazy(() => import('./bundles/kpi/components/View'))
 const BedManagement = lazy(() => import('./bundles/bedmanagement/components/View'))
 const Appointment = lazy(() => import('./bundles/appointment/components/View'))
 const Lab = lazy(() => import('./bundles/lab/components/View'))
+const Dashboard = lazy(() => import('./bundles/dashboard'))
 
 const ApplicationsChat = lazy(() => import('./example-pages/ApplicationsChat'));
 const ApplicationsContacts = lazy(() =>
@@ -244,15 +245,16 @@ const Routes = () => {
                 '/CreateTriage',
                 '/Queue',
                 '/Location',
-                '/CreateLocation', 
+                '/CreateLocation',
                 '/Staff',
                 '/Kpi',
                 '/BedManagement',
                 '/Appointment',
+                '/Dashboard',
                 '/Lab'
               ]}>
                    <LeftSidebar>
-              { /* <CollapsedSidebar> */} 
+              { /* <CollapsedSidebar> */}
                 <Switch location={location} key={location.pathname}>
                   <motion.div
                     initial="initial"
@@ -262,15 +264,15 @@ const Routes = () => {
                     transition={pageTransition}>
                     <Route
                       path="/Patient"
-                      component={PatientPanel}  
+                      component={PatientPanel}
                     />
                     <Route
                       path="/CreatePatient"
-                      component={CreatePatient}  
+                      component={CreatePatient}
                     />
                     <Route
                       path="/CreateTriage"
-                      component={CreateTriage} 
+                      component={CreateTriage}
                     />
                     <Route
                       path="/Queue"
@@ -300,17 +302,21 @@ const Routes = () => {
                       path="/Appointment"
                       component={Appointment}
                     />
+                      <Route
+                      path="/Dashboard"
+                      component={Dashboard}
+                    />
                      <Route
                       path="/Lab"
                       component={Lab}
                     />
-                    
+
                   </motion.div>
                 </Switch>
              {/* </CollapsedSidebar> */}
              </LeftSidebar>
             </Route>
- 
+
             <Route
               path={[
                 '/PagesLogin',
