@@ -1,13 +1,12 @@
 // Core
 
 body {
-
   .app-sidebar-wrapper-lg {
     min-height: 100%;
-    overflowY: auto;
+    overflowy: auto;
     display: flex;
     flex-direction: column;
-    paddingTop: 0;
+    paddingtop: 0;
     width: $sidebar-width;
   }
 
@@ -49,7 +48,6 @@ body {
   }
 
   .app-sidebar-nav-close {
-
     button span span {
       transition: $transition-base;
       white-space: nowrap;
@@ -71,6 +69,11 @@ body {
       visibility: hidden;
       height: 44px;
     }
+  }
+
+  .app-bar-custom-background {
+    // background: linear-gradient(rgba(50, 60, 79, 1), '#3A3C4F');
+    // background-color: #3A3C4F;
   }
 
   .app-sidebar-collapsed {

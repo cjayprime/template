@@ -22,6 +22,7 @@ const SidebarMenuListItem = props => {
     depth,
     children,
     icon: Icon,
+    textColor,
     className,
     open: openProp,
     label: Label,
@@ -29,20 +30,28 @@ const SidebarMenuListItem = props => {
   } = props;
 
   const [open, setOpen] = useState(openProp);
+  
 
   const handleToggle = () => {
     setOpen(open => !open);
   };
 
   let paddingLeft = 14;
+  let paddingLeftParent = 20;
 
   if (depth > 0) {
     paddingLeft = 32 + 20 * depth;
+    paddingLeftParent = 32 + 20 * depth
   }
 
   const style = {
     paddingLeft
   };
+
+  const parentStyle = {
+    paddingLeft: paddingLeftParent
+  };
+
 
   if (children) {
     return (
@@ -53,12 +62,14 @@ const SidebarMenuListItem = props => {
         <Button
           color="primary"
           disableRipple
+          
       
           className={clsx('app-sidebar-button', { active: open })}
           onClick={handleToggle}
-          style={style}>
-          {Icon && <Icon className="app-sidebar-icon" />}
-          <span>{title}</span>
+          style={parentStyle}>
+             {Icon}
+          {/*Icon && <Icon className="app-sidebar-icon" />*/}
+          <span style={{color: textColor}}>{title}</span>
           {open ? (
             <ExpandLessIcon className="sidebar-expand-icon" color="inherit" />
           ) : (
@@ -79,7 +90,6 @@ const SidebarMenuListItem = props => {
         disableGutters>
         <Button
           activeClassName="active-item"
-          color="primary"
           disableRipple
           disableElevation
           variant="text"
@@ -88,11 +98,12 @@ const SidebarMenuListItem = props => {
           exact
           style={style}
           to={href}>
-          {Icon && <Icon className="app-sidebar-icon" />}
-          {title}
+            {Icon}
+          {/*Icon && <Icon className="app-sidebar-icon" />*/}
+          <span style={{color: textColor}}>{title}</span>
           {Label && (
             <span className="menu-item-label">
-              <Label />
+              <Label  />
             </span>
           )}
         </Button>

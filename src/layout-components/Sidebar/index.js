@@ -86,6 +86,7 @@ const Sidebar = props => {
             'app-sidebar-wrapper-fixed': sidebarFixed
           })}
           square
+          elevation={sidebarShadow ? 8 : 3}
           open={sidebarToggle}
           >
           <SidebarHeader />

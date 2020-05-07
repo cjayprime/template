@@ -1,3 +1,4 @@
+import React from 'react';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import ChatIcon from '@material-ui/icons/ChatOutlined';
@@ -16,6 +17,19 @@ import PersonIcon from '@material-ui/icons/PersonOutlined';
 import ReceiptIcon from '@material-ui/icons/ReceiptOutlined';
 import SettingsIcon from '@material-ui/icons/SettingsOutlined';
 import ViewModuleIcon from '@material-ui/icons/ViewModule';
+import queue from 'images/rectangle.png';
+import dashboard from 'images/rectangle1.png';
+import lab from 'images/rectangle3.png';
+import kpi from 'images/rectangle5.png';
+import appointment from 'images/rectangle6.png';
+import setting from 'images/rectangle8.png';
+import bedmanagement from 'images/rectangle7.png';
+//import dashboard from 'images/icon1.png'
+// import dashboard1 from 'images/icon2.png'
+import dashboard2 from 'images/icon3.png'
+// import dashboard3 from 'images/icon4.png'
+// import dashboard4 from 'images/icon5.png'
+// import dashboard5 from 'images/icon6.png'
 
 var iconsMap = {
   BarChartIcon: BarChartIcon,
@@ -44,38 +58,43 @@ const allowedViews = [
     label: '',
     content: [
       {
+        label: 'Dashboard',
+        icon: <img className="app-sidebar-icon" src={dashboard} />,
+        to: '/Dashboard'
+      },
+      {
         label: 'Patient',
-        icon: ChatIcon,
+        icon: <img className="app-sidebar-icon" src={dashboard2} />,
         to: "/Patient"
       },
       {
         label: 'Queue',
-        icon: FolderIcon,
+        icon: <img className="app-sidebar-icon" src={queue} />,
         to: "/Queue"
       },
       {
         label: 'KPI',
-        icon: MailIcon,
+        icon: <img className="app-sidebar-icon" src={kpi} />,
         to: "/Kpi"
       },
       {
         label: 'Appointment',
-        icon: ReceiptIcon,
+        icon: <img className="app-sidebar-icon" src={appointment} />,
         to: "/Appointment"
       },
       {
         label: 'Lab',
-        icon: ReceiptIcon,
+        icon: <img className="app-sidebar-icon" src={lab} />,
         to: "/Lab"
       },
       {
         label: 'Bed Management',
-        icon: ChatIcon,
+        icon: <img className="app-sidebar-icon" src={bedmanagement} />,
         to: "/BedManagement"
       },
       {
         label: 'Settings',
-        icon: SettingsIcon,
+        icon: <img className="app-sidebar-icon" src={setting} />,
         content: [
           {
             label: "Location",

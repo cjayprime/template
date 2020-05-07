@@ -6,8 +6,8 @@ const DEFAULT_GREY = '#8E8CA7';
 
 export const HeaderStyles = makeStyles(theme => ({
   HeaderContainer: {
-    position: 'fixed',
-    top: '-103px' //TODO{H.Ezekiel} we should not need to do this
+    //position: 'fixed',
+    // top: '-103px' //TODO{H.Ezekiel} we should not need to do this
   },
   HeaderItem: {
     padding: `${theme.spacing(2)}px`,

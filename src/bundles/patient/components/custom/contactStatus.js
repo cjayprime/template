@@ -1,7 +1,7 @@
 import React from 'react';
-import { ButtonGroup, Button } from '@material-ui/core';
+import { ButtonGroup, Button, Typography } from '@material-ui/core';
 
-const ContactStatus = ({classes, caller, setSelected, selected}) => {
+const ContactStatus = ({ classes, caller, setSelected, selected }) => {
   return (
     <ButtonGroup color="primary" className={classes.buttonGroup}>
       {caller.map((item, index) => {
@@ -11,7 +11,7 @@ const ContactStatus = ({classes, caller, setSelected, selected}) => {
             key={index.toString()}
             className={selected == item ? classes.buttons : classes.button}
             onClick={() => setSelected(item)}>
-            {item}
+            <Typography style={{color: '#fff', fontSize: 16}} > {item} </Typography>
           </Button>
         );
       })}
@@ -19,4 +19,4 @@ const ContactStatus = ({classes, caller, setSelected, selected}) => {
   );
 };
 
-export default ContactStatus; 
+export default ContactStatus;

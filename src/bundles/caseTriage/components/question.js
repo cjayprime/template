@@ -1,9 +1,9 @@
 import React, { Fragment } from 'react';
 
-import { 
-  Grid, 
-  makeStyles, 
-  createMuiTheme, 
+import {
+  Grid,
+  makeStyles,
+  createMuiTheme,
   Radio,
   RadioGroup,
   FormControlLabel,
@@ -19,6 +19,8 @@ import {
 import DateFnsUtils from '@date-io/date-fns';
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
 import { ThemeProvider } from '@material-ui/styles';
+import EventAvailable from '@material-ui/icons/EventAvailable';
+import pointer from 'images/pointer.png';
 
 const useStyles = makeStyles(theme => ({
   icon: {
@@ -129,17 +131,48 @@ const dateInputTheme = createMuiTheme({
 
 const TransformIcon = () => <KeyboardArrowDown color="primary" />;
 
-const DateQuestionType = ({ question, questionKey, answer, onAnswer }) => {
+const RenderChild = ({ classes, question }) => {
+  return (
+    <Fragment>
+      <Grid item xs={2}>
+        <img src={pointer} />
+      </Grid>
+      <Grid item xs={4}>
+        <Typography className={classes.labelText}>{question}</Typography>
+      </Grid>
+    </Fragment>
+  );
+};
+
+const RenderParent = ({ classes, question }) => {
+  return (
+    <Fragment>
+      <Grid item xs={6}>
+        <Typography className={classes.labelText}>{question}</Typography>
+      </Grid>
+    </Fragment>
+  );
+};
+
+const DateQuestionType = ({
+  question,
+  questionKey,
+  answer,
+  onAnswer,
+  isChild
+}) => {
   const selectedDate = answer ? new Date(answer) : null;
   const classes = useStyles();
 
   return (
     <Fragment>
-      <Grid container spacing={4}>
-        <Grid item xs={4}>
-          <Typography className={classes.labelText}>{question}</Typography>
-        </Grid>
-        <Grid item md={8}>
+      <Grid container spacing={10}>
+        {isChild ? (
+          <RenderChild classes={classes} question={question} />
+        ) : (
+          <RenderParent classes={classes} question={question} />
+        )}
+        <Grid item md={6}>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <ThemeProvider theme={dateInputTheme}>
               <KeyboardDatePicker
@@ -147,11 +180,13 @@ const DateQuestionType = ({ question, questionKey, answer, onAnswer }) => {
                 inputVariant="filled"
                 format="dd/MM/yyyy"
                 margin="normal"
+                
                 id={questionKey}
                 value={selectedDate}
                 onChange={date => onAnswer(questionKey, date)}
                 fullWidth={true}
                 views={['year', 'date', '']}
+                keyboardIcon={<EventAvailable style={{color: '#fff'}} />}
                 animateYearScrolling
                 autoOk
                 maxDate={new Date()}
@@ -197,11 +232,11 @@ const StringQuestionType = ({ question, answer, questionKey, onAnswer }) => {
   const classes = useStyles();
   return (
     <Fragment>
-      <Grid container spacing={4}>
-        <Grid item xs={4}>
+      <Grid container spacing={10}>
+        <Grid item xs={6}>
           <Typography className={classes.labelText}>{question}</Typography>
         </Grid>
-        <Grid item md={8}>
+        <Grid item md={6}>
           {InputTextComp(classes, {
             type: 'text',
             answer,
@@ -219,7 +254,13 @@ StringQuestionType.defaultProps = {
   onAnswer: () => {}
 };
 
-const SelectQuestionType = ({ question, answer, questionKey, onAnswer }) => {
+const SelectQuestionType = ({
+  question,
+  answer,
+  questionKey,
+  onAnswer,
+  isChild
+}) => {
   const classes = useStyles();
   const values = [
     {
@@ -230,11 +271,13 @@ const SelectQuestionType = ({ question, answer, questionKey, onAnswer }) => {
 
   return (
     <Fragment>
-      <Grid container spacing={4}>
-        <Grid item xs={4}>
-          <Typography className={classes.labelText}>{question}</Typography>
-        </Grid>
-        <Grid item md={8}>
+      <Grid container spacing={10}>
+        {isChild ? (
+          <RenderChild classes={classes} question={question} />
+        ) : (
+          <RenderParent classes={classes} question={question} />
+        )}
+        <Grid item md={6}>
           <TextField
             select
             fullWidth
@@ -279,11 +322,11 @@ const MultiChoiceQuestionType = ({
 
   return (
     <Fragment>
-      <Grid container spacing={4}>
-        <Grid item xs={4}>
+      <Grid container spacing={10}>
+        <Grid item xs={6}>
           <Typography className={classes.labelText}>{question}</Typography>
         </Grid>
-        <Grid item md={8}>
+        <Grid item md={6}>
           <RadioGroup
             style={{ display: 'flex', flexDirection: 'row' }}
             name={questionKey}

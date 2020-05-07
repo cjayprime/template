@@ -1,25 +1,27 @@
 import gql from 'graphql-tag';
 
-export const ALL_PATIENTS = gql`query AllPatients(
-    $filter: PatientFilter
-    $offset: Int
-) {
-    allPatients(
-        filter: $filter
-        offset: $offset
-    ) { nodes  {
+export const ALL_PATIENTS = gql`
+  query AllPatients($filter: PatientFilter, $offset: Int) {
+    allPatients(filter: $filter, offset: $offset) {
+      nodes {
         id
         firstname
         lastname
-        email
+        epidNumber
         phoneNumber
+        epidNumber
+        email
+        birthDate
+        sex
         patientCasesByPatientId {
-            nodes {
-                id
-                status
-            }
+           nodes {
+            id
+            status
+            riskLevel
+          }
         }
+      }
+      totalCount
     }
-    totalCount
-    }
-}` 
+  }
+`; 

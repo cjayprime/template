@@ -122,7 +122,7 @@ const formatData = locationData => {
       }
     };
   });
-}
+};
 
 const Location = ({ locationData, createLocation }) => {
   const classes = useStyles();
@@ -215,7 +215,7 @@ const Location = ({ locationData, createLocation }) => {
     if (data.length > 0) {
       setTableData(data);
     }
-  }, []);
+  }, [locationData]);
 
   if (!locationData) return null; // Should be loader
 

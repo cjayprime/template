@@ -5,22 +5,31 @@ export const QUESTIONS = [
       {
         label: 'First Name',
         placeholder: 'Enter First Name',
-        type: 'text'
+        type: 'text',
+        key: 'firstname',
+        required: true,
+        capitalize: true
       },
       {
         label: 'Last Name',
         placeholder: 'Enter Last Name',
-        type: 'text'
+        type: 'text',
+        key: 'lastname',
+        required: true,
+        capitalize: true
       },
       {
         label: 'Gender',
         type: 'radio',
-        fields: ['male', 'female']
+        fields: ['MALE', 'FEMALE'],
+        key: 'sex',
+        required: true
       },
       {
         label: 'Date of Birth',
         type: 'date',
-        fields: ['MM', 'MM', 'YYYY']
+        fields: ['DD', 'MM', 'YYYY'],
+        key: 'birthDate'
       }
     ]
   },
@@ -31,33 +40,44 @@ export const QUESTIONS = [
         label: 'Phone no.',
         type: 'phone',
         placeholder: 'Enter Phone Number',
-        fields: ['+234']
+        fields: ['+234'],
+        key: 'phoneNumber',
+        required: true
       },
       {
         label: 'Email',
         type: 'text',
         placeholder: 'Enter email',
+        key: 'email'
       },
       {
         label: 'Address',
         type: 'text',
-        placeholder: 'Street name'
+        placeholder: 'Street name',
+        key: 'streetName',
+        capitalize: true
       },
       {
         label: '',
         type: 'text',
-        placeholder: 'Street name line 2'
+        placeholder: 'Street name line 2',
+        key: 'streetName2',
+        capitalize: true
       },
       {
         label: 'City',
         type: 'text',
-        placeholder: 'Enter city'
+        placeholder: 'Enter city',
+        key: 'city',
+        capitalize: true
       },
       {
         label: 'State',
         type: 'select' ,
         placeholder: 'Choose from dropdown',
-        fields: ['Lagos', 'Kogi', 'Abia']
+        fields: ['Lagos', 'Kogi', 'Abia'],
+        key: 'state',
+        required: true
       }
     ]
   },
@@ -69,35 +89,43 @@ export const QUESTIONS = [
         label: 'LGA',
         type: 'select',
         placeholder: 'Choose from dropdown',
-        fields: ['Kosofe', 'Eti-Osa', 'Alimosho']
+        fields: ['Kosofe', 'Eti-Osa', 'Alimosho', 'Lagos Island'],
+        key: 'lga',
+        required: true
       },
       {
         label: 'Country of residence',
         type: 'select',
         placeholder: 'Choose from dropdown',
-        fields: ['Nigeria', 'England', 'Australia']
+        fields: ['Nigeria', 'England', 'Australia'],
+        key: 'countryOfResidence'
       },
       {
         label: 'Nationality',
         type: 'select',
         placeholder: 'Choose from dropdown',
-        fields: ['Nigeria', 'England', 'Australia']
+        fields: ['Nigeria', 'England', 'Australia'],
+        key: 'nationality'
       },
       {
         label: 'Occupation',
         type: 'select',
         placeholder: 'Choose from dropdown',
-        fields: ['Lawyer', 'Engineer', 'Doctor']
+        fields: ['Lawyer', 'Engineer', 'Doctor'],
+        key: 'occupation'
       },
       {
         label: 'Other',
         placeholder: 'Write a note',
-        type: 'textArea'
+        type: 'textArea',
+        key: 'notes',
       },
       {
         label: 'Location',
         type: 'text',
-        placeholder: 'Enter location'
+        placeholder: 'Enter location',
+        key: 'location',
+        capitalize: true
       },
     ],
   },
@@ -108,7 +136,9 @@ export const QUESTIONS = [
         label: 'Queue',
         type: 'select',
         placeholder: 'No queue',
-        fields: ['No queue', 'RRT', 'Pychosocial', 'Evac & Decon', 'EPID/Surveillance']
+        fields: ['No queue', 'RRT', 'Psychosocial', 'Evac & Decon', 'EPID/Surveillance'],
+        key: 'queue',
+        required: true
       }
     ]
   }

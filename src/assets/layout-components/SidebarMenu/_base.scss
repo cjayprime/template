@@ -97,4 +97,10 @@ body {
       color: $white;
     }
   }
+
+  .active-menu-custom {
+    &:hover {
+      border-left: '3px solid #fff';
+    }
+  }
 }

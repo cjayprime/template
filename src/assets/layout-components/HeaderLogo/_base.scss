@@ -10,7 +10,7 @@ body {
 
     display: flex;
     align-items: center;
-    background: rgba(255,255,255,.08);
+    // background: rgba(255,255,255,.08); //test
     padding-left: ($spacer);
     padding-right: ($spacer);
     justify-content: space-between;
@@ -35,7 +35,8 @@ body {
   }
 
   .app-header-logo-open {
-    background: rgba(255,255,255,.08);
+    //background: rgba(255,255,255,.08); // Hover header //test
+    cursor: pointer;
   }
 
   .app-header-logo-img {

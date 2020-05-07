@@ -1,7 +1,7 @@
 import React, { lazy, Suspense, Fragment } from 'react';
 import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-
+import { withRouter } from 'react-router'
 import { ThemeProvider } from '@material-ui/styles';
 
 import { ClimbingBoxLoader } from 'react-spinners';
@@ -12,7 +12,6 @@ import MuiTheme from './theme';
 
 import {
   LeftSidebar,
-  CollapsedSidebar,
   MinimalLayout,
   PresentationLayout
 } from './layout-blueprints';
@@ -49,6 +48,7 @@ import RegularTables5 from './example-pages/RegularTables5';
 import FormsControls from './example-pages/FormsControls';
 import FormsDualListbox from './example-pages/FormsDualListbox';
 import FormsToggleSwitch from './example-pages/FormsToggleSwitch';
+import logo from 'images/lagos.png'
 
 const DashboardDefault = lazy(() => import('./example-pages/DashboardDefault'));
 const DashboardAnalytics = lazy(() =>
@@ -83,9 +83,26 @@ const ApplicationsCalendar = lazy(() =>
   import('./example-pages/ApplicationsCalendar')
 );
 
-const PatientPanel  = lazy(() => import('./bundles/patient/components/Panel'))
-const CreatePatient = lazy(() => import('./bundles/patient/components/CreatePatient'))
+const PatientPanel = lazy(() => import('./bundles/patient/components/Panel'));
+const CreatePatient = lazy(() =>
+  import('./bundles/patient/components/CreatePatient')
+);
 const CreateTriage = lazy(() => import('./bundles/caseTriage/CreateTriage'))
+const Queue = lazy(() => import('./bundles/queue/components/View'));
+const Location = lazy(() => import('./bundles/location/components/View'));
+const CreateLocation = lazy(() =>
+  import('./bundles/location/components/Create')
+);
+const Staff = lazy(() => import('./bundles/setting/components/Staff'));
+const Kpi = lazy(() => import('./bundles/kpi/components/View'));
+const BedManagement = lazy(() =>
+  import('./bundles/bedmanagement/components/View')
+);
+const Appointment = lazy(() => import('./bundles/appointment/components/View'));
+const Lab = lazy(() => import('./bundles/lab/components/View'));
+const Dashboard = lazy(() => import('./bundles/dashboard'))
+
+/*
 const Queue = lazy(() => import('./bundles/queue/components/View'))
 const Location = lazy(() => import('./bundles/location/components/View'))
 const CreateLocation = lazy(() => import('./bundles/location/components/Create'))
@@ -94,7 +111,10 @@ const Kpi = lazy(() => import('./bundles/kpi/components/View'))
 const BedManagement = lazy(() => import('./bundles/bedmanagement/components/View'))
 const Appointment = lazy(() => import('./bundles/appointment/components/View'))
 const Lab = lazy(() => import('./bundles/lab/components/View'))
-const Dashboard = lazy(() => import('./bundles/dashboard'))
+<<<<<<< HEAD
+*/
+
+
 
 const ApplicationsChat = lazy(() => import('./example-pages/ApplicationsChat'));
 const ApplicationsContacts = lazy(() =>
@@ -175,7 +195,9 @@ const SparklinesCharts = lazy(() => import('./example-pages/SparklinesCharts'));
 const Maps = lazy(() => import('./example-pages/Maps'));
 const ListGroups = lazy(() => import('./example-pages/ListGroups'));
 
-const Routes = () => {
+
+const Routes = ({history}) => {
+  
   const location = useLocation();
 
   const pageVariants = {
@@ -202,13 +224,14 @@ const Routes = () => {
   const SuspenseLoading = () => {
     return (
       <Fragment>
-        <div className="d-flex align-items-center flex-column vh-100 justify-content-center text-center py-3">
+        <div className="d-flex align-items-center flex-column vh-100 justify-content-center text-center py-3" style={{backgroundColor: "#2D2E42"}}>
           <div className="d-flex align-items-center flex-column px-4">
-            <ClimbingBoxLoader color={'#5383ff'} loading={true} />
+            { /*<ClimbingBoxLoader color={'#5383ff'} loading={true} /> */}
+            <img src={logo} width={50} height={50}/>
           </div>
           <div className="text-muted font-size-xl text-center pt-3">
-            Please wait while we load the live preview examples
-            <span className="font-size-lg d-block text-dark">
+            Please wait while we load your data
+            <span style={{color: '#fff'}} className="font-size-lg d-block text-dark">
               This live preview instance can be slower than a real production
               build!
             </span>
@@ -240,6 +263,7 @@ const Routes = () => {
 
             <Route
               path={[
+                '/Dashboard',
                 '/Patient',
                 '/CreatePatient',
                 '/CreateTriage',
@@ -253,8 +277,12 @@ const Routes = () => {
                 '/Dashboard',
                 '/Lab'
               ]}>
-                   <LeftSidebar>
+
+              <LeftSidebar history={history}>
+                {/* <CollapsedSidebar> */}
+    
               { /* <CollapsedSidebar> */}
+
                 <Switch location={location} key={location.pathname}>
                   <motion.div
                     initial="initial"
@@ -262,59 +290,22 @@ const Routes = () => {
                     exit="out"
                     variants={pageVariants}
                     transition={pageTransition}>
-                    <Route
-                      path="/Patient"
-                      component={PatientPanel}
-                    />
-                    <Route
-                      path="/CreatePatient"
-                      component={CreatePatient}
-                    />
-                    <Route
-                      path="/CreateTriage"
-                      component={CreateTriage}
-                    />
-                    <Route
-                      path="/Queue"
-                      component={Queue}
-                    />
-                    <Route
-                      path="/Location"
-                      component={Location}
-                    />
-                    <Route
-                      path="/CreateLocation"
-                      component={CreateLocation}
-                    />
-                     <Route
-                      path="/Kpi"
-                      component={Kpi}
-                    />
-                    <Route
-                      path="/BedManagement"
-                      component={BedManagement}
-                    />
-                    <Route
-                      path="/Staff"
-                      component={Staff}
-                    />
-                    <Route
-                      path="/Appointment"
-                      component={Appointment}
-                    />
-                      <Route
-                      path="/Dashboard"
-                      component={Dashboard}
-                    />
-                     <Route
-                      path="/Lab"
-                      component={Lab}
-                    />
-
+                    <Route path="/Dashboard" component={Dashboard} />
+                    <Route path="/Patient" component={PatientPanel} />
+                    <Route path="/CreatePatient" component={CreatePatient} />
+                    <Route path="/CreateTriage" component={CreateTriage} />
+                    <Route path="/Queue" component={Queue} />
+                    <Route path="/Location" component={Location} />
+                    <Route path="/CreateLocation" component={CreateLocation} />
+                    <Route path="/Kpi" component={Kpi} />
+                    <Route path="/BedManagement" component={BedManagement} />
+                    <Route path="/Staff" component={Staff} />
+                    <Route path="/Appointment" component={Appointment} />
+                    <Route path="/Lab" component={Lab} />
                   </motion.div>
                 </Switch>
-             {/* </CollapsedSidebar> */}
-             </LeftSidebar>
+                {/* </CollapsedSidebar> */}
+              </LeftSidebar>
             </Route>
 
             <Route
@@ -643,4 +634,4 @@ const Routes = () => {
   );
 };
 
-export default Routes;
+export default withRouter(Routes); 

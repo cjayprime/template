@@ -14,6 +14,7 @@ export const DataTable = props => {
   const {
     headers,
     data,
+    noBorder,
     customRowRender,
     renderCollapsible,
     styles = {}
@@ -73,7 +74,7 @@ export const DataTable = props => {
               return (
                 <TableCell
                   className={clsx(
-                    classes.TableCell,
+                    noBorder ? classes.TableCellNoBorder : classes.TableCell,
                     classes.TableItem,
                     styles.TableCell
                   )}

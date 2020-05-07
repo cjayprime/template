@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import {
   Grid,
   Typography,
@@ -6,10 +6,11 @@ import {
   TextField,
   RadioGroup,
   FormControlLabel,
+  Checkbox,
   Radio
 } from '@material-ui/core';
 import MenuItem from '@material-ui/core/MenuItem';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
 
 const TransformIcon = () => <KeyboardArrowDown color="primary" />;
@@ -35,6 +36,16 @@ const year = [
   { label: '1990', value: '1990' }
 ];
 
+export const DefaultCheckbox = withStyles({
+  root: {
+    color: '#fff',
+    '&$checked': {
+      color: '#fff'
+    }
+  },
+  checked: {}
+})(props => <Checkbox color="default" {...props} />);
+
 const useStyles = makeStyles(theme => ({
   icon: {
     color: '#fff',
@@ -42,7 +53,7 @@ const useStyles = makeStyles(theme => ({
   },
   labelText: {
     fontSize: 16,
-    color: '#8E8CA7',
+    color: '#fff',
     paddingTop: 10
   },
   container: {
@@ -89,17 +100,41 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const InputTextComp = (classes, input) => {
+const capitalizeFirstWord = word =>
+  word && word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+
+const InputTextComp = (
+  classes,
+  input,
+  setFormState = () => '',
+  formState = {}
+) => {
   let rows = null;
   const multiline = input.type === 'textArea' ? true : false;
   if (multiline) rows = 5;
+
+  let nonValid = false;
+
+  if (
+    formState[input.key] !== undefined &&
+    formState[input.key] == '' &&
+    input.required
+  ) {
+    nonValid = true;
+  }
 
   return (
     <OutlinedInput
       fullWidth
       placeholder={input.placeholder || ''}
       style={{ color: 'white' }}
+      error={nonValid}
       multiline={multiline}
+      onChange={e =>
+        input.capitalize
+          ? setFormState({ [input.key]: capitalizeFirstWord(e.target.value) })
+          : setFormState({ [input.key]: e.target.value })
+      }
       rows={rows}
       classes={{
         root: classes.cssOutlinedInput,
@@ -110,7 +145,26 @@ const InputTextComp = (classes, input) => {
   );
 };
 
-const TextTransform = ({ input }) => {
+const CheckBoxComp = (
+  classes,
+  input,
+  setFormState = () => '',
+  formState = {}
+) => {
+  return (
+    <FormControlLabel
+      control={
+        <DefaultCheckbox
+          checked={formState[input.key] ? true : false}
+          onChange={e => setFormState({ [input.key]: e.target.checked })}
+        />
+      }
+      label={<Typography style={{ color: '#fff' }}> {input.label}</Typography>}
+    />
+  );
+};
+
+const TextTransform = ({ input, setFormState, formState }) => {
   const classes = useStyles();
 
   return (
@@ -122,25 +176,59 @@ const TextTransform = ({ input }) => {
         <Typography className={classes.labelText}>{input.label}</Typography>
       </Grid>
       <Grid xs={!input.labelDirection && 8} className={classes.container}>
-        {InputTextComp(classes, input )}
+        {InputTextComp(classes, input, setFormState, formState)}
       </Grid>
     </Grid>
+  );
+};
+
+const CheckBoxTransform = ({ input, setFormState, formState }) => {
+  const classes = useState();
+
+  return (
+    <Fragment>
+      <Grid xs={6} md={6} className={classes.container}>
+        {CheckBoxComp(classes, input, setFormState, formState)}
+      </Grid>
+    </Fragment>
   );
 };
 
 const remapField = input =>
   input.fields.map(field => ({ label: field, value: field }));
 
-const SelectFieldComp = (classes, input, mappedValue) => {
+const SelectFieldComp = (
+  classes,
+  input,
+  mappedValue,
+  setFormState = () => '',
+  formState = {},
+  keyValue
+) => {
   const value = mappedValue || (input.fields && remapField(input));
+
+  let enteredValue = '';
+  let addedValue = '';
+  if (keyValue) {
+    addedValue = `-${keyValue}`;
+  }
+
+  if (formState && formState[`${input.key}${addedValue}`]) {
+    enteredValue = formState[`${input.key}${addedValue}`];
+  }
+
   return (
     <TextField
       select
       fullWidth
-      onChange={() => ''}
       InputProps={{
         className: classes.select
       }}
+      onChange={e =>
+        setFormState({ [`${input.key}${addedValue}`]: e.target.value })
+      }
+      value={enteredValue}
+      placeholder={'DD'}
       SelectProps={{
         native: false,
         IconComponent: TransformIcon,
@@ -156,25 +244,40 @@ const SelectFieldComp = (classes, input, mappedValue) => {
   );
 };
 
-const generateDateTypes = (input, classes) => {
+const generateDateTypes = (input, classes, setFormState, formState) => {
   return input.fields.map((date, index) => {
     const spacing = index < 2 ? 3 : 6;
+    let value = 'y';
+
     let mappedValue = year;
 
-    if (date == 'DD') mappedValue = days;
+    if (date == 'DD') {
+      mappedValue = days;
+      value = 'd';
+    }
 
-    if (date == 'MM') mappedValue = month;
+    if (date == 'MM') {
+      mappedValue = month;
+      value = 'm';
+    }
 
     return (
-      <Grid item xs={spacing}>
+      <Grid key={`${index}--${input.label}`} item xs={spacing}>
         {' '}
-        {SelectFieldComp(classes, input, mappedValue)}
+        {SelectFieldComp(
+          classes,
+          input,
+          mappedValue,
+          setFormState,
+          formState,
+          value
+        )}
       </Grid>
     );
   });
 };
 
-const generateRadioType = (input, classes) => {
+const generateRadioType = (input, classes, setFormState) => {
   return (
     <RadioGroup
       style={{ display: 'flex', flexDirection: 'row' }}
@@ -190,6 +293,7 @@ const generateRadioType = (input, classes) => {
             }}
             control={
               <Radio
+                onChange={e => setFormState({ [input.key]: e.target.value })}
                 color="primary"
                 classes={{
                   colorPrimary: classes.radio
@@ -204,24 +308,24 @@ const generateRadioType = (input, classes) => {
   );
 };
 
-const generateSelectType = (input, classes) => {
+const generateSelectType = (input, classes, setFormState, formState) => {
   const remap = input.fields && remapField(input);
 
   return (
     <Grid item xs={12}>
       {' '}
-      {SelectFieldComp(classes, input, remap)}
+      {SelectFieldComp(classes, input, remap, setFormState, formState)}
     </Grid>
   );
 };
 
-const SelectTransform = ({ input }) => {
+const SelectTransform = ({ input, setFormState, formState }) => {
   const classes = useStyles();
 
   const selectType = {
-    select: generateSelectType(input, classes),
-    date: generateDateTypes(input, classes),
-    radio: generateRadioType(input, classes)
+    select: generateSelectType(input, classes, setFormState, formState),
+    date: generateDateTypes(input, classes, setFormState, formState),
+    radio: generateRadioType(input, classes, setFormState)
   };
 
   return (
@@ -241,7 +345,7 @@ const SelectTransform = ({ input }) => {
   );
 };
 
-const PhoneNumber = ({ input }) => {
+const PhoneNumber = ({ input, setFormState, formState }) => {
   const classes = useStyles();
   return (
     <Grid container style={{ marginBottom: 15 }}>
@@ -251,10 +355,16 @@ const PhoneNumber = ({ input }) => {
       <Grid xs={8}>
         <Grid container direction="row" xs={12} spacing={0}>
           <Grid item xs={3}>
-            {SelectFieldComp(classes, input)}
+            {SelectFieldComp(
+              classes,
+              input,
+              [{ label: '+234', value: '+234' }],
+              setFormState,
+              formState
+            )}
           </Grid>
           <Grid item xs={9}>
-            {InputTextComp(classes, input)}
+            {InputTextComp(classes, input, setFormState, formState)}
           </Grid>
         </Grid>
       </Grid>
@@ -262,33 +372,118 @@ const PhoneNumber = ({ input }) => {
   );
 };
 
-const renderType = input => {
+const TextFormDetail = ({ input }) => {
+  const classes = useStyles();
+
+  return (
+    <Grid container xs={12}>
+      <Grid item xs={3}>
+        <Typography className={classes.labelText}>{input.title}</Typography>
+      </Grid>
+
+      {input.content.map((item, index) => {
+        const key = Object.keys(item);
+
+        if (input.fullWidth) {
+          return (
+            <Grid item key={`text--${item[key]}-${index}`} xs={8}>
+              <Typography className={classes.labelText}>{item[key]}</Typography>
+            </Grid>
+          );
+        } else {
+          return (
+            <Grid item key={`text--${item[key]}-${index}`} xs={3}>
+              <Typography>{key}</Typography>
+              <Typography>{item[key]}</Typography>
+            </Grid>
+          );
+        }
+      })}
+    </Grid>
+  );
+};
+
+const renderType = (input, setFormState, formState) => {
   switch (input.type) {
     case 'text':
-      return <TextTransform input={input} />;
+      return (
+        <TextTransform
+          setFormState={setFormState}
+          input={input}
+          formState={formState}
+        />
+      );
 
     case 'date':
-      return <SelectTransform input={input} />;
+      return (
+        <SelectTransform
+          setFormState={setFormState}
+          input={input}
+          formState={formState}
+        />
+      );
 
     case 'radio':
-      return <SelectTransform input={input} />;
+      return (
+        <SelectTransform
+          setFormState={setFormState}
+          input={input}
+          formState={formState}
+        />
+      );
 
     case 'select':
-      return <SelectTransform input={input} />;
+      return (
+        <SelectTransform
+          setFormState={setFormState}
+          input={input}
+          formState={formState}
+        />
+      );
 
     case 'textArea':
-      return <TextTransform input={input} />;
+      return (
+        <TextTransform
+          setFormState={setFormState}
+          input={input}
+          formState={formState}
+        />
+      );
 
     case 'phone':
-      return <PhoneNumber input={input} />;
+      return (
+        <PhoneNumber
+          setFormState={setFormState}
+          input={input}
+          formState={formState}
+        />
+      );
+
+    case 'checkbox':
+      return (
+        <CheckBoxTransform
+          setFormState={setFormState}
+          input={input}
+          formState={formState}
+        />
+      );
+
+    case 'detail':
+      return <TextFormDetail input={input} />;
 
     default:
-      return <TextTransform input={input} />;
+      return (
+        <TextTransform
+          setFormState={setFormState}
+          input={input}
+          formState={formState}
+        />
+      );
   }
 };
 
-const FormBuilder = ({ formInput }) => {
-  return <Fragment>{renderType(formInput)}</Fragment>;
+const FormBuilder = ({ formInput, setFormState, formState }) => {
+  return <Fragment>{renderType(formInput, setFormState, formState)}</Fragment>;
 };
 
 export default FormBuilder;

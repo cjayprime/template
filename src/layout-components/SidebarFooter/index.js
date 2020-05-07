@@ -9,7 +9,7 @@ export default function SidebarFooter() {
     <Fragment>
       <Box className="app-sidebar-footer-wrapper">
         <div className="app-sidebar-footer">
-         <Typography>Logged as call center</Typography>
+         <Typography style={{color: "#fff"}}>Logged as call center</Typography>
         </div>
       </Box>
     </Fragment>

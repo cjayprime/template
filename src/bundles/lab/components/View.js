@@ -140,7 +140,6 @@ export default () => {
             renderCollapsible={renderCollapsibleComponent}
           />
         </Container>
-
         <Container className={classes.tableContainer}>
           <Typography className={classes.tableTitle}>120 Completed</Typography>
           <DataTable headers={headers} data={patientStore} />
