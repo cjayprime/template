@@ -6,7 +6,7 @@ import { HeaderStyles } from './index.style';
 
 export const Header = ({ pageTitle, contexts, pageIcon, styles = {} }) => {
   const classes = HeaderStyles();
-  const [selectedTab, setSelectedTab] = useState(null);
+  const [selectedTab, setSelectedTab] = useState(0);
   const [searchInput, setSearchInput] = useState('');
   const [dateSelectInput, setDateSelectInput] = useState('');
   // select RRT tab on mount
@@ -90,15 +90,16 @@ export const Header = ({ pageTitle, contexts, pageIcon, styles = {} }) => {
           <Tabs
             onChange={handleSelectTab}
             value={selectedTab}
-            defaultValue={context.defaultTab}
+            defaultValue={0}
             classes={{
               root: clsx(classes.RootTabsContainer, styles.RootTabsContainer),
               flexContainer: classes.TabsFlexContainer,
               indicator: classes.TabIndicator
             }}>
-            {context.tabItems.map(tab => (
+            {context.tabItems.map((tab, index) => (
               <Tab
                 label={tab}
+                selected={selectedTab === index}
                 classes={{
                   root: clsx(classes.TabContainer, styles.TabContainer),
                   selected: classes.SelectedTabContainer

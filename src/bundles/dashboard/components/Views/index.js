@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { Header } from '../../../shared/components';
 import { Container } from '@material-ui/core';
 import { DashboardPageStyles } from './index.style';
@@ -12,12 +12,19 @@ export const DashboardPageView = () => {
     'Laboratory '
   ];
   const dateSelectOptions = ['23 Apr 2020', '24 Apr 2020'];
+  const [selectedView, setSelectView] = useState(0);
 
-  const handleTabChange = _ => {};
+  const handleTabChange = newTab => setSelectView(newTab);
+
   const handleDateChange = _ => {};
 
   const classes = DashboardPageStyles();
-
+  const pages = [
+    sections.Overview,
+    sections.Surveillance,
+    sections.CaseManagement,
+    sections.Laboratory
+  ];
   return (
     <Fragment>
       <Header
@@ -43,7 +50,9 @@ export const DashboardPageView = () => {
         }}
       />
       <Container className={classes.MainPageContainer}>
-      <sections.Laboratory/>
+        {pages.map((section, index) => {
+          return <Fragment>{selectedView === index && section()}</Fragment>;
+        })}
       </Container>
     </Fragment>
   );
