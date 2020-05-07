@@ -3,7 +3,7 @@ const triageQuestions = {
     {
       question: 'Do you have a cough?',
       questionKey: 'cough',
-      options: ['yes', 'no', 'Unknown'],
+      options: ['yes', 'no'],
       type: 'MULTI_TYPE',
       displayChildrenOn: 'yes',
       children: [
@@ -17,7 +17,7 @@ const triageQuestions = {
     {
       question: 'Do you have a cold (watery catarrh i.e. runny nose)?',
       questionKey: 'runnyNose',
-      options: ['yes', 'no', 'Unknown'],
+      options: ['yes', 'no'],
       type: 'MULTI_TYPE',
       displayChildrenOn: 'yes',
       children: [
@@ -31,34 +31,34 @@ const triageQuestions = {
     {
       question: 'Do you have a headache?',
       questionKey: 'headache',
-      options: ['yes', 'no', 'Unknown'],
+      options: ['yes', 'no'],
       type: 'MULTI_TYPE'
     },
     {
       question:
         'Do you have a diarrhea (passing loose watery stool more than thrice in a day)',
       questionKey: 'diarrhoea',
-      options: ['yes', 'no', 'Unknown'],
+      options: ['yes', 'no'],
       type: 'MULTI_TYPE'
     },
     {
       question: 'Do you have a sore throat?',
       questionKey: 'soreThroat',
-      options: ['yes', 'no', 'Unknown'],
+      options: ['yes', 'no'],
       type: 'MULTI_TYPE',
       displayChildrenOn: 'yes'
     },
     {
       question: 'Are you experiencing body aches?',
       questionKey: 'bodyAches',
-      options: ['yes', 'no', 'Unknown'],
+      options: ['yes', 'no'],
       type: 'MULTI_TYPE',
       displayChildrenOn: 'yes'
     },
     {
       question: 'Do you have a high fever (very warm to touch)?',
       questionKey: 'fever',
-      options: ['yes', 'no', 'Unknown'],
+      options: ['yes', 'no'],
       type: 'MULTI_TYPE',
       displayChildrenOn: 'yes',
       children: [
@@ -77,19 +77,19 @@ const triageQuestions = {
     {
       question: 'Are you experiencing fatigue?',
       questionKey: 'fatigue',
-      options: ['yes', 'no', 'Unknown'],
+      options: ['yes', 'no'],
       type: 'MULTI_TYPE'
     },
     {
       question: 'Are you experiencing chest pains?',
       questionKey: 'chestPains',
-      options: ['yes', 'no', 'Unknown'],
+      options: ['yes', 'no'],
       type: 'MULTI_TYPE'
     },
     {
       question: 'Are you having difficulty breathing?',
       questionKey: 'difficultyBreathing',
-      options: ['yes', 'no', 'Unknown'],
+      options: ['yes', 'no'],
       type: 'MULTI_TYPE',
       displayChildrenOn: 'yes',
       children: [
@@ -105,7 +105,7 @@ const triageQuestions = {
     {
       question: 'Do you have any travel history during the past 14 days?',
       questionKey: 'travelHistory',
-      options: ['yes', 'no', 'Unknown'],
+      options: ['yes', 'no'],
       type: 'MULTI_TYPE',
       displayChildrenOn: 'yes',
       children: [
@@ -135,7 +135,7 @@ const triageQuestions = {
     {
       question: 'Do you have travel history to a COVID-19 Infected Area?',
       questionKey: 'covid19InfectedArea',
-      options: ['yes', 'no', 'Unknown'],
+      options: ['yes', 'no'],
       type: 'MULTI_TYPE',
       displayChildrenOn: 'yes'
     },
@@ -143,7 +143,7 @@ const triageQuestions = {
       question:
         'Have you had direct contact or are you taking care of a positive COVID-19 Patient?',
       questionKey: 'covid19Contact',
-      options: ['yes', 'no', 'Unknown'],
+      options: ['yes', 'no'],
       type: 'MULTI_TYPE',
       displayChildrenOn: 'yes',
       children: [
