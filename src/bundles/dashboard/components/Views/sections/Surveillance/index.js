@@ -77,7 +77,11 @@ export const Surveillance = () => {
           />
         </Grid>
       </Grid>
-      <Grid container wrap={'nowrap'} item className={classes.sectionTwo}>
+      <Grid
+        container
+        wrap={'nowrap'}
+        item
+        className={clsx(classes.PageItem, classes.sectionTwo)}>
         {SectionTwoRows.map(node => (
           <Grid item xs={3} className={classes.SectionTwoItem}>
             <ChartHolder
@@ -90,6 +94,21 @@ export const Surveillance = () => {
             />
           </Grid>
         ))}
+      </Grid>
+      <Grid container className={clsx(classes.PageItem, classes.SectionThree)}>
+        <ChartHolder
+          title={'Trends in sample testing & test Positivity (moving Average)'}
+          legend={{
+            position: 'top',
+            entries: [
+              { name: 'Total Tested', color: '#A569BD' },
+              { name: 'Test positivity', color: '#F5B7B1' },
+            ]
+          }}
+          styles={{
+            BaseContainer: classes.SectionThree
+          }}
+        />
       </Grid>
     </Container>
   );

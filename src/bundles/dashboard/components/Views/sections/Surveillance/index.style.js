@@ -57,18 +57,24 @@ export const SurveillanceSectionStyles = makeStyles(theme => ({
     marginLeft: '10px'
   },
   SectionTwo: {
-    height: '200px'
+    height: '250px'
   },
   SectionTwoItem: {
-    height: '200px',
+    height: '250px',
     marginRight: `${theme.spacing(2.2)}px`
   },
   SectionTwoNode: {
-    height: '200px',
+    height: '250px',
     paddingTop: '5%',
     paddingLeft: '14px'
   },
   SectionTwoLegendHolder: {
     minWidth: '120px'
+  },
+  SectionThree: {
+    height: '35vh'
+  },
+  SectionThreeNode: {
+    height: '35vh'
   }
 }));
