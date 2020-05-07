@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react';
-import { Header } from '../../../shared/components';
+import { Header } from 'bundles/shared/components';
 import { Container } from '@material-ui/core';
 import { DashboardPageStyles } from './index.style';
 import * as sections from './sections';

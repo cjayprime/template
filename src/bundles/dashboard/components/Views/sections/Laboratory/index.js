@@ -11,7 +11,7 @@ import {
   SummaryBox,
   ChartHolder,
   FilterList
-} from '../../../../../shared/components';
+} from 'bundles/shared/components';
 import { LaboratoryStyles } from './index.style';
 
 export const Laboratory = () => {

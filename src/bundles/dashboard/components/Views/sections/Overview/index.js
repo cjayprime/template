@@ -6,7 +6,7 @@ import {
   DataContainerWithMetadata,
   DataContainer,
   DataTable
-} from '../../../../../shared/components/';
+} from 'bundles/shared/components';
 import { OverviewPageStyles } from './index.style';
 import { basicInfoStore, SectionTwoStore, Legends, TableData } from './store';
 

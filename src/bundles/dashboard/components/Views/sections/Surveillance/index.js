@@ -5,7 +5,7 @@ import {
   FilterList,
   DataContainerWithMetadata,
   ChartHolder
-} from '../../../../../shared/components';
+} from 'bundles/shared/components';
 import { SurveillanceSectionStyles } from './index.style';
 import { recentCases, Legends, SectionTwoRows } from './store';
 

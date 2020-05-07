@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Grid, Typography } from '@material-ui/core';
 import clsx from 'clsx';
-import { ChartHolder } from '../../../../../shared/components';
+import { ChartHolder } from 'bundles/shared/components';
 import { CaseManagementStyles } from './index.style';
 import { SectionTwoRows, SectionThreeRows } from './store';
 
