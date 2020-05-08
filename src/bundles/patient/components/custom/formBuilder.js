@@ -385,7 +385,6 @@ const generateDateTypes = (
       </ThemeProvider>
     </MuiPickersUtilsProvider>
   );
-
 };
 
 const generateRadioType = (input, classes, setFormState) => {
