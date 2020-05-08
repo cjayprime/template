@@ -29,17 +29,9 @@ const CreatePatient = ({ createPatientPG, addQueue, history }) => {
   const [loading, setLoading] = useState(false);
 
   const registerPatient = async () => {
-    const key = 'birthDate';
-    const day = formState[`${key}-d`];
-    const month = formState[`${key}-m`];
-    const year = formState[`${key}-y`];
-
+    
     const parseObject = { ...formState };
-    delete parseObject[`${key}-d`];
-    delete parseObject[`${key}-m`];
-    delete parseObject[`${key}-y`];
-
-    parseObject['birthDate'] = `${year}-${day}-${day}`; // fix birthdate
+    // parseObject['birthDate'] = `${year}-${day}-${day}`; // fix birthdate
     parseObject['epidNumber'] = `${Math.floor(Math.random() * 999999)}`;
     const queueTeam = parseObject['queue'];
 
