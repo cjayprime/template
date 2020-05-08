@@ -1,10 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { ButtonBase } from '@material-ui/core'
 
 const View = () => {
     return (
-        <div> 
-            Malik
-        </div>
+        <ButtonBase to="/CreateAppointment" component={Link}> 
+            Create Appointment
+        </ButtonBase>
     )
 }
 

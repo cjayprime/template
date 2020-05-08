@@ -6,14 +6,32 @@ import {
   TextField,
   RadioGroup,
   FormControlLabel,
+  Button,
+  createMuiTheme,
   Checkbox,
   Radio
 } from '@material-ui/core';
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
+import {
+  KeyboardDatePicker,
+  KeyboardTimePicker,
+  MuiPickersUtilsProvider
+} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
+import { ThemeProvider } from '@material-ui/styles';
+// import EventAvailable from '@material-ui/icons/EventAvailable';
 
-const TransformIcon = () => <KeyboardArrowDown color="primary" />;
+const TransformIcon = () => (
+  <KeyboardArrowDown color="primary" style={{ color: '#fff' }} />
+);
+
+const TransformButtonIcon = ({ props }) => (
+  <Button {...props}>
+    <KeyboardArrowDown color="primary" style={{ color: '#fff' }} />
+  </Button>
+);
 
 const days = [
   { label: '1', value: '1' },
@@ -99,6 +117,51 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: '#474562'
   }
 }));
+
+const dateInputTheme = createMuiTheme({
+  overrides: {
+    MuiFilledInput: {
+      root: {
+        backgroundColor: '#474562',
+        color: '#fff',
+        borderRadius: '8px !important',
+        border: '2px solid transparent',
+        '&:hover': {
+          backgroundColor: '#474562'
+        },
+        '&$focused': {
+          borderColor: '#fff',
+          backgroundColor: '#474562'
+        }
+      },
+      underline: {
+        backgroundColor: '#474562',
+        '&:before, &:after': {
+          display: 'none'
+        }
+      },
+      adornedEnd: {
+        paddingRight: 5,
+        color: '#fff'
+      },
+      input: {
+        paddingTop: 18.5,
+        paddingBottom: 18.5,
+        borderRadius: 8,
+        height: 16.625,
+        lineHeight: 1
+      }
+    },
+    MuiFormControl: {
+      root: {
+        border: 0
+      },
+      marginNormal: {
+        margin: '0 !important'
+      }
+    }
+  }
+});
 
 const capitalizeFirstWord = word =>
   word && word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
@@ -231,7 +294,7 @@ const SelectFieldComp = (
       placeholder={'DD'}
       SelectProps={{
         native: false,
-        IconComponent: TransformIcon,
+        IconComponent: TransformButtonIcon,
         icon: classes.icon
       }}
       variant="outlined">
@@ -244,37 +307,84 @@ const SelectFieldComp = (
   );
 };
 
-const generateDateTypes = (input, classes, setFormState, formState) => {
-  return input.fields.map((date, index) => {
-    const spacing = index < 2 ? 3 : 6;
-    let value = 'y';
-
-    let mappedValue = year;
-
-    if (date == 'DD') {
-      mappedValue = days;
-      value = 'd';
-    }
-
-    if (date == 'MM') {
-      mappedValue = month;
-      value = 'm';
-    }
-
+const generateDateTypes = (
+  input,
+  classes,
+  setFormState = () => '',
+  formState = {}
+) => {
+  if (input.label == 'Time') {
     return (
-      <Grid key={`${index}--${input.label}`} item xs={spacing}>
-        {' '}
-        {SelectFieldComp(
-          classes,
-          input,
-          mappedValue,
-          setFormState,
-          formState,
-          value
-        )}
-      </Grid>
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <ThemeProvider theme={dateInputTheme}>
+          <KeyboardTimePicker
+            variant="inline"
+            inputVariant="filled"
+            margin="normal"
+            id={input.key}
+            value={formState[input.key]}
+            onChange={date => setFormState({ [input.key]: date })}
+            fullWidth={true}
+            keyboardIcon={<TransformIcon style={{ color: '#fff' }} />}
+            animateYearScrolling
+            autoOk
+          />
+        </ThemeProvider>
+      </MuiPickersUtilsProvider>
     );
-  });
+  }
+
+  return (
+    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+      <ThemeProvider theme={dateInputTheme}>
+        <KeyboardDatePicker
+          variant="inline"
+          inputVariant="filled"
+          format="dd/MM/yyyy"
+          margin="normal"
+          id={input.key}
+          value={formState[input.key]}
+          onChange={date => setFormState({ [input.key]: date })}
+          fullWidth={true}
+          views={['year', 'date', '']}
+          keyboardIcon={<TransformIcon style={{ color: '#fff' }} />}
+          animateYearScrolling
+          autoOk
+          maxDate={new Date()}
+        />
+      </ThemeProvider>
+    </MuiPickersUtilsProvider>
+  );
+  // return input.fields.map((date, index) => {
+  //   const spacing = index < 2 ? 3 : 6;
+  //   let value = 'y';
+
+  //   let mappedValue = year;
+
+  //   if (date == 'DD') {
+  //     mappedValue = days;
+  //     value = 'd';
+  //   }
+
+  //   if (date == 'MM') {
+  //     mappedValue = month;
+  //     value = 'm';
+  //   }
+
+  //   return (
+  //     <Grid key={`${index}--${input.label}`} item xs={spacing}>
+  //       {' '}
+  //       {SelectFieldComp(
+  //         classes,
+  //         input,
+  //         mappedValue,
+  //         setFormState,
+  //         formState,
+  //         value
+  //       )}
+  //     </Grid>
+  //   );
+  // });
 };
 
 const generateRadioType = (input, classes, setFormState) => {

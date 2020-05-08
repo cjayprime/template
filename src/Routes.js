@@ -83,24 +83,25 @@ const ApplicationsCalendar = lazy(() =>
   import('./example-pages/ApplicationsCalendar')
 );
 
-const PatientPanel = lazy(() => import('./bundles/patient/components/Panel'));
+const PatientPanel = lazy(() => import('bundles/patient/components/Panel'));
 const CreatePatient = lazy(() =>
-  import('./bundles/patient/components/CreatePatient')
+  import('bundles/patient/components/CreatePatient')
 );
-const CreateTriage = lazy(() => import('./bundles/caseTriage/CreateTriage'))
-const Queue = lazy(() => import('./bundles/queue/components/View'));
-const Location = lazy(() => import('./bundles/location/components/View'));
+const CreateTriage = lazy(() => import('bundles/caseTriage/CreateTriage'))
+const Queue = lazy(() => import('bundles/queue/components/View'));
+const Location = lazy(() => import('bundles/location/components/View'));
 const CreateLocation = lazy(() =>
-  import('./bundles/location/components/Create')
+  import('bundles/location/components/Create')
 );
-const Staff = lazy(() => import('./bundles/setting/components/Staff'));
-const Kpi = lazy(() => import('./bundles/kpi/components/View'));
+const Staff = lazy(() => import('bundles/setting/components/Staff'));
+const Kpi = lazy(() => import('bundles/kpi/components/View'));
 const BedManagement = lazy(() =>
-  import('./bundles/bedmanagement/components/View')
+  import('bundles/bedmanagement/components/View')
 );
-const Appointment = lazy(() => import('./bundles/appointment/components/View'));
-const Lab = lazy(() => import('./bundles/lab/components/View'));
-const Dashboard = lazy(() => import('./bundles/dashboard'))
+const Appointment = lazy(() => import('bundles/appointment/components/View'));
+const Lab = lazy(() => import('bundles/lab/components/View'));
+const Dashboard = lazy(() => import('bundles/dashboard'))
+const CreateAppointment = lazy(() => import('bundles/appointment/components/create'))
 
 /*
 const Queue = lazy(() => import('./bundles/queue/components/View'))
@@ -116,72 +117,72 @@ const Lab = lazy(() => import('./bundles/lab/components/View'))
 
 
 
-const ApplicationsChat = lazy(() => import('./example-pages/ApplicationsChat'));
-const ApplicationsContacts = lazy(() =>
-  import('./example-pages/ApplicationsContacts')
-);
-const ApplicationsFileManager = lazy(() =>
-  import('./example-pages/ApplicationsFileManager')
-);
-const ApplicationsMail = lazy(() => import('./example-pages/ApplicationsMail'));
+// const ApplicationsChat = lazy(() => import('./example-pages/ApplicationsChat'));
+// const ApplicationsContacts = lazy(() =>
+//   import('./example-pages/ApplicationsContacts')
+// );
+// const ApplicationsFileManager = lazy(() =>
+//   import('./example-pages/ApplicationsFileManager')
+// );
+// const ApplicationsMail = lazy(() => import('./example-pages/ApplicationsMail'));
 const ApplicationsProjects = lazy(() =>
   import('./example-pages/ApplicationsProjects')
 );
 const ApplicationsWidgets = lazy(() =>
   import('./example-pages/ApplicationsWidgets')
 );
-const Cards1 = lazy(() => import('./example-pages/Cards1'));
-const Cards2 = lazy(() => import('./example-pages/Cards2'));
-const Cards3 = lazy(() => import('./example-pages/Cards3'));
-const Cards4 = lazy(() => import('./example-pages/Cards4'));
-const Cards5 = lazy(() => import('./example-pages/Cards5'));
-const Cards6 = lazy(() => import('./example-pages/Cards6'));
-const Cards7 = lazy(() => import('./example-pages/Cards7'));
-const Cards8 = lazy(() => import('./example-pages/Cards8'));
-const Cards9 = lazy(() => import('./example-pages/Cards9'));
-const Cards10 = lazy(() => import('./example-pages/Cards10'));
-const Cards11 = lazy(() => import('./example-pages/Cards11'));
-const Cards12 = lazy(() => import('./example-pages/Cards12'));
+// const Cards1 = lazy(() => import('./example-pages/Cards1'));
+// const Cards2 = lazy(() => import('./example-pages/Cards2'));
+// const Cards3 = lazy(() => import('./example-pages/Cards3'));
+// const Cards4 = lazy(() => import('./example-pages/Cards4'));
+// const Cards5 = lazy(() => import('./example-pages/Cards5'));
+// const Cards6 = lazy(() => import('./example-pages/Cards6'));
+// const Cards7 = lazy(() => import('./example-pages/Cards7'));
+// const Cards8 = lazy(() => import('./example-pages/Cards8'));
+// const Cards9 = lazy(() => import('./example-pages/Cards9'));
+// const Cards10 = lazy(() => import('./example-pages/Cards10'));
+// const Cards11 = lazy(() => import('./example-pages/Cards11'));
+// const Cards12 = lazy(() => import('./example-pages/Cards12'));
 const LandingPage = lazy(() => import('./example-pages/LandingPage'));
-const FeatureSections = lazy(() => import('./example-pages/FeatureSections'));
-const IconBoxes = lazy(() => import('./example-pages/IconBoxes'));
-const PricingTables = lazy(() => import('./example-pages/PricingTables'));
-const HeaderSections = lazy(() => import('./example-pages/HeaderSections'));
-const TestimonialsSections = lazy(() =>
-  import('./example-pages/TestimonialsSections')
-);
-const BlogSections = lazy(() => import('./example-pages/BlogSections'));
-const PartnersSections = lazy(() => import('./example-pages/PartnersSections'));
-const CtaBoxes = lazy(() => import('./example-pages/CtaBoxes'));
-const FooterSections = lazy(() => import('./example-pages/FooterSections'));
-const HeroSections = lazy(() => import('./example-pages/HeroSections'));
-const Accordions = lazy(() => import('./example-pages/Accordions'));
-const Modals = lazy(() => import('./example-pages/Modals'));
-const Notifications = lazy(() => import('./example-pages/Notifications'));
-const DragDrop = lazy(() => import('./example-pages/DragDrop'));
-const Calendars = lazy(() => import('./example-pages/Calendars'));
-const Carousels = lazy(() => import('./example-pages/Carousels'));
-const Popovers = lazy(() => import('./example-pages/Popovers'));
-const TreeView = lazy(() => import('./example-pages/TreeView'));
-const Tabs = lazy(() => import('./example-pages/Tabs'));
-const GuidedTours = lazy(() => import('./example-pages/GuidedTours'));
-const ImageCrop = lazy(() => import('./example-pages/ImageCrop'));
-const LoadingIndicators = lazy(() =>
-  import('./example-pages/LoadingIndicators')
-);
-const ContextMenus = lazy(() => import('./example-pages/ContextMenus'));
-const DynamicTables2 = lazy(() => import('./example-pages/DynamicTables2'));
-const FormsWizard = lazy(() => import('./example-pages/FormsWizard'));
-const FormsClipboard = lazy(() => import('./example-pages/FormsClipboard'));
-const FormsColorpicker = lazy(() => import('./example-pages/FormsColorpicker'));
-const FormsDatepicker = lazy(() => import('./example-pages/FormsDatepicker'));
-const FormsInputMask = lazy(() => import('./example-pages/FormsInputMask'));
-const FormsInputSelect = lazy(() => import('./example-pages/FormsInputSelect'));
-const FormsSlider = lazy(() => import('./example-pages/FormsSlider'));
-const FormsTextareaAutosize = lazy(() =>
-  import('./example-pages/FormsTextareaAutosize')
-);
-const FormsTimepicker = lazy(() => import('./example-pages/FormsTimepicker'));
+// const FeatureSections = lazy(() => import('./example-pages/FeatureSections'));
+// const IconBoxes = lazy(() => import('./example-pages/IconBoxes'));
+// const PricingTables = lazy(() => import('./example-pages/PricingTables'));
+// const HeaderSections = lazy(() => import('./example-pages/HeaderSections'));
+// const TestimonialsSections = lazy(() =>
+//   import('./example-pages/TestimonialsSections')
+// );
+// const BlogSections = lazy(() => import('./example-pages/BlogSections'));
+// const PartnersSections = lazy(() => import('./example-pages/PartnersSections'));
+// const CtaBoxes = lazy(() => import('./example-pages/CtaBoxes'));
+// const FooterSections = lazy(() => import('./example-pages/FooterSections'));
+// const HeroSections = lazy(() => import('./example-pages/HeroSections'));
+// const Accordions = lazy(() => import('./example-pages/Accordions'));
+// const Modals = lazy(() => import('./example-pages/Modals'));
+// const Notifications = lazy(() => import('./example-pages/Notifications'));
+// const DragDrop = lazy(() => import('./example-pages/DragDrop'));
+// const Calendars = lazy(() => import('./example-pages/Calendars'));
+// const Carousels = lazy(() => import('./example-pages/Carousels'));
+// const Popovers = lazy(() => import('./example-pages/Popovers'));
+// const TreeView = lazy(() => import('./example-pages/TreeView'));
+// const Tabs = lazy(() => import('./example-pages/Tabs'));
+// const GuidedTours = lazy(() => import('./example-pages/GuidedTours'));
+// const ImageCrop = lazy(() => import('./example-pages/ImageCrop'));
+// const LoadingIndicators = lazy(() =>
+//   import('./example-pages/LoadingIndicators')
+// );
+// const ContextMenus = lazy(() => import('./example-pages/ContextMenus'));
+// const DynamicTables2 = lazy(() => import('./example-pages/DynamicTables2'));
+// const FormsWizard = lazy(() => import('./example-pages/FormsWizard'));
+// const FormsClipboard = lazy(() => import('./example-pages/FormsClipboard'));
+// const FormsColorpicker = lazy(() => import('./example-pages/FormsColorpicker'));
+// const FormsDatepicker = lazy(() => import('./example-pages/FormsDatepicker'));
+// const FormsInputMask = lazy(() => import('./example-pages/FormsInputMask'));
+// const FormsInputSelect = lazy(() => import('./example-pages/FormsInputSelect'));
+// const FormsSlider = lazy(() => import('./example-pages/FormsSlider'));
+// const FormsTextareaAutosize = lazy(() =>
+//   import('./example-pages/FormsTextareaAutosize')
+// );
+// const FormsTimepicker = lazy(() => import('./example-pages/FormsTimepicker'));
 const FormsTypeahead = lazy(() => import('./example-pages/FormsTypeahead'));
 const FormsUpload = lazy(() => import('./example-pages/FormsUpload'));
 const FormsValidation = lazy(() => import('./example-pages/FormsValidation'));
@@ -275,7 +276,8 @@ const Routes = ({history}) => {
                 '/BedManagement',
                 '/Appointment',
                 '/Dashboard',
-                '/Lab'
+                '/Lab',
+                '/CreateAppointment'
               ]}>
 
               <LeftSidebar history={history}>
@@ -301,6 +303,7 @@ const Routes = ({history}) => {
                     <Route path="/BedManagement" component={BedManagement} />
                     <Route path="/Staff" component={Staff} />
                     <Route path="/Appointment" component={Appointment} />
+                    <Route path="/CreateAppointment" component={CreateAppointment} />
                     <Route path="/Lab" component={Lab} />
                   </motion.div>
                 </Switch>
@@ -496,7 +499,7 @@ const Routes = ({history}) => {
                       path="/ApplicationsWidgets"
                       component={ApplicationsWidgets}
                     />
-                    <Route path="/PagesProfile" component={PagesProfile} />
+                    {/* <Route path="/PagesProfile" component={PagesProfile} />
                     <Route path="/PagesInvoice" component={PagesInvoice} />
                     <Route path="/Buttons" component={Buttons} />
                     <Route path="/Dropdowns" component={Dropdowns} />
@@ -603,7 +606,7 @@ const Routes = ({history}) => {
                     <Route
                       path="/FormsToggleSwitch"
                       component={FormsToggleSwitch}
-                    />
+                    /> */}
                     <Route path="/FormsTypeahead" component={FormsTypeahead} />
                     <Route path="/FormsUpload" component={FormsUpload} />
                     <Route
