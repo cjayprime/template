@@ -36,10 +36,10 @@ const List = ({ header, data }) => {
     <DataTable
       headers={header}
       data={data}
-      renderCollapsible={row => <PatientTab />}
+      renderCollapsible={row => <PatientTab patientData={row} />}
     />
   );
-}; 
+};
 
 const expand = () => {
   return <KeyboardArrowDown />;

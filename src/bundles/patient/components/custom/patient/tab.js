@@ -1,28 +1,30 @@
 import React, { Fragment } from 'react';
-import { Grid, Tabs, Tab, Typography, Box, Button, Chip } from '@material-ui/core';
+import {
+  Grid,
+  Tabs,
+  Tab,
+  Typography,
+  Box,
+  Button,
+  Chip
+} from '@material-ui/core';
 import Formbuilder from 'bundles/patient/components/custom/formBuilder';
 import { makeStyles } from '@material-ui/core/styles';
-import { DataTable } from 'bundles/shared/components/Datatable'
+import { DataTable } from 'bundles/shared/components/Datatable';
+import { PatientDetails } from './patientDetails';
 
 const HeaderStyles = makeStyles(theme => ({
   HeaderContainer: {
-    position: 'fixed',
-    top: '-103px' //TODO{H.Ezekiel} we should not need to do this
+    position: 'fixed'
   },
   TabIndicator: {
     height: 5
   },
-  TabContainer: {
-    paddingBottom: 10
-
-    // fontSize: '14px'
-  },
+  TabContainer: {},
   SelectedTabContainer: {
     color: 'white'
   }
 }));
-
-
 
 export const PATIENT_DETAILS = [
   {
@@ -52,6 +54,26 @@ export const PATIENT_DETAILS = [
     content: [{ Location: 'Location Name', Other: 'Other info' }]
   }
 ];
+
+// const PATIENT_DETAILS_ALT = {
+//   birthDate: '1988-02-02T00:00:00+01:00',
+//   city: 'Ilupeju',
+//   countryOfResidence: 'Nigeria',
+//   email: null,
+//   epidNumber: '134040',
+//   firstname: 'random',
+//   id: 4,
+//   lastname: 'Patient',
+//   lga: 'Ilupeju',
+//   location: 'Lagos',
+//   nationality: 'Nigeria',
+//   occupation: 'Lawyer',
+//   phoneNumber: '+2348111111111',
+//   streetName: 'Olusoji Idowu Street',
+//   state: 'Lagos',
+//   streetName2: null,
+//   sex: 'MALE'
+// };
 
 export const CALL_SUMMARY = [
   {
@@ -107,7 +129,6 @@ export const patientStore = [
   }
 ];
 
-
 /*
 const caseHeader = [
   { name: 'DATE', accessor: 'sampleNumber' },
@@ -118,9 +139,7 @@ const caseHeader = [
   { name: 'ACTION', accessor: renderActionComponent }
 ]; */
 
-
-
-const PatientTab = () => {
+const PatientTab = ({ patientData }) => {
   const [value, setValue] = React.useState(0);
   const classes = HeaderStyles();
 
@@ -128,7 +147,7 @@ const PatientTab = () => {
     setValue(newValue);
   };
 
-  const renderActionComponent = (row) => (
+  const renderActionComponent = row => (
     <Button className={classes.actionButton}>Submit Result</Button>
   );
 
@@ -140,12 +159,10 @@ const PatientTab = () => {
     { name: 'CREATED BY', accessor: 'createdBy' },
     { name: 'ACTION', accessor: renderActionComponent }
   ];
-  
-  
+
   const testStore = [
     {
       dateRequested: '400',
-      requestDate: '20-20-10',
       status: 'Completed',
       result: 'Dr. G. Jenkins',
       createdBy: '4 hours',
@@ -153,20 +170,16 @@ const PatientTab = () => {
     },
     {
       dateRequested: '400',
-      requestDate: '20-20-10',
       status: 'Completed',
       result: 'Dr. G. Jenkins',
       createdBy: '4 hours',
       requestDate: '31 Mar, 7:34PM'
-    },
+    }
   ];
 
- 
-  
   const renderStatusComponent = row => (
     <Chip label={row.status} variant="default" size="small" />
   );
-  
 
   function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -231,11 +244,7 @@ const PatientTab = () => {
         <Grid>
           <TabPanel value={value} index={0}>
             <Grid container xs={12}>
-              <Fragment>
-                {PATIENT_DETAILS.map(data => {
-                  return <Formbuilder formInput={data} />;
-                })}
-              </Fragment>
+              <PatientDetails {...patientData} />
             </Grid>
           </TabPanel>
           <TabPanel value={value} index={1}>
@@ -248,10 +257,10 @@ const PatientTab = () => {
             </Grid>
           </TabPanel>
           <TabPanel value={value} index={2}>
-              <DataTable headers={labHeader} noBorder={true}  data={testStore} />
+            <DataTable headers={labHeader} noBorder={true} data={testStore} />
           </TabPanel>
           <TabPanel value={value} index={3}>
-            <DataTable headers={labHeader}  noBorder={true} data={testStore} />
+            <DataTable headers={labHeader} noBorder={true} data={testStore} />
           </TabPanel>
           <TabPanel value={value} index={4}>
             Appointments
