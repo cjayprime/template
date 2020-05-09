@@ -16,6 +16,22 @@ const useStyles = makeStyles(() => ({
     color: '#fff',
     fontSize: 14,
     paddingRight: 20
+  },
+  CallSummaryNotesInput: {
+    '&$cssFocused $notchedOutline': {
+      borderColor: `${theme.palette.primary.main} !important`
+    },
+    backgroundColor: '#474562',
+    color: '#fff'
+  },
+  CallSummaryNotesInputFocused: {},
+  CallSummaryNotesInputNotch: {
+    '&$cssFocused $notchedOutline': {
+      borderColor: `${theme.palette.primary.main} !important`
+    },
+    borderWidth: '1px',
+    borderColor: 'transparent !important',
+    color: 'white'
   }
 }));
 
@@ -24,8 +40,51 @@ export const PatientCallHistory = ({ patient }) => {
   const classes = useStyles();
   return (
     <Fragment>
+      <Grid container>
+        <Grid item xs={12}>
+          <Grid container style={{ padding: '12px 0' }}>
+            <Grid xs={3} classes={{ root: classes.CallHistoryHeaders }}>
+              Date & Time
+            </Grid>
+            <Grid xs classes={{ root: classes.CallHistoryHeaders }}>
+              Call summary
+            </Grid>
+          </Grid>
+          <Grid container style={{ padding: '12px 0' }}>
+            <Grid xs={3} classes={{ root: classes.CallHistoryDateDisplay }}>
+              Date & Time
+            </Grid>
+            <Grid xs classes={{ root: classes.CallHistoryHeaders }}>
+              <OutlinedInput
+                fullWidth
+                multiline
+                rows={5}
+                placeholder="Enter additional information"
+                variant="outlined"
+                classes={{
+                  root: classes.CallSummaryNotesInput,
+                  focused: classes.CallSummaryNotesInputFocused,
+                  notchedOutline: classes.CallSummaryNotesInputNotch
+                }}
+              />
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          style={{ padding: '20px 0', borderBottom: '#59596F 1px solid' }}>
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center">
+            <div>oreofe</div>
+            <div>olutola</div>
+          </Box>
+        </Grid>
+      </Grid>
       <Grid container style={{ padding: '12px 0' }}>
-        <Grid xs="3" classes={{ root: classes.CallHistoryHeaders }}>
+        <Grid xs={3} classes={{ root: classes.CallHistoryHeaders }}>
           Date & Time
         </Grid>
         <Grid xs classes={{ root: classes.CallHistoryHeaders }}>
@@ -33,7 +92,7 @@ export const PatientCallHistory = ({ patient }) => {
         </Grid>
       </Grid>
       <Grid container style={{ padding: '12px 0' }}>
-        <Grid xs="3" classes={{ root: classes.CallHistoryDateDisplay }}>
+        <Grid xs={3} classes={{ root: classes.CallHistoryDateDisplay }}>
           31 Mar, 7:54 PM
         </Grid>
         <Grid xs classes={{ root: classes.CallHistoryNotes }}>
@@ -41,7 +100,7 @@ export const PatientCallHistory = ({ patient }) => {
         </Grid>
       </Grid>
       <Grid container style={{ padding: '12px 0' }}>
-        <Grid xs="3" classes={{ root: classes.CallHistoryDateDisplay }}>
+        <Grid xs={3} classes={{ root: classes.CallHistoryDateDisplay }}>
           31 Mar, 11:12 AM
         </Grid>
         <Grid xs classes={{ root: classes.CallHistoryNotes }}>
@@ -53,7 +112,7 @@ export const PatientCallHistory = ({ patient }) => {
         </Grid>
       </Grid>
       <Grid container style={{ padding: '12px 0' }}>
-        <Grid xs="3" classes={{ root: classes.CallHistoryDateDisplay }}>
+        <Grid xs={3} classes={{ root: classes.CallHistoryDateDisplay }}>
           28 Mar, 1:32 PM
         </Grid>
         <Grid xs classes={{ root: classes.CallHistoryNotes }}>

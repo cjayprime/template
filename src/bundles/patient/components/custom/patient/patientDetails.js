@@ -28,12 +28,12 @@ export const PatientDetails = ({ patient }) => {
   return (
     <Fragment>
       <Grid container>
-        <Grid item xs="3">
+        <Grid item xs={3}>
           <Typography classes={{ root: classes.PatientDetailsSectionHeader }}>
             Contact Information
           </Typography>
         </Grid>
-        <Grid item xs="5">
+        <Grid item xs={5}>
           <div>
             <Typography classes={{ root: classes.PatientDetailValueHeader }}>
               Phone Number
@@ -52,7 +52,7 @@ export const PatientDetails = ({ patient }) => {
             </Typography>
           </div>
         </Grid>
-        <Grid item xs="4">
+        <Grid item xs={4}>
           <Typography classes={{ root: classes.PatientDetailValueHeader }}>
             Email
           </Typography>
@@ -62,12 +62,12 @@ export const PatientDetails = ({ patient }) => {
         </Grid>
       </Grid>
       <Grid container style={{ marginTop: 30 }}>
-        <Grid item xs="3">
+        <Grid item xs={3}>
           <Typography classes={{ root: classes.PatientDetailsSectionHeader }}>
             Other
           </Typography>
         </Grid>
-        <Grid item xs="5">
+        <Grid item xs={5}>
           <div>
             <Typography classes={{ root: classes.PatientDetailValueHeader }}>
               LGA
@@ -93,7 +93,7 @@ export const PatientDetails = ({ patient }) => {
             </Typography>
           </div>
         </Grid>
-        <Grid item xs="4">
+        <Grid item xs={4}>
           <div>
             <Typography classes={{ root: classes.PatientDetailValueHeader }}>
               Country of Residence
