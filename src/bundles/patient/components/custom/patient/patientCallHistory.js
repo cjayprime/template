@@ -1,7 +1,17 @@
 import React, { Fragment } from 'react';
-import { Grid, makeStyles } from '@material-ui/core';
+import classnames from 'classnames';
+import {
+  Grid,
+  makeStyles,
+  OutlinedInput,
+  FormControlLabel,
+  Typography,
+  Button
+} from '@material-ui/core';
 
-const useStyles = makeStyles(() => ({
+import { DefaultCheckbox } from 'bundles/patient/components/custom/formBuilder';
+
+const useStyles = makeStyles(theme => ({
   CallHistoryHeaders: {
     color: '#BDB8D9',
     fontSize: 15,
@@ -32,12 +42,39 @@ const useStyles = makeStyles(() => ({
     borderWidth: '1px',
     borderColor: 'transparent !important',
     color: 'white'
+  },
+  regLabelText: {
+    fontSize: 15,
+    color: '#fff'
+  },
+  formButton: {
+    boxShadow: 'none',
+    borderRadius: 20,
+    textTransform: 'none',
+    border: 'none',
+    color: 'white',
+    lineHeight: 1.5,
+    fontSize: 16,
+    padding: '10px 50px 10px'
+  },
+  formButtonTS: {
+    backgroundColor: '#28BAC0',
+    boxShadow:
+      '0 6px 16px rgba(39, 186, 192, 0.20), 0 2px 10px rgba(39, 186, 192, 0.10)',
+    '&:hover': {
+      backgroundColor: '#28BAC0',
+      border: 'none'
+    },
+    '&:active': {
+      backgroundColor: '#28BAC0',
+      border: 'none'
+    }
   }
 }));
 
 export const PatientCallHistory = ({ patient }) => {
-  console.log(patient, 'patient details');
   const classes = useStyles();
+
   return (
     <Fragment>
       <Grid container>
@@ -52,7 +89,7 @@ export const PatientCallHistory = ({ patient }) => {
           </Grid>
           <Grid container style={{ padding: '12px 0' }}>
             <Grid xs={3} classes={{ root: classes.CallHistoryDateDisplay }}>
-              Date & Time
+              Now
             </Grid>
             <Grid xs classes={{ root: classes.CallHistoryHeaders }}>
               <OutlinedInput
@@ -74,13 +111,32 @@ export const PatientCallHistory = ({ patient }) => {
           item
           xs={12}
           style={{ padding: '20px 0', borderBottom: '#59596F 1px solid' }}>
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center">
-            <div>oreofe</div>
-            <div>olutola</div>
-          </Box>
+          <Grid container>
+            <Grid item xs={6}>
+              <FormControlLabel
+                control={<DefaultCheckbox name="sendEmergencyNumberToCaller" />}
+                label={
+                  <Typography classes={{ root: classes.regLabelText }}>
+                    {' '}
+                    Send Emergency Number to caller
+                  </Typography>
+                }
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <Grid container justify="flex-end">
+                <Button className={classes.formButton}>CANCEL</Button>
+                <Button
+                  disableElevation={false}
+                  className={classnames(
+                    classes.formButton,
+                    classes.formButtonTS
+                  )}>
+                  SAVE
+                </Button>
+              </Grid>
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
       <Grid container style={{ padding: '12px 0' }}>
@@ -112,10 +168,10 @@ export const PatientCallHistory = ({ patient }) => {
         </Grid>
       </Grid>
       <Grid container style={{ padding: '12px 0' }}>
-        <Grid xs={3} classes={{ root: classes.CallHistoryDateDisplay }}>
+        <Grid item xs={3} classes={{ root: classes.CallHistoryDateDisplay }}>
           28 Mar, 1:32 PM
         </Grid>
-        <Grid xs classes={{ root: classes.CallHistoryNotes }}>
+        <Grid item xs classes={{ root: classes.CallHistoryNotes }}>
           First call - gathered all the info in “patient details” section
         </Grid>
       </Grid>
