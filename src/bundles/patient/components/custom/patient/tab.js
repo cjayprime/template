@@ -12,13 +12,15 @@ import Formbuilder from 'bundles/patient/components/custom/formBuilder';
 import { makeStyles } from '@material-ui/core/styles';
 import { DataTable } from 'bundles/shared/components/Datatable';
 import { PatientDetails } from './patientDetails';
+import { PatientCallHistory } from './patientCallHistory';
 
 const HeaderStyles = makeStyles(theme => ({
   HeaderContainer: {
     position: 'fixed'
   },
   TabIndicator: {
-    height: 5
+    height: 4,
+    backgroundColor: '#FFFEFD'
   },
   TabContainer: {},
   SelectedTabContainer: {
@@ -54,26 +56,6 @@ export const PATIENT_DETAILS = [
     content: [{ Location: 'Location Name', Other: 'Other info' }]
   }
 ];
-
-// const PATIENT_DETAILS_ALT = {
-//   birthDate: '1988-02-02T00:00:00+01:00',
-//   city: 'Ilupeju',
-//   countryOfResidence: 'Nigeria',
-//   email: null,
-//   epidNumber: '134040',
-//   firstname: 'random',
-//   id: 4,
-//   lastname: 'Patient',
-//   lga: 'Ilupeju',
-//   location: 'Lagos',
-//   nationality: 'Nigeria',
-//   occupation: 'Lawyer',
-//   phoneNumber: '+2348111111111',
-//   streetName: 'Olusoji Idowu Street',
-//   state: 'Lagos',
-//   streetName2: null,
-//   sex: 'MALE'
-// };
 
 export const CALL_SUMMARY = [
   {
@@ -249,11 +231,7 @@ const PatientTab = ({ patientData }) => {
           </TabPanel>
           <TabPanel value={value} index={1}>
             <Grid container xs={12}>
-              <Fragment>
-                {CALL_SUMMARY.map(data => {
-                  return <Formbuilder formInput={data} />;
-                })}
-              </Fragment>
+              <PatientCallHistory />
             </Grid>
           </TabPanel>
           <TabPanel value={value} index={2}>
