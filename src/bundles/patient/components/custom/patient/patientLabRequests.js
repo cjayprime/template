@@ -1,13 +1,5 @@
-import React, { Fragment, useState } from 'react';
-import classnames from 'classnames';
-import {
-  Grid,
-  makeStyles,
-  OutlinedInput,
-  FormControlLabel,
-  Typography,
-  Button
-} from '@material-ui/core';
+import React from 'react';
+import { makeStyles, Chip, Button } from '@material-ui/core';
 import { DataTable } from 'bundles/shared/components/Datatable';
 
 export const PatientLabRequests = () => {
@@ -40,18 +32,59 @@ export const PatientLabRequests = () => {
       fontSize: 13,
       fontWeight: 'bold',
       padding: '5px 0'
+    },
+    AwaitingSample: {
+      color: '#2C2E42',
+      backgroundColor: '#FFEFD8'
+    },
+    SampleCollected: {
+      color: '#2C2E42',
+      backgroundColor: '#8EE2E5'
+    },
+    AwaitingResult: {
+      color: '#2C2E42',
+      backgroundColor: '#BDB8D9'
+    },
+    Completed: {
+      color: '#fff',
+      backgroundColor: '#2C2E42'
     }
   }));
   const classes = useStyle();
 
-  const renderActionComponent = row => (
+  const renderActionComponent = () => (
     <Button className={classes.ActionButton}>View details</Button>
+  );
+
+  const getChipClass = status => {
+    switch (status) {
+      case 'Awaiting Sample':
+        return 'AwaitingSample';
+      case 'Sample Collected':
+        return 'SampleCollected';
+      case 'Awaiting Result':
+        return 'AwaitingResult';
+      case 'Completed':
+        return 'Completed';
+      default:
+        return '';
+    }
+  };
+
+  const renderStatusComponent = row => (
+    <Chip
+      classes={{
+        root: classes[getChipClass(row.status)]
+      }}
+      label={row.status}
+      size="small"
+    />
   );
 
   const labHeader = [
     { name: 'DATE REQUESTED.', accessor: 'requestDate' },
     { name: 'NAME OF TEST', accessor: 'testName' },
-    { name: 'STATUS', accessor: 'status' },
+    { name: 'STATUS', accessor: renderStatusComponent },
     { name: 'RESULT', accessor: 'result' },
     { name: 'CREATED BY', accessor: 'createdBy' },
     { name: 'ACTION', accessor: renderActionComponent }
