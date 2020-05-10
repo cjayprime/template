@@ -3,10 +3,10 @@ import { makeStyles } from '@material-ui/styles';
 export const CaseManagementStyles = makeStyles(theme => ({
   CaseContainer: {},
   PageItem: {
-    marginBottom: '3%',
+    marginBottom: '2%',
   },
   SectionOne: {
-    width: '67vw'
+    // width: '67vw'
   },
   SectionOneItem: {},
   SectionOneTextContainer: {
@@ -30,11 +30,10 @@ export const CaseManagementStyles = makeStyles(theme => ({
   },
   SectionTwo: {
     height: '180px',
-    width: '68vw'
+    // width: '68vw'
   },
   SectionTwoItem: {
-    height: '180px',
-    marginRight: `${theme.spacing(2.2)}px`
+    height: '100%'
   },
   SectionTwoNode: {
     height: '180px',
@@ -45,15 +44,15 @@ export const CaseManagementStyles = makeStyles(theme => ({
     minWidth: '120px'
   },
   SectionThree: {
-    width: '68vw'
+    // width: '68vw'
   },
   SectionThreeItem: {
-    marginRight: `${theme.spacing(2.2)}px`
+    // marginRight: `${theme.spacing(2.2)}px`
   },
 
   SectionFour: {
     height: '30vh',
-    width: '67vw'
+    // width: '67vw'
   },
 
   ChartContainer: {

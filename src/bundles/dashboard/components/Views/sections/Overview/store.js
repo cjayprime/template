@@ -37,6 +37,14 @@ export const basicInfoStore = [
       'Valid calls': 1500,
       'Red Flagged': 200
     }
+  },
+  {
+    title: 'Fatalities',
+    entries: {
+      'Total calls': 1500,
+      'Valid calls': 1500,
+      'Red Flagged': 200
+    }
   }
 ];
 

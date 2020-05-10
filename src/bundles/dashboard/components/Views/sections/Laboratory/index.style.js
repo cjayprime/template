@@ -3,15 +3,15 @@ import { makeStyles } from '@material-ui/styles';
 export const LaboratoryStyles = makeStyles(theme => ({
   PageContainer: {},
   PageItem: {
-    marginBottom: '3%',
-    width: '68vw'
+    marginBottom: '2%',
+    // width: '68vw'
   },
   SectionOne: {},
   SectionTwo: {
     height: '20vh'
   },
   SectionTwoNode: {
-    marginRight: '2%'
+    // marginRight: '2%'
   },
   SectionTwoItem: {
     height: '100%'
@@ -25,7 +25,6 @@ export const LaboratoryStyles = makeStyles(theme => ({
   },
   SectionThreeItem: {
     marginBottom: '12px',
-    width: '100%'
   },
   FilterContainer: {
     justifyContent: 'flex-end'
@@ -40,21 +39,21 @@ export const LaboratoryStyles = makeStyles(theme => ({
     fontSize: '14px'
   },
   MetaInfoContainer: {
-    width: '68.5vw'
+    // width: '68.5vw'
   },
   ChartInfoContainer: {
-    width: '68.5vw',
+    // width: '68.5vw',
     height: '20vh'
   },
   GridContainer: {
-    width: '96%'
+    width: '100%'
   },
   SectionFour: {
     height: '25vh',
-    width: '67.5vw'
+    // width: '67.5vw'
   },
   SectionFourChart: {
     height: '100%',
-    width: '67.5vw'
+    // width: '67.5vw'
   }
 }));

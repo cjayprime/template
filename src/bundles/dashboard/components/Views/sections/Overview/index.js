@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { Grid } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import {
   ChartHolder,
   DataContainerWithMetadata,
@@ -17,25 +17,42 @@ export const Overview = () => {
     { name: 'LGA', accessor: 'LGA' },
     { name: 'Number', accessor: 'count' }
   ];
+
   return (
-    <Grid direction="column" container>
+    <>
       <Grid
-        item
         container
         direction="row"
         wrap="nowrap"
-        className={clsx(classes.PageItem, classes.OverviewFlexContainer)}>
+        spacing={2}
+        className={clsx(
+          classes.PageItem,
+          classes.OverviewFlexContainer,
+          classes.dataCardRow
+        )}>
         {basicInfoStore.map(info => (
-          <Grid container item xs={2.5}>
+          <Grid item xs={12} md={2}>
             <DataContainerWithMetadata {...info} />
           </Grid>
         ))}
       </Grid>
+      {/* <Grid
+        item
+        className={clsx(
+          classes.SectionOneItem,
+          classes.SectionOneTextContainer
+        )}>
+        <Typography className={classes.SectionOneText}>
+          {'Duration of admission'}
+        </Typography>
+      </Grid> */}
       <Grid
         item
         container
+        justify="space-between"
+        spacing={2}
         className={clsx(classes.PageItem, classes.SectionTwo)}>
-        <Grid item xs={5}>
+        <Grid item xs={12} md={4}>
           <DataContainer styles={{ BaseContainer: classes.TableContainer }}>
             <DataTable
               headers={headers}
@@ -47,9 +64,9 @@ export const Overview = () => {
             />
           </DataContainer>
         </Grid>
-        <Grid item direction="column" xs={7}>
-          <Grid item container>
-            <Grid item xs={8}>
+        <Grid item direction="column" md={8} xs={12}>
+          <Grid item container spacing={2} justify="space-between">
+            <Grid item xs={12} md={9}>
               <DataContainerWithMetadata
                 {...{
                   ...SectionTwoStore.Admissions,
@@ -62,13 +79,13 @@ export const Overview = () => {
                 }}
               />
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={12} md={3}>
               <DataContainerWithMetadata
                 {...{ ...SectionTwoStore.DischargedPatients }}
               />
             </Grid>
           </Grid>
-          <Grid item className={classes.EpidInfoContainer}>
+          <Grid item xs={12} className={classes.EpidInfoContainer}>
             <ChartHolder
               title="Epidemiology curve"
               styles={{
@@ -107,6 +124,6 @@ export const Overview = () => {
           }}
         />
       </Grid>
-    </Grid>
+    </>
   );
 };

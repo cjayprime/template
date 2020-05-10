@@ -1,17 +1,19 @@
 import React from 'react';
 import clsx from 'clsx';
-import { Container, Grid, Typography } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import {
   DataContainerStyles,
   DataContainerWithMetadataStyles
 } from './index.style';
 
-export const DataContainer = ({ children, styles }) => {
+export const DataContainer = ({ children, styles, className, ...props }) => {
   const classes = DataContainerStyles();
   return (
-    <Container className={clsx(classes.BaseContainer, styles.BaseContainer)}>
+    <Grid
+      className={clsx(classes.BaseContainer, styles.BaseContainer, className)}
+      {...props}>
       {children}
-    </Container>
+    </Grid>
   );
 };
 
@@ -26,49 +28,59 @@ export const DataContainerWithMetadata = props => {
   } = props;
   const classes = DataContainerWithMetadataStyles();
   return (
-    <DataContainer styles={styles}>
+    <DataContainer
+      styles={styles}
+      container
+      direction="column"
+      className={clsx(classes.OverviewInfoContainer, styles.root)}>
+      <Grid
+        item
+        xs
+        className={clsx(
+          classes.SummaryHeaderContainer,
+          styles.SummaryHeaderContainer
+        )}>
+        <Typography
+          gutterBottom
+          variant="h5"
+          className={classes.SummaryBoxTitle}>
+          {title}
+        </Typography>
+        <Typography variant="caption" className={classes.SummaryBoxCaption}>
+          {caption}
+        </Typography>
+      </Grid>
       <Grid
         container
-        direction="column"
-        className={clsx(classes.OverviewInfoContainer, styles.root)}>
-        <Grid
-          item
-          xs={3}
-          className={clsx(
-            classes.SummaryHeaderContainer,
-            styles.SummaryHeaderContainer
-          )}>
-          <Typography className={classes.SummaryBoxTitle}>{title}</Typography>
-          <Typography className={classes.SummaryBoxCaption}>
-            {caption}
-          </Typography>
-        </Grid>
-        <Grid
-          container
-          direction={entryDirection}
-          className={clsx(classes.EntryHolder, styles.EntryHolder)}>
-          {Object.entries(entries).map(([k, v]) => {
-            return (
-              <Grid
-                container
-                item
-                {...(itemSpacing ? { xs: itemSpacing } : {})}
-                className={classes.EntryContainer}
-                style={{
-                  ...(['Red Flagged', 'Deaths'].some(i => k.includes(i))
-                    ? { color: '#E74C3C', fontWeight: 'bold' }
-                    : {})
-                }}>
-                <Grid item xs={8} className={classes.EntryKey}>
+        direction={entryDirection}
+        className={clsx(classes.EntryHolder, styles.EntryHolder)}>
+        {Object.entries(entries).map(([k, v]) => {
+          return (
+            <Grid
+              container
+              item
+              alignContent="space-between"
+              {...(itemSpacing ? { xs: itemSpacing } : {})}
+              className={classes.EntryContainer}>
+              <Grid item xs={8} className={classes.EntryKey}>
+                <Typography
+                  gutterBottom
+                  style={{
+                    ...(['Red Flagged', 'Deaths'].some(i => k.includes(i))
+                      ? { color: '#E74C3C', fontWeight: 'bold' }
+                      : {})
+                  }}>
                   {k}
-                </Grid>
-                <Grid item xs={4} className={classes.EntryValue}>
-                  {v}
-                </Grid>
+                </Typography>
               </Grid>
-            );
-          })}
-        </Grid>
+              <Grid item xs={4} className={classes.EntryValue}>
+                <Typography gutterBottom align="right">
+                  {v}
+                </Typography>
+              </Grid>
+            </Grid>
+          );
+        })}
       </Grid>
     </DataContainer>
   );

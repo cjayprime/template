@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Grid, Typography } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import clsx from 'clsx';
 import {
   FilterList,
@@ -12,7 +12,7 @@ import { recentCases, Legends, SectionTwoRows } from './store';
 export const Surveillance = () => {
   const classes = SurveillanceSectionStyles();
   return (
-    <Container className={classes.SurveillanceContainer}>
+    <Grid className={classes.SurveillanceContainer}>
       <Grid
         container
         className={clsx(classes.PageItem, classes.SummaryContent)}>
@@ -45,9 +45,16 @@ export const Surveillance = () => {
       </Grid>
       <Grid
         container
+        spacing={1}
+        justify="space-between"
         className={clsx(classes.PageItem, classes.initialSection)}
         wrap="nowrap">
-        <Grid item xs={5} container className={classes.BaseSectionHolder}>
+        <Grid
+          item
+          spacing={2}
+          xs={5}
+          container
+          className={classes.BaseSectionHolder}>
           {recentCases.map(info => {
             return (
               <Grid item xs={6}>
@@ -78,7 +85,9 @@ export const Surveillance = () => {
         </Grid>
       </Grid>
       <Grid
+        justify="space-between"
         container
+        spacing={2}
         wrap={'nowrap'}
         item
         className={clsx(classes.PageItem, classes.sectionTwo)}>
@@ -102,7 +111,7 @@ export const Surveillance = () => {
             position: 'top',
             entries: [
               { name: 'Total Tested', color: '#A569BD' },
-              { name: 'Test positivity', color: '#F5B7B1' },
+              { name: 'Test positivity', color: '#F5B7B1' }
             ]
           }}
           styles={{
@@ -110,6 +119,6 @@ export const Surveillance = () => {
           }}
         />
       </Grid>
-    </Container>
+    </Grid>
   );
 };

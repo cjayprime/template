@@ -28,10 +28,10 @@ const LeftSidebar = props => {
     dispatchRouteFunc(location, { setShowHeaderRedux, setShowFooterRedux, setRouteTitleRedux });
   };
 
-  props.history.listen((location, action) => {
-    publishRoute(location.pathname);
-    console.log('on route change', location, action);
-  });
+  // props.history.listen((location, action) => {
+  //   publishRoute(location.pathname);
+  //   console.log('on route change', location, action);
+  // });
 
   return (
     <Fragment>
