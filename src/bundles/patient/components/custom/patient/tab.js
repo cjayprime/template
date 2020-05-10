@@ -10,11 +10,13 @@ import {
 } from '@material-ui/core';
 import Formbuilder from 'bundles/patient/components/custom/formBuilder';
 import { makeStyles } from '@material-ui/core/styles';
-import { DataTable } from 'bundles/shared/components/Datatable';
-import { PatientDetails } from './patientDetails';
-import { PatientCallHistory } from './patientCallHistory';
-import { PatientCases } from './patientCases';
-import { PatientLabRequests } from './patientLabRequests';
+import {
+  PatientDetails,
+  PatientCallHistory,
+  PatientCases,
+  PatientLabRequests,
+  OtherPatientDetails
+} from './tabComponents';
 
 const HeaderStyles = makeStyles(theme => ({
   HeaderContainer: {
@@ -142,7 +144,7 @@ const PatientTab = ({ patientData }) => {
 
   return (
     <Grid container style={{ paddingLeft: 2, paddingRight: 2 }}>
-      <Grid item xs={9}>
+      <Grid item xs={12}>
         <Tabs
           value={value}
           onChange={handleChange}
@@ -168,7 +170,7 @@ const PatientTab = ({ patientData }) => {
           <Tab label="In patient" />
         </Tabs>
       </Grid>
-      <Grid
+      {/* <Grid
         item
         container
         xs={3}
@@ -182,7 +184,7 @@ const PatientTab = ({ patientData }) => {
         <Grid item xs={12}>
           <Typography> Log Call</Typography>
         </Grid>
-      </Grid>
+      </Grid> */}
       <Grid item xs={12}>
         <Grid>
           <TabPanel value={value} index={0}>
@@ -205,7 +207,7 @@ const PatientTab = ({ patientData }) => {
             Appointments
           </TabPanel>
           <TabPanel value={value} index={5}>
-            Others
+            <OtherPatientDetails />
           </TabPanel>
           <TabPanel value={value} index={6}>
             In patients
