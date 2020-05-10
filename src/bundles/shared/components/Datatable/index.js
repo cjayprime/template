@@ -11,7 +11,6 @@ import { tableStyles } from './index.style';
 import { CollapsibleRow } from '../CollapsibleRow';
 
 export const DataTable = props => {
-  console.log(props.styles, 'prop.styles');
   const {
     headers,
     data,
@@ -22,7 +21,6 @@ export const DataTable = props => {
   } = props;
   const classes = tableStyles();
   const buildHeaderCells = () => {
-    console.log(styles.HeaderTableCell, 'styles.HeaderTableCell');
     return (
       <Fragment>
         {headers.map(item => (
@@ -47,7 +45,7 @@ export const DataTable = props => {
 
     const reduceResponse = str => {
       const indices = str.split('.');
-      if (indices.length < 2) return row[str];
+      if (indices.length < 2) return row[str] || '-';
       return indices.reduce((sum, current) => {
         if (indices.indexOf(current) === 0) {
           sum = row[current];
@@ -66,7 +64,7 @@ export const DataTable = props => {
         case 'function':
           return accessor(row);
         default:
-          return row[name];
+          return row[name] || '-';
       }
     };
     const CustomTableRow = renderCollapsible ? CollapsibleRow : TableRow;

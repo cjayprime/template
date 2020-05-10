@@ -13,6 +13,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { DataTable } from 'bundles/shared/components/Datatable';
 import { PatientDetails } from './patientDetails';
 import { PatientCallHistory } from './patientCallHistory';
+import { PatientCases } from './patientCases';
+import { PatientLabRequests } from './patientLabRequests';
 
 const HeaderStyles = makeStyles(theme => ({
   HeaderContainer: {
@@ -111,16 +113,6 @@ export const patientStore = [
   }
 ];
 
-/*
-const caseHeader = [
-  { name: 'DATE', accessor: 'sampleNumber' },
-  { name: 'SUBMITTED BY', accessor: 'requestDate' },
-  { name: 'EPID NO', accessor: 'testName' },
-  { name: 'TYPE', accessor: 'type' },
-  { name: 'NOTES', accessor: 'requestedBy' },
-  { name: 'ACTION', accessor: renderActionComponent }
-]; */
-
 const PatientTab = ({ patientData }) => {
   const [value, setValue] = React.useState(0);
   const classes = HeaderStyles();
@@ -128,36 +120,6 @@ const PatientTab = ({ patientData }) => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
-  const renderActionComponent = row => (
-    <Button className={classes.actionButton}>Submit Result</Button>
-  );
-
-  const labHeader = [
-    { name: 'DATE REQUESTED.', accessor: 'dateRequested' },
-    { name: 'NAME OF TEST', accessor: 'requestDate' },
-    { name: 'STATUS', accessor: 'status' },
-    { name: 'RESULT', accessor: 'result' },
-    { name: 'CREATED BY', accessor: 'createdBy' },
-    { name: 'ACTION', accessor: renderActionComponent }
-  ];
-
-  const testStore = [
-    {
-      dateRequested: '400',
-      status: 'Completed',
-      result: 'Dr. G. Jenkins',
-      createdBy: '4 hours',
-      requestDate: '31 Mar, 7:34PM'
-    },
-    {
-      dateRequested: '400',
-      status: 'Completed',
-      result: 'Dr. G. Jenkins',
-      createdBy: '4 hours',
-      requestDate: '31 Mar, 7:34PM'
-    }
-  ];
 
   const renderStatusComponent = row => (
     <Chip label={row.status} variant="default" size="small" />
@@ -194,10 +156,8 @@ const PatientTab = ({ patientData }) => {
           inkBarStyle={{ height: 10 }}
           classes={{
             indicator: classes.TabIndicator,
-            //root: clsx(classes.TabContainer),
             flexContainer: classes.TabContainer
           }}
-          //textColor="primary"
           left>
           <Tab label="Patient Details" />
           <Tab label="Call history" />
@@ -209,6 +169,7 @@ const PatientTab = ({ patientData }) => {
         </Tabs>
       </Grid>
       <Grid
+        item
         container
         xs={3}
         style={{
@@ -235,10 +196,10 @@ const PatientTab = ({ patientData }) => {
             </Grid>
           </TabPanel>
           <TabPanel value={value} index={2}>
-            <DataTable headers={labHeader} noBorder={true} data={testStore} />
+            <PatientCases />
           </TabPanel>
           <TabPanel value={value} index={3}>
-            <DataTable headers={labHeader} noBorder={true} data={testStore} />
+            <PatientLabRequests />
           </TabPanel>
           <TabPanel value={value} index={4}>
             Appointments
