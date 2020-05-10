@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import classnames from 'classnames';
 import {
   Grid,
@@ -14,7 +14,7 @@ import { DefaultCheckbox } from 'bundles/patient/components/custom/formBuilder';
 const useStyles = makeStyles(theme => ({
   CallHistoryHeaders: {
     color: '#BDB8D9',
-    fontSize: 15,
+    fontSize: 13,
     textTransform: 'uppercase'
   },
   CallHistoryDateDisplay: {
@@ -74,12 +74,13 @@ const useStyles = makeStyles(theme => ({
 
 export const PatientCallHistory = ({ patient }) => {
   const classes = useStyles();
+  const [showNewCallLog, setShowNewCallLog] = useState(true);
 
   return (
     <Fragment>
       <Grid container>
         <Grid item xs={12}>
-          <Grid container style={{ padding: '12px 0' }}>
+          <Grid container style={{ padding: '0 0 12px' }}>
             <Grid xs={3} classes={{ root: classes.CallHistoryHeaders }}>
               Date & Time
             </Grid>

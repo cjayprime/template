@@ -11,6 +11,7 @@ import { tableStyles } from './index.style';
 import { CollapsibleRow } from '../CollapsibleRow';
 
 export const DataTable = props => {
+  console.log(props.styles, 'prop.styles');
   const {
     headers,
     data,
@@ -21,10 +22,16 @@ export const DataTable = props => {
   } = props;
   const classes = tableStyles();
   const buildHeaderCells = () => {
+    console.log(styles.HeaderTableCell, 'styles.HeaderTableCell');
     return (
       <Fragment>
         {headers.map(item => (
-          <TableCell className={clsx(classes.TableCell, styles.TableCell)}>
+          <TableCell
+            className={clsx(
+              classes.TableCell,
+              styles.tableCell,
+              styles.HeaderTableCell
+            )}>
             {item.name}
           </TableCell>
         ))}
