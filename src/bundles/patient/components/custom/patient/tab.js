@@ -16,7 +16,8 @@ import {
   PatientCases,
   PatientLabRequests,
   OtherPatientDetails,
-  InpatientComponent
+  InpatientComponent,
+  PatientAppointment
 } from './tabComponents';
 
 const useStyles = makeStyles(theme => ({
@@ -34,7 +35,7 @@ const useStyles = makeStyles(theme => ({
   TabButtons: {
     textTransform: 'capitalize',
     fontSize: 15,
-    fontWeight: 'bold',
+    fontWeight: 500,
     paddingRight: 15,
     paddingLeft: 0,
     minWidth: 70,
@@ -244,7 +245,9 @@ const PatientTab = ({ patientData }) => {
           </TabPanel>
           <TabPanel value={value} index={4}>
             <Grid container spacing={2}>
-              Appointments
+              <Grid item xs="10">
+                <PatientAppointment />
+              </Grid>
             </Grid>
           </TabPanel>
           <TabPanel value={value} index={5}>
