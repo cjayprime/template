@@ -3,7 +3,7 @@ import { DataTable, PatientMetadatum } from 'bundles/shared/components';
 import { QueuePageStyles } from 'bundles/queue/components/Views/QueueTable/index.style';
 import { Link } from 'react-router-dom';
 import withPatient from 'bundles/patient/hoc/withPatient';
-import { Typography, ButtonBase, Grid } from '@material-ui/core';
+import { Typography, ButtonBase, Grid, makeStyles } from '@material-ui/core';
 import { useStyles } from 'bundles/patient/components/custom/filter/index.style';
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
 import PatientTab from 'bundles/patient/components/custom/patient/tab';
@@ -32,10 +32,34 @@ const renderActionComponent = row => {
 };
 
 const List = ({ header, data }) => {
+  const useStyle = makeStyles(() => ({
+    collapseRowGroup: {},
+    collapseRowParent: {
+      '&.open td': {
+        backgroundColor: '#3A3C4F'
+      },
+      '&.open td:first-child': {
+        borderTopLeftRadius: 8
+      },
+      '&.open td:last-child': {
+        borderTopRightRadius: 8
+      }
+    },
+    collapseRowChild: {
+      '& > td': {
+        backgroundColor: '#3A3C4F',
+        borderBottomLeftRadius: 8,
+        borderBottomRightRadius: 8
+      }
+    }
+  }));
+
+  const styles = useStyle();
   return (
     <DataTable
       headers={header}
       data={data}
+      styles={styles}
       renderCollapsible={row => <PatientTab patientData={row} />}
     />
   );

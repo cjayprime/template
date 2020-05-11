@@ -4,6 +4,9 @@ import { DataTable } from 'bundles/shared/components/Datatable';
 
 export const PatientCases = () => {
   const useStyle = makeStyles(() => ({
+    Table: {
+      backgroundColor: 'transparent'
+    },
     HeaderTableCell: {
       color: '#BDB8D9',
       fontSize: 13,

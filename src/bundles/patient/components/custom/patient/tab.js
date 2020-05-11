@@ -15,10 +15,11 @@ import {
   PatientCallHistory,
   PatientCases,
   PatientLabRequests,
-  OtherPatientDetails
+  OtherPatientDetails,
+  InpatientComponent
 } from './tabComponents';
 
-const HeaderStyles = makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
   HeaderContainer: {
     position: 'fixed'
   },
@@ -117,7 +118,7 @@ export const patientStore = [
 
 const PatientTab = ({ patientData }) => {
   const [value, setValue] = React.useState(0);
-  const classes = HeaderStyles();
+  const classes = useStyles();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -143,16 +144,21 @@ const PatientTab = ({ patientData }) => {
   }
 
   return (
-    <Grid container style={{ paddingLeft: 2, paddingRight: 2 }}>
+    <Grid
+      container
+      style={{
+        paddingLeft: 2,
+        paddingRight: 2,
+        borderRadius: 8,
+        backgroundColor: 'rgba(113, 106, 158, 0.1)'
+      }}>
       <Grid item xs={12}>
         <Tabs
           value={value}
           onChange={handleChange}
           indicatorColor="primary"
           style={{
-            backgroundColor: '#474562',
-            color: '#28BAC0',
-            borderTopLeftRadius: 5,
+            color: '#fff',
             borderBottomWidth: 5
           }}
           inkBarStyle={{ height: 10 }}
@@ -210,7 +216,7 @@ const PatientTab = ({ patientData }) => {
             <OtherPatientDetails />
           </TabPanel>
           <TabPanel value={value} index={6}>
-            In patients
+            <InpatientComponent />
           </TabPanel>
         </Grid>
       </Grid>
