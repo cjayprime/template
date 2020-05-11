@@ -25,9 +25,25 @@ const useStyles = makeStyles(theme => ({
   },
   TabIndicator: {
     height: 4,
-    backgroundColor: '#FFFEFD'
+    backgroundColor: '#FFFEFD',
+    width: '70px !important'
   },
-  TabContainer: {},
+  TabContainer: {
+    paddingLeft: 16
+  },
+  TabButtons: {
+    textTransform: 'capitalize',
+    fontSize: 15,
+    fontWeight: 'bold',
+    paddingRight: 15,
+    paddingLeft: 0,
+    minWidth: 70,
+    marginRight: 10
+  },
+  TabButtonWrapper: {
+    alignItems: 'flex-start',
+    paddingLeft: 2
+  },
   SelectedTabContainer: {
     color: 'white'
   }
@@ -143,6 +159,18 @@ const PatientTab = ({ patientData }) => {
     );
   }
 
+  const CustomTab = (label, classes) => {
+    return (
+      <Tab
+        classes={{
+          root: classes.TabButtons,
+          wrapper: classes.TabButtonWrapper
+        }}
+        label={label}
+      />
+    );
+  };
+
   return (
     <Grid
       container
@@ -161,19 +189,19 @@ const PatientTab = ({ patientData }) => {
             color: '#fff',
             borderBottomWidth: 5
           }}
-          inkBarStyle={{ height: 10 }}
           classes={{
             indicator: classes.TabIndicator,
             flexContainer: classes.TabContainer
-          }}
-          left>
-          <Tab label="Patient Details" />
-          <Tab label="Call history" />
-          <Tab label="Case" />
-          <Tab label="Laboratory" />
-          <Tab label="Appointments" />
-          <Tab label="Others" />
-          <Tab label="In patient" />
+          }}>
+          {[
+            'Patient Details',
+            'Call history',
+            'Case',
+            'Laboratory',
+            'Appointments',
+            'Others',
+            'In patient'
+          ].map(label => CustomTab(label, classes))}
         </Tabs>
       </Grid>
       {/* <Grid
@@ -194,29 +222,39 @@ const PatientTab = ({ patientData }) => {
       <Grid item xs={12}>
         <Grid>
           <TabPanel value={value} index={0}>
-            <Grid container xs={12}>
+            <Grid container spacing={2}>
               <PatientDetails {...patientData} />
             </Grid>
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <Grid container xs={12}>
+            <Grid container spacing={2}>
               <PatientCallHistory />
             </Grid>
           </TabPanel>
           <TabPanel value={value} index={2}>
-            <PatientCases />
+            <Grid container spacing={2}>
+              <PatientCases />
+            </Grid>
           </TabPanel>
           <TabPanel value={value} index={3}>
-            <PatientLabRequests />
+            <Grid container spacing={2}>
+              <PatientLabRequests />
+            </Grid>
           </TabPanel>
           <TabPanel value={value} index={4}>
-            Appointments
+            <Grid container spacing={2}>
+              Appointments
+            </Grid>
           </TabPanel>
           <TabPanel value={value} index={5}>
-            <OtherPatientDetails />
+            <Grid container spacing={2}>
+              <OtherPatientDetails />
+            </Grid>
           </TabPanel>
           <TabPanel value={value} index={6}>
-            <InpatientComponent />
+            <Grid container spacing={2}>
+              <InpatientComponent />
+            </Grid>
           </TabPanel>
         </Grid>
       </Grid>

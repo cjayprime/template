@@ -81,18 +81,21 @@ export const PatientCallHistory = ({ patient }) => {
       <Grid container>
         <Grid item xs={12}>
           <Grid container style={{ padding: '0 0 12px' }}>
-            <Grid xs={3} classes={{ root: classes.CallHistoryHeaders }}>
+            <Grid item xs={3} classes={{ root: classes.CallHistoryHeaders }}>
               Date & Time
             </Grid>
-            <Grid xs classes={{ root: classes.CallHistoryHeaders }}>
+            <Grid item xs classes={{ root: classes.CallHistoryHeaders }}>
               Call summary
             </Grid>
           </Grid>
           <Grid container style={{ padding: '12px 0' }}>
-            <Grid xs={3} classes={{ root: classes.CallHistoryDateDisplay }}>
+            <Grid
+              item
+              xs={3}
+              classes={{ root: classes.CallHistoryDateDisplay }}>
               Now
             </Grid>
-            <Grid xs classes={{ root: classes.CallHistoryHeaders }}>
+            <Grid item xs classes={{ root: classes.CallHistoryHeaders }}>
               <OutlinedInput
                 fullWidth
                 multiline
@@ -141,26 +144,26 @@ export const PatientCallHistory = ({ patient }) => {
         </Grid>
       </Grid>
       <Grid container style={{ padding: '12px 0' }}>
-        <Grid xs={3} classes={{ root: classes.CallHistoryHeaders }}>
+        <Grid item xs={3} classes={{ root: classes.CallHistoryHeaders }}>
           Date & Time
         </Grid>
-        <Grid xs classes={{ root: classes.CallHistoryHeaders }}>
+        <Grid item xs classes={{ root: classes.CallHistoryHeaders }}>
           Additional Information from the call
         </Grid>
       </Grid>
       <Grid container style={{ padding: '12px 0' }}>
-        <Grid xs={3} classes={{ root: classes.CallHistoryDateDisplay }}>
+        <Grid item xs={3} classes={{ root: classes.CallHistoryDateDisplay }}>
           31 Mar, 7:54 PM
         </Grid>
-        <Grid xs classes={{ root: classes.CallHistoryNotes }}>
+        <Grid item xs classes={{ root: classes.CallHistoryNotes }}>
           Patient feels better
         </Grid>
       </Grid>
       <Grid container style={{ padding: '12px 0' }}>
-        <Grid xs={3} classes={{ root: classes.CallHistoryDateDisplay }}>
+        <Grid item xs={3} classes={{ root: classes.CallHistoryDateDisplay }}>
           31 Mar, 11:12 AM
         </Grid>
-        <Grid xs classes={{ root: classes.CallHistoryNotes }}>
+        <Grid item xs classes={{ root: classes.CallHistoryNotes }}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ut
           metus diam. Cras ac augue id massa vestibulum blandit. Donec eget
           lorem lobortis, pulvinar lacus sed, congue enim. Ut ligula tortor,

@@ -33,6 +33,9 @@ const renderActionComponent = row => {
 
 const List = ({ header, data }) => {
   const useStyle = makeStyles(() => ({
+    HeaderTableCell: {
+      borderBottom: '0'
+    },
     collapseRowGroup: {},
     collapseRowParent: {
       '&.open td': {
