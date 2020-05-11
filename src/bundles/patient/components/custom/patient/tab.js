@@ -162,6 +162,7 @@ const PatientTab = ({ patientData }) => {
   const CustomTab = (label, classes) => {
     return (
       <Tab
+        disableRipple
         classes={{
           root: classes.TabButtons,
           wrapper: classes.TabButtonWrapper

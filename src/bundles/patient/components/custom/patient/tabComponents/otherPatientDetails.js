@@ -125,13 +125,14 @@ const dateInputTheme = createMuiTheme({
   }
 });
 
-const radioOptionButton = (label, classes) => {
+const radioOptionButton = (label, classes, questionKey, onValueChange) => {
   return (
     <Fragment>
       <Typography classes={{ root: classes.LabelText }}>{label}</Typography>
       <div>
         <RadioGroup
           style={{ display: 'flex', flexDirection: 'row' }}
+          onChange={ev => onValueChange(questionKey, ev.target.value)}
           name="stimuli">
           {/* <Grid container justify="space-between"> */}
           {['yes', 'no'].map(option => (
@@ -161,19 +162,28 @@ const radioOptionButton = (label, classes) => {
 
 export const OtherPatientDetails = ({ patient }) => {
   const classes = useStyles();
-  const selectedDate = new Date();
   const [displayForm, setDisplayForm] = useState(false);
+  const [deathReport, setDeathReport] = useState({});
 
-  const onValueChange = event => {
-    setDisplayForm(event.target.value);
+  const onPatientDeathStatusChange = () => {
+    setDisplayForm(!displayForm);
   };
+
+  const onReportValueChange = (questionName, answerValue) => {
+    setDeathReport({
+      ...deathReport,
+      [questionName]: answerValue
+    });
+  };
+
+  const dateOfDeath = deathReport.dateOfDeath ? deathReport.dateOfDeath : null;
 
   return (
     <Fragment>
       <Grid container>
         <Grid item xs={12}>
           <FormControlLabel
-            onChange={onValueChange}
+            onChange={onPatientDeathStatusChange}
             control={<DefaultCheckbox name="markPatientAsDead" />}
             value={displayForm}
             label={
@@ -185,194 +195,275 @@ export const OtherPatientDetails = ({ patient }) => {
           />
         </Grid>
       </Grid>
-      <Fragment>
-        <Grid container style={{ marginTop: 24 }}>
-          <Grid item xs={4}>
-            <Typography classes={{ root: classes.LabelText }}>
-              Date & Time of death
-            </Typography>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <ThemeProvider theme={dateInputTheme}>
-                <KeyboardDatePicker
-                  variant="inline"
-                  inputVariant="filled"
-                  format="dd/MM/yyyy"
-                  margin="normal"
-                  id="time-of-death"
-                  value={selectedDate}
+      {displayForm && (
+        <Fragment>
+          <Grid container style={{ marginTop: 24 }}>
+            <Grid item xs={4}>
+              <Typography classes={{ root: classes.LabelText }}>
+                Date & Time of death
+              </Typography>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <ThemeProvider theme={dateInputTheme}>
+                  <KeyboardDatePicker
+                    variant="inline"
+                    inputVariant="filled"
+                    format="dd/MM/yyyy"
+                    margin="normal"
+                    id="time-of-death"
+                    value={dateOfDeath}
+                    onChange={date => onReportValueChange('dateOfDeath', date)}
+                    fullWidth
+                    views={['year', 'date', '']}
+                    keyboardIcon={<EventAvailable style={{ color: '#fff' }} />}
+                    animateYearScrolling
+                    autoOk
+                    maxDate={new Date()}
+                  />
+                </ThemeProvider>
+              </MuiPickersUtilsProvider>
+            </Grid>
+          </Grid>
+          <Grid container style={{ marginTop: 24 }}>
+            <Grid item xs={4}>
+              <Typography classes={{ root: classes.LabelText }}>
+                Location of death
+              </Typography>
+              <div>
+                <OutlinedInput
                   fullWidth
-                  views={['year', 'date', '']}
-                  keyboardIcon={<EventAvailable style={{ color: '#fff' }} />}
-                  animateYearScrolling
-                  autoOk
-                  maxDate={new Date()}
+                  variant="outlined"
+                  value={deathReport.locationOfDeath}
+                  onChange={ev =>
+                    onReportValueChange('locationOfDeath', ev.target.value)
+                  }
+                  classes={{
+                    root: classes.input,
+                    focused: classes.inputFocused,
+                    notchedOutline: classes.inputNotch
+                  }}
                 />
-              </ThemeProvider>
-            </MuiPickersUtilsProvider>
+              </div>
+            </Grid>
           </Grid>
-        </Grid>
-        <Grid container style={{ marginTop: 24 }}>
-          <Grid item xs={4}>
-            <Typography classes={{ root: classes.LabelText }}>
-              Location of death
-            </Typography>
-            <div>
-              <OutlinedInput
-                fullWidth
-                variant="outlined"
-                classes={{
-                  root: classes.input,
-                  focused: classes.inputFocused,
-                  notchedOutline: classes.inputNotch
-                }}
-              />
-            </div>
+          <div
+            style={{
+              margin: '36px 0',
+              borderBottom: '#BDB8D9 1px solid',
+              height: 1,
+              width: '100%'
+            }}></div>
+          <Grid container>
+            <Grid item xs={12}>
+              <Typography classes={{ root: classes.sectionHeader }}>
+                Physical Examination
+              </Typography>
+            </Grid>
           </Grid>
-        </Grid>
-        <div
-          style={{
-            margin: '36px 0',
-            borderBottom: '#BDB8D9 1px solid',
-            height: 1,
-            width: '100%'
-          }}></div>
-        <Grid container>
-          <Grid item xs={12}>
-            <Typography classes={{ root: classes.sectionHeader }}>
-              Physical Examination
-            </Typography>
+          <Grid container style={{ marginTop: 16 }}>
+            <Grid item xs={4}>
+              {radioOptionButton(
+                'Response to Stimuli',
+                classes,
+                'responseToStimuli',
+                onReportValueChange
+              )}
+            </Grid>
+            <Grid item xs={4}>
+              {radioOptionButton(
+                'Spontaneous respiration',
+                classes,
+                'spontaneousRespiration',
+                onReportValueChange
+              )}
+            </Grid>
+            <Grid item xs={4}>
+              {radioOptionButton(
+                'Auscultatory breath sounds',
+                classes,
+                'auscultatoryBreathSounds',
+                onReportValueChange
+              )}
+            </Grid>
           </Grid>
-        </Grid>
-        <Grid container style={{ marginTop: 16 }}>
-          <Grid item xs={4}>
-            {radioOptionButton('Response to Stimuli', classes)}
+          <Grid container style={{ marginTop: 16 }}>
+            <Grid item xs={4}>
+              {radioOptionButton(
+                'Peripheral pulses',
+                classes,
+                'peripheralPulses',
+                onReportValueChange
+              )}
+            </Grid>
+            <Grid item xs={4}>
+              {radioOptionButton(
+                'Central pulses',
+                classes,
+                'centralPulses',
+                onReportValueChange
+              )}
+            </Grid>
+            <Grid item xs={4}>
+              {radioOptionButton(
+                'Heart sounds',
+                classes,
+                'heartSounds',
+                onReportValueChange
+              )}
+            </Grid>
           </Grid>
-          <Grid item xs={4}>
-            {radioOptionButton('Spontaneous respiration', classes)}
+          <Grid container style={{ marginTop: 16 }}>
+            <Grid item xs={4}>
+              {radioOptionButton(
+                'Pupils',
+                classes,
+                'pupils',
+                onReportValueChange
+              )}
+            </Grid>
+            <Grid item xs={4}>
+              {radioOptionButton(
+                'Corneal reflex',
+                classes,
+                'cornealReflex',
+                onReportValueChange
+              )}
+            </Grid>
+            <Grid item xs={4}></Grid>
           </Grid>
-          <Grid item xs={4}>
-            {radioOptionButton('Auscultatory breath sounds', classes)}
+          <Grid container style={{ marginTop: 16 }}>
+            <Grid item xs={12}>
+              <Typography classes={{ root: classes.LabelText }}>
+                Brief description of examination findings
+              </Typography>
+              <div>
+                <OutlinedInput
+                  fullWidth
+                  multiline
+                  rows={3}
+                  variant="outlined"
+                  value={deathReport.examinationFindings}
+                  onChange={ev =>
+                    onReportValueChange('examinationFindings', ev.target.value)
+                  }
+                  classes={{
+                    root: classes.input,
+                    focused: classes.inputFocused,
+                    notchedOutline: classes.inputNotch
+                  }}
+                />
+              </div>
+            </Grid>
           </Grid>
-        </Grid>
-        <Grid container style={{ marginTop: 16 }}>
-          <Grid item xs={4}>
-            {radioOptionButton('Peripheral pulses', classes)}
+          <Grid container style={{ marginTop: 16 }}>
+            <Grid item xs={12}>
+              <Typography classes={{ root: classes.LabelText }}>
+                Interventions and outcome (including cardiopulmonary
+                resuscitation CPR, defibrillation, medications)
+              </Typography>
+              <div>
+                <OutlinedInput
+                  fullWidth
+                  multiline
+                  rows={3}
+                  variant="outlined"
+                  value={deathReport.interventionAndOutcome}
+                  onChange={ev =>
+                    onReportValueChange(
+                      'interventionAndOutcome',
+                      ev.target.value
+                    )
+                  }
+                  classes={{
+                    root: classes.input,
+                    focused: classes.inputFocused,
+                    notchedOutline: classes.inputNotch
+                  }}
+                />
+              </div>
+            </Grid>
           </Grid>
-          <Grid item xs={4}>
-            {radioOptionButton('Central pulses', classes)}
+          <Grid container style={{ marginTop: 16 }}>
+            <Grid item xs={12}>
+              <Typography classes={{ root: classes.LabelText }}>
+                Diagnosis/cause of death
+              </Typography>
+              <div>
+                <OutlinedInput
+                  fullWidth
+                  multiline
+                  rows={3}
+                  variant="outlined"
+                  value={deathReport.causeOfDeath}
+                  onChange={ev =>
+                    onReportValueChange('causeOfDeath', ev.target.value)
+                  }
+                  classes={{
+                    root: classes.input,
+                    focused: classes.inputFocused,
+                    notchedOutline: classes.inputNotch
+                  }}
+                />
+              </div>
+            </Grid>
           </Grid>
-          <Grid item xs={4}>
-            {radioOptionButton('Heart sounds', classes)}
+          <Grid container style={{ marginTop: 16 }}>
+            <Grid item xs={4}>
+              {radioOptionButton(
+                'Family notified',
+                classes,
+                'familyNotified',
+                onReportValueChange
+              )}
+            </Grid>
+            <Grid item xs={4}>
+              {radioOptionButton(
+                'Autopsy',
+                classes,
+                'autopsy',
+                onReportValueChange
+              )}
+            </Grid>
+            <Grid item xs={4}>
+              {radioOptionButton(
+                'Organ donor',
+                classes,
+                'organDonor',
+                onReportValueChange
+              )}
+            </Grid>
           </Grid>
-        </Grid>
-        <Grid container style={{ marginTop: 16 }}>
-          <Grid item xs={4}>
-            {radioOptionButton('Pupils', classes)}
+          <Grid container style={{ marginTop: 16 }}>
+            <Grid item xs={12}>
+              <Typography classes={{ root: classes.LabelText }}>
+                Plan
+              </Typography>
+              <div>
+                <OutlinedInput
+                  fullWidth
+                  multiline
+                  rows={3}
+                  variant="outlined"
+                  value={deathReport.plan}
+                  onChange={ev => onReportValueChange('plan', ev.target.value)}
+                  classes={{
+                    root: classes.input,
+                    focused: classes.inputFocused,
+                    notchedOutline: classes.inputNotch
+                  }}
+                />
+              </div>
+            </Grid>
           </Grid>
-          <Grid item xs={4}>
-            {radioOptionButton('Corneal reflex', classes)}
+          <Grid container style={{ marginTop: 16 }} justify="flex-end">
+            <Button className={classes.formButton}>CANCEL</Button>
+            <Button
+              disableElevation={false}
+              className={classnames(classes.formButton, classes.formButtonTS)}>
+              SAVE
+            </Button>
           </Grid>
-          <Grid item xs={4}></Grid>
-        </Grid>
-        <Grid container style={{ marginTop: 16 }}>
-          <Grid item xs={12}>
-            <Typography classes={{ root: classes.LabelText }}>
-              Brief description of examination findings
-            </Typography>
-            <div>
-              <OutlinedInput
-                fullWidth
-                multiline
-                rows={3}
-                variant="outlined"
-                classes={{
-                  root: classes.input,
-                  focused: classes.inputFocused,
-                  notchedOutline: classes.inputNotch
-                }}
-              />
-            </div>
-          </Grid>
-        </Grid>
-        <Grid container style={{ marginTop: 16 }}>
-          <Grid item xs={12}>
-            <Typography classes={{ root: classes.LabelText }}>
-              Interventions and outcome (including cardiopulmonary resuscitation
-              CPR, defibrillation, medications)
-            </Typography>
-            <div>
-              <OutlinedInput
-                fullWidth
-                multiline
-                rows={3}
-                variant="outlined"
-                classes={{
-                  root: classes.input,
-                  focused: classes.inputFocused,
-                  notchedOutline: classes.inputNotch
-                }}
-              />
-            </div>
-          </Grid>
-        </Grid>
-        <Grid container style={{ marginTop: 16 }}>
-          <Grid item xs={12}>
-            <Typography classes={{ root: classes.LabelText }}>
-              Diagnosis/cause of death
-            </Typography>
-            <div>
-              <OutlinedInput
-                fullWidth
-                multiline
-                rows={3}
-                variant="outlined"
-                classes={{
-                  root: classes.input,
-                  focused: classes.inputFocused,
-                  notchedOutline: classes.inputNotch
-                }}
-              />
-            </div>
-          </Grid>
-        </Grid>
-        <Grid container style={{ marginTop: 16 }}>
-          <Grid item xs={4}>
-            {radioOptionButton('Family notified', classes)}
-          </Grid>
-          <Grid item xs={4}>
-            {radioOptionButton('Autopsy', classes)}
-          </Grid>
-          <Grid item xs={4}>
-            {radioOptionButton('Organ donor', classes)}
-          </Grid>
-        </Grid>
-        <Grid container style={{ marginTop: 16 }}>
-          <Grid item xs={12}>
-            <Typography classes={{ root: classes.LabelText }}>Plan</Typography>
-            <div>
-              <OutlinedInput
-                fullWidth
-                multiline
-                rows={3}
-                variant="outlined"
-                classes={{
-                  root: classes.input,
-                  focused: classes.inputFocused,
-                  notchedOutline: classes.inputNotch
-                }}
-              />
-            </div>
-          </Grid>
-        </Grid>
-        <Grid container style={{ marginTop: 16 }} justify="flex-end">
-          <Button className={classes.formButton}>CANCEL</Button>
-          <Button
-            disableElevation={false}
-            className={classnames(classes.formButton, classes.formButtonTS)}>
-            SAVE
-          </Button>
-        </Grid>
-      </Fragment>
+        </Fragment>
+      )}
     </Fragment>
   );
 };
