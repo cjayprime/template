@@ -9,7 +9,7 @@ import {
 import { SurveillanceSectionStyles } from './index.style';
 import { recentCases, Legends, SectionTwoRows } from './store';
 
-export const Surveillance = () => {
+const Surveillance = () => {
   const classes = SurveillanceSectionStyles();
   return (
     <Grid className={classes.SurveillanceContainer}>
@@ -122,3 +122,5 @@ export const Surveillance = () => {
     </Grid>
   );
 };
+
+export default Surveillance;

@@ -22,14 +22,9 @@ export const OverviewPageStyles = makeStyles(theme => ({
   SectionTwo: {
     height: '45vh'
   },
-  LargeSummaryHolder: {
-    // left: '35px !important'
-  },
-  LargeEntryHolder: {
-    left: '35px !important'
-  },
+  LargeSummaryHolder: {},
+  LargeEntryHolder: {},
   EpidInfoContainer: {
-    // height: '60%',
     marginTop: '2%'
   },
   EpidInfoLegend: {

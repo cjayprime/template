@@ -15,13 +15,13 @@ export const basicInfoStore = [
       TOTAL: 200
     }
   },
-  {
-    title: 'Positive Cases',
-    entries: {
-      New: 1500,
-      TOTAL: 1500
-    }
-  },
+  // {
+  //   title: 'Positive Cases',
+  //   entries: {
+  //     New: 1500,
+  //     TOTAL: 1500
+  //   }
+  // },
   {
     title: 'Positive Cases',
     caption: 'WAITING EVACUATION',

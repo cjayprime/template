@@ -46,24 +46,14 @@ export const SurveillanceSectionStyles = makeStyles(theme => ({
   initialSection: {
     height: '200px'
   },
-  BaseSectionHolder: {
-    // height: '100%'
-  },
-  EpidSectionHolder: {
-    // width: '95%'
-  },
-  EpidContainer: {
-    // width: '90%',
-    // marginLeft: '10px'
-  },
+  BaseSectionHolder: {},
+  EpidSectionHolder: {},
+  EpidContainer: {},
   SectionTwo: {
     marginTop: '1%',
     height: '250px'
   },
-  SectionTwoItem: {
-    // height: '100%',
-    // marginRight: `${theme.spacing(2.2)}px`
-  },
+  SectionTwoItem: {},
   SectionTwoNode: {
     height: '250px',
     paddingTop: '5%',

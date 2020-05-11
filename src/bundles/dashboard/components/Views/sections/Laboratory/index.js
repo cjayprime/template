@@ -14,7 +14,7 @@ import {
 } from '../../../../../shared/components';
 import { LaboratoryStyles } from './index.style';
 
-export const Laboratory = () => {
+const Laboratory = () => {
   const classes = LaboratoryStyles();
   return (
     <div className={classes.PageContainer}>
@@ -118,3 +118,5 @@ export const Laboratory = () => {
     </div>
   );
 };
+
+export default Laboratory;

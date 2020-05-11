@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import {
   ChartHolder,
   DataContainerWithMetadata,
@@ -8,15 +8,102 @@ import {
   DataTable
 } from '../../../../../shared/components/';
 import { OverviewPageStyles } from './index.style';
-import { basicInfoStore, SectionTwoStore, Legends, TableData } from './store';
+import { SectionTwoStore, Legends, TableData } from './store';
 
-export const Overview = () => {
+import WithDashboardData from 'bundles/dashboard/hoc/WithDashboardData';
+const compose = require('lodash')?.flowRight;
+
+const Overview = props => {
+  const {
+    data: {
+      totalLab,
+      newlabRequest,
+      positiveCasesNew,
+      positiveCases,
+      newAwaitingResult,
+      awaitingResult,
+      evacAwaitingPickUp,
+      totalFatalities,
+      dischargedPatients,
+      newDischargedPatients
+    }
+  } = props;
+
   const classes = OverviewPageStyles();
   const headers = [
     { name: 'S/M', accessor: 'S/M' },
     { name: 'LGA', accessor: 'LGA' },
     { name: 'Number', accessor: 'count' }
   ];
+
+  const dataStoreInfo = [
+    {
+      title: 'Call Centre Details',
+      entries: {
+        'Total calls': 1500,
+        'Valid calls': 1500,
+        'Red Flagged': 200
+      }
+    },
+    {
+      title: 'Number of tests',
+      entries: {
+        New: newlabRequest.totalCount,
+        Awaiting: awaitingResult.totalCount,
+        TOTAL: totalLab.totalCount
+      }
+    },
+    {
+      title: 'Positive Cases',
+      entries: {
+        New: positiveCasesNew.totalCount,
+        TOTAL: positiveCases.totalCount
+      }
+    },
+    {
+      title: 'Positive Cases',
+      caption: 'WAITING EVACUATION',
+      entries: {
+        'Avg Days': 15,
+        TOTAL: evacAwaitingPickUp.totalCount
+      }
+    },
+    {
+      title: 'Fatalities',
+      entries: {
+        New: 10,
+        Total: totalFatalities.totalCount
+      }
+    },
+    {
+      title: 'Fatalities',
+      entries: {
+        New: 10,
+        Total: totalFatalities.totalCount
+      }
+    }
+  ];
+
+  const SectionTwoStore = {
+    DischargedPatients: {
+      title: 'Discharged Patients',
+      entries: {
+        New: newDischargedPatients.totalCount,
+        TOTAL: dischargedPatients.totalCount
+      }
+    },
+    Admissions: {
+      title: 'Admissions',
+      entries: {
+        'New Isolation': 3,
+        'New ICU': 2,
+        'Valid Calls': 10,
+        'Current ICU': 5,
+        'Red Flagged': 13,
+        'Avg Days': 12
+      }
+    }
+  };
 
   return (
     <>
@@ -30,22 +117,12 @@ export const Overview = () => {
           classes.OverviewFlexContainer,
           classes.dataCardRow
         )}>
-        {basicInfoStore.map(info => (
+        {dataStoreInfo.map(info => (
           <Grid item xs={12} md={2}>
             <DataContainerWithMetadata {...info} />
           </Grid>
         ))}
       </Grid>
-      {/* <Grid
-        item
-        className={clsx(
-          classes.SectionOneItem,
-          classes.SectionOneTextContainer
-        )}>
-        <Typography className={classes.SectionOneText}>
-          {'Duration of admission'}
-        </Typography>
-      </Grid> */}
       <Grid
         item
         container
@@ -127,3 +204,5 @@ export const Overview = () => {
     </>
   );
 };
+
+export default compose(WithDashboardData)(Overview);

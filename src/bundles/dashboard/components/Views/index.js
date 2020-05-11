@@ -3,8 +3,17 @@ import { Header } from '../../../shared/components';
 import { Container } from '@material-ui/core';
 import { DashboardPageStyles } from './index.style';
 import * as sections from './sections';
+import Overview from "./sections/Overview";
+import CaseManagement from './sections/CaseManagement';
+import Laboratory from './sections/Laboratory';
+import Surveillance from './sections/Surveillance';
 
-export const DashboardPageView = () => {
+
+import WithDashboardData from 'bundles/dashboard/hoc/WithDashboardData';
+const compose = require('lodash')?.flowRight;
+
+const DashboardPageView = () => {
+
   const headerTabs = [
     'Overview',
     'Surveillance',
@@ -20,10 +29,10 @@ export const DashboardPageView = () => {
 
   const classes = DashboardPageStyles();
   const pages = [
-    sections.Overview,
-    sections.Surveillance,
-    sections.CaseManagement,
-    sections.Laboratory
+    Overview,
+    Surveillance,
+    CaseManagement,
+    Laboratory
   ];
   return (
     <Fragment>
@@ -50,10 +59,14 @@ export const DashboardPageView = () => {
         }}
       />
       <Container className={classes.MainPageContainer}>
-        {pages.map((section, index) => {
-          return <Fragment>{selectedView === index && section()}</Fragment>;
+        {pages.map((Section, index) => {
+          return <Fragment>
+            {selectedView === index && <Section />}
+          </Fragment>;
         })}
       </Container>
     </Fragment>
   );
 };
+
+export default DashboardPageView;

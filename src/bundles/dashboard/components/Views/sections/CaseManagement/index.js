@@ -5,7 +5,7 @@ import { ChartHolder } from '../../../../../shared/components';
 import { CaseManagementStyles } from './index.style';
 import { SectionTwoRows, SectionThreeRows } from './store';
 
-export const CaseManagement = () => {
+const CaseManagement = () => {
   const classes = CaseManagementStyles();
   return (
     <div className={classes.CaseContainer}>
@@ -120,3 +120,5 @@ export const CaseManagement = () => {
     </div>
   );
 };
+
+export default CaseManagement;
