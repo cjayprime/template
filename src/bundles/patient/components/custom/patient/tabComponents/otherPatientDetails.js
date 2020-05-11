@@ -1,11 +1,15 @@
 import React, { Fragment, useState } from 'react';
+import classnames from 'classnames';
 import {
   Grid,
   makeStyles,
+  Radio,
+  RadioGroup,
   FormControlLabel,
+  Button,
   Typography,
   OutlinedInput,
-  createMuiTheme,
+  createMuiTheme
 } from '@material-ui/core';
 import {
   KeyboardDatePicker,
@@ -51,6 +55,8 @@ const useStyles = makeStyles(theme => ({
     }
   },
   input: {
+    fontSize: 13,
+
     '&$cssFocused $notchedOutline': {
       borderColor: `${theme.palette.primary.main} !important`
     },
@@ -69,6 +75,9 @@ const useStyles = makeStyles(theme => ({
   sectionHeader: {
     fontSize: 17,
     color: '#fff'
+  },
+  radio: {
+    color: '#FFFFFF'
   }
 }));
 
@@ -116,6 +125,40 @@ const dateInputTheme = createMuiTheme({
   }
 });
 
+const radioOptionButton = (label, classes) => {
+  return (
+    <Fragment>
+      <Typography classes={{ root: classes.LabelText }}>{label}</Typography>
+      <div>
+        <RadioGroup
+          style={{ display: 'flex', flexDirection: 'row' }}
+          name="stimuli">
+          {/* <Grid container justify="space-between"> */}
+          {['yes', 'no'].map(option => (
+            <FormControlLabel
+              key={`stimuli-${option}`}
+              value={option}
+              control={
+                <Radio
+                  color="primary"
+                  classes={{
+                    colorPrimary: classes.radio
+                  }}
+                />
+              }
+              label={option}
+              classes={{
+                root: classes.radio
+              }}
+            />
+          ))}
+          {/* </Grid> */}
+        </RadioGroup>
+      </div>
+    </Fragment>
+  );
+};
+
 export const OtherPatientDetails = ({ patient }) => {
   const classes = useStyles();
   const selectedDate = new Date();
@@ -142,58 +185,194 @@ export const OtherPatientDetails = ({ patient }) => {
           />
         </Grid>
       </Grid>
-      <Grid container style={{ marginTop: 24 }}>
-        <Grid item xs={4}>
-          <Typography classes={{ root: classes.LabelText }}>
-            Date & Time of death
-          </Typography>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <ThemeProvider theme={dateInputTheme}>
-              <KeyboardDatePicker
-                variant="inline"
-                inputVariant="filled"
-                format="dd/MM/yyyy"
-                margin="normal"
-                id="time-of-death"
-                value={selectedDate}
+      <Fragment>
+        <Grid container style={{ marginTop: 24 }}>
+          <Grid item xs={4}>
+            <Typography classes={{ root: classes.LabelText }}>
+              Date & Time of death
+            </Typography>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <ThemeProvider theme={dateInputTheme}>
+                <KeyboardDatePicker
+                  variant="inline"
+                  inputVariant="filled"
+                  format="dd/MM/yyyy"
+                  margin="normal"
+                  id="time-of-death"
+                  value={selectedDate}
+                  fullWidth
+                  views={['year', 'date', '']}
+                  keyboardIcon={<EventAvailable style={{ color: '#fff' }} />}
+                  animateYearScrolling
+                  autoOk
+                  maxDate={new Date()}
+                />
+              </ThemeProvider>
+            </MuiPickersUtilsProvider>
+          </Grid>
+        </Grid>
+        <Grid container style={{ marginTop: 24 }}>
+          <Grid item xs={4}>
+            <Typography classes={{ root: classes.LabelText }}>
+              Location of death
+            </Typography>
+            <div>
+              <OutlinedInput
                 fullWidth
-                views={['year', 'date', '']}
-                keyboardIcon={<EventAvailable style={{ color: '#fff' }} />}
-                animateYearScrolling
-                autoOk
-                maxDate={new Date()}
+                variant="outlined"
+                classes={{
+                  root: classes.input,
+                  focused: classes.inputFocused,
+                  notchedOutline: classes.inputNotch
+                }}
               />
-            </ThemeProvider>
-          </MuiPickersUtilsProvider>
+            </div>
+          </Grid>
         </Grid>
-      </Grid>
-      <Grid container style={{ marginTop: 24 }}>
-        <Grid item xs={4}>
-          <Typography classes={{ root: classes.LabelText }}>
-            Location of death
-          </Typography>
-          <div>
-            <OutlinedInput
-              fullWidth
-              variant="outlined"
-              classes={{
-                root: classes.input,
-                focused: classes.inputFocused,
-                notchedOutline: classes.inputNotch
-              }}
-            />
-          </div>
+        <div
+          style={{
+            margin: '36px 0',
+            borderBottom: '#BDB8D9 1px solid',
+            height: 1,
+            width: '100%'
+          }}></div>
+        <Grid container>
+          <Grid item xs={12}>
+            <Typography classes={{ root: classes.sectionHeader }}>
+              Physical Examination
+            </Typography>
+          </Grid>
         </Grid>
-      </Grid>
-      <div
-        style={{ margin: '36px 0', borderBottom: '#BDB8D9 1px solid' }}></div>
-      <Grid container>
-        <Grid item>
-          <Typography classes={{ root: classes.sectionHeader }}>
-            Physical Examination
-          </Typography>
+        <Grid container style={{ marginTop: 16 }}>
+          <Grid item xs={4}>
+            {radioOptionButton('Response to Stimuli', classes)}
+          </Grid>
+          <Grid item xs={4}>
+            {radioOptionButton('Spontaneous respiration', classes)}
+          </Grid>
+          <Grid item xs={4}>
+            {radioOptionButton('Auscultatory breath sounds', classes)}
+          </Grid>
         </Grid>
-      </Grid>
+        <Grid container style={{ marginTop: 16 }}>
+          <Grid item xs={4}>
+            {radioOptionButton('Peripheral pulses', classes)}
+          </Grid>
+          <Grid item xs={4}>
+            {radioOptionButton('Central pulses', classes)}
+          </Grid>
+          <Grid item xs={4}>
+            {radioOptionButton('Heart sounds', classes)}
+          </Grid>
+        </Grid>
+        <Grid container style={{ marginTop: 16 }}>
+          <Grid item xs={4}>
+            {radioOptionButton('Pupils', classes)}
+          </Grid>
+          <Grid item xs={4}>
+            {radioOptionButton('Corneal reflex', classes)}
+          </Grid>
+          <Grid item xs={4}></Grid>
+        </Grid>
+        <Grid container style={{ marginTop: 16 }}>
+          <Grid item xs={12}>
+            <Typography classes={{ root: classes.LabelText }}>
+              Brief description of examination findings
+            </Typography>
+            <div>
+              <OutlinedInput
+                fullWidth
+                multiline
+                rows={3}
+                variant="outlined"
+                classes={{
+                  root: classes.input,
+                  focused: classes.inputFocused,
+                  notchedOutline: classes.inputNotch
+                }}
+              />
+            </div>
+          </Grid>
+        </Grid>
+        <Grid container style={{ marginTop: 16 }}>
+          <Grid item xs={12}>
+            <Typography classes={{ root: classes.LabelText }}>
+              Interventions and outcome (including cardiopulmonary resuscitation
+              CPR, defibrillation, medications)
+            </Typography>
+            <div>
+              <OutlinedInput
+                fullWidth
+                multiline
+                rows={3}
+                variant="outlined"
+                classes={{
+                  root: classes.input,
+                  focused: classes.inputFocused,
+                  notchedOutline: classes.inputNotch
+                }}
+              />
+            </div>
+          </Grid>
+        </Grid>
+        <Grid container style={{ marginTop: 16 }}>
+          <Grid item xs={12}>
+            <Typography classes={{ root: classes.LabelText }}>
+              Diagnosis/cause of death
+            </Typography>
+            <div>
+              <OutlinedInput
+                fullWidth
+                multiline
+                rows={3}
+                variant="outlined"
+                classes={{
+                  root: classes.input,
+                  focused: classes.inputFocused,
+                  notchedOutline: classes.inputNotch
+                }}
+              />
+            </div>
+          </Grid>
+        </Grid>
+        <Grid container style={{ marginTop: 16 }}>
+          <Grid item xs={4}>
+            {radioOptionButton('Family notified', classes)}
+          </Grid>
+          <Grid item xs={4}>
+            {radioOptionButton('Autopsy', classes)}
+          </Grid>
+          <Grid item xs={4}>
+            {radioOptionButton('Organ donor', classes)}
+          </Grid>
+        </Grid>
+        <Grid container style={{ marginTop: 16 }}>
+          <Grid item xs={12}>
+            <Typography classes={{ root: classes.LabelText }}>Plan</Typography>
+            <div>
+              <OutlinedInput
+                fullWidth
+                multiline
+                rows={3}
+                variant="outlined"
+                classes={{
+                  root: classes.input,
+                  focused: classes.inputFocused,
+                  notchedOutline: classes.inputNotch
+                }}
+              />
+            </div>
+          </Grid>
+        </Grid>
+        <Grid container style={{ marginTop: 16 }} justify="flex-end">
+          <Button className={classes.formButton}>CANCEL</Button>
+          <Button
+            disableElevation={false}
+            className={classnames(classes.formButton, classes.formButtonTS)}>
+            SAVE
+          </Button>
+        </Grid>
+      </Fragment>
     </Fragment>
   );
 };
