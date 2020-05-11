@@ -350,41 +350,13 @@ const generateDateTypes = (
           keyboardIcon={<TransformIcon style={{ color: '#fff' }} />}
           animateYearScrolling
           autoOk
-          maxDate={new Date()}
+          minDate={input.future  ? new Date() : undefined}
+          maxDate={input.future ? undefined : new Date()}
         />
       </ThemeProvider>
     </MuiPickersUtilsProvider>
   );
-  // return input.fields.map((date, index) => {
-  //   const spacing = index < 2 ? 3 : 6;
-  //   let value = 'y';
 
-  //   let mappedValue = year;
-
-  //   if (date == 'DD') {
-  //     mappedValue = days;
-  //     value = 'd';
-  //   }
-
-  //   if (date == 'MM') {
-  //     mappedValue = month;
-  //     value = 'm';
-  //   }
-
-  //   return (
-  //     <Grid key={`${index}--${input.label}`} item xs={spacing}>
-  //       {' '}
-  //       {SelectFieldComp(
-  //         classes,
-  //         input,
-  //         mappedValue,
-  //         setFormState,
-  //         formState,
-  //         value
-  //       )}
-  //     </Grid>
-  //   );
-  // });
 };
 
 const generateRadioType = (input, classes, setFormState) => {
@@ -443,10 +415,10 @@ const SelectTransform = ({ input, setFormState, formState }) => {
       container
       style={{ marginBottom: 15 }}
       direction={input.labelDirection}>
-      <Grid xs={!input.labelDirection && 4}>
+      <Grid item xs={!input.labelDirection && 4}>
         <Typography className={classes.labelText}>{input.label}</Typography>
       </Grid>
-      <Grid xs={!input.labelDirection && 8}>
+      <Grid item xs={!input.labelDirection && 8}>
         <Grid container direction="row" xs={12} spacing={0}>
           {selectType[input.type]}
         </Grid>

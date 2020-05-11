@@ -12,7 +12,7 @@ import { recentCases, Legends, SectionTwoRows } from './store';
 export const Surveillance = () => {
   const classes = SurveillanceSectionStyles();
   return (
-    <Container className={classes.SurveillanceContainer}>
+    <div className={classes.SurveillanceContainer}>
       <Grid
         container
         className={clsx(classes.PageItem, classes.SummaryContent)}>
@@ -110,6 +110,6 @@ export const Surveillance = () => {
           }}
         />
       </Grid>
-    </Container>
+    </div>
   );
 };

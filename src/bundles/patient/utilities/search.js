@@ -20,7 +20,7 @@ export const buildQuery = state => {
 
     pgQuery = pgQuery.set('or', presentList);
   };
-
+   
 
   const addAndClause = clause => {
     let presentList = pgQuery.get('and') || clause;
@@ -73,7 +73,6 @@ export const buildQuery = state => {
         })
       })
     })
-
     addOrClause(hasLGA)
   }
 

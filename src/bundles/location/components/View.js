@@ -27,6 +27,23 @@ const useStyles = makeStyles(theme => ({
     color: '#fff',
     textAlign: 'center'
   },
+  newLocation: {
+    backgroundColor: 'transparent',
+    color: '#8EE2E5',
+    fontSize: 13,
+    fontWeight: 'bold',
+   // padding: '11.5px 34px',
+    boxShadow: 'none',
+    // borderRadius: 50,
+    textTransform: 'uppercase',
+    '&:hover': {
+      backgroundColor: 'transparent',
+      color: '#8EE2E5',
+      fontSize: 13,
+      cursor: 'pointer',
+      boxShadow: 'none',
+    }
+  },
   primaryButton: {
     backgroundColor: '#27BAC0',
     color: '#fff',
@@ -222,22 +239,23 @@ const Location = ({ locationData, createLocation }) => {
   return (
     <Fragment>
       <Grid container>
-        <Grid item>
-          {/* <Typography className={classes.text}>3 Locations</Typography> */}
+      <Grid item xs>
+           <Typography className={classes.text}>{`${tableData.length} Locations`}</Typography> 
         </Grid>
-      </Grid>
-      <Grid container spacing={4}>
-        <Grid item xs={12} lg={12}>
-          <DataTable headers={tableHeaders} data={tableData} />
-        </Grid>
-        <Grid item xs>
+        <Grid item >
           <Button
             variant="contained"
             color="primary"
             onClick={handleClickOpen}
-            classes={{ root: classes.primaryButton }}>
-            New Location
+            classes={{ root: classes.newLocation }}>
+            Add New location
           </Button>
+        </Grid>
+        
+      </Grid>
+      <Grid container spacing={4}>
+        <Grid item xs={12} lg={12}>
+          <DataTable headers={tableHeaders} data={tableData} />
         </Grid>
       </Grid>
       <Dialog

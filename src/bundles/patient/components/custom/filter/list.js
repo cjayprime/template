@@ -73,7 +73,7 @@ const ErrorContainer = () => {
           <Typography
             color="primary"
             style={{ fontSize: 20, fontWeight: 'bold', color: '#fff' }}>
-            LOG A CALL
+            Register a patient
           </Typography>
         </ButtonBase>
       </Grid>

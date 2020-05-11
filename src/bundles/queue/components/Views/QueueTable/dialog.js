@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react';
-
 import {
   Grid,
   Typography,
@@ -9,15 +8,6 @@ import {
   DialogTitle,
   Button
 } from '@material-ui/core';
-import {
-  LGA,
-  TEAM,
-  STATUS,
-  UNDERLYING_ILLNESS,
-  TRAVEL_HISTORY,
-  GENDER,
-  AGE
-} from 'layout-components/Header/custom/filters';
 import { makeStyles } from '@material-ui/styles';
 import FormBuilder from 'bundles/patient/components/custom/formBuilder';
 
@@ -114,64 +104,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const renderFilter = (type, selection, setSelection, routerType) => {
-
-  if (!type) return null;
-
-  let renderData = {
-    LGA: LGA(),
-    TEAM: TEAM(),
-    STATUS: STATUS(),
-    UNDERLYING_ILLNESS: UNDERLYING_ILLNESS(),
-    TRAVEL_HISTORY: TRAVEL_HISTORY(),
-    GENDER: GENDER(),
-    AGE: AGE()
-  };
-
-  let selectedNodes = {}
-  if(selection[routerType] && selection[routerType][type]) {
-    selectedNodes = selection[routerType][type]
-  }
- 
-  return (
-    <Fragment>
-      {renderData[type].map((item, index) => {
-        return (
-          <Grid key={item.key}>
-            <Grid container alignItems="center" justify="center">
-              {item.content.map((formElements, index) => {
-                return (
-                  <FormBuilder
-                    key={`question--${index}`}
-                    formInput={formElements}
-                    setFormState={setSelection}
-                    formState={selectedNodes}
-                  />
-                );
-              })}
-            </Grid>
-          </Grid>
-        );
-      })}
-    </Fragment>
-  );
-};
-
-const FilterDialog = ({
-  open,
-  handleClose,
-  title,
-  actionText,
-  cancelText,
-  type = 'LGA',
-  dispatchClick,
-  setSelection,
-  selection,
-  routerType,
-}) => {
+const QueueDialog = ({ open, handleClose, render }) => {
   const classes = useStyles();
-  const render = renderFilter(type, selection, setSelection, routerType);
- 
+
   return (
     <Dialog
       open={open}
@@ -181,12 +116,12 @@ const FilterDialog = ({
         paper: classes.dialog,
         root: classes.dialogRoot
       }}
-      maxWidth={'sm'}>
+      maxWidth={'md'}>
       <DialogTitle id="form-dialog-title">
-        <Typography className={classes.headerText}>{title}</Typography>
+        <Typography className={classes.headerText}>{''}</Typography>
       </DialogTitle>
       <DialogContent>{render}</DialogContent>
-      <div style={{ margin: '10px 0' }}>
+      {/*<div style={{ margin: '10px 0' }}>
         <Box display="flex" justifyContent="center">
           <Button
             variant="contained"
@@ -207,9 +142,9 @@ const FilterDialog = ({
             {cancelText}
           </Button>
         </Box>
-      </div>
+          </div>*/}
     </Dialog>
   );
 };
 
-export default FilterDialog;
+export default QueueDialog;

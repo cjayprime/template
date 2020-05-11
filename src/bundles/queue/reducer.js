@@ -3,8 +3,8 @@ import { actionTypes } from './constants';
 
 const initialSearchFilters = Immutable.Map({
     searchText: '',
-    type: ''
-});
+    team: Immutable.List(['Evac & Decon', 'EPID/Surveillance','RRT', 'Psychosocial'])
+}); 
 
 const initialState = Immutable.Map({
     searchFilters: initialSearchFilters

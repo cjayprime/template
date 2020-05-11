@@ -17,5 +17,12 @@ export const QueuePageStyles = makeStyles(theme => ({
     '&:hover': {
       cursor: 'pointer'
     }
+  },
+  ViewButton : {
+    color: 'rgb(101, 80, 190)',
+    fontWeight: '800',
+    '&:hover': {
+      cursor: 'pointer'
+    }
   }
 }));

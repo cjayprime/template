@@ -6,7 +6,7 @@ export const tableStyles = makeStyles(theme => ({
     backgroundColor: '#2C2E42'
   },
   root: {
-    borderBottom: "none"
+    borderBottom: "none",
   },
   HeaderRow: {
     borderBottom: 'none'
@@ -27,3 +27,6 @@ export const tableStyles = makeStyles(theme => ({
     color: '#FDFDFE'
   }
 }));
+
+
+
