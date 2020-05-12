@@ -230,22 +230,22 @@ const PatientTab = ({ patientData }) => {
           </TabPanel>
           <TabPanel value={value} index={1}>
             <Grid container spacing={2}>
-              <PatientCallHistory />
+              <PatientCallHistory {...patientData} />
             </Grid>
           </TabPanel>
           <TabPanel value={value} index={2}>
             <Grid container spacing={2}>
-              <PatientCases />
+              <PatientCases {...patientData} />
             </Grid>
           </TabPanel>
           <TabPanel value={value} index={3}>
             <Grid container spacing={2}>
-              <PatientLabRequests />
+              <PatientLabRequests {...patientData} />
             </Grid>
           </TabPanel>
           <TabPanel value={value} index={4}>
             <Grid container spacing={2}>
-              <Grid item xs="10">
+              <Grid item xs={10}>
                 <PatientAppointment />
               </Grid>
             </Grid>

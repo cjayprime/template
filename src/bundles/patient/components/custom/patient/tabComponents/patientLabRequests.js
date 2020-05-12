@@ -1,8 +1,9 @@
 import React from 'react';
 import { makeStyles, Chip, Button } from '@material-ui/core';
 import { DataTable } from 'bundles/shared/components/Datatable';
+import moment from 'moment';
 
-export const PatientLabRequests = () => {
+export const PatientLabRequests = ({ labRequest }) => {
   const useStyle = makeStyles(() => ({
     Table: {
       backgroundColor: 'transparent'
@@ -23,7 +24,7 @@ export const PatientLabRequests = () => {
       }
     },
     TableCell: {
-      paddingTop: 12,
+      padding: 11,
       textTransform: 'capitalize',
       '&:first-child': {
         paddingLeft: 0,
@@ -60,14 +61,14 @@ export const PatientLabRequests = () => {
   );
 
   const getChipClass = status => {
-    switch (status) {
-      case 'Awaiting Sample':
+    switch (status.toLowerCase()) {
+      case 'awaiting sample':
         return 'AwaitingSample';
-      case 'Sample Collected':
+      case 'sample collected':
         return 'SampleCollected';
-      case 'Awaiting Result':
+      case 'awaiting result':
         return 'AwaitingResult';
-      case 'Completed':
+      case 'completed':
         return 'Completed';
       default:
         return '';
@@ -84,51 +85,26 @@ export const PatientLabRequests = () => {
     />
   );
 
+  const renderDateComponent = row => (
+    <>{moment(row.requestDate).format('DD MMM, h:mm A')}</>
+  );
+
+  console.log(labRequest, 'labRequest');
+
   const labHeader = [
-    { name: 'DATE REQUESTED.', accessor: 'requestDate' },
+    { name: 'DATE REQUESTED.', accessor: renderDateComponent },
     { name: 'NAME OF TEST', accessor: 'testName' },
     { name: 'STATUS', accessor: renderStatusComponent },
     { name: 'RESULT', accessor: 'result' },
-    { name: 'CREATED BY', accessor: 'createdBy' },
+    { name: 'CREATED BY', accessor: 'requestedBy' },
     { name: 'ACTION', accessor: renderActionComponent }
-  ];
-
-  const testLabStore = [
-    {
-      testName: 'SARS-CoV-2 RNA',
-      status: 'Awaiting Sample',
-      createdBy: 'Dr. G. Jenkins',
-      result: '',
-      requestDate: '31 Mar, 7:34PM'
-    },
-    {
-      testName: 'SARS-CoV-2 RNA',
-      status: 'Sample Collected',
-      createdBy: 'Dr. G. Jenkins',
-      result: '',
-      requestDate: '31 Mar, 7:34PM'
-    },
-    {
-      testName: 'SARS-CoV-2 RNA',
-      status: 'Awaiting Result',
-      createdBy: 'Dr. F. Cobb',
-      result: '',
-      requestDate: '31 Mar, 7:34PM'
-    },
-    {
-      testName: 'SARS-CoV-2 RNA',
-      status: 'Completed',
-      createdBy: 'Dr. O. Alexander',
-      result: 'positive',
-      requestDate: '31 Mar, 7:34PM'
-    }
   ];
 
   return (
     <DataTable
       headers={labHeader}
       noBorder={true}
-      data={testLabStore}
+      data={labRequest}
       styles={classes}
     />
   );

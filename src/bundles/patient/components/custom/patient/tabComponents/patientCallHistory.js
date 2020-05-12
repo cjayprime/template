@@ -8,6 +8,7 @@ import {
   Typography,
   Button
 } from '@material-ui/core';
+import moment from 'moment';
 
 import { DefaultCheckbox } from 'bundles/patient/components/custom/formBuilder';
 
@@ -72,7 +73,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export const PatientCallHistory = ({ patient }) => {
+export const PatientCallHistory = ({ callLogs }) => {
   const classes = useStyles();
   const [showNewCallLog, setShowNewCallLog] = useState(true);
 
@@ -151,34 +152,16 @@ export const PatientCallHistory = ({ patient }) => {
           Additional Information from the call
         </Grid>
       </Grid>
-      <Grid container style={{ padding: '12px 0' }}>
-        <Grid item xs={3} classes={{ root: classes.CallHistoryDateDisplay }}>
-          31 Mar, 7:54 PM
+      {callLogs.map(log => (
+        <Grid container style={{ padding: '12px 0' }} key={log.id}>
+          <Grid item xs={3} classes={{ root: classes.CallHistoryDateDisplay }}>
+            {moment(log.callTime).format('DD MMM, h:mm a')}
+          </Grid>
+          <Grid item xs classes={{ root: classes.CallHistoryNotes }}>
+            {log.callSummary}
+          </Grid>
         </Grid>
-        <Grid item xs classes={{ root: classes.CallHistoryNotes }}>
-          Patient feels better
-        </Grid>
-      </Grid>
-      <Grid container style={{ padding: '12px 0' }}>
-        <Grid item xs={3} classes={{ root: classes.CallHistoryDateDisplay }}>
-          31 Mar, 11:12 AM
-        </Grid>
-        <Grid item xs classes={{ root: classes.CallHistoryNotes }}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ut
-          metus diam. Cras ac augue id massa vestibulum blandit. Donec eget
-          lorem lobortis, pulvinar lacus sed, congue enim. Ut ligula tortor,
-          egestas sagittis risus ut, dignissim rhoncus orci. Sed semper, quam
-          vitae iaculis mollis, ex.
-        </Grid>
-      </Grid>
-      <Grid container style={{ padding: '12px 0' }}>
-        <Grid item xs={3} classes={{ root: classes.CallHistoryDateDisplay }}>
-          28 Mar, 1:32 PM
-        </Grid>
-        <Grid item xs classes={{ root: classes.CallHistoryNotes }}>
-          First call - gathered all the info in “patient details” section
-        </Grid>
-      </Grid>
+      ))}
     </Fragment>
   );
 };

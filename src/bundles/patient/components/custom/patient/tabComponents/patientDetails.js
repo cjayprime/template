@@ -18,12 +18,12 @@ const useStyles = makeStyles(() => ({
     fontSize: 14,
     fontWeight: 400,
     paddingRight: 20,
-    lineHeight: '1.4'
+    lineHeight: '1.4',
+    textTransform: 'capitalize'
   }
 }));
 
 export const PatientDetails = ({ patient }) => {
-  console.log(patient, 'patient details');
   const classes = useStyles();
   return (
     <Fragment>
@@ -39,7 +39,7 @@ export const PatientDetails = ({ patient }) => {
               Phone Number
             </Typography>
             <Typography classes={{ root: classes.PatientDetailValueContent }}>
-              +1234567890
+              {patient.phoneNumber || '-'}
             </Typography>
           </div>
           <div style={{ marginTop: 15 }}>
@@ -47,8 +47,7 @@ export const PatientDetails = ({ patient }) => {
               Address
             </Typography>
             <Typography classes={{ root: classes.PatientDetailValueContent }}>
-              Street Name, Address line 2, State, City Street Name, Address line
-              2, State, City Street Name, Address line 2, State, City
+              {patient.address || '-'}
             </Typography>
           </div>
         </Grid>
@@ -57,7 +56,7 @@ export const PatientDetails = ({ patient }) => {
             Email
           </Typography>
           <Typography classes={{ root: classes.PatientDetailValueContent }}>
-            email@domain.com
+            {patient.email || '-'}
           </Typography>
         </Grid>
       </Grid>
@@ -73,7 +72,7 @@ export const PatientDetails = ({ patient }) => {
               LGA
             </Typography>
             <Typography classes={{ root: classes.PatientDetailValueContent }}>
-              Kosofe
+              {patient.lga || '-'}
             </Typography>
           </div>
           <div style={{ marginTop: 15 }}>
@@ -81,7 +80,7 @@ export const PatientDetails = ({ patient }) => {
               Nationality
             </Typography>
             <Typography classes={{ root: classes.PatientDetailValueContent }}>
-              Nigerian
+              {patient.nationality || '-'}
             </Typography>
           </div>
           <div style={{ marginTop: 15 }}>
@@ -89,7 +88,7 @@ export const PatientDetails = ({ patient }) => {
               Location
             </Typography>
             <Typography classes={{ root: classes.PatientDetailValueContent }}>
-              Gbagada
+              {patient.location || '-'}
             </Typography>
           </div>
         </Grid>
@@ -99,7 +98,7 @@ export const PatientDetails = ({ patient }) => {
               Country of Residence
             </Typography>
             <Typography classes={{ root: classes.PatientDetailValueContent }}>
-              Nigeria
+              {patient.countryOfResidence || '-'}
             </Typography>
           </div>
           <div style={{ marginTop: 15 }}>
@@ -107,7 +106,7 @@ export const PatientDetails = ({ patient }) => {
               Occupation
             </Typography>
             <Typography classes={{ root: classes.PatientDetailValueContent }}>
-              Healthcare Worker
+              {patient.occupation || '-'}
             </Typography>
           </div>
           <div style={{ marginTop: 15 }}>
@@ -115,7 +114,7 @@ export const PatientDetails = ({ patient }) => {
               Other
             </Typography>
             <Typography classes={{ root: classes.PatientDetailValueContent }}>
-              Lorem Ipsum some stuff here
+              {patient.notes || '-'}
             </Typography>
           </div>
         </Grid>

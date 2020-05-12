@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { makeStyles, Button } from '@material-ui/core';
 import { DataTable } from 'bundles/shared/components/Datatable';
+import moment from 'moment';
 
-export const PatientCases = () => {
+export const PatientCases = ({ patientCase }) => {
   const useStyle = makeStyles(() => ({
     Table: {
       backgroundColor: 'transparent'
@@ -26,11 +27,17 @@ export const PatientCases = () => {
       }
     },
     TableCell: {
-      paddingTop: 12,
+      padding: 11,
       textTransform: 'capitalize',
       '&:first-child': {
         paddingLeft: 0,
         fontWeight: 600
+      },
+      '&:nth-child(5)': {
+        maxWidth: 150,
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis'
       }
     },
     ActionButton: {
@@ -42,39 +49,18 @@ export const PatientCases = () => {
   }));
   const classes = useStyle();
 
-  const testCaseStore = [
-    {
-      createdAt: '31 Mar, 3:00 PM',
-      submittedBy: 'Vincent Simpson',
-      epidNo: '123456',
-      type: 'Questionnaire',
-      notes: 'Some random thing here'
-    },
-    {
-      createdAt: '31 Mar, 3:00 PM',
-      submittedBy: 'Lucas Cruz',
-      epidNo: '123456',
-      type: 'Questionnaire',
-      notes:
-        'Additional information, lorem ipsum, dolor sit amet, lorem ipsum Additional information, lorem ipsum, dolor sit amet, lorem ipsum'
-    },
-    {
-      createdAt: '31 Mar, 3:00 PM',
-      submittedBy: 'Barbara Norris',
-      epidNo: '123456',
-      type: 'Questionnaire',
-      notes: 'Some random thing here'
-    }
-  ];
-
   const renderCaseActionComponent = row => (
     <Button className={classes.ActionButton}>View Details</Button>
   );
 
+  const renderCaseDateComponent = row => (
+    <Fragment>{moment(row.createdAt).format('DD MMM, h:mm A')}</Fragment>
+  );
+
   const caseHeader = [
-    { name: 'DATE', accessor: 'createdAt' },
+    { name: 'DATE', accessor: renderCaseDateComponent },
     { name: 'SUBMITTED BY', accessor: 'submittedBy' },
-    { name: 'EPID NO', accessor: 'epidNo' },
+    { name: 'EPID NO', accessor: 'epidNumber' },
     { name: 'TYPE', accessor: 'type' },
     { name: 'NOTES', accessor: 'notes' },
     { name: 'ACTION', accessor: renderCaseActionComponent }
@@ -84,7 +70,7 @@ export const PatientCases = () => {
     <DataTable
       headers={caseHeader}
       noBorder={true}
-      data={testCaseStore}
+      data={patientCase.cases}
       styles={classes}
     />
   );

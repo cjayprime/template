@@ -8,7 +8,7 @@ import { useStyles } from 'bundles/patient/components/custom/filter/index.style'
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
 import PatientTab from 'bundles/patient/components/custom/patient/tab';
 import notfound from 'images/notfound.png';
-// import moment from 'moment';
+import moment from 'moment';
 
 const compose = require('lodash')?.flowRight;
 
@@ -69,7 +69,14 @@ const List = ({ header, data }) => {
 };
 
 const expand = () => {
-  return <KeyboardArrowDown />;
+  return (
+    <Grid container alignItems="center" justify="flex-end">
+      {/* <Typography style={{ textTransform: 'uppercase', marginRight: 5 }}>
+        Expand
+      </Typography> */}
+      <KeyboardArrowDown />
+    </Grid>
+  );
 };
 
 const ErrorContainer = () => {
@@ -109,37 +116,84 @@ const ErrorContainer = () => {
 };
 
 const RenderList = ({ patients = [] }) => {
+  console.log(patients, 'patients');
   const remap = patients.map(patient => {
     return {
       patient: {
         firstName: patient.firstname,
         lastName: patient.lastname,
         sex: patient.sex,
-        age: 30 || patient.birthDate // moment().diff(patient.birthDate,'years') : '',
+        age: patient.birthDate ? moment().diff(patient.birthDate, 'years') : '',
+        phoneNumber: patient.phoneNumber,
+        email: patient.email,
+        countryOfResidence: patient.countryOfResidence,
+        lga: patient.lga,
+        notes: patient.notes || '-',
+        location: patient.location,
+        nationality: patient.nationality,
+        occupation: patient.occupation,
+        epidNumber: patient.epidNumber,
+        address: `
+        ${patient.streetName ? `${patient.streetName}, ` : ''}
+        ${patient.streetName2 ? `${patient.streetName2},` : ''}
+        ${patient.city ? `${patient.city},` : ''}
+        ${patient.state ? `${patient.state} State` : ''}`
       },
+      callLogs: patient.callLogsByPatientId.nodes || [],
       patientCase: {
         riskLevel: patient.patientCasesByPatientId.nodes.length
           ? patient.patientCasesByPatientId.nodes[0].riskLevel
-          : ''
-      },
-      task: {
-        status: patient.patientCasesByPatientId.nodes.length
-          ? patient.patientCasesByPatientId.nodes[0].status
           : '',
-        acceptedBy: 'FORWARD',
-        requestDate: patient.phoneNumber,
-        epidNumber: patient.epidNumber,
-        expand: 'EXPAND'
-      }
+        status:
+          patient.patientCasesByPatientId.nodes.length > 0
+            ? patient.patientCasesByPatientId.nodes[0].status
+            : '',
+        cases:
+          patient.patientCasesByPatientId.nodes.map(patientCase => {
+            return {
+              ...patientCase,
+              epidNumber: patient.epidNumber,
+              submittedBy: `${
+                patientCase.userBySubmittedBy.title
+                  ? `${patientCase.userBySubmittedBy.title} `
+                  : ''
+              }${patientCase.userBySubmittedBy.firstname} ${
+                patientCase.userBySubmittedBy.lastname
+              }`
+            };
+          }) || []
+      },
+      labRequest:
+        patient.labRequestsByPatientId.nodes.map(labRequest => {
+          return {
+            ...labRequest,
+            requestedBy: `${
+              labRequest.userByRequestedBy.title
+                ? `${labRequest.userByRequestedBy.title} `
+                : ''
+            }${labRequest.userByRequestedBy.firstname} ${
+              labRequest.userByRequestedBy.lastname
+            }`,
+            status: labRequest.labRequestStatusesByLabRequestId.nodes[0].status
+          };
+        }) || []
+      // task: {
+      //   status: patient.patientCasesByPatientId.nodes.length
+      //     ? patient.patientCasesByPatientId.nodes[0].status
+      //     : '',
+      //   acceptedBy: 'FORWARD',
+      //   requestDate: patient.phoneNumber,
+      //   epidNumber: patient.epidNumber,
+      //   expand: 'EXPAND'
+      // }
     };
   });
 
   const headers = [
     { name: 'PATIENT', accessor: renderPatientCell },
-    { name: 'PHONE NUMBER', accessor: 'task.requestDate' },
-    { name: 'STATUS', accessor: 'task.status' },
-    { name: 'EPID NO.', accessor: 'task.epidNumber' },
-    { name: '', accessor: renderActionComponent },
+    { name: 'PHONE NUMBER', accessor: 'patient.phoneNumber' },
+    { name: 'STATUS', accessor: 'patientCase.status' },
+    { name: 'EPID NO.', accessor: 'patient.epidNumber' },
     { name: '', accessor: expand }
   ];
 

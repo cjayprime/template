@@ -7,21 +7,68 @@ export const ALL_PATIENTS = gql`
         id
         firstname
         lastname
-        epidNumber
-        phoneNumber
-        epidNumber
-        email
         birthDate
         sex
+        phoneNumber
+        city
+        countryOfResidence
+        email
+        epidNumber
+        lga
+        location
+        nationality
+        occupation
+        streetName
+        state
+        notes
+        streetName2
         patientCasesByPatientId {
-           nodes {
+          nodes {
             id
             status
             riskLevel
+            userBySubmittedBy {
+              title
+              firstname
+              lastname
+            }
+            notes
+            createdAt
+          }
+        }
+        callLogsByPatientId {
+          nodes {
+            id
+            callSummary
+            callTime
+          }
+        }
+        labRequestsByPatientId {
+          nodes {
+            id
+            userByAcceptedBy {
+              title
+              firstname
+              lastname
+            }
+            userByRequestedBy {
+              title
+              firstname
+              lastname
+            }
+            result
+            testName
+            requestDate
+            labRequestStatusesByLabRequestId(last: 1) {
+              nodes {
+                id
+                status
+              }
+            }
           }
         }
       }
       totalCount
     }
   }
-`; 
+`;
