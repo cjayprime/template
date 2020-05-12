@@ -5,13 +5,91 @@ import {
   Typography,
   Avatar,
   TextField,
-  FormLabel
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio
 } from '@material-ui/core';
+import clsx from 'clsx';
 import { Input } from 'bundles/shared/components';
 import { StaffCreateStyles } from './index.style';
 
+const DEFAULT_RADIO_OPTIONS = ['Yes', 'No'];
+
 export const StaffCreateView = props => {
   const classes = StaffCreateStyles();
+
+  const buildAccessLevels = ({ accessLevels }) => {
+    const LevelItem = ({ level, child }) => (
+      <Grid container className={classes.AccessLevelContainer}>
+        <Grid
+          item
+          container
+          className={classes.AccessLevelLabel}
+          xs={5}
+          wrap="nowrap">
+          <Grid item xs={3} className={classes.AccessLevelIcon}>
+            {level.icon}
+          </Grid>
+          <Grid item xs={9} className={classes.AccessLevelTextContainer}>
+            <Typography className={classes.AccessLevelText}>
+              {level.field}
+            </Typography>
+          </Grid>
+        </Grid>
+        <Grid
+          xs={7}
+          item
+          className={classes.AccessLevelIconsContainer}
+          style={{
+            ...(!child ? { position: 'relative', left: '3%' } : {})
+          }}
+          container>
+          {DEFAULT_RADIO_OPTIONS.map(node => (
+            <Grid item xs={6}>
+              <FormControlLabel value={node} control={<Radio />} label={node} />
+            </Grid>
+          ))}
+        </Grid>
+      </Grid>
+    );
+
+    return (
+      <Grid container direction="column" className={classes.AccessLevelForm}>
+        {accessLevels.map(level => {
+          return (
+            <Grid
+              container
+              direction="column"
+              wrap="nowrap"
+              className={classes.LevelItemContainer}>
+              <Grid item className={classes.LevelItem} xs={4}>
+                <LevelItem level={level} />
+              </Grid>
+              {level.children && (
+                <Grid
+                  item
+                  container
+                  direction="column"
+                  xs={6}
+                  className={clsx(
+                    classes.LevelItemContainer,
+                    classes.LevelChildrenContainer
+                  )}>
+                  {level.children.map(child => (
+                    <Grid item className={classes.LevelItem}>
+                      <LevelItem level={{ field: child, icon: null }} child />
+                    </Grid>
+                  ))}
+                </Grid>
+              )}
+            </Grid>
+          );
+        })}
+      </Grid>
+    );
+  };
+
   return (
     <Container className={classes.PageContainer}>
       <Grid container className={classes.FormContainer} direction="row">
@@ -136,7 +214,19 @@ export const StaffCreateView = props => {
             </form>
           </Grid>
         </Grid>
-        <Grid item xs={5}></Grid>
+        <Grid
+          item
+          xs={5}
+          container
+          direction="column"
+          className={classes.AccessLevelContainer}>
+          <Grid item className={classes.AccessHeaderSection}>
+            <Typography className={classes.AccessHeadertext}>
+              {'Upload Access Level*'}
+            </Typography>
+          </Grid>
+          {buildAccessLevels({ accessLevels: props.accessLevels || [] })}
+        </Grid>
       </Grid>
     </Container>
   );

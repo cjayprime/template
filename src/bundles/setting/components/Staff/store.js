@@ -30,3 +30,20 @@ export const store = [
     }
   }
 ];
+
+export const accessLevels = [
+  {
+    field: 'Laboratory',
+    icon: null,
+    children: ['View', 'Receive Specimen', 'Take Specimen', 'Fill Result']
+  },
+  { field: 'Log Call', icon: null },
+  { field: 'Contact Information', icon: null },
+  { field: 'Patient profile', icon: null },
+  { field: 'Notes', icon: null },
+  { field: 'Queues', icon: null },
+  { field: 'Appointments', icon: null, children: ['View', 'Create'] },
+  { field: 'Dashboard', icon: null },
+  { field: 'Reports', icon: null },
+  { field: 'Admit/Discharge', icon: null }
+];

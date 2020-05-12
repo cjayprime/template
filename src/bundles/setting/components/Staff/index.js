@@ -3,7 +3,7 @@ import { Container, Grid, Typography, Avatar } from '@material-ui/core';
 import clsx from 'clsx';
 import { Header, DataTable } from 'bundles/shared/components';
 import { StaffPageStyles } from './index.style.js';
-import { store } from './store';
+import { store, accessLevels } from './store';
 import { StaffCreateView } from './components/Create';
 
 const Staff = () => {
@@ -72,7 +72,7 @@ const Staff = () => {
     }
   ];
 
-return (<StaffCreateView />)
+  return <StaffCreateView accessLevels={accessLevels} />;
 
   // TODO {H.Ezekiel} move this to StaffList component
   return (

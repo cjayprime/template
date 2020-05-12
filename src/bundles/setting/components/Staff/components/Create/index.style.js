@@ -45,7 +45,7 @@ export const StaffCreateStyles = makeStyles(_theme => ({
     }
   },
   FormGroupContainer: {
-    marginBottom: '4%'
+    marginBottom: '7%'
   },
   FormGroupItem: {
     marginRight: '1.5%',
@@ -57,5 +57,48 @@ export const StaffCreateStyles = makeStyles(_theme => ({
   },
   Form: {
     color: 'white'
+  },
+  AccessLevelContainer: {
+
+  },
+  AccessHeaderSection: {
+
+  },
+  AccessHeadertext: {
+    color: 'white',
+    fontSize: '14px',
+    marginBottom: '5%'
+  },
+  AccessLevelItemContainer: {
+
+  },
+  AccessLevelLabel: {
+
+  },
+  AccessLevelIconsContainer: {
+    justifyContent: 'flex-start',
+    paddingLeft: '20px',
+    position: 'relative',
+    bottom: '12px'
+  },
+  AccessLevelIcon: {
+    marginRight: '2%',
+  },
+  AccessLevelText: {
+    fontSize: '12.5px',
+    color: 'white'
+  },
+  AccessLevelForm: {
+    height: '100vh'
+  },
+  LevelChildrenContainer: {
+    position: 'relative',
+    left: '3%'
+  },
+  LevelItemContainer: {
+    maxWidth: '100%',
+  },
+  LevelItem: {
+    maxWidth: '100%'
   }
 }));
