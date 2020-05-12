@@ -7,39 +7,8 @@ import {
   TextField,
   FormLabel
 } from '@material-ui/core';
-import { StaffCreateStyles, InputStyles } from './index.style';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-
-const Input = props => {
-  const classes = InputStyles();
-  return (
-    <TextField
-      select={props.select}
-      variant="filled"
-      fullWidth
-      name={props.name}
-      className={classes.TextInputContainer}
-      InputProps={{
-        classes: { root: classes.InputView },
-        disableUnderline: true,
-        defaultValue: props.defaultValue || ''
-      }}
-      SelectProps={{
-        IconComponent: () => (
-          <KeyboardArrowDownIcon className={classes.SelectInputIcon} />
-        ),
-        classes: { filled: classes.SelectInput }
-      }}>
-      {props.select && (
-        <Fragment>
-          {[{ value: '' }, ...props.options].map(opt => (
-            <option value={opt.value}>{opt.value}</option>
-          ))}
-        </Fragment>
-      )}
-    </TextField>
-  );
-};
+import { Input } from 'bundles/shared/components';
+import { StaffCreateStyles } from './index.style';
 
 export const StaffCreateView = props => {
   const classes = StaffCreateStyles();
