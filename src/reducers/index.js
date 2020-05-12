@@ -6,6 +6,7 @@ import location from 'bundles/location/reducer';
 import appointment from 'bundles/appointment/reducer';
 import kpi from 'bundles/kpi/reducer';
 import settings from 'bundles/setting/reducer';
+import location from 'bundles/location/reducer';
 import { combineReducers } from 'redux';
 
 export default combineReducers({
@@ -16,5 +17,6 @@ export default combineReducers({
   appointment,
   kpi,
   settings,
+  location,
   router
 }) 
