@@ -1,6 +1,8 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import withQueue from 'bundles/queue/hoc/withQueue';
 import createRequestLab from 'bundles/lab/hoc/createLabRequest';
+import withLocations from 'bundles/location/hoc/withLocation';
+import createPatientLocation from 'bundles/location/hoc/createPatientLocation';
 import createQueue from 'bundles/queue/hoc/createQueue';
 import createQueueTask from 'bundles/queue/hoc/createQueueTask';
 import updateQueue from 'bundles/queue/hoc/updateQueue';
@@ -8,8 +10,10 @@ import { QueueTableView } from './Views/QueueTable';
 import { makeStyles } from '@material-ui/styles';
 import PatientDialog from 'bundles/queue/components/Views/QueueTable/dialog';
 import Appointment from 'bundles/appointment/components/create';
-import { dispatchEvent } from 'bundles/queue/utilities/queue';
-
+import { connect } from 'react-redux';
+import { searchFilter } from 'bundles/queue/selectors';
+import { addBedLocation } from 'bundles/location/actions';
+import { dispatchEvent, remap } from 'bundles/queue/utilities/queue';
 const compose = require('lodash')?.flowRight;
 
 const useStyles = makeStyles({
@@ -17,16 +21,21 @@ const useStyles = makeStyles({
     minWidth: 650
   }
 });
-
+ 
 const Queue = ({
-  queues,
   addQueue,
+  locationData,
   updateQueue,
   createLabRequest,
   createQueueTaskStatus,
+  queues,
   filter,
+  queueFilter,
+  addBed,
+  createPatientLocation, 
   ...props
 }) => {
+    
   const classes = useStyles();
   const [queueState, setQueueState] = useState({});
   const [dialogState, setDialogState] = useState(false);
@@ -34,314 +43,29 @@ const Queue = ({
   const [formState, setFormState] = useState({});
   const [apiData, setSaveApiData] = useState(() => ''); 
 
-  const getAge = dateString => { // Get Age
-    if (!dateString) return null;
-    const today = new Date();
-    const birthDate = new Date(dateString);
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-      age--;
-    }
-    return age;
-  };
 
-  const parseStatus = user => { // Get user status
-    if (
-      user.queueTaskStatusesByTaskId &&
-      user.queueTaskStatusesByTaskId.nodes
-    ) {
-      if (user.queueTaskStatusesByTaskId.nodes.length > 0) {
-        return user.queueTaskStatusesByTaskId.nodes[
-          user.queueTaskStatusesByTaskId.nodes.length - 1
-        ].status;
-      }
-    }
-
-    return user.patientByPatientId.patientCasesByPatientId.nodes.status;
-  };
-
-  const remap = (user, tableStatus, action) => ({  // Map user to defined Table  for queues
-    patient: {
-      firstName: user.patientByPatientId.firstname,
-      epidNumber: user.patientByPatientId.epidNumber,
-      id: user.nodeId,
-      patientId: user.patientByPatientId.id,
-      queueId: user.id,
-      lastName: user.patientByPatientId.lastname,
-      sex: user.patientByPatientId.sex,
-      age: getAge(user.patientByPatientId.birthDate),
-      requestDate: new Date(user.requestDate).toDateString(),
-      status: parseStatus(user),
-      riskLevel:
-        user.patientByPatientId.patientCasesByPatientId.nodes.riskLevel,
-      team: user.team,
-      action,
-      acceptedBy: user?.userByAcceptedBy?.firstname || '-',
-      tableStatus
-    }
-  });
-
-  const addQueueStatus = async ({ type, status, id }) => {  // Add queue status
-    const response = await createQueueTaskStatus({
-      variables: {
-        input: {
-          queueTaskStatus: {
-            taskType: type,
-            status,
-            queue: {
-              connectById: {
-                id: id
-              }
-            }
-          }
-        }
-      }
-    });
-
-    if (response) return true;
-    else return false;
-  };
-
-  const labRequest = async ({ notes, user, requestDate, patientId }) => { // Create lab request
-    const response = await createLabRequest({
-      variables: {
-        input: {
-          labRequest: {
-            requestedBy: user,
-            testName: 'Covid 19',
-            sampleNumber: Math.floor(Math.random() * 999999),
-            specimenNotes: notes,
-            requestDate,
-            patient: {
-              connectById: {
-                id: patientId
-              }
-            }
-          }
-        }
-      }
-    });
-
-    if (response) {
-      console.log('Succes');
-      return true;
-    } else {
-      console.log('Failed', response);
-      return false;
-    }
-  };
-
-  const addToQueue = async ({ patientEpidNumber, id, team }) => { // Add to queue
-    const response = await addQueue({
-      variables: {
-        input: {
-          queue: {
-            patientEpidNumber,
-            patientId: id,
-            team
-          }
-        }
-      }
-    });
-
-    if (response) {
-      return true;
-    }
-
-    return false;
-  };
-
-//   const dispatchEvent = async (id, status, patient) => { // Update queue
-//     const response = await updateQueue({
-//       variables: {
-//         input: {
-//           nodeId: id,
-//           queuePatch: {
-//             acceptedBy: 1
-//           }
-//         },
-//         filter: {
-//           or: [
-//             {
-//               team: {
-//                 equalTo: 'Evac & Decon'
-//               }
-//             },
-//             {
-//               team: {
-//                 equalTo: 'EPID/Surveillance'
-//               }
-//             },
-//             {
-//               team: {
-//                 equalTo: 'RRT'
-//               }
-//             }
-//           ]
-//         }
-//       }
-//     });
-
-//     if (response) {
-//       const queues = response?.data?.updateQueue?.query?.allQueues.nodes;
-//       const { accepted, owner, pending } = parseQueue(queues);
-//       setQueueState({ accepted, owner, pending });
-//       return true;
-//     }
-
-//     return false;
-//   };
-
-  const bookAppointment = async (patient, status) => { // book apointment
-   
-    if (patient.team == 'RRT') {
-      if (patient.status == 'Sample Collected') {
-        const labs = await labRequest({
-          notes: 'Sent from RRT',
-          user: 1,
-          requestDate: new Date(),
-          patientId: patient.patientId
-        });
-        if (labs) {
-          console.log('Labs came back succesfully');
-          const response = await handleRRT(patient, 'Sample Delivered');
-          if (response) console.log('Response recieved, -->', response);
-        }
-        return;
-      }
-
-      const response = await handleRRT(patient, status);
-      console.log('On back-->', response);
-      return;
-    }
-
-    setPatientInfo({ ...patient });
-    setDialogState(!dialogState);
-  };
-
-
-
-
-  const handleRRT = async (patient, status) => {
-    const { epidNumber, id, patientId, queueId } = patient;
-
-    const response = await addQueueStatus({
-      id: queueId,
-      status: status,
-      type: 'TEAM_TASK'
-    });
-
-    if (response) {
-      console.log('Succes ', response);
-    }
-  };
-
-  const handleSave = async (queueText) => {
-
-    const { reason, team, time, date } = formState;
-
-    if (!date || !reason || !team )  {
+  const handleSave = async (queueText, locationId) => {
+  
+    const { reason, team, time, date  } = formState;
+    /*if (!date)  {  // Validation should be done from inside comp  //Evac and decon does not need team
         console.log('All fields are reqired')
         return null
-    }
+    } */
 
-    dispatchEvent({ patient: { ...patientInfo, reason, date } }, queueText, { 
+    dispatchEvent({ patient: { ...patientInfo, reason, date, newTeam: team, locationId, admittedBy: 1 } }, queueText, { 
         updateQueue, 
         createLabRequest, 
+        addQueue,
         createQueueTaskStatus, 
-        filter, 
+        filter : queueFilter, 
         parseQueue, 
         setQueueState ,
         setPatientInfo,
         setDialogState,
-        setSaveApiData
+        setSaveApiData,
+        createPatientLocation, 
     })
 
-
-    return;
-
-    // EPID / SURVELLENCE
-    const { epidNumber, id, patientId, queueId } = patientInfo;
-   
-
-
-
-     if(patientInfo.team == 'Evac & Decon') {
-
-        if (date && time) {
-                // Complete evac and decon
-        } 
-
-        return;
-     }
-
-    if (!team || !time || !date) {
-      return;
-    
-    } else {
-
-      if (patientInfo.team == 'Psychosocial') {
-        const queueAdded = await addToQueue({
-            patientEpidNumber: epidNumber,
-            id: patientId,
-            team
-          });
-          console.log(queueAdded, '-----> returned as Queue added');
-          if(queueAdded) {
-          const addTask = await addQueueStatus({
-            id: queueId,
-            status: 'Appointment Booked',
-            type: 'TEAM_TASK'
-          });
-  
-          console.log('Add Task as ', addTask);
-        }
-
-          return;
-      }
-
-      //Epid
-      // as epid survelance
-      if (reason == 'Drive through') {
-        const labs = await labRequest({
-          notes: reason || '',
-          user: 1,
-          requestDate: date,
-          patientId
-        });
-        if (labs) {
-          const addTask = await addQueueStatus({
-            id: queueId,
-            status: 'Appointment Booked',
-            type: 'TEAM_TASK'
-          });
-        }
-      } else {
-        const labs = await labRequest({
-          notes: reason || '',
-          user: 1,
-          requestDate: date,
-          patientId
-        });
-        console.log(labs, '-----> returned as Labs');
-
-        const queueAdded = await addToQueue({
-          patientEpidNumber: epidNumber,
-          id: patientId,
-          team
-        });
-        console.log(queueAdded, '-----> returned as Queue added');
-        const addTask = await addQueueStatus({
-          id: queueId,
-          status: 'Appointment Booked',
-          type: 'TEAM_TASK'
-        });
-
-        console.log('Add Task as ', addTask);
-      }
-    }
-    setDialogState(!dialogState);
   };
 
   const saveEntry = value => {
@@ -358,10 +82,10 @@ const Queue = ({
 
         if (accepted) {
           if (userOwnsTask(current))
-            acc['owner'].push(remap(current, 'Accepted', bookAppointment));
-          else acc['accepted'].push(remap(current, 'Not Owned', dispatchEvent));
+            acc['owner'].push(remap(current, 'Accepted', () => ''));
+          else acc['accepted'].push(remap(current, 'Not Owned', () => ''));
         } else {
-          acc['pending'].push(remap(current, 'Pending', dispatchEvent));
+          acc['pending'].push(remap(current, 'Pending', () => ''));
         }
 
         return acc;
@@ -373,10 +97,14 @@ const Queue = ({
   useEffect(() => {
     const { accepted, owner, pending } = parseQueue(queues);
 
+    if(locationData.length) {
+        addBed(locationData);
+    }
+
     if (queues.length > 0) {
       setQueueState({ accepted, owner, pending });
     }
-  }, [queues]);
+  }, [queues, locationData]);
 
   if (!queues) return null; // Should be loader
 
@@ -389,13 +117,15 @@ const Queue = ({
         apiCalls={{ updateQueue, 
             createLabRequest, 
             createQueueTaskStatus, 
-            filter, 
+            filter: queueFilter, 
+            addQueue,
             parseQueue, 
             setQueueState ,
             setPatientInfo,
             setDialogState,
-            setSaveApiData
-        }}  
+            setSaveApiData,
+            createPatientLocation,
+        }}   
       />
       <PatientDialog
         open={dialogState}
@@ -416,10 +146,34 @@ const Queue = ({
   );
 };
 
+const parseFilter = (array = []) => {
+    const mappedFilters = array.map(data => {
+        return {
+          team: {
+            equalTo: data
+          }
+        }
+    });
+
+    return { or: [...mappedFilters]}
+}
+
+const mapDispatchToProps = dispatch => ({
+    addBed: value => dispatch(addBedLocation(value))
+});
+
+const mapStateToProps = state => ({
+    queueFilter: parseFilter(searchFilter.getTeam(state)?.toJS())
+});
+
 export default compose(
+  connect(mapStateToProps ,mapDispatchToProps),
   withQueue,
   createQueue,
+  createPatientLocation,
   createQueueTask,
+  withLocations,
   updateQueue,
   createRequestLab
 )(Queue);
+ 

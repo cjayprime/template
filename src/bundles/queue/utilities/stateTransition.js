@@ -18,9 +18,15 @@ export const VIEW_QUEUE_HISTORY = 'View Queue History';
 export const AWAITING_APPOINTMENT = 'Awaiting appointment';
 export const BOOK_APPOINTMENT = 'BOOK APPOINTMENT';
 export const APPOINTMENT_BOOKED = 'Appointment Booked';
-
+export const MARK_PATIENT_AS_PICKED_UP = 'MARK PATIENT AS PICKED UP';
+export const PATIENT_PICKED_UP = 'Patient Picked Up';
+export const PATIENT_ADMITTED = 'Patient Admitted';
+export const SUBMIT_ADMITTED = 'SUBMIT_ADMITTED';
+export const ADMIT_PATIENT = 'ADMIT PATIENT';
 export const DRIVE_THROUGH = 'Drive Through';
 export const HOME_PICK_UP = 'Home pick up';
+export const COMPLETE = 'Complete'
+export const ADMITTED = 'ADMITTED'
 
 const EVAC_AND_DECON_ = {
   DEFAULT_STATE: {
@@ -38,6 +44,24 @@ const EVAC_AND_DECON_ = {
   },
   [APPOINTMENT_BOOKED]: {
     defaultStatus: APPOINTMENT_BOOKED,
+    text: MARK_PATIENT_AS_PICKED_UP,
+    nextState: PATIENT_PICKED_UP,
+    actionText: MARK_PATIENT_AS_PICKED_UP
+  },
+  [PATIENT_PICKED_UP]: { 
+    defaultStatus: PATIENT_PICKED_UP,
+    text: ADMIT_PATIENT,
+    nextState: ADMIT_PATIENT,
+    actionText: ADMIT_PATIENT
+  },
+  [ADMIT_PATIENT]: {
+    defaultStatus: PATIENT_ADMITTED,
+    text: VIEW_QUEUE_HISTORY,
+    nextState: SUBMIT_ADMITTED,
+    actionText: null
+  },
+  [SUBMIT_ADMITTED]: {
+    defaultStatus: COMPLETE,
     text: VIEW_QUEUE_HISTORY,
     nextState: null,
     actionText: null

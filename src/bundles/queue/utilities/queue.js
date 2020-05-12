@@ -4,10 +4,14 @@ import QUEUE_STATE, {
   NOT_OWNER,
   EPID_SURVEILLANCE,
   NO_STATUS,
-  RRT
+  RRT,
+  PSYCHOSOCIAL,
+  EVAC_AND_DECON
 } from 'bundles/queue/utilities/stateTransition';
 import { parseRRT } from 'bundles/queue/utilities/rrt';
 import { parseEpidSurveillance } from 'bundles/queue/utilities/epidSurveillance';
+import { parsePyschosocial } from 'bundles/queue/utilities/pyschosocial';
+import { parseEvacAndDecon } from 'bundles/queue/utilities/evacDecon';
 
 // export const getAge = dateString => { // Get Age
 //   if (!dateString) return null;
@@ -303,8 +307,55 @@ import { parseEpidSurveillance } from 'bundles/queue/utilities/epidSurveillance'
 //   );
 // };
 
+ const getAge = dateString => { // Get Age
+  if (!dateString) return null;
+  const today = new Date();
+  const birthDate = new Date(dateString);
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const m = today.getMonth() - birthDate.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+  return age;
+};
 
+ const parseStatus = user => { // Get user status
+  if (
+    user.queueTaskStatusesByTaskId &&
+    user.queueTaskStatusesByTaskId.nodes
+  ) {
+    if (user.queueTaskStatusesByTaskId.nodes.length > 0) {
+      return user.queueTaskStatusesByTaskId.nodes[
+        user.queueTaskStatusesByTaskId.nodes.length - 1
+      ].status;
+    }
+  }
 
+  return user.patientByPatientId.patientCasesByPatientId.nodes.status;
+};
+
+export const remap = (user, tableStatus, action) => ({  // Map user to defined Table  for queues
+  patient: {
+    firstName: user.patientByPatientId.firstname,
+    epidNumber: user.patientByPatientId.epidNumber,
+    id: user.nodeId,
+    patientId: user.patientByPatientId.id,
+    queueId: user.id,
+    lastName: user.patientByPatientId.lastname,
+    sex: user.patientByPatientId.sex,
+    age: getAge(user.patientByPatientId.birthDate),
+    requestDate: new Date(user.requestDate).toDateString(),
+    status: parseStatus(user),
+    riskLevel:
+      user.patientByPatientId.patientCasesByPatientId.nodes.riskLevel,
+    team: user.team,
+    action,
+    acceptedBy: user?.userByAcceptedBy?.firstname || '-',
+    tableStatus
+  }
+});
+
+  
 const requestNewDataAfterUpdate = (response, parseQueue, setQueueState) => {
     const queues = response?.query?.allQueues.nodes;
     const { accepted, owner, pending } = parseQueue(queues);
@@ -341,6 +392,7 @@ export const addLabRequest = async ({ notes, user, requestDate, patientId, creat
 };
 
 export const addToQueue = async ({ patientEpidNumber, id, team , addQueue}) => { // Add to queue
+   
   const response = await addQueue({
     variables: {
       input: {
@@ -359,6 +411,25 @@ export const addToQueue = async ({ patientEpidNumber, id, team , addQueue}) => {
 
   return false;
 };
+
+export const addPatientLocation = async (patientId, locationId, status, admittedBy, createPatientLocation) => {
+  const response = await createPatientLocation({
+    variables: {
+      input: {
+        patientLocation : {
+          patientId,
+          locationId,
+          status,
+          admittedBy
+        }
+      }
+    }
+  })
+
+  if(response) return true
+
+  return false
+}
 
 const updateStatus = async (
   id,
@@ -452,6 +523,10 @@ export const dispatchEvent = (row, action, api) => {
     case RRT: parseRRT(row, action, api, nextState)
 
     case EPID_SURVEILLANCE: parseEpidSurveillance(row, action, api, nextState)
+
+    case PSYCHOSOCIAL: parsePyschosocial(row, action, api, nextState)
+
+    case EVAC_AND_DECON: parseEvacAndDecon(row, action, api, nextState)
 
     default: filterEvent(row, action, api, nextState);
   }

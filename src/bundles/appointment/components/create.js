@@ -4,7 +4,12 @@ import Chip from '@material-ui/core/Chip';
 import select from 'images/iconnew.png';
 import FormBuilder from 'bundles/patient/components/custom/formBuilder';
 import { useStyles } from 'bundles/patient/components/custom/patient/index.style';
-import QUEUE_STATE from 'bundles/queue/utilities/stateTransition';
+import QUEUE_STATE, {
+  PATIENT_PICKED_UP,
+  SUBMIT_ADMITTED
+} from 'bundles/queue/utilities/stateTransition';
+import { searchFilter } from 'bundles/location/selectors';
+import { connect } from 'react-redux';
 
 const NewAppointment = ({
   data,
@@ -13,15 +18,25 @@ const NewAppointment = ({
   items = [],
   formState = {},
   reason = [],
+  locations,
   setFormState = () => ''
 }) => {
   const classes = useStyles();
 
   let team = undefined;
-  let config = null;
+  let config = {};
   if (data) {
     team = data.team;
     config = QUEUE_STATE[team].DIALOG;
+  }
+
+  if ((data && data.status) == PATIENT_PICKED_UP) {
+    config = { availableRooms: locations.map(item => item.name) , nextState: SUBMIT_ADMITTED };
+  }
+
+  const findId = (name) => {
+    if(!name) return undefined
+    return locations.filter(item => item.name)[0].id
   }
 
   return (
@@ -31,7 +46,10 @@ const NewAppointment = ({
       spacing={3}
       justify="center"
       alignItems="center"
-      style={{ height: '80vh', backgroundColor: '' }}>
+      style={{
+        height: config.availableRooms ? '40vh' : '80vh',
+        backgroundColor: ''
+      }}>
       <Grid item>
         {!data ? (
           <Button
@@ -93,8 +111,9 @@ const NewAppointment = ({
         )}
       </Grid>
 
-      <Grid item style={{ width: 660 }}>
-        {config.date ? (
+      {config.date ? (
+        <Grid item style={{ width: 660 }}>
+          (
           <FormBuilder
             formInput={{
               type: 'date',
@@ -106,10 +125,12 @@ const NewAppointment = ({
             formState={formState}
             setFormState={setFormState}
           />
-        ) : null}
-      </Grid>
-      <Grid item style={{ width: 660 }}>
-        {config.time ? (
+          )
+        </Grid>
+      ) : null}
+      {config.time ? (
+        <Grid item style={{ width: 660 }}>
+          
           <FormBuilder
             formInput={{
               type: 'date',
@@ -121,10 +142,12 @@ const NewAppointment = ({
             formState={formState}
             setFormState={setFormState}
           />
-        ) : null}
-      </Grid>
-      <Grid item style={{ width: 660 }}>
-        {config.queue ? (
+          
+        </Grid>
+      ) : null}
+      {config.queue ? (
+        <Grid item style={{ width: 660 }}>
+          
           <FormBuilder
             formInput={{
               type: 'select',
@@ -135,10 +158,12 @@ const NewAppointment = ({
             formState={formState}
             setFormState={setFormState}
           />
-        ) : null}
-      </Grid>
-      <Grid item style={{ width: 660 }}>
-        {config.reason ? (
+          
+        </Grid>
+      ) : null}
+      {config.reason ? (
+        <Grid item style={{ width: 660 }}>
+          
           <FormBuilder
             formInput={{
               type: 'select',
@@ -149,12 +174,29 @@ const NewAppointment = ({
             formState={formState}
             setFormState={setFormState}
           />
-        ) : null}
-      </Grid>
-  
+          
+        </Grid>
+      ) : null}
+      {config.availableRooms ? (
+        <Grid item style={{ width: 660 }}>
+          
+          <FormBuilder
+            formInput={{
+              type: 'select',
+              label: 'Available Center',
+              key: 'rooms',
+              fields: config.availableRooms ? [...config.availableRooms] : []
+            }}
+            formState={formState}
+            setFormState={setFormState}
+          />
+          
+        </Grid>
+      ) : null}
+
       <Grid>
         <Button
-          onClick={() => save(config.nextState)}
+          onClick={() => save(config.nextState, findId(formState['rooms']))}
           className={classes.regButtons}
           style={{
             boxShadow: `5px 5px 9px 3px #282a3d`,
@@ -170,4 +212,8 @@ const NewAppointment = ({
   );
 };
 
-export default NewAppointment;
+const mapStateToProps = state => ({
+  locations: searchFilter.getLocation(state)
+});
+
+export default connect(mapStateToProps)(NewAppointment);

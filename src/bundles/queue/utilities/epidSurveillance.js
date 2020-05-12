@@ -1,4 +1,8 @@
-import { addQueueStatus, addLabRequest, addToQueue } from 'bundles/queue/utilities/queue';
+import {
+  addQueueStatus,
+  addLabRequest,
+  addToQueue
+} from 'bundles/queue/utilities/queue';
 import {
   BOOK_APPOINTMENT,
   APPOINTMENT_BOOKED,
@@ -6,12 +10,49 @@ import {
   HOME_PICK_UP
 } from 'bundles/queue/utilities/stateTransition';
 
+const saveLabRquestAddQueueAndAddQueueStatus = (
+  epidNumber,
+  patientId,
+  newTeam,
+  addQueue,
+  reason,
+  user,
+  date,
+  createLabRequest,
+  APPOINTMENT_BOOKED,
+  parseQueue,
+  setQueueState,
+  createQueueTaskStatus,
+  queueId,
+  filter,
+  setDialogState
+) => {
+ 
 
+  const response = addToQueue({
+    patientEpidNumber: epidNumber,
+    team: newTeam,
+    id: patientId,
+    addQueue
+  });
 
-const saveLabRquestAddQueueAndAddQueueStatus = () => {
-  // addToQueue
-}
-
+  if (response) {
+    submitLabrequestAndSaveNextSate(
+      reason,
+      user,
+      date,
+      patientId,
+      createLabRequest,
+      APPOINTMENT_BOOKED,
+      parseQueue,
+      setQueueState,
+      createQueueTaskStatus,
+      queueId,
+      filter,
+      setDialogState
+    );
+  }
+};
 
 export const saveNextState = async (
   queueId,
@@ -40,7 +81,7 @@ export const saveNextState = async (
 };
 
 export const submitLabrequestAndSaveNextSate = async (
-  notes = 'Sent From RRT',
+  notes = '',
   user = 1,
   requestDate = new Date(),
   patientId,
@@ -53,7 +94,6 @@ export const submitLabrequestAndSaveNextSate = async (
   filter,
   setDialogState
 ) => {
-  
   const response = addLabRequest({
     notes,
     user,
@@ -74,7 +114,7 @@ export const submitLabrequestAndSaveNextSate = async (
 
     console.log('Saved Next state. Should be final', response);
 
-    setDialogState(false)
+    setDialogState(false);
   }
 };
 
@@ -100,7 +140,10 @@ const saveState = (
   createQueueTaskStatus,
   queueId,
   filter,
-  setDialogState
+  setDialogState,
+  epidNumber,
+  newTeam,
+  addQueue
 ) => {
   if (reason == DRIVE_THROUGH) {
     submitLabrequestAndSaveNextSate(
@@ -119,7 +162,24 @@ const saveState = (
     );
   }
 
-  if(reason == HOME_PICK_UP) {
+  if (reason == HOME_PICK_UP) {
+    saveLabRquestAddQueueAndAddQueueStatus(
+      epidNumber,
+      patientId,
+      newTeam,
+      addQueue,
+      reason,
+      user,
+      date,
+      createLabRequest,
+      APPOINTMENT_BOOKED,
+      parseQueue,
+      setQueueState,
+      createQueueTaskStatus,
+      queueId,
+      filter,
+      setDialogState
+    ); 
     // lab // add to queu // addtoQueuStatus
   }
   // 'Drive through' == 'Lab request and add queueSTate'
@@ -127,7 +187,7 @@ const saveState = (
 
 export const parseEpidSurveillance = (row, action, api, nextStatus) => {
   const {
-    patient: { id, queueId, patientId, reason, date }
+    patient: { id, queueId, patientId, reason, date, epidNumber, newTeam }
   } = row;
 
   const {
@@ -137,8 +197,9 @@ export const parseEpidSurveillance = (row, action, api, nextStatus) => {
     setQueueState,
     createLabRequest,
     setPatientInfo,
-    setDialogState
-  } = api;
+    setDialogState,
+    addQueue
+  } = api; 
 
   switch (action) {
     case BOOK_APPOINTMENT:
@@ -157,32 +218,10 @@ export const parseEpidSurveillance = (row, action, api, nextStatus) => {
         createQueueTaskStatus,
         queueId,
         filter,
-        setDialogState
+        setDialogState,
+        epidNumber,
+        newTeam,
+        addQueue
       );
-
-    // case MARK_SAMPLE_AS_RECIEVED:
-    //   return saveNextState(
-    //     queueId,
-    //     nextStatus,
-    //     filter,
-    //     parseQueue,
-    //     setQueueState,
-    //     createQueueTaskStatus
-    //   );
-
-    // case DELIVER_SAMPLE_LAB:
-    //   return submitLabrequestAndSaveNextSate(
-    //     'Sent From RRT',
-    //     1,
-    //     new Date(),
-    //     patientId,
-    //     createLabRequest,
-    //     nextStatus,
-    //     parseQueue,
-    //     setQueueState,
-    //     createQueueTaskStatus,
-    //     queueId,
-    //     filter
-    //   );
   }
 };

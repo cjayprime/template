@@ -292,6 +292,7 @@ const SelectFieldComp = (
       }
       value={enteredValue}
       placeholder={'DD'}
+      disabled={input.disabled}
       SelectProps={{
         native: false,
         IconComponent: TransformButtonIcon,

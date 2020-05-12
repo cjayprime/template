@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { Button, Chip, Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
@@ -66,10 +66,27 @@ const LabRequest = ({
 }) => {
   const classes = useStyles();
   const [value, setValue] = useState(0);
+  const [labState, setLabState] = useState({});
+
+  useEffect(() => {
+    const { accepted, owner, pending } = parseQueue(labRequests);
+
+    if (labRequests.length > 0) { 
+      setLabState({ accepted, owner, pending });
+    }
+  }, [labRequests]);
 
   const handleChange = newValue => {
     setValue(newValue);
   };
+
+
+  const requestNewDataAfterUpdate = (response) => {
+    const labs = response?.query?.allLabRequests.nodes;
+    const { accepted, owner, pending } = parseQueue(labs);
+    setLabState({ accepted, owner, pending });
+    return true
+} 
 
   const addToQueue = async ({ patientEpidNumber, id, team }) => {
     const response = await addQueue({
@@ -89,6 +106,32 @@ const LabRequest = ({
     }
 
     return false;
+  };
+
+  const addLabRequestStatus = async ({ status, id }) => {
+    const response = await createLabRequestStatus({
+      variables: {
+        input: {
+          labRequestStatus: {
+            status,
+            labRequest: {
+              connectById: {
+                id
+              }
+            }
+          }
+        }
+      }
+    });
+
+    if (response) {
+      console.log(response, '----> worked in lab request');
+      requestNewDataAfterUpdate(response?.data?.createLabRequestStatus)
+      return true;
+    } else {
+      console.log('response failed');
+      return false;
+    }
   };
 
   const updateResult = async ({ nodeId, result }) => {
@@ -111,6 +154,7 @@ const LabRequest = ({
   };
 
   const updateLabRequestSpecimen = async ({ type, notes, nodeId }) => {
+
     const response = await updateLabRequest({
       variables: {
         input: {
@@ -221,37 +265,21 @@ const LabRequest = ({
               }
             }
           }
+        },
+        filter: {
+          or: [
+            {
+              id: {
+                greaterThan: 0
+              }
+            }
+          ]
         }
       }
     });
 
     if (response) return true;
     else return false;
-  };
-
-  const addLabRequestStatus = async ({ status, id }) => {
-    const response = await createLabRequestStatus({
-      variables: {
-        input: {
-          labRequestStatus: {
-            status,
-            labRequest: {
-              connectById: {
-                id
-              }
-            }
-          }
-        }
-      }
-    });
-
-    if (response) {
-      console.log(response, '----> worked in lab request');
-      return true;
-    } else {
-      console.log('response failed');
-      return false;
-    }
   };
 
   const dispatchFunction = async (e, row, status) => {
@@ -293,6 +321,8 @@ const LabRequest = ({
       }
     }
   };
+
+
   const renderActionComponent = row => {
     if (row.status === 'Completed') {
       return (
@@ -303,7 +333,7 @@ const LabRequest = ({
     if (row.status === 'Awaiting tests result') {
       return (
         <Button onClick={e => {}} className={classes.actionButton}>
-          Submit Result
+          
         </Button>
       );
     }
@@ -349,6 +379,7 @@ const LabRequest = ({
 
   if (!labRequests) return null;
 
+ 
   const remap = item => ({
     ...item,
     status:
@@ -396,7 +427,11 @@ const LabRequest = ({
     { name: '', accessor: renderIconComponent }
   ];
 
-  const { owner, accepted, pending } = parseQueue(labRequests);
+  // const { owner, accepted, pending } = parseQueue(labRequests);
+
+  const accepted = labState?.accepted || []
+  const owner = labState?.owner || []
+  const pending = labState?.pending || []
 
   return (
     <Fragment>
@@ -479,4 +514,4 @@ export default compose(
   updateLabRequestLab,
   withLabRequests,
   updateQueue
-)(LabRequest);
+)(LabRequest); 

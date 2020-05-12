@@ -10,8 +10,9 @@ import {
   OutlinedInput,
   Button
 } from '@material-ui/core';
-
+import { connect } from 'react-redux';
 import { DataTable } from '../../shared/components';
+import { addBedLocation } from 'bundles/location/actions';
 import createLocationMutation from 'bundles/location/hoc/createLocation';
 
 import { makeStyles } from '@material-ui/styles';
@@ -141,7 +142,7 @@ const formatData = locationData => {
   });
 };
 
-const Location = ({ locationData, createLocation }) => {
+const Location = ({ locationData, createLocation, addBed }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [formInput, setFormInput] = useState({});
@@ -169,8 +170,6 @@ const Location = ({ locationData, createLocation }) => {
         }
       }
     });
-
-    console.log(response);
 
     const newTableData = formatData(
       response.data.createLocation.query.allLocations.nodes
@@ -231,11 +230,12 @@ const Location = ({ locationData, createLocation }) => {
 
     if (data.length > 0) {
       setTableData(data);
+      addBed(locationData)
     }
   }, [locationData]);
 
   if (!locationData) return null; // Should be loader
-
+ 
   return (
     <Fragment>
       <Grid container>
@@ -332,4 +332,11 @@ const Location = ({ locationData, createLocation }) => {
   );
 };
 
-export default compose(withLocations, createLocationMutation)(Location);
+const mapDispatchToProps = dispatch => ({
+  addBed: value => dispatch(addBedLocation(value))
+});
+ 
+export default compose(connect(null, mapDispatchToProps),withLocations, createLocationMutation)(Location);
+
+
+
