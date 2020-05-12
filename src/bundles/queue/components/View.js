@@ -8,6 +8,8 @@ import { QueueTableView } from './Views/QueueTable';
 import { makeStyles } from '@material-ui/styles';
 import PatientDialog from 'bundles/queue/components/Views/QueueTable/dialog';
 import Appointment from 'bundles/appointment/components/create';
+import { dispatchEvent } from 'bundles/queue/utilities/queue';
+
 const compose = require('lodash')?.flowRight;
 
 const useStyles = makeStyles({
@@ -21,18 +23,16 @@ const Queue = ({
   addQueue,
   updateQueue,
   createLabRequest,
-  createQueueTaskStatus
+  createQueueTaskStatus,
+  filter,
+  ...props
 }) => {
   const classes = useStyles();
   const [queueState, setQueueState] = useState({});
   const [dialogState, setDialogState] = useState(false);
   const [patientInfo, setPatientInfo] = useState({});
   const [formState, setFormState] = useState({});
-  const [queueDropDown, setQueueDropDown] = useState({
-    'EPID/Surveillance': ['RRT'],
-    'Psychosocial': ['Evac & Decon'],
-    'Evac & Decon': []
-  });
+  const [apiData, setSaveApiData] = useState(() => ''); 
 
   const getAge = dateString => { // Get Age
     if (!dateString) return null;
@@ -152,48 +152,49 @@ const Queue = ({
     return false;
   };
 
-  const dispatchEvent = async (id, status, patient) => { // Update queue
-    const response = await updateQueue({
-      variables: {
-        input: {
-          nodeId: id,
-          queuePatch: {
-            acceptedBy: 1
-          }
-        },
-        filter: {
-          or: [
-            {
-              team: {
-                equalTo: 'Evac & Decon'
-              }
-            },
-            {
-              team: {
-                equalTo: 'EPID/Surveillance'
-              }
-            },
-            {
-              team: {
-                equalTo: 'RRT'
-              }
-            }
-          ]
-        }
-      }
-    });
+//   const dispatchEvent = async (id, status, patient) => { // Update queue
+//     const response = await updateQueue({
+//       variables: {
+//         input: {
+//           nodeId: id,
+//           queuePatch: {
+//             acceptedBy: 1
+//           }
+//         },
+//         filter: {
+//           or: [
+//             {
+//               team: {
+//                 equalTo: 'Evac & Decon'
+//               }
+//             },
+//             {
+//               team: {
+//                 equalTo: 'EPID/Surveillance'
+//               }
+//             },
+//             {
+//               team: {
+//                 equalTo: 'RRT'
+//               }
+//             }
+//           ]
+//         }
+//       }
+//     });
 
-    if (response) {
-      const queues = response?.data?.updateQueue?.query?.allQueues.nodes;
-      const { accepted, owner, pending } = parseQueue(queues);
-      setQueueState({ accepted, owner, pending });
-      return true;
-    }
+//     if (response) {
+//       const queues = response?.data?.updateQueue?.query?.allQueues.nodes;
+//       const { accepted, owner, pending } = parseQueue(queues);
+//       setQueueState({ accepted, owner, pending });
+//       return true;
+//     }
 
-    return false;
-  };
+//     return false;
+//   };
 
   const bookAppointment = async (patient, status) => { // book apointment
+   
     if (patient.team == 'RRT') {
       if (patient.status == 'Sample Collected') {
         const labs = await labRequest({
@@ -219,6 +220,9 @@ const Queue = ({
     setDialogState(!dialogState);
   };
 
+
+
+
   const handleRRT = async (patient, status) => {
     const { epidNumber, id, patientId, queueId } = patient;
 
@@ -233,10 +237,33 @@ const Queue = ({
     }
   };
 
-  const handleSave = async () => {
+  const handleSave = async (queueText) => {
+
+    const { reason, team, time, date } = formState;
+
+    if (!date || !reason || !team )  {
+        console.log('All fields are reqired')
+        return null
+    }
+
+    dispatchEvent({ patient: { ...patientInfo, reason, date } }, queueText, { 
+        updateQueue, 
+        createLabRequest, 
+        createQueueTaskStatus, 
+        filter, 
+        parseQueue, 
+        setQueueState ,
+        setPatientInfo,
+        setDialogState,
+        setSaveApiData
+    })
+
+
+    return;
+
     // EPID / SURVELLENCE
     const { epidNumber, id, patientId, queueId } = patientInfo;
-    const { reason, team, time, date } = formState;
+   
 
 
 
@@ -273,6 +300,8 @@ const Queue = ({
 
           return;
       }
+
+      //Epid
       // as epid survelance
       if (reason == 'Drive through') {
         const labs = await labRequest({
@@ -357,6 +386,16 @@ const Queue = ({
         accepted={queueState.accepted || []}
         owner={queueState.owner || []}
         pending={queueState.pending || []}
+        apiCalls={{ updateQueue, 
+            createLabRequest, 
+            createQueueTaskStatus, 
+            filter, 
+            parseQueue, 
+            setQueueState ,
+            setPatientInfo,
+            setDialogState,
+            setSaveApiData
+        }}  
       />
       <PatientDialog
         open={dialogState}
@@ -366,8 +405,8 @@ const Queue = ({
             data={patientInfo}
             save={handleSave}
             handleClose={setDialogState}
-            items={queueDropDown['Evac & Decon']} // Should be team
-            reason={['Drive through', 'Home pick up']}
+            items={[]} // Set from inside the component
+            reason={[]}
             formState={formState}
             setFormState={saveEntry}
           />

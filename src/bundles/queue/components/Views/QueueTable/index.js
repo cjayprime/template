@@ -1,5 +1,10 @@
 import React, { Fragment } from 'react';
-
+import QUEUE_STATE from 'bundles/queue/utilities/stateTransition';
+import {
+  statusIfRequestAccepted,
+  isRequestAccepted,
+  dispatchEvent
+} from 'bundles/queue/utilities/queue';
 import { Typography, Grid, Button } from '@material-ui/core';
 import {
   DataTable,
@@ -11,13 +16,17 @@ import {
 
 import { QueuePageStyles } from './index.style';
 
-export const QueueTableView = ({ accepted, owner, pending }) => {
+export const QueueTableView = ({ accepted, owner, pending, apiCalls }) => {
   const classes = QueuePageStyles();
   const [value, setValue] = React.useState(0);
 
   const handleChange = newValue => {
     setValue(newValue);
   };
+
+  const getGQLProps = () => {
+    return { ...apiCalls }
+  }
 
   const renderPatientCell = row => (
     <PatientMetadatum
@@ -29,97 +38,36 @@ export const QueueTableView = ({ accepted, owner, pending }) => {
   );
 
   const renderTeamCell = row => {
-    let defaultStatus = 'No status';
-
-
-    if (
-      row.patient.tableStatus == 'Accepted' ||
-      row.patient.tableStatus == 'Not Owned'
-    ) {
-      defaultStatus = 'Awaiting appointment';
-
-      if (row.patient.team == 'RRT') {
-        defaultStatus = 'Awaiting sample pickup';
-      }
-    }
-
     return (
       <TeamMetadatum
         text={row.patient.team}
-        tagLabel={row.patient.status ? row.patient.status : `${defaultStatus}`}
+        tagLabel={
+          isRequestAccepted(row)
+            ? row.patient.status || statusIfRequestAccepted(row)
+            : statusIfRequestAccepted(row)
+        }
         spacing={{ mainText: 6, label: 6 }}
         classes={classes}
       />
     );
   };
 
-  const renderActionComponent = row => {
-    if (row.patient.tableStatus == 'Accepted') {
-      
-      if (row.patient.team == 'RRT') {
-        if (row.patient.status == 'Sample Collected') {
-         
-          return (
-            <Button
-              onClick={() =>
-                row.patient.action(row.patient, 'Sample Delivered')
-              }
-              className={classes.ActionButton}
-              style={{ color: 'rgb(255, 91, 103)' }}>
-              {'DELIVER SAMPLE TO LAB'}
-            </Button>
-          );
-        }
-
-        if (row.patient.status == 'Sample Delivered') {
-          return (
-            <Button
-              onClick={() => ''}
-              className={classes.ViewButton}
-             >
-              {'View Queue History'}
-            </Button>
-          );
-        }
-
-        return (
-          <Button
-            onClick={() => row.patient.action(row.patient, 'Sample Collected')}
-            className={classes.ActionButton}>
-            {'MARK SAMPLE AS RECIEVED'}
-          </Button>
-        );
-      }
-
-      
-
-      if (row.patient.status == 'Appointment Booked') {
-        return (
-          <Button onClick={() => ''} className={classes.ViewButton}>
-            {'View Queue History'}
-          </Button>
-        );
-      }
-
-      return (
-        <Button
-          onClick={() => row.patient.action(row.patient)}
-          className={classes.ActionButton}>
-          {'BOOK APPOINTMENT'}
-        </Button>
-      );
-    }
+  const renderActionComponent = row => {   
+    const queueText = isRequestAccepted(row)
+      ? row.patient.status
+        ? QUEUE_STATE[row.patient.team][row.patient.status]?.text ||
+          'View Queue History'
+        : QUEUE_STATE[row.patient.team][row.patient.tableStatus]?.text
+      : 'ACCEPT';
 
     return (
       <Button
-        onClick={() =>
-          row.patient.action(row.patient.id, 'accept', row.patient)
-        }
+        onClick={() => dispatchEvent(row, queueText, getGQLProps() )}
         className={classes.ActionButton}>
-        {'ACCEPT'}
+        {queueText}
       </Button>
     );
-  };
+  };  
 
   const headers = [
     { name: 'PATIENT', accessor: renderPatientCell },
@@ -132,8 +80,6 @@ export const QueueTableView = ({ accepted, owner, pending }) => {
 
   function TabPanel(props) {
     const { children, value, index, ...other } = props;
-
-    console.log('Here ', value);
 
     return (
       <div
