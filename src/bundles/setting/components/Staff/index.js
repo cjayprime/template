@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { Header, DataTable } from 'bundles/shared/components';
 import { StaffPageStyles } from './index.style.js';
 import { store } from './store';
+import { StaffCreateView } from './components/Create';
 
 const Staff = () => {
   const classes = StaffPageStyles();
@@ -71,6 +72,9 @@ const Staff = () => {
     }
   ];
 
+return (<StaffCreateView />)
+
+  // TODO {H.Ezekiel} move this to StaffList component
   return (
     <Container className={classes.PageContainer}>
       <Grid container className={classes.ButtonContainer}>
