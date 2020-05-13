@@ -325,7 +325,6 @@ export const CreateTriage = ({
       variables: {
         input: {
           triageAnswer: {
-
             triageQuestionId: 1,
             patientId: id,
             answers
