@@ -168,15 +168,21 @@ const radioOptionButton = (
   );
 };
 
-export const OtherPatientDetails = ({ deceasedPatient, markPatientAsDead }) => {
+export const OtherPatientDetails = ({
+  deceasedPatient,
+  markPatientAsDead,
+  patient
+}) => {
   const classes = useStyles();
   const [displayForm, setDisplayForm] = useState(false);
   const [deathReport, setDeathReport] = useState({});
+  let [disableFields, setDisableFields] = useState(false);
 
   useEffect(() => {
     if (deceasedPatient && deceasedPatient.id) {
       setDisplayForm(true);
       setDeathReport(deceasedPatient);
+      setDisableFields(true);
     }
   }, [deceasedPatient]);
 
@@ -191,6 +197,21 @@ export const OtherPatientDetails = ({ deceasedPatient, markPatientAsDead }) => {
     });
   };
 
+  const setPatientDeathData = async () => {
+    const response = await markPatientAsDead({
+      variables: {
+        input: {
+          deceasedPatient: {
+            ...deathReport,
+            patientId: patient.id
+          }
+        }
+      }
+    });
+
+    console.log(response);
+  };
+
   const dateOfDeath = deathReport.dateOfDeath ? deathReport.dateOfDeath : null;
 
   return (
@@ -198,6 +219,7 @@ export const OtherPatientDetails = ({ deceasedPatient, markPatientAsDead }) => {
       <Grid container>
         <Grid item xs={12}>
           <FormControlLabel
+            disabled={disableFields}
             onChange={onPatientDeathStatusChange}
             checked={displayForm}
             control={<DefaultCheckbox name="markPatientAsDead" />}
@@ -482,7 +504,8 @@ export const OtherPatientDetails = ({ deceasedPatient, markPatientAsDead }) => {
           <Grid container style={{ marginTop: 16 }} justify="flex-end">
             <Button className={classes.formButton}>CANCEL</Button>
             <Button
-              onClick={markPatientAsDead}
+              disabled={disableFields}
+              onClick={setPatientDeathData}
               disableElevation={false}
               className={classnames(classes.formButton, classes.formButtonTS)}>
               SAVE

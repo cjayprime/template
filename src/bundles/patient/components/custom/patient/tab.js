@@ -125,7 +125,7 @@ export const patientStore = [
   }
 ];
 
-const PatientTab = ({ patientData }) => {
+const PatientTab = ({ patientData, markPatientDeceased }) => {
   const [value, setValue] = React.useState(0);
   const classes = useStyles();
 
@@ -242,7 +242,7 @@ const PatientTab = ({ patientData }) => {
             <Grid container spacing={2}>
               <OtherPatientDetails
                 {...patientData}
-                markPatientAsDead={() => {}}
+                markPatientAsDead={markPatientDeceased}
               />
             </Grid>
           </TabPanel>

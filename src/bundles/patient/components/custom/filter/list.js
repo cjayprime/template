@@ -3,6 +3,7 @@ import { DataTable, PatientMetadatum } from 'bundles/shared/components';
 import { QueuePageStyles } from 'bundles/queue/components/Views/QueueTable/index.style';
 import { Link } from 'react-router-dom';
 import withPatient from 'bundles/patient/hoc/withPatient';
+import markPatientDead from 'bundles/patient/hoc/markPatientDeceased';
 import { Typography, ButtonBase, Grid, makeStyles } from '@material-ui/core';
 import { useStyles } from 'bundles/patient/components/custom/filter/index.style';
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
@@ -21,7 +22,7 @@ const renderPatientCell = row => (
   />
 );
 
-const List = ({ header, data }) => {
+const List = ({ header, data, markPatientDeceased }) => {
   const useStyle = makeStyles(() => ({
     HeaderTableCell: {
       borderBottom: '0'
@@ -53,7 +54,12 @@ const List = ({ header, data }) => {
       headers={header}
       data={data}
       styles={styles}
-      renderCollapsible={row => <PatientTab patientData={row} />}
+      renderCollapsible={row => (
+        <PatientTab
+          patientData={row}
+          markPatientDeceased={markPatientDeceased}
+        />
+      )}
     />
   );
 };
@@ -105,10 +111,11 @@ const ErrorContainer = () => {
   );
 };
 
-const RenderList = ({ patients = [] }) => {
+const RenderList = ({ patients = [], markPatientDeceased }) => {
   const remap = patients.map(patient => {
     return {
       patient: {
+        id: patient.id,
         firstName: patient.firstname,
         lastName: patient.lastname,
         sex: patient.sex,
@@ -203,7 +210,11 @@ const RenderList = ({ patients = [] }) => {
   return (
     <Fragment>
       {remap.length > 0 ? (
-        <List header={headers} data={remap} />
+        <List
+          header={headers}
+          data={remap}
+          markPatientDeceased={markPatientDeceased}
+        />
       ) : (
         <ErrorContainer />
       )}
@@ -211,4 +222,4 @@ const RenderList = ({ patients = [] }) => {
   );
 };
 
-export default compose(withPatient)(RenderList);
+export default compose(withPatient, markPatientDead)(RenderList);
