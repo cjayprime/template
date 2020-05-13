@@ -18,6 +18,7 @@ import {
 import { ThemeProvider } from '@material-ui/styles';
 import EventAvailable from '@material-ui/icons/EventAvailable';
 import DateFnsUtils from '@date-io/date-fns';
+import PropTypes from 'prop-types';
 
 import { DefaultCheckbox } from 'bundles/patient/components/custom/formBuilder';
 
@@ -125,13 +126,20 @@ const dateInputTheme = createMuiTheme({
   }
 });
 
-const radioOptionButton = (label, classes, questionKey, onValueChange) => {
+const radioOptionButton = (
+  label,
+  classes,
+  questionKey,
+  onValueChange,
+  value
+) => {
   return (
     <Fragment>
       <Typography classes={{ root: classes.LabelText }}>{label}</Typography>
       <div>
         <RadioGroup
           style={{ display: 'flex', flexDirection: 'row' }}
+          value={value}
           onChange={ev => onValueChange(questionKey, ev.target.value)}
           name="stimuli">
           {/* <Grid container justify="space-between"> */}
@@ -160,7 +168,7 @@ const radioOptionButton = (label, classes, questionKey, onValueChange) => {
   );
 };
 
-export const OtherPatientDetails = ({ deceasedPatient }) => {
+export const OtherPatientDetails = ({ deceasedPatient, markPatientAsDead }) => {
   const classes = useStyles();
   const [displayForm, setDisplayForm] = useState(false);
   const [deathReport, setDeathReport] = useState({});
@@ -191,6 +199,7 @@ export const OtherPatientDetails = ({ deceasedPatient }) => {
         <Grid item xs={12}>
           <FormControlLabel
             onChange={onPatientDeathStatusChange}
+            checked={displayForm}
             control={<DefaultCheckbox name="markPatientAsDead" />}
             value={displayForm}
             label={
@@ -270,7 +279,8 @@ export const OtherPatientDetails = ({ deceasedPatient }) => {
                 'Response to Stimuli',
                 classes,
                 'responseToStimuli',
-                onReportValueChange
+                onReportValueChange,
+                deathReport.responseToStimuli
               )}
             </Grid>
             <Grid item xs={4}>
@@ -278,7 +288,8 @@ export const OtherPatientDetails = ({ deceasedPatient }) => {
                 'Spontaneous respiration',
                 classes,
                 'spontaneousRespiration',
-                onReportValueChange
+                onReportValueChange,
+                deathReport.spontaneousRespiration
               )}
             </Grid>
             <Grid item xs={4}>
@@ -286,7 +297,8 @@ export const OtherPatientDetails = ({ deceasedPatient }) => {
                 'Auscultatory breath sounds',
                 classes,
                 'auscultatoryBreathSounds',
-                onReportValueChange
+                onReportValueChange,
+                deathReport.auscultatoryBreathSounds
               )}
             </Grid>
           </Grid>
@@ -296,7 +308,8 @@ export const OtherPatientDetails = ({ deceasedPatient }) => {
                 'Peripheral pulses',
                 classes,
                 'peripheralPulses',
-                onReportValueChange
+                onReportValueChange,
+                deathReport.peripheralPulses
               )}
             </Grid>
             <Grid item xs={4}>
@@ -304,7 +317,8 @@ export const OtherPatientDetails = ({ deceasedPatient }) => {
                 'Central pulses',
                 classes,
                 'centralPulses',
-                onReportValueChange
+                onReportValueChange,
+                deathReport.centralPulses
               )}
             </Grid>
             <Grid item xs={4}>
@@ -312,7 +326,8 @@ export const OtherPatientDetails = ({ deceasedPatient }) => {
                 'Heart sounds',
                 classes,
                 'heartSounds',
-                onReportValueChange
+                onReportValueChange,
+                deathReport.heartSounds
               )}
             </Grid>
           </Grid>
@@ -322,7 +337,8 @@ export const OtherPatientDetails = ({ deceasedPatient }) => {
                 'Pupils',
                 classes,
                 'pupils',
-                onReportValueChange
+                onReportValueChange,
+                deathReport.pupils
               )}
             </Grid>
             <Grid item xs={4}>
@@ -330,7 +346,8 @@ export const OtherPatientDetails = ({ deceasedPatient }) => {
                 'Corneal reflex',
                 classes,
                 'cornealReflex',
-                onReportValueChange
+                onReportValueChange,
+                deathReport.cornealReflex
               )}
             </Grid>
             <Grid item xs={4}></Grid>
@@ -417,7 +434,8 @@ export const OtherPatientDetails = ({ deceasedPatient }) => {
                 'Family notified',
                 classes,
                 'familyNotified',
-                onReportValueChange
+                onReportValueChange,
+                deathReport.familyNotified
               )}
             </Grid>
             <Grid item xs={4}>
@@ -425,7 +443,8 @@ export const OtherPatientDetails = ({ deceasedPatient }) => {
                 'Autopsy',
                 classes,
                 'autopsy',
-                onReportValueChange
+                onReportValueChange,
+                deathReport.autopsy
               )}
             </Grid>
             <Grid item xs={4}>
@@ -433,7 +452,8 @@ export const OtherPatientDetails = ({ deceasedPatient }) => {
                 'Organ donor',
                 classes,
                 'organDonor',
-                onReportValueChange
+                onReportValueChange,
+                deathReport.organDonor
               )}
             </Grid>
           </Grid>
@@ -462,6 +482,7 @@ export const OtherPatientDetails = ({ deceasedPatient }) => {
           <Grid container style={{ marginTop: 16 }} justify="flex-end">
             <Button className={classes.formButton}>CANCEL</Button>
             <Button
+              onClick={markPatientAsDead}
               disableElevation={false}
               className={classnames(classes.formButton, classes.formButtonTS)}>
               SAVE
@@ -471,4 +492,14 @@ export const OtherPatientDetails = ({ deceasedPatient }) => {
       )}
     </Fragment>
   );
+};
+
+OtherPatientDetails.propTypes = {
+  deceasedPatient: PropTypes.object,
+  markPatientAsDead: PropTypes.func
+};
+
+OtherPatientDetails.defaultProps = {
+  deceasedPatient: {},
+  markPatientAsDead: () => {}
 };

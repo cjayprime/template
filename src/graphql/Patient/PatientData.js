@@ -91,7 +91,7 @@ export const ALL_PATIENTS = gql`
           interventionAndOutcome
           locationOfDeath
           nodeId
-          onReportValueChange
+          heartSounds
           organDonor
           patientId
           peripheralPulses

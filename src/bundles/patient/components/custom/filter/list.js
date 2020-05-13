@@ -21,16 +21,6 @@ const renderPatientCell = row => (
   />
 );
 
-const renderActionComponent = row => {
-  const classes = QueuePageStyles();
-
-  return (
-    <Typography className={classes.ActionButton}>
-      {row.task.acceptedBy}
-    </Typography>
-  );
-};
-
 const List = ({ header, data }) => {
   const useStyle = makeStyles(() => ({
     HeaderTableCell: {
@@ -96,7 +86,7 @@ const ErrorContainer = () => {
         </Typography>
       </Grid>
       <Grid item>
-        <img src={notfound} />
+        <img src={notfound} alt="" />
       </Grid>
 
       <Grid item>
@@ -116,7 +106,6 @@ const ErrorContainer = () => {
 };
 
 const RenderList = ({ patients = [] }) => {
-  console.log(patients, 'patients');
   const remap = patients.map(patient => {
     return {
       patient: {
@@ -176,7 +165,21 @@ const RenderList = ({ patients = [] }) => {
             }`,
             status: labRequest.labRequestStatusesByLabRequestId.nodes[0].status
           };
-        }) || []
+        }) || [],
+      inpatient:
+        patient.patientLocationsByPatientId.nodes.map(admissionData => {
+          return {
+            ...admissionData,
+            admittedBy: `${
+              admissionData.userByAdmittedBy.title
+                ? `${admissionData.userByAdmittedBy.title} `
+                : ''
+            }${admissionData.userByAdmittedBy.firstname} ${
+              admissionData.userByAdmittedBy.lastname
+            }`
+          };
+        }) || [],
+      deceasedPatient: patient.deceasedPatientByPatientId,
       // task: {
       //   status: patient.patientCasesByPatientId.nodes.length
       //     ? patient.patientCasesByPatientId.nodes[0].status

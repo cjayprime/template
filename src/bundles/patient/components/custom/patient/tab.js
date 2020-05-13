@@ -1,13 +1,5 @@
-import React, { Fragment } from 'react';
-import {
-  Grid,
-  Tabs,
-  Tab,
-  Typography,
-  Box,
-  Button,
-  Chip
-} from '@material-ui/core';
+import React from 'react';
+import { Grid, Tabs, Tab, Box } from '@material-ui/core';
 import Formbuilder from 'bundles/patient/components/custom/formBuilder';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -141,10 +133,6 @@ const PatientTab = ({ patientData }) => {
     setValue(newValue);
   };
 
-  const renderStatusComponent = row => (
-    <Chip label={row.status} variant="default" size="small" />
-  );
-
   function TabPanel(props) {
     const { children, value, index, ...other } = props;
 
@@ -252,12 +240,15 @@ const PatientTab = ({ patientData }) => {
           </TabPanel>
           <TabPanel value={value} index={5}>
             <Grid container spacing={2}>
-              <OtherPatientDetails />
+              <OtherPatientDetails
+                {...patientData}
+                markPatientAsDead={() => {}}
+              />
             </Grid>
           </TabPanel>
           <TabPanel value={value} index={6}>
             <Grid container spacing={2}>
-              <InpatientComponent />
+              <InpatientComponent {...patientData} />
             </Grid>
           </TabPanel>
         </Grid>
