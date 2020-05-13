@@ -13,7 +13,15 @@ export const ALL_LOCATION = gql`
             firstname
             lastname
             phoneNumber
+            epidNumber
             sex
+            id
+            birthDate
+            patientCasesByPatientId {
+              nodes {
+                riskLevel
+              }
+            }
           }
           totalCount
         }
@@ -22,6 +30,7 @@ export const ALL_LOCATION = gql`
             patientId
             status
             dischargeReason
+            dateAdmitted
           }
           totalCount
         }
@@ -29,4 +38,4 @@ export const ALL_LOCATION = gql`
       totalCount
     }
   }
-`;
+`; 

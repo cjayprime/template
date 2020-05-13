@@ -6,7 +6,7 @@ export const PatientMetadatum = props => {
   const { name, sex, age, riskLevel, textRowDirection } = props;
   const classes = PatientMetadatumStyles(props);
   return (
-    <Grid container>
+    <Grid container >
       <Grid container item direction={textRowDirection || 'column'} xs={7}>
         <Grid item>
           <Typography className={classes.Nametext}>{name}</Typography>
@@ -15,7 +15,13 @@ export const PatientMetadatum = props => {
           <Typography
             className={
               classes.MetaCaption
-            }>{`${sex}, ${age} years old`}</Typography>
+            }>{`${sex}`}
+          </Typography>
+          <Typography
+            className={
+              classes.MetaCaption
+            }>{age ?  `${age} years old`: '' }
+          </Typography>
         </Grid>
       </Grid>
       <Grid container item direction="column" xs={5}>

@@ -1,11 +1,13 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { withRouter } from 'react-router';
 import { Grid, Typography, FormControlLabel, Button } from '@material-ui/core';
+import { connect } from 'react-redux';
 import ContactStatus from './custom/contactStatus';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import FormBuilder from 'bundles/patient/components/custom/formBuilder';
 import createPatientHoc from 'bundles/patient/hoc/createPatient';
 import createQueueHoc from 'bundles/queue/hoc/createQueue';
+import { saveCurrentPatient } from 'bundles/patient/actions'
 import { DefaultCheckbox } from 'bundles/patient/components/custom/formBuilder';
 import { useStyles } from 'bundles/patient/components/custom/patient/index.style';
 import { QUESTIONS } from './custom/questions';
@@ -22,7 +24,7 @@ const caller = [
   'LASHMA'
 ];
 
-const CreatePatient = ({ createPatientPG, addQueue, history }) => {
+const CreatePatient = ({ createPatientPG, addQueue, history, savePatient }) => {
 
   const [selected, setSelected] = useState('');
   const [formState, setFormState] = useState({});
@@ -62,34 +64,37 @@ const CreatePatient = ({ createPatientPG, addQueue, history }) => {
           }
         }
       } = response;
+      savePatient({...response.data.createPatient.patient});
       addToQueue(epidNumber, id, queueTeam);
     }
   };
 
   const addToQueue = async (patientEpidNumber, id, team) => {
-    const response = await addQueue({
-      variables: {
-        input: {
-          queue: {
-            patientEpidNumber,
-            patientId: id,
-            team
-          }
-        }
-      }
-    });
-
-    if (response) {
-      setLoading(false)
-
-      if(team == 'No queue') {
+   
+      if(!team || team == 'No queue') {
         history.push('/CreateTriage')
       } else {
-        history.push('/Patient')
-      }
-    }
+        const response = await addQueue({
+          variables: {
+            input: {
+              queue: {
+                patientEpidNumber,
+                patientId: id,
+                team
+              }
+            }
+          }
+        });
     
-  };
+        if (response) {
+      
+          setLoading(false)
+          history.push('/Patient')
+        }
+     
+      }
+    
+ };
 
   // useEffect(() => {
   //   if (Object.keys(formState).length > 5 && !isFooter) {
@@ -189,12 +194,13 @@ const CreatePatient = ({ createPatientPG, addQueue, history }) => {
   );
 };
 
-// const mapDispatchToProps = dispatch => ({
-//   showFooter: value => dispatch(setShowFooter(value)),
-//   setDispatchFunc: value => dispatch(setDispatchFunction(value))
-// });
+ const mapDispatchToProps = dispatch => ({
+   savePatient: value => dispatch(saveCurrentPatient(value)),
+ });
 
 export default withRouter(compose(
+  connect(null, mapDispatchToProps),
   createPatientHoc,
   createQueueHoc
 )(CreatePatient));
+

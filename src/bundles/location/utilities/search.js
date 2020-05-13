@@ -11,7 +11,7 @@ export const buildOrder = (state) => {
 export const buildQuery = (state) => {
     let pgQuery = Immutable.Map({
         numberOfBeds: Immutable.Map({
-            greaterThan:  0
+            greaterThan:  -1
         })
     })
 

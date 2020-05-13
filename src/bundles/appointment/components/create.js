@@ -36,7 +36,7 @@ const NewAppointment = ({
 
   const findId = (name) => {
     if(!name) return undefined
-    return locations.filter(item => item.name)[0].id
+    return locations.filter(item => item.name == name)[0].id 
   }
 
   return (

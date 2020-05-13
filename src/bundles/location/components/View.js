@@ -133,6 +133,7 @@ const formatData = locationData => {
     return {
       location: {
         name: location.name,
+        id: location.id,
         numberOfBeds: location.numberOfBeds,
         openBeds:
           location.numberOfBeds -
@@ -160,6 +161,10 @@ const Location = ({ locationData, createLocation, addBed }) => {
     setFormInput({ ...formInput, [key]: value });
   };
 
+  const handleEdit = (key) => {
+    
+  }
+
   const createBed = async () => {
     const response = await createLocation({
       variables: {
@@ -178,7 +183,7 @@ const Location = ({ locationData, createLocation, addBed }) => {
     handleClose();
   };
 
-  const renderActionComponent = () => (
+  const renderActionComponent = (row) => (
     <Fragment>
       <Box display="flex">
         <Button
@@ -197,7 +202,7 @@ const Location = ({ locationData, createLocation, addBed }) => {
             root: classes.actionButtons,
             focusVisible: classes.actionButtons
           }}
-          onClick={handleClose}
+          onClick={() => handleEdit(row.location.id)}
           variant="contained">
           {'EDIT'}
         </Button>
@@ -283,6 +288,7 @@ const Location = ({ locationData, createLocation, addBed }) => {
                   focused: classes.cssFocused,
                   notchedOutline: classes.notchedOutline
                 }}
+            
                 onChange={e => handleChange('name', e.target.value)}
               />
             </div>

@@ -25,9 +25,12 @@ export const SUBMIT_ADMITTED = 'SUBMIT_ADMITTED';
 export const ADMIT_PATIENT = 'ADMIT PATIENT';
 export const DRIVE_THROUGH = 'Drive Through';
 export const HOME_PICK_UP = 'Home pick up';
-export const COMPLETE = 'Complete'
-export const ADMITTED = 'ADMITTED'
-
+export const COMPLETE = 'Complete';
+export const ADMITTED = 'ADMITTED';
+export const HIGH = 'HIGH'; 
+export const LOW = 'LOW';
+export const MEDIUM = 'MEDIUM'; 
+ 
 const EVAC_AND_DECON_ = {
   DEFAULT_STATE: {
     text: ACCEPT,

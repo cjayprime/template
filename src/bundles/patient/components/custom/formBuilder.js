@@ -163,7 +163,7 @@ const dateInputTheme = createMuiTheme({
   }
 });
 
-const capitalizeFirstWord = word =>
+export const capitalizeFirstWord = word =>
   word && word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
 
 const InputTextComp = (
@@ -437,7 +437,7 @@ const PhoneNumber = ({ input, setFormState, formState }) => {
       </Grid>
       <Grid xs={8}>
         <Grid container direction="row" xs={12} spacing={0}>
-          <Grid item xs={3}>
+          { /*<Grid item xs={3}>
             {SelectFieldComp(
               classes,
               input,
@@ -445,8 +445,8 @@ const PhoneNumber = ({ input, setFormState, formState }) => {
               setFormState,
               formState
             )}
-          </Grid>
-          <Grid item xs={9}>
+            </Grid> */}
+          <Grid item xs={12}>
             {InputTextComp(classes, input, setFormState, formState)}
           </Grid>
         </Grid>

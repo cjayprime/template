@@ -13,6 +13,7 @@ import {
   TeamMetadatum,
   FilterList
 } from 'bundles/shared/components';
+import { capitalizeFirstWord } from 'bundles/patient/components/custom/formBuilder'
 
 import { QueuePageStyles } from './index.style';
 
@@ -27,16 +28,16 @@ export const QueueTableView = ({ accepted, owner, pending, apiCalls }) => {
   const getGQLProps = () => {
     return { ...apiCalls }
   }
-
+  
   const renderPatientCell = row => (
     <PatientMetadatum
       name={`${row.patient.firstName} ${row.patient.lastName}`}
       sex={row.patient.sex}
       age={row.patient.age}
-      riskLevel={row.patient.riskLevel ? row.patient.riskLevel : 'No'}
+      riskLevel={row.patient.riskLevel ? capitalizeFirstWord(row.patient.riskLevel) : 'No'}
     />
   );
-
+ 
   const renderTeamCell = row => {
     return (
       <TeamMetadatum
