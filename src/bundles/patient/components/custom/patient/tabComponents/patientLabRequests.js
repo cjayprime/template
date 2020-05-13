@@ -89,8 +89,6 @@ export const PatientLabRequests = ({ labRequest }) => {
     <>{moment(row.requestDate).format('DD MMM, h:mm A')}</>
   );
 
-  console.log(labRequest, 'labRequest');
-
   const labHeader = [
     { name: 'DATE REQUESTED.', accessor: renderDateComponent },
     { name: 'NAME OF TEST', accessor: 'testName' },

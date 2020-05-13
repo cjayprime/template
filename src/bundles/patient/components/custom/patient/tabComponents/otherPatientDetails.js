@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import classnames from 'classnames';
 import {
   Grid,
@@ -12,7 +12,7 @@ import {
   createMuiTheme
 } from '@material-ui/core';
 import {
-  KeyboardDatePicker,
+  KeyboardDateTimePicker,
   MuiPickersUtilsProvider
 } from '@material-ui/pickers';
 import { ThemeProvider } from '@material-ui/styles';
@@ -160,10 +160,17 @@ const radioOptionButton = (label, classes, questionKey, onValueChange) => {
   );
 };
 
-export const OtherPatientDetails = ({ patient }) => {
+export const OtherPatientDetails = ({ deceasedPatient }) => {
   const classes = useStyles();
   const [displayForm, setDisplayForm] = useState(false);
   const [deathReport, setDeathReport] = useState({});
+
+  useEffect(() => {
+    if (deceasedPatient && deceasedPatient.id) {
+      setDisplayForm(true);
+      setDeathReport(deceasedPatient);
+    }
+  }, [deceasedPatient]);
 
   const onPatientDeathStatusChange = () => {
     setDisplayForm(!displayForm);
@@ -204,16 +211,14 @@ export const OtherPatientDetails = ({ patient }) => {
               </Typography>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <ThemeProvider theme={dateInputTheme}>
-                  <KeyboardDatePicker
+                  <KeyboardDateTimePicker
                     variant="inline"
                     inputVariant="filled"
-                    format="dd/MM/yyyy"
                     margin="normal"
                     id="time-of-death"
                     value={dateOfDeath}
                     onChange={date => onReportValueChange('dateOfDeath', date)}
                     fullWidth
-                    views={['year', 'date', '']}
                     keyboardIcon={<EventAvailable style={{ color: '#fff' }} />}
                     animateYearScrolling
                     autoOk
@@ -232,7 +237,7 @@ export const OtherPatientDetails = ({ patient }) => {
                 <OutlinedInput
                   fullWidth
                   variant="outlined"
-                  value={deathReport.locationOfDeath}
+                  value={deathReport.locationOfDeath || ''}
                   onChange={ev =>
                     onReportValueChange('locationOfDeath', ev.target.value)
                   }
@@ -341,7 +346,7 @@ export const OtherPatientDetails = ({ patient }) => {
                   multiline
                   rows={3}
                   variant="outlined"
-                  value={deathReport.examinationFindings}
+                  value={deathReport.examinationFindings || ''}
                   onChange={ev =>
                     onReportValueChange('examinationFindings', ev.target.value)
                   }
@@ -366,7 +371,7 @@ export const OtherPatientDetails = ({ patient }) => {
                   multiline
                   rows={3}
                   variant="outlined"
-                  value={deathReport.interventionAndOutcome}
+                  value={deathReport.interventionAndOutcome || ''}
                   onChange={ev =>
                     onReportValueChange(
                       'interventionAndOutcome',
@@ -393,7 +398,7 @@ export const OtherPatientDetails = ({ patient }) => {
                   multiline
                   rows={3}
                   variant="outlined"
-                  value={deathReport.causeOfDeath}
+                  value={deathReport.causeOfDeath || ''}
                   onChange={ev =>
                     onReportValueChange('causeOfDeath', ev.target.value)
                   }
@@ -443,7 +448,7 @@ export const OtherPatientDetails = ({ patient }) => {
                   multiline
                   rows={3}
                   variant="outlined"
-                  value={deathReport.plan}
+                  value={deathReport.plan || ''}
                   onChange={ev => onReportValueChange('plan', ev.target.value)}
                   classes={{
                     root: classes.input,

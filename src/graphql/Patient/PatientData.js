@@ -67,6 +67,39 @@ export const ALL_PATIENTS = gql`
             }
           }
         }
+        patientLocationsByPatientId {
+          nodes {
+            userByAdmittedBy {
+              firstname
+              title
+              lastname
+            }
+            dateAdmitted
+            id
+          }
+        }
+        deceasedPatientByPatientId {
+          auscultatoryBreathSounds
+          autopsy
+          causeOfDeath
+          centralPulses
+          cornealReflex
+          dateOfDeath
+          examinationFindings
+          familyNotified
+          id
+          interventionAndOutcome
+          locationOfDeath
+          nodeId
+          onReportValueChange
+          organDonor
+          patientId
+          peripheralPulses
+          plan
+          pupils
+          responseToStimuli
+          spontaneousRespiration
+        }
       }
       totalCount
     }
