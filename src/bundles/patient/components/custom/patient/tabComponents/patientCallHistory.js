@@ -73,9 +73,38 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export const PatientCallHistory = ({ callLogs }) => {
+export const PatientCallHistory = ({ callLogs, patient, newCallLog }) => {
   const classes = useStyles();
   const [showNewCallLog, setShowNewCallLog] = useState(true);
+  const log = {
+    callSummary: '',
+    callTime: new Date(),
+    submittedBy: 2,
+    callOrigin: 'direct_contact',
+    patientId: patient.id
+  };
+  const [newLog, setNewLog] = useState(log);
+
+  const setCallSummary = event => {
+    setNewLog({
+      ...newLog,
+      callSummary: event.target.value
+    });
+  };
+
+  const saveNewLog = async () => {
+    const response = await newCallLog({
+      variables: {
+        input: {
+          callLog: {
+            ...newLog
+          }
+        }
+      }
+    });
+
+    console.log(response);
+  };
 
   return (
     <Fragment>
@@ -103,6 +132,8 @@ export const PatientCallHistory = ({ callLogs }) => {
                 rows={5}
                 placeholder="Enter additional information"
                 variant="outlined"
+                onChange={setCallSummary}
+                value={newLog.callSummary}
                 classes={{
                   root: classes.CallSummaryNotesInput,
                   focused: classes.CallSummaryNotesInputFocused,
@@ -133,6 +164,7 @@ export const PatientCallHistory = ({ callLogs }) => {
                 <Button className={classes.formButton}>CANCEL</Button>
                 <Button
                   disableElevation={false}
+                  onClick={saveNewLog}
                   className={classnames(
                     classes.formButton,
                     classes.formButtonTS

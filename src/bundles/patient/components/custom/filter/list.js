@@ -1,9 +1,10 @@
 import React, { Fragment } from 'react';
 import { DataTable, PatientMetadatum } from 'bundles/shared/components';
-import { QueuePageStyles } from 'bundles/queue/components/Views/QueueTable/index.style';
+
 import { Link } from 'react-router-dom';
 import withPatient from 'bundles/patient/hoc/withPatient';
 import markPatientDead from 'bundles/patient/hoc/markPatientDeceased';
+import createNewCallLog from 'bundles/patient/hoc/createNewCallLog';
 import { Typography, ButtonBase, Grid, makeStyles } from '@material-ui/core';
 import { useStyles } from 'bundles/patient/components/custom/filter/index.style';
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
@@ -22,7 +23,7 @@ const renderPatientCell = row => (
   />
 );
 
-const List = ({ header, data, markPatientDeceased }) => {
+const List = ({ header, data, markPatientDeceased, newCallLog }) => {
   const useStyle = makeStyles(() => ({
     HeaderTableCell: {
       borderBottom: '0'
@@ -58,6 +59,7 @@ const List = ({ header, data, markPatientDeceased }) => {
         <PatientTab
           patientData={row}
           markPatientDeceased={markPatientDeceased}
+          newCallLog={newCallLog}
         />
       )}
     />
@@ -111,7 +113,7 @@ const ErrorContainer = () => {
   );
 };
 
-const RenderList = ({ patients = [], markPatientDeceased }) => {
+const RenderList = ({ patients = [], markPatientDeceased, newCallLog }) => {
   const remap = patients.map(patient => {
     return {
       patient: {
@@ -186,7 +188,7 @@ const RenderList = ({ patients = [], markPatientDeceased }) => {
             }`
           };
         }) || [],
-      deceasedPatient: patient.deceasedPatientByPatientId,
+      deceasedPatient: patient.deceasedPatientByPatientId
       // task: {
       //   status: patient.patientCasesByPatientId.nodes.length
       //     ? patient.patientCasesByPatientId.nodes[0].status
@@ -214,6 +216,7 @@ const RenderList = ({ patients = [], markPatientDeceased }) => {
           header={headers}
           data={remap}
           markPatientDeceased={markPatientDeceased}
+          newCallLog={newCallLog}
         />
       ) : (
         <ErrorContainer />
@@ -222,4 +225,8 @@ const RenderList = ({ patients = [], markPatientDeceased }) => {
   );
 };
 
-export default compose(withPatient, markPatientDead)(RenderList);
+export default compose(
+  withPatient,
+  markPatientDead,
+  createNewCallLog
+)(RenderList);
