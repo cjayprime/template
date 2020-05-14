@@ -1,12 +1,15 @@
 import React from 'react';
 import { Container, Grid, Typography, Avatar } from '@material-ui/core';
+import { withStaff } from 'bundles/setting/hoc';
+import { flowRight as compose } from 'lodash';
 import clsx from 'clsx';
 import { Header, DataTable } from 'bundles/shared/components';
 import { StaffPageStyles } from './index.style.js';
 import { store, accessLevels } from './store';
 import { StaffCreateView } from './components/Create';
 
-const Staff = () => {
+const Staff = (props) => {
+  console.log(props)
   const classes = StaffPageStyles();
   const renderAvatar = props => (
     <Avatar
@@ -96,4 +99,4 @@ const Staff = () => {
   );
 };
 
-export default Staff;
+export default compose(withStaff)(Staff);
