@@ -168,11 +168,7 @@ const radioOptionButton = (
   );
 };
 
-export const OtherPatientDetails = ({
-  deceasedPatient,
-  markPatientAsDead,
-  patient
-}) => {
+export const OtherPatientDetails = ({ deceasedPatient, markPatientAsDead }) => {
   const classes = useStyles();
   const [displayForm, setDisplayForm] = useState(false);
   const [deathReport, setDeathReport] = useState({});
@@ -198,18 +194,13 @@ export const OtherPatientDetails = ({
   };
 
   const setPatientDeathData = async () => {
-    const response = await markPatientAsDead({
-      variables: {
-        input: {
-          deceasedPatient: {
-            ...deathReport,
-            patientId: patient.id
-          }
-        }
-      }
-    });
-
-    console.log(response);
+    try {
+      await markPatientAsDead(deathReport);
+      console.log(deceasedPatient, 'deceasedPatient');
+      // setDisableFields(true);
+    } catch (err) {
+      // do something with the error
+    }
   };
 
   const dateOfDeath = deathReport.dateOfDeath ? deathReport.dateOfDeath : null;

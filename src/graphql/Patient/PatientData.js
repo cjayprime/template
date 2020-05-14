@@ -36,7 +36,7 @@ export const ALL_PATIENTS = gql`
             createdAt
           }
         }
-        callLogsByPatientId {
+        callLogsByPatientId(orderBy: CALL_TIME_DESC) {
           nodes {
             id
             callSummary

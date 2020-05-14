@@ -122,3 +122,7 @@ export const PatientDetails = ({ patient }) => {
     </Fragment>
   );
 };
+
+PatientDetails.defaultProps = {
+  patient: {}
+};

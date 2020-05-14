@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Grid, Tabs, Tab, Box } from '@material-ui/core';
 import Formbuilder from 'bundles/patient/components/custom/formBuilder';
 import { makeStyles } from '@material-ui/core/styles';
@@ -126,8 +126,13 @@ export const patientStore = [
 ];
 
 const PatientTab = ({ patientData, markPatientDeceased, newCallLog }) => {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
+  const [patientInfo, setPatientInfo] = useState({});
   const classes = useStyles();
+
+  useEffect(() => {
+    setPatientInfo(patientData);
+  }, [patientData]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -159,6 +164,52 @@ const PatientTab = ({ patientData, markPatientDeceased, newCallLog }) => {
         label={label}
       />
     );
+  };
+
+  const createNewCallLog = async newLog => {
+    try {
+      const response = await newCallLog({
+        variables: {
+          input: {
+            callLog: {
+              ...newLog
+            }
+          }
+        }
+      });
+
+      setPatientInfo({
+        ...patientInfo,
+        callLogs: [response.data.createCallLog.callLog, ...patientInfo.callLogs]
+      });
+    } catch (err) {
+      // do something with error here
+    }
+  };
+
+  const setPatientAsDead = async info => {
+    try {
+      const response = await markPatientDeceased({
+        variables: {
+          input: {
+            deceasedPatient: {
+              ...info,
+              patientId: patientInfo.patient.id
+            }
+          }
+        }
+      });
+
+      setPatientInfo({
+        ...patientInfo,
+        deceasedPatient: {
+          ...response.data.createDeceasedPatient.deceasedPatient,
+          ...info
+        }
+      });
+    } catch (err) {
+      // do something with the error
+    }
   };
 
   return (
@@ -213,22 +264,25 @@ const PatientTab = ({ patientData, markPatientDeceased, newCallLog }) => {
         <Grid>
           <TabPanel value={value} index={0}>
             <Grid container spacing={2}>
-              <PatientDetails {...patientData} />
+              <PatientDetails {...patientInfo} />
             </Grid>
           </TabPanel>
           <TabPanel value={value} index={1}>
             <Grid container spacing={2}>
-              <PatientCallHistory {...patientData} newCallLog={newCallLog} />
+              <PatientCallHistory
+                {...patientInfo}
+                newCallLog={createNewCallLog}
+              />
             </Grid>
           </TabPanel>
           <TabPanel value={value} index={2}>
             <Grid container spacing={2}>
-              <PatientCases {...patientData} />
+              <PatientCases {...patientInfo} />
             </Grid>
           </TabPanel>
           <TabPanel value={value} index={3}>
             <Grid container spacing={2}>
-              <PatientLabRequests {...patientData} />
+              <PatientLabRequests {...patientInfo} />
             </Grid>
           </TabPanel>
           <TabPanel value={value} index={4}>
@@ -241,8 +295,8 @@ const PatientTab = ({ patientData, markPatientDeceased, newCallLog }) => {
           <TabPanel value={value} index={5}>
             <Grid container spacing={2}>
               <OtherPatientDetails
-                {...patientData}
-                markPatientAsDead={markPatientDeceased}
+                {...patientInfo}
+                markPatientAsDead={setPatientAsDead}
               />
             </Grid>
           </TabPanel>

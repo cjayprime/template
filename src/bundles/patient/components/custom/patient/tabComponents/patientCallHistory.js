@@ -75,15 +75,15 @@ const useStyles = makeStyles(theme => ({
 
 export const PatientCallHistory = ({ callLogs, patient, newCallLog }) => {
   const classes = useStyles();
-  const [showNewCallLog, setShowNewCallLog] = useState(true);
-  const log = {
+  // const [showNewCallLog, setShowNewCallLog] = useState(true);
+  const newLogObject = {
     callSummary: '',
     callTime: new Date(),
     submittedBy: 2,
     callOrigin: 'direct_contact',
     patientId: patient.id
   };
-  const [newLog, setNewLog] = useState(log);
+  const [newLog, setNewLog] = useState(newLogObject);
 
   const setCallSummary = event => {
     setNewLog({
@@ -93,17 +93,12 @@ export const PatientCallHistory = ({ callLogs, patient, newCallLog }) => {
   };
 
   const saveNewLog = async () => {
-    const response = await newCallLog({
-      variables: {
-        input: {
-          callLog: {
-            ...newLog
-          }
-        }
-      }
-    });
-
-    console.log(response);
+    try {
+      await newCallLog(newLog);
+      setNewLog(newLogObject);
+    } catch (err) {
+      // do something with error here
+    }
   };
 
   return (
