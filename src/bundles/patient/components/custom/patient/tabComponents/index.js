@@ -4,6 +4,7 @@ import { PatientCases } from './patientCases';
 import { PatientLabRequests } from './patientLabRequests';
 import { OtherPatientDetails } from './otherPatientDetails';
 import { InpatientComponent } from './inpatient';
+import { PatientAppointment } from './patientAppointments';
 
 export {
   PatientDetails,
@@ -11,5 +12,6 @@ export {
   PatientCases,
   PatientLabRequests,
   OtherPatientDetails,
-  InpatientComponent
+  InpatientComponent,
+  PatientAppointment
 };

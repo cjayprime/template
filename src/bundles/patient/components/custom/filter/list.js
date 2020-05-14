@@ -1,18 +1,93 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { DataTable, PatientMetadatum } from 'bundles/shared/components';
 
 import { Link } from 'react-router-dom';
 import withPatient from 'bundles/patient/hoc/withPatient';
 import markPatientDead from 'bundles/patient/hoc/markPatientDeceased';
 import createNewCallLog from 'bundles/patient/hoc/createNewCallLog';
-import { Typography, ButtonBase, Grid, makeStyles } from '@material-ui/core';
+import {
+  Typography,
+  ButtonBase,
+  Grid,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  Box,
+  Button,
+  IconButton
+} from '@material-ui/core';
 import { useStyles } from 'bundles/patient/components/custom/filter/index.style';
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
 import PatientTab from 'bundles/patient/components/custom/patient/tab';
 import notfound from 'images/notfound.png';
 import moment from 'moment';
+import { makeStyles } from '@material-ui/styles';
+import CloseIcon from '@material-ui/icons/Close';
 
 const compose = require('lodash')?.flowRight;
+
+const ownStyles = makeStyles(theme => ({
+  dialog: {
+    backgroundColor: 'transparent',
+    // backgroundColor: '#2B2D40',
+    boxShadow: 'none'
+  },
+  dialogheaderText: {
+    fontSize: 24,
+    color: '#fff',
+    textAlign: 'center'
+  },
+  dialogContainer: {
+    backgroundColor: 'rgba(44, 46, 65, 0.7)',
+    backdropFilter: 'blur(4px)'
+  },
+  dialogCloseButton: {
+    position: 'fixed',
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: '#fff'
+  },
+  radio: {
+    color: '#FFFFFF'
+  },
+  primaryButton: {
+    backgroundColor: '#27BAC0',
+    color: '#fff',
+    fontSize: 13,
+    fontWeight: 'bold',
+    padding: '11.5px 34px',
+    borderRadius: 50,
+    textTransform: 'uppercase',
+    maxWidth: 270,
+    boxShadow:
+      '0 6px 16px rgba(39, 186, 192, 0.20), 0 2px 10px rgba(39, 186, 192, 0.10)',
+    '&:hover': {
+      backgroundColor: '#27BAC0',
+      color: '#fff',
+      fontSize: 13
+    }
+  },
+  secondaryButton: {
+    backgroundColor: 'transparent',
+    color: '#fff',
+    fontSize: 13,
+    fontWeight: 'bold',
+    padding: '11.5px 34px',
+    borderRadius: 50,
+    textTransform: 'uppercase',
+    maxWidth: 270,
+    boxShadow: 'none',
+    '&:hover': {
+      backgroundColor: 'transparent',
+      color: '#fff',
+      fontSize: 13,
+      boxShadow: 'none'
+    }
+  }
+}));
 
 const renderPatientCell = row => (
   <PatientMetadatum
@@ -69,9 +144,9 @@ const List = ({ header, data, markPatientDeceased, newCallLog }) => {
 const expand = () => {
   return (
     <Grid container alignItems="center" justify="flex-end">
-      {/* <Typography style={{ textTransform: 'uppercase', marginRight: 5 }}>
+      <Typography style={{ textTransform: 'uppercase', marginRight: 5 }}>
         Expand
-      </Typography> */}
+      </Typography>
       <KeyboardArrowDown />
     </Grid>
   );
@@ -114,6 +189,9 @@ const ErrorContainer = () => {
 };
 
 const RenderList = ({ patients = [], markPatientDeceased, newCallLog }) => {
+  const classes = ownStyles();
+  const [openForwardModal, setOpenForwardModal] = useState(false);
+  const [selectedPatientIdId, setSelectedPatient] = useState();
   const remap = patients.map(patient => {
     return {
       patient: {
@@ -201,11 +279,42 @@ const RenderList = ({ patients = [], markPatientDeceased, newCallLog }) => {
     };
   });
 
+  const forwardPatientToTeam = patientId => {
+    setOpenForwardModal(true);
+    setSelectedPatient(patientId);
+  };
+
+  const closeForwardDialog = () => {
+    setOpenForwardModal(false);
+    setSelectedPatient(null);
+  };
+
+  const forward = row => {
+    return (
+      <Grid container alignItems="center" justify="flex-end">
+        <ButtonBase
+          onClick={e => {
+            e.stopPropagation();
+            forwardPatientToTeam(row.patient.id);
+          }}
+          style={{
+            textTransform: 'uppercase',
+            marginRight: 5,
+            color: '#6C64B4',
+            fontWeight: 'bold'
+          }}>
+          Forward
+        </ButtonBase>
+      </Grid>
+    );
+  };
+
   const headers = [
     { name: 'PATIENT', accessor: renderPatientCell },
     { name: 'PHONE NUMBER', accessor: 'patient.phoneNumber' },
     { name: 'STATUS', accessor: 'patientCase.status' },
     { name: 'EPID NO.', accessor: 'patient.epidNumber' },
+    { name: '', accessor: forward },
     { name: '', accessor: expand }
   ];
 
@@ -221,6 +330,76 @@ const RenderList = ({ patients = [], markPatientDeceased, newCallLog }) => {
       ) : (
         <ErrorContainer />
       )}
+      <Dialog
+        open={openForwardModal}
+        onClose={closeForwardDialog}
+        fullWidth={true}
+        classes={{
+          paper: classes.dialog,
+          root: classes.dialogRoot,
+          container: classes.dialogContainer
+        }}
+        maxWidth={'sm'}>
+        <IconButton
+          aria-label="close"
+          className={classes.dialogCloseButton}
+          onClick={closeForwardDialog}>
+          <CloseIcon />
+        </IconButton>
+        <DialogTitle id="form-dialog-title">
+          <Typography className={classes.dialogheaderText}>
+            Forward to Queue
+          </Typography>
+        </DialogTitle>
+        <DialogContent>
+          <Grid container justify="center" style={{ marginTop: 24 }}>
+            <RadioGroup name="stimuli">
+              {['RRT', 'Psychosocial', 'Evac & Decon', 'Epid/Surveillance'].map(
+                option => (
+                  <FormControlLabel
+                    key={`team-${option}`}
+                    value={option}
+                    control={
+                      <Radio
+                        color="primary"
+                        classes={{
+                          colorPrimary: classes.radio
+                        }}
+                      />
+                    }
+                    label={option}
+                    classes={{
+                      root: classes.radio
+                    }}
+                  />
+                )
+              )}
+            </RadioGroup>
+          </Grid>
+        </DialogContent>
+        <div style={{ margin: '10px 0' }}>
+          <Box display="flex" justifyContent="center">
+            <Button
+              fullWidth={true}
+              variant="contained"
+              color="primary"
+              classes={{ root: classes.primaryButton }}>
+              ADD
+            </Button>
+          </Box>
+          <Box display="flex" justifyContent="center" style={{ marginTop: 15 }}>
+            <Button
+              onClick={closeForwardDialog}
+              classes={{
+                root: classes.secondaryButton,
+                focusVisible: classes.secondaryButton
+              }}
+              variant="contained">
+              CANCEL
+            </Button>
+          </Box>
+        </div>
+      </Dialog>
     </Fragment>
   );
 };

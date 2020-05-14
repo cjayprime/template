@@ -180,13 +180,12 @@ const DateQuestionType = ({
                 inputVariant="filled"
                 format="dd/MM/yyyy"
                 margin="normal"
-                
                 id={questionKey}
                 value={selectedDate}
                 onChange={date => onAnswer(questionKey, date)}
                 fullWidth={true}
                 views={['year', 'date', '']}
-                keyboardIcon={<EventAvailable style={{color: '#fff'}} />}
+                keyboardIcon={<EventAvailable style={{ color: '#fff' }} />}
                 animateYearScrolling
                 autoOk
                 maxDate={new Date()}
