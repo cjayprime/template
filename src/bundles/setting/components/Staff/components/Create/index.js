@@ -12,11 +12,13 @@ import {
 } from '@material-ui/core';
 import clsx from 'clsx';
 import { Input } from 'bundles/shared/components';
+import { createStaff as createStaffHoc } from 'bundles/setting/hoc/createStaff';
+import { flowRight as compose } from 'lodash';
 import { StaffCreateStyles } from './index.style';
 
 const DEFAULT_RADIO_OPTIONS = ['Yes', 'No'];
 
-export const StaffCreateView = props => {
+const StaffCreateView = props => {
   const classes = StaffCreateStyles();
 
   const buildAccessLevels = ({ accessLevels }) => {
@@ -231,3 +233,5 @@ export const StaffCreateView = props => {
     </Container>
   );
 };
+
+export const CreateStaff = compose(createStaffHoc)(StaffCreateView)

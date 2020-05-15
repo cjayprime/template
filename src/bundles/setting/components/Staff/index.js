@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { Header, DataTable } from 'bundles/shared/components';
 import { StaffPageStyles } from './index.style.js';
 import { store, accessLevels } from './store';
-import { StaffCreateView } from './components/Create';
+import { CreateStaff } from './components/Create';
 
 const Staff = (props) => {
   console.log(props)
@@ -75,7 +75,7 @@ const Staff = (props) => {
     }
   ];
 
-  return <StaffCreateView accessLevels={accessLevels} />;
+  return <CreateStaff accessLevels={accessLevels} />;
 
   // TODO {H.Ezekiel} move this to StaffList component
   return (

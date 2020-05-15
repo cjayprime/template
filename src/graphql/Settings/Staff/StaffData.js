@@ -28,3 +28,31 @@ export const ALL_STAFF = gql`
     }
   }
 `;
+
+export const SINGLE_STAFF = gql`
+  query userById($id: Int!) {
+    userById(id: $id) {
+      id
+      firstname
+      lastname
+      title
+      team
+      userAccessLevelsByUserId {
+        nodes {
+          id
+          lab
+          logCall
+          contactInfo
+          patientProfile
+          notes
+          queues
+          appointments
+          dashboard
+          reports
+          admitDischarge
+        }
+      }
+    }
+    }
+  }
+`
