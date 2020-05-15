@@ -7,7 +7,6 @@ import {
   Typography,
   IconButton,
   ButtonBase,
-  Radio,
   makeStyles
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/styles';
@@ -32,11 +31,7 @@ import { triageQuestions, triageQuestionWeights } from './triageQuestions.js';
 const compose = require('lodash')?.flowRight;
 
 const QontoConnector = withStyles({
-  alternativeLabel: {
-    //top: 10,
-    //left: 'calc(-50% + 16px)',
-    // right: 'calc(50% + 16px)'
-  },
+  alternativeLabel: {},
   active: {
     '& $line': {
       borderColor: '#8EE2E5'
@@ -44,47 +39,51 @@ const QontoConnector = withStyles({
   },
   completed: {
     '& $line': {
-      borderColor: '#8EE2E5',
-      borderWidth: 5
+      borderColor: '#8EE2E5'
     }
   },
   line: {
-    padding: '0 0 8px',
-    marginLeft: 6,
-    //marginTop: 7,
     borderColor: '#716A9E',
-    borderTopWidth: 3,
-    borderWidth: 5,
-    borderRadius: 1
+    borderWidth: 3,
+    borderRadius: 1,
+    marginLeft: 0
+  },
+  vertical: {
+    marginLeft: 9,
+    padding: 0
+  },
+  lineVertical: {
+    minHeight: 36
   }
 })(StepConnector);
 
 const useQontoStepIconStyles = makeStyles({
   root: {
-    color: '#eaeaf0',
-    display: 'flex',
-    height: 22,
-    alignItems: 'center'
-  },
-  radio: {
-    color: '#8EE2E5'
+    height: 20,
+    width: 20,
+    borderRadius: '50%',
+    backgroundColor: '#716A9E',
+    cursor: 'pointer',
+    position: 'relative'
   },
   active: {
-    color: '#784af4'
-  },
-  circle: {
-    width: 8,
-    height: 8,
-    borderRadius: '50%',
-    backgroundColor: 'currentColor'
+    backgroundColor: '#fff',
+    '&:after': {
+      content: '""',
+      width: 30,
+      height: 30,
+      border: '2px solid #8EE2E5',
+      display: 'block',
+      borderRadius: '50%',
+      position: 'absolute',
+      left: -5,
+      top: -5
+    }
   },
   completed: {
-    color: '#784af4',
+    backgroundColor: '#8EE2E5',
     zIndex: 1,
     fontSize: 18
-  },
-  green: {
-    backgroundColor: '#28BAC0'
   }
 });
 
@@ -154,6 +153,24 @@ const useStyles = makeStyles(theme => ({
   roundedIcon: {
     fontSize: 15,
     color: '#fff'
+  },
+  stepLabel: {
+    color: '#716A9E',
+    fontWeight: 500,
+    cursor: 'pointer',
+    fontSize: 16
+  },
+  stepLabelActive: {
+    '&.MuiStepLabel-label.MuiStepLabel-active': {
+      color: '#fff',
+      fontWeight: 500
+    }
+  },
+  stepLabelCompleted: {
+    '&.MuiStepLabel-label.MuiStepLabel-completed': {
+      color: '#8EE2E5',
+      fontWeight: 500
+    }
   }
 }));
 
@@ -260,31 +277,15 @@ export const CreateTriage = ({
     return (
       <div
         className={clsx(classes.root, {
-          [classes.active]: active
-        })}>
-        {completed ? (
-          <Radio
-            color="primary"
-            classes={{
-              colorPrimary: classes.radio
-            }}
-          />
-        ) : (
-          <Radio
-            color="primary"
-            classes={{
-              colorPrimary: classes.radio,
-              root: classes.green
-            }}
-          />
-        )}
-      </div>
+          [classes.active]: active,
+          [classes.completed]: completed
+        })}></div>
     );
   };
 
-  const totalSteps = () => {
+  const totalSteps = useCallback(() => {
     return questionCategory.length;
-  };
+  }, [questionCategory]);
 
   const completedSteps = () => {
     return Object.keys(completed).length;
@@ -292,7 +293,7 @@ export const CreateTriage = ({
 
   const isLastStep = useCallback(() => {
     return activeStep === totalSteps() - 1;
-  });
+  }, [activeStep, totalSteps]);
 
   const allStepsCompleted = () => {
     return completedSteps() === totalSteps();
@@ -356,17 +357,15 @@ export const CreateTriage = ({
             {questionCategory.map((label, index) => (
               <Step key={label}>
                 <StepLabel
-                  completed={completed[index]}
+                  classes={{
+                    label: classes.stepLabel,
+                    active: classes.stepLabelActive,
+                    completed: classes.stepLabelCompleted
+                  }}
                   StepIconComponent={QontoStepIcon}
                   disabled={label === 'Result'}
                   onClick={handleStep(index)}>
-                  <Typography
-                    style={{
-                      color: completed[index] ? '#8EE2E5' : '#8EE2E5',
-                      fontWeight: 'bold'
-                    }}>
-                    {label}
-                  </Typography>
+                  {label}
                 </StepLabel>
               </Step>
             ))}

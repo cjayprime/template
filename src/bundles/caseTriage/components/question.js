@@ -9,7 +9,8 @@ import {
   FormControlLabel,
   Typography,
   OutlinedInput,
-  MenuItem
+  MenuItem,
+  Box
 } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import {
@@ -139,11 +140,17 @@ const TransformIcon = () => <KeyboardArrowDown color="primary" />;
 const RenderChild = ({ classes, question }) => {
   return (
     <Fragment>
-      <Grid item xs={2}>
+      {/* <Grid item xs={2}>
         <img src={pointer} />
       </Grid>
       <Grid item xs={4}>
         <Typography className={classes.labelText}>{question}</Typography>
+      </Grid> */}
+      <Grid item xs={6}>
+        <Box display="flex" alignItems="center">
+          <img src={pointer} alt="pointer" style={{ marginRight: 12 }} />
+          <Typography className={classes.labelText}>{question}</Typography>
+        </Box>
       </Grid>
     </Fragment>
   );
