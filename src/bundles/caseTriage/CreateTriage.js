@@ -49,7 +49,7 @@ const QontoConnector = withStyles({
     marginLeft: 0
   },
   vertical: {
-    marginLeft: 9,
+    marginLeft: 6,
     padding: 0
   },
   lineVertical: {
@@ -59,8 +59,8 @@ const QontoConnector = withStyles({
 
 const useQontoStepIconStyles = makeStyles({
   root: {
-    height: 20,
-    width: 20,
+    height: 15,
+    width: 15,
     borderRadius: '50%',
     backgroundColor: '#716A9E',
     cursor: 'pointer',
@@ -70,8 +70,8 @@ const useQontoStepIconStyles = makeStyles({
     backgroundColor: '#fff',
     '&:after': {
       content: '""',
-      width: 30,
-      height: 30,
+      width: 25,
+      height: 25,
       border: '2px solid #8EE2E5',
       display: 'block',
       borderRadius: '50%',
@@ -184,7 +184,7 @@ function getStepContent(step) {
   return triageQuestions[questionCategory];
 }
 
-const ResultContainer = ({ classes, triageScore = 0 }) => {
+const ResultContainer = ({ classes, triageScore = 0, canEdit }) => {
   let riskLevel = 'no risk';
   let message =
     'Advise patient to self medicate and observe signs and symptoms';
@@ -224,23 +224,27 @@ const ResultContainer = ({ classes, triageScore = 0 }) => {
           The patient has been classified as {riskLevel}
         </Typography>
       </Grid>
-      <Grid item xs={5} md={5} style={{ textAlign: 'center' }}>
-        <img src={triageInfo} />
-        <Typography style={{ color: '#fff', fontSize: 20 }}>
-          {' '}
-          {message}
-        </Typography>
-      </Grid>
-      <Grid item md={5} xs={5}>
-        <ButtonBase
-          variant="contained"
-          to="/Patient"
-          component={Link}
-          color="primary"
-          classes={{ root: classes.nextButton }}>
-          Close the Case
-        </ButtonBase>
-      </Grid>
+      {canEdit && (
+        <>
+          <Grid item xs={5} md={5} style={{ textAlign: 'center' }}>
+            <img src={triageInfo} />
+            <Typography style={{ color: '#fff', fontSize: 20 }}>
+              {' '}
+              {message}
+            </Typography>
+          </Grid>
+          <Grid item md={5} xs={5}>
+            <ButtonBase
+              variant="contained"
+              to="/Patient"
+              component={Link}
+              color="primary"
+              classes={{ root: classes.nextButton }}>
+              Close the Case
+            </ButtonBase>
+          </Grid>
+        </>
+      )}
     </Grid>
   );
 };
@@ -260,9 +264,22 @@ export const CreateTriage = ({
   const questionCategory = steps;
   const classes = useStyles();
 
+  // Set state to the answers pssed if canEdit is false
+  // Also calculate risk score from the answers passed
   useEffect(() => {
     if (!canEdit && triageAnswers) {
       setAnswers(triageAnswers);
+
+      const triageScore = Reflect.ownKeys(triageQuestionWeights).reduce(
+        (agg, question) => {
+          const answerValue =
+            triageAnswers[question].toLowerCase() === 'yes' ? 1 : 0;
+          agg += triageQuestionWeights[question] * answerValue;
+          return agg;
+        },
+        0
+      );
+      setTriageScore(triageScore);
     }
   }, [canEdit, triageAnswers]);
 
@@ -335,7 +352,7 @@ export const CreateTriage = ({
 
   // calculate the triage score
   useEffect(() => {
-    if (isLastStep()) {
+    if (isLastStep() && canEdit) {
       const score = Reflect.ownKeys(triageAnswerResult).reduce((agg, curr) => {
         agg += parseInt(triageAnswerResult[curr], 10);
         return agg;
@@ -343,7 +360,7 @@ export const CreateTriage = ({
 
       setTriageScore(score);
     }
-  }, [activeStep, triageScore, triageAnswerResult, isLastStep]);
+  }, [activeStep, triageScore, triageAnswerResult, isLastStep, canEdit]);
 
   return (
     <Fragment>
@@ -374,7 +391,11 @@ export const CreateTriage = ({
         <Grid item md={8} lg={9} style={{ padding: 33, overflowX: 'hidden' }}>
           <Fragment>
             {steps[activeStep] === 'Result' ? (
-              <ResultContainer classes={classes} triageScore={triageScore} />
+              <ResultContainer
+                classes={classes}
+                triageScore={triageScore}
+                canEdit={canEdit}
+              />
             ) : (
               <div>
                 <Grid item xs={12}>
