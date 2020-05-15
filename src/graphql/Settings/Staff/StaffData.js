@@ -30,7 +30,7 @@ export const ALL_STAFF = gql`
 `;
 
 export const SINGLE_STAFF = gql`
-  query userById($id: Int!) {
+  query($id: Int!) {
     userById(id: $id) {
       id
       firstname
@@ -53,6 +53,5 @@ export const SINGLE_STAFF = gql`
         }
       }
     }
-    }
   }
-`
+`;

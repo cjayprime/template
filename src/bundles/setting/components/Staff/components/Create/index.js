@@ -11,6 +11,7 @@ import {
   Radio
 } from '@material-ui/core';
 import clsx from 'clsx';
+import FormBuilder from 'bundles/patient/components/custom/formBuilder';
 import { Input } from 'bundles/shared/components';
 import { createStaff as createStaffHoc } from 'bundles/setting/hoc/createStaff';
 import { flowRight as compose } from 'lodash';
@@ -19,6 +20,7 @@ import { StaffCreateStyles } from './index.style';
 const DEFAULT_RADIO_OPTIONS = ['Yes', 'No'];
 
 const StaffCreateView = props => {
+  console.log(props);
   const classes = StaffCreateStyles();
 
   const buildAccessLevels = ({ accessLevels }) => {
@@ -129,87 +131,117 @@ const StaffCreateView = props => {
             <form className={classes.Form}>
               <Grid className={classes.FormGroupContainer} container>
                 <Grid item xs={5} className={classes.FormGroupItem}>
-                  <FormLabel className={classes.FormGroupLabel}>
-                    {'Role'}
-                  </FormLabel>
-                  <Input select options={[{ value: 'Staff' }]} />
+                  <FormBuilder
+                    formInput={{
+                      type: 'select',
+                      label: 'Role',
+                      fields: ['staff'],
+                      labelDirection: 'column'
+                    }}
+                  />
                 </Grid>
                 <Grid item xs={5} className={classes.FormGroupItem}>
-                  <FormLabel className={classes.FormGroupLabel}>
-                    {'Team'}
-                  </FormLabel>
-                  <Input select options={[{ value: 'Add to Team' }]} />
+                  <FormBuilder
+                    formInput={{
+                      type: 'select',
+                      label: 'Team',
+                      labelDirection: 'column',
+                      fields: []
+                    }}
+                  />
                 </Grid>
               </Grid>
               <Grid className={classes.FormGroupContainer} container>
                 <Grid item xs={2} className={classes.FormGroupItem}>
-                  <FormLabel className={classes.FormGroupLabel}>
-                    {'Title'}
-                  </FormLabel>
-                  <Input
-                    select
-                    options={[{ value: 'Dr.' }]}
-                    defaultValue="Dr."
+                  <FormBuilder
+                    formInput={{
+                      type: 'select',
+                      label: 'Title',
+                      labelDirection: 'column',
+                      fields: []
+                    }}
                   />
                 </Grid>
                 <Grid item xs={8} className={classes.FormGroupItem}>
-                  <FormLabel className={classes.FormGroupLabel}>
-                    {'First Name'}
-                  </FormLabel>
-                  <Input name="firstName" />
+                  <FormBuilder
+                    formInput={{
+                      type: 'text',
+                      label: 'First name',
+                      labelDirection: 'column'
+                    }}
+                  />
                 </Grid>
               </Grid>
               <Grid className={classes.FormGroupContainer} container>
                 <Grid item xs={10} className={classes.FormGroupItem}>
-                  <FormLabel className={classes.FormGroupLabel}>
-                    {'Surname'}
-                  </FormLabel>
-                  <Input name="surName" />
+                  <FormBuilder
+                    formInput={{
+                      type: 'text',
+                      label: 'Surname',
+                      labelDirection: 'column'
+                    }}
+                  />
                 </Grid>
               </Grid>
               <Grid className={classes.FormGroupContainer} container>
                 <Grid item xs={5} className={classes.FormGroupItem}>
-                  <FormLabel className={classes.FormGroupLabel}>
-                    {'Phone Number'}
-                  </FormLabel>
-                  <Input name="phoneNumber" />
+                  <FormBuilder
+                    formInput={{
+                      type: 'text',
+                      label: 'Phone no',
+                      labelDirection: 'column'
+                    }}
+                  />
                 </Grid>
                 <Grid item xs={5} className={classes.FormGroupItem}>
-                  <FormLabel className={classes.FormGroupLabel}>
-                    {'Email'}
-                  </FormLabel>
-                  <Input name="email" />
-                </Grid>
-              </Grid>
-              <Grid className={classes.FormGroupContainer} container>
-                <Grid item xs={5} className={classes.FormGroupItem}>
-                  <FormLabel className={classes.FormGroupLabel}>
-                    {'Job Title*'}
-                  </FormLabel>
-                  <Input name="jobTitle" />
-                </Grid>
-                <Grid item xs={5} className={classes.FormGroupItem}>
-                  <FormLabel className={classes.FormGroupLabel}>
-                    {'Department'}
-                  </FormLabel>
-                  <Input name="department" />
+                  <FormBuilder
+                    formInput={{
+                      type: 'text',
+                      label: 'Email',
+                      labelDirection: 'column'
+                    }}
+                  />
                 </Grid>
               </Grid>
               <Grid className={classes.FormGroupContainer} container>
                 <Grid item xs={5} className={classes.FormGroupItem}>
-                  <FormLabel className={classes.FormGroupLabel}>
-                    {'Specialty'}
-                  </FormLabel>
-                  <Input select options={[{ value: '' }]} />
+                  <FormBuilder
+                    formInput={{
+                      type: 'text',
+                      label: 'Job Title',
+                      labelDirection: 'column'
+                    }}
+                  />
                 </Grid>
                 <Grid item xs={5} className={classes.FormGroupItem}>
-                  <FormLabel className={classes.FormGroupLabel}>
-                    {'Sex'}
-                  </FormLabel>
-                  <Input
-                    select
-                    options={[{ value: 'Male' }]}
-                    defaultValue="Male"
+                  <FormBuilder
+                    formInput={{
+                      type: 'text',
+                      label: 'Department',
+                      labelDirection: 'column'
+                    }}
+                  />
+                </Grid>
+              </Grid>
+              <Grid className={classes.FormGroupContainer} container>
+                <Grid item xs={5} className={classes.FormGroupItem}>
+                  <FormBuilder
+                    formInput={{
+                      type: 'select',
+                      label: 'Specialty',
+                      labelDirection: 'column',
+                      fields: ['']
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={5} className={classes.FormGroupItem}>
+                  <FormBuilder
+                    formInput={{
+                      type: 'select',
+                      label: 'Sex',
+                      labelDirection: 'column',
+                      fields: ['Male', 'Female']
+                    }}
                   />
                 </Grid>
               </Grid>
@@ -234,4 +266,4 @@ const StaffCreateView = props => {
   );
 };
 
-export const CreateStaff = compose(createStaffHoc)(StaffCreateView)
+export const CreateStaff = compose(createStaffHoc)(StaffCreateView);
