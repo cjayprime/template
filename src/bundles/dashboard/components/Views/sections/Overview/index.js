@@ -1,6 +1,8 @@
 import React from 'react';
 import clsx from 'clsx';
 import { Grid } from '@material-ui/core';
+import { Line } from 'react-chartjs-2';
+
 import {
   ChartHolder,
   DataContainerWithMetadata,
@@ -8,7 +10,6 @@ import {
   DataTable
 } from '../../../../../shared/components/';
 import { OverviewPageStyles } from './index.style';
-import { SectionTwoStore, Legends, TableData } from './store';
 
 import WithDashboardData from 'bundles/dashboard/hoc/WithDashboardData';
 const compose = require('lodash')?.flowRight;
@@ -24,10 +25,30 @@ const Overview = props => {
       awaitingResult,
       evacAwaitingPickUp,
       totalFatalities,
+      newFatalities,
       dischargedPatients,
-      newDischargedPatients
+      newDischargedPatients,
+      positivePatientByLGA,
+      currentIsolation,
+      newIsolation,
+      currentICU,
+      newICU,
     }
   } = props;
+
+  const LGADataObject = {};
+  positivePatientByLGA.nodes.forEach(node => {
+    if (LGADataObject[node.lga]) {
+      LGADataObject[node.lga] += 1;
+    } else {
+      LGADataObject[node.lga] = 1;
+    }
+  });
+  const LGATableData = Object.keys(LGADataObject).map((LGA, i) => ({
+    'S/M': i + 1,
+    count: LGADataObject[LGA],
+    LGA
+  }));
 
   const classes = OverviewPageStyles();
   const headers = [
@@ -71,14 +92,14 @@ const Overview = props => {
     {
       title: 'Fatalities',
       entries: {
-        New: 10,
+        New: newFatalities.totalCount,
         Total: totalFatalities.totalCount
       }
     },
     {
       title: 'Fatalities',
       entries: {
-        New: 10,
+        New: newFatalities.totalCount,
         Total: totalFatalities.totalCount
       }
     }
@@ -95,14 +116,50 @@ const Overview = props => {
     Admissions: {
       title: 'Admissions',
       entries: {
-        'New Isolation': 3,
-        'New ICU': 2,
-        'Valid Calls': 10,
-        'Current ICU': 5,
+        'New Isolation': newIsolation.totalCount,
+        'New ICU': newICU.totalCount,
+        'Current Isolation': currentIsolation.totalCount,
+        'Current ICU': currentICU.totalCount,
         'Red Flagged': 13,
         'Avg Days': 12
       }
     }
+  };
+
+  const data = {
+    labels: [
+      '10/05/2020',
+      '11/05/2020',
+      '12/05/2020',
+      '13/05/2020',
+      '14/05/2020',
+      '15/05/2020',
+      '16/05/2020'
+    ],
+    datasets: [
+      {
+        label: 'My First dataset',
+        // fill: false,
+        lineTension: 0.1,
+        backgroundColor: 'rgba(231,187,134,0.2)',
+        borderColor: 'rgba(231,187,134,1)',
+        fill: 'origin',
+        borderCapStyle: 'butt',
+        borderDash: [],
+        borderDashOffset: 0.0,
+        borderJoinStyle: 'miter',
+        pointBorderColor: 'rgba(231,187,134,1)',
+        pointBackgroundColor: '#fff',
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: 'rgba(231,187,134,1)',
+        pointHoverBorderColor: 'rgba(231,187,134,1)',
+        pointHoverBorderWidth: 2,
+        pointRadius: 1,
+        pointHitRadius: 10,
+        data: [65, 59, 80, 81, 56, 55, 40]
+      }
+    ]
   };
 
   return (
@@ -133,7 +190,7 @@ const Overview = props => {
           <DataContainer styles={{ BaseContainer: classes.TableContainer }}>
             <DataTable
               headers={headers}
-              data={TableData}
+              data={LGATableData}
               styles={{
                 Table: classes.Table,
                 TableCell: classes.TableCell
@@ -163,7 +220,7 @@ const Overview = props => {
             </Grid>
           </Grid>
           <Grid item xs={12} className={classes.EpidInfoContainer}>
-            <ChartHolder
+            {/* <ChartHolder
               title="Epidemiology curve"
               styles={{
                 BaseContainer: classes.EpidInfoLegend
@@ -172,7 +229,8 @@ const Overview = props => {
                 entries: Legends.epidCurve,
                 position: 'top'
               }}
-            />
+            /> */}
+            <Line data={data} />
           </Grid>
         </Grid>
       </Grid>

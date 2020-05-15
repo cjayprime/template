@@ -19,9 +19,7 @@ export const OverviewPageStyles = makeStyles(theme => ({
   PageItem: {
     marginBottom: '1%'
   },
-  SectionTwo: {
-    height: '45vh'
-  },
+  SectionTwo: {},
   LargeSummaryHolder: {},
   LargeEntryHolder: {},
   EpidInfoContainer: {

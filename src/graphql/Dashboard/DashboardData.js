@@ -15,7 +15,7 @@ export const ALL_DASHBOARD_DATA = gql`
     positiveCasesNew: allLabRequests(
       filter: {
         and: [
-          { result: { equalTo: POSITIVE } }
+          { result: { equalTo: positive } }
           {
             requestDate: {
               ##new field auto update
@@ -28,7 +28,7 @@ export const ALL_DASHBOARD_DATA = gql`
       totalCount
     }
 
-    positiveCases: allLabRequests(filter: { result: { equalTo: POSITIVE } }) {
+    positiveCases: allLabRequests(filter: { result: { equalTo: positive } }) {
       totalCount
     }
 
@@ -64,23 +64,93 @@ export const ALL_DASHBOARD_DATA = gql`
       }
     }
 
-    totalFatalities: allPatientCases(filter: { status: { equalTo: "DEATH" } }) {
+    totalFatalities: allDeceasedPatients {
+      totalCount
+    }
+
+    newFatalities: allDeceasedPatients(
+      filter: {
+        dateOfDeath: { greaterThan: "2020-05-09T13:22:04.251616+00:00" }
+      }
+    ) {
       totalCount
     }
 
     dischargedPatients: allPatientLocations(
-      filter: { and: [{ status: { equalTo: DISCHARGED } }] }
+      filter: { and: [{ status: { equalTo: discharged } }] }
     ) {
       totalCount
     }
     newDischargedPatients: allPatientLocations(
       filter: {
         and: [
-          { status: { equalTo: DISCHARGED } }
+          { status: { equalTo: discharged } }
           {
             dateDischarged: { greaterThan: "2020-05-09T13:22:04.251616+00:00" }
           }
         ]
+      }
+    ) {
+      totalCount
+    }
+    positivePatientByLGA: allPatients(
+      filter: {
+        labRequestsByPatientId: { some: { result: { equalTo: positive } } }
+      }
+    ) {
+      nodes {
+        lga
+      }
+    }
+    currentICU: allPatients(
+      filter: {
+        patientLocationsByPatientId: {
+          some: {
+            status: { equalTo: admitted }
+            locationByLocationId: { locationType: { equalTo: icu } }
+          }
+        }
+      }
+    ) {
+      totalCount
+    }
+
+    newICU: allPatients(
+      filter: {
+        patientLocationsByPatientId: {
+          some: {
+            status: { equalTo: admitted }
+            locationByLocationId: { locationType: { equalTo: icu } }
+            dateAdmitted: { greaterThan: "2020-05-09T13:22:04.251616+00:00" }
+          }
+        }
+      }
+    ) {
+      totalCount
+    }
+
+    currentIsolation: allPatients(
+      filter: {
+        patientLocationsByPatientId: {
+          some: {
+            status: { equalTo: admitted }
+            locationByLocationId: { locationType: { equalTo: isolation } }
+          }
+        }
+      }
+    ) {
+      totalCount
+    }
+
+    newIsolation: allPatients(
+      filter: {
+        patientLocationsByPatientId: {
+          some: {
+            status: { equalTo: admitted }
+            locationByLocationId: { locationType: { equalTo: isolation } }
+            dateAdmitted: { greaterThan: "2020-05-09T13:22:04.251616+00:00" }
+          }
+        }
       }
     ) {
       totalCount
