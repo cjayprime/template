@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect, useCallback } from 'react';
 import clsx from 'clsx';
 import {
   Grid,
@@ -22,6 +22,7 @@ import Question from './components/question';
 import TriageImage from 'images/triage.png';
 import triageInfo from 'images/triageinfo.png';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 // Mutations
 import createTriageMutation from 'bundles/patient/hoc/createTriageAnswers';
 
@@ -227,7 +228,13 @@ const ResultContainer = ({ classes, triageScore = 0 }) => {
   );
 };
 
-const CreateTriage = ({ createTriage, showFooter, setDispatchFunc }) => {
+export const CreateTriage = ({
+  createTriage,
+  showFooter,
+  setDispatchFunc,
+  canEdit,
+  triageAnswers
+}) => {
   const [activeStep, setActiveStep] = useState(0);
   const [completed] = useState({});
   const [answers, setAnswers] = useState({});
@@ -235,6 +242,12 @@ const CreateTriage = ({ createTriage, showFooter, setDispatchFunc }) => {
   const [triageScore, setTriageScore] = useState(0);
   const questionCategory = steps;
   const classes = useStyles();
+
+  useEffect(() => {
+    if (!canEdit && triageAnswers) {
+      setAnswers(triageAnswers);
+    }
+  }, [canEdit, triageAnswers]);
 
   useEffect(() => {
     showFooter(true);
@@ -277,9 +290,9 @@ const CreateTriage = ({ createTriage, showFooter, setDispatchFunc }) => {
     return Object.keys(completed).length;
   };
 
-  const isLastStep = () => {
+  const isLastStep = useCallback(() => {
     return activeStep === totalSteps() - 1;
-  };
+  });
 
   const allStepsCompleted = () => {
     return completedSteps() === totalSteps();
@@ -359,7 +372,7 @@ const CreateTriage = ({ createTriage, showFooter, setDispatchFunc }) => {
             ))}
           </Stepper>
         </Grid>
-        <Grid item md={8} lg={7} style={{ padding: 33, overflowX: 'hidden' }}>
+        <Grid item md={8} lg={9} style={{ padding: 33, overflowX: 'hidden' }}>
           <Fragment>
             {steps[activeStep] === 'Result' ? (
               <ResultContainer classes={classes} triageScore={triageScore} />
@@ -389,8 +402,7 @@ const CreateTriage = ({ createTriage, showFooter, setDispatchFunc }) => {
                         container
                         justify="flex-end"
                         alignItems="flex-end"
-                        className="p-4"
-                        spacing={4}>
+                        className="p-4">
                         <Fragment>
                           <IconButton
                             disabled={activeStep === 0}
@@ -425,6 +437,7 @@ const CreateTriage = ({ createTriage, showFooter, setDispatchFunc }) => {
                           {...questions}
                           onAnswer={handleInputChange}
                           answer={answers[questions.questionKey]}
+                          canEdit={canEdit}
                         />
                         {questions.children &&
                         questions.children.length > 0 &&
@@ -434,6 +447,7 @@ const CreateTriage = ({ createTriage, showFooter, setDispatchFunc }) => {
                             {questions.children.map(childQuestion => (
                               <Fragment key={childQuestion.questionKey}>
                                 <Question
+                                  canEdit={canEdit}
                                   {...childQuestion}
                                   isChild={true}
                                   onAnswer={handleInputChange}
@@ -487,6 +501,20 @@ const CreateTriage = ({ createTriage, showFooter, setDispatchFunc }) => {
       </Grid>
     </Fragment>
   );
+};
+
+CreateTriage.propTypes = {
+  createTriage: PropTypes.func,
+  showFooter: PropTypes.func,
+  setDispatchFunc: PropTypes.func,
+  canEdit: PropTypes.bool
+};
+
+CreateTriage.defaultProps = {
+  createTriage: () => {},
+  showFooter: () => {},
+  setDispatchFunc: () => {},
+  canEdit: true
 };
 
 const mapDispatchToProps = dispatch => ({

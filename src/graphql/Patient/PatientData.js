@@ -34,6 +34,10 @@ export const ALL_PATIENTS = gql`
             }
             notes
             createdAt
+            triageAnswerByTriageAnswerId {
+              id
+              answers
+            }
           }
         }
         callLogsByPatientId(orderBy: CALL_TIME_DESC) {
