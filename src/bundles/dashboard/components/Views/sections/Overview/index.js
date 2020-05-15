@@ -17,6 +17,8 @@ const compose = require('lodash')?.flowRight;
 const Overview = props => {
   const {
     data: {
+      newCalls,
+      totalCalls,
       totalLab,
       newlabRequest,
       positiveCasesNew,
@@ -33,22 +35,55 @@ const Overview = props => {
       newIsolation,
       currentICU,
       newICU,
+      positiveCasesByDate,
+      fatalitiesByDate
     }
   } = props;
 
-  const LGADataObject = {};
-  positivePatientByLGA.nodes.forEach(node => {
-    if (LGADataObject[node.lga]) {
-      LGADataObject[node.lga] += 1;
-    } else {
-      LGADataObject[node.lga] = 1;
-    }
-  });
-  const LGATableData = Object.keys(LGADataObject).map((LGA, i) => ({
+  const groupBy = (objectArray, property) => {
+    return objectArray.reduce(function(total, obj) {
+      let key = obj[property];
+      if (!total[key]) {
+        total[key] = [];
+      }
+      total[key].push(obj);
+      return total;
+    }, {});
+  };
+
+  const patientGroupByLGA = groupBy(positivePatientByLGA.nodes, 'lga');
+  const LGATableData = Object.keys(patientGroupByLGA).map((LGA, i) => ({
     'S/M': i + 1,
-    count: LGADataObject[LGA],
+    count: patientGroupByLGA[LGA].length,
     LGA
   }));
+
+  const formatDate = dateString => {
+    const dateObject = new Date(Date.parse(dateString));
+    const addLeadingZero = d => (d < 10 ? `0${d}` : d);
+    var dd = dateObject.getDate();
+    var mm = dateObject.getMonth() + 1;
+    var yyyy = dateObject.getFullYear();
+    return `${addLeadingZero(dd)}/${addLeadingZero(mm)}/${yyyy}`;
+  };
+
+  const positiveCasesByFormatedDate = positiveCasesByDate.nodes.map(node => ({
+    ...node,
+    resultUpdateDate: formatDate(node.resultUpdateDate)
+  }));
+  const positiveCasesGroupByDate = groupBy(
+    positiveCasesByFormatedDate,
+    'resultUpdateDate'
+  );
+
+  const fatalitiesByFormatedDate = fatalitiesByDate.nodes.map(node => ({
+    ...node,
+    dateOfDeath: formatDate(node.dateOfDeath)
+  }));
+  const fatalitiesGroupByDate = groupBy(
+    fatalitiesByFormatedDate,
+    'dateOfDeath'
+  );
 
   const classes = OverviewPageStyles();
   const headers = [
@@ -61,7 +96,7 @@ const Overview = props => {
     {
       title: 'Call Centre Details',
       entries: {
-        'Total calls': 1500,
+        'Total calls': totalCalls.totalCount,
         'Valid calls': 1500,
         'Red Flagged': 200
       }
@@ -127,19 +162,10 @@ const Overview = props => {
   };
 
   const data = {
-    labels: [
-      '10/05/2020',
-      '11/05/2020',
-      '12/05/2020',
-      '13/05/2020',
-      '14/05/2020',
-      '15/05/2020',
-      '16/05/2020'
-    ],
+    labels: Object.keys(positiveCasesGroupByDate),
     datasets: [
       {
-        label: 'My First dataset',
-        // fill: false,
+        label: 'Positive tests',
         lineTension: 0.1,
         backgroundColor: 'rgba(231,187,134,0.2)',
         borderColor: 'rgba(231,187,134,1)',
@@ -157,7 +183,49 @@ const Overview = props => {
         pointHoverBorderWidth: 2,
         pointRadius: 1,
         pointHitRadius: 10,
-        data: [65, 59, 80, 81, 56, 55, 40]
+        data: Object.values(positiveCasesGroupByDate).map(d => d.length)
+      },
+      {
+        label: 'Fatalities',
+        lineTension: 0.1,
+        backgroundColor: 'rgba(248,78,94,0.2)',
+        borderColor: 'rgba(248,78,94,1)',
+        fill: 'origin',
+        borderCapStyle: 'butt',
+        borderDash: [],
+        borderDashOffset: 0.0,
+        borderJoinStyle: 'miter',
+        pointBorderColor: 'rgba(248,78,94,1)',
+        pointBackgroundColor: '#fff',
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: 'rgba(248,78,94,1)',
+        pointHoverBorderColor: 'rgba(248,78,94,1)',
+        pointHoverBorderWidth: 2,
+        pointRadius: 1,
+        pointHitRadius: 10,
+        data: Object.values(fatalitiesGroupByDate).map(d => d.length)
+      },
+      {
+        label: 'Recovered',
+        lineTension: 0.1,
+        backgroundColor: 'rgba(121,183,185,0.2)',
+        borderColor: 'rgba(121,183,185,1)',
+        fill: 'origin',
+        borderCapStyle: 'butt',
+        borderDash: [],
+        borderDashOffset: 0.0,
+        borderJoinStyle: 'miter',
+        pointBorderColor: 'rgba121,183,185,1)',
+        pointBackgroundColor: '#fff',
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: 'rgba(121,183,185,1)',
+        pointHoverBorderColor: 'rgba(121,183,185,1)',
+        pointHoverBorderWidth: 2,
+        pointRadius: 1,
+        pointHitRadius: 10,
+        data: [1, 2, 1, 4]
       }
     ]
   };

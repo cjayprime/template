@@ -155,5 +155,26 @@ export const ALL_DASHBOARD_DATA = gql`
     ) {
       totalCount
     }
+
+    newCalls: allCallLogs(
+      filter: { createdAt: { greaterThan: "2020-05-15T14:10:15.1463+00:00" } }
+    ) {
+      totalCount
+    }
+    totalCalls: allCallLogs {
+      totalCount
+    }
+    positiveCasesByDate: allLabRequests(
+      filter: { result: { equalTo: positive } }
+    ) {
+      nodes {
+        resultUpdateDate
+      }
+    }
+    fatalitiesByDate: allDeceasedPatients {
+      nodes {
+        dateOfDeath
+      }
+    }
   }
 `;
