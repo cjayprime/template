@@ -9,7 +9,8 @@ import {
   FormControlLabel,
   Typography,
   OutlinedInput,
-  MenuItem
+  MenuItem,
+  Box
 } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import {
@@ -21,6 +22,7 @@ import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
 import { ThemeProvider } from '@material-ui/styles';
 import EventAvailable from '@material-ui/icons/EventAvailable';
 import pointer from 'images/pointer.png';
+import moment from 'moment';
 
 const useStyles = makeStyles(theme => ({
   icon: {
@@ -82,6 +84,10 @@ const useStyles = makeStyles(theme => ({
     color: '#fff',
     // padding: '18.5px 14px;',
     borderRadius: 10
+  },
+  answerText: {
+    color: '#fff',
+    fontSize: 15
   }
 }));
 
@@ -134,11 +140,17 @@ const TransformIcon = () => <KeyboardArrowDown color="primary" />;
 const RenderChild = ({ classes, question }) => {
   return (
     <Fragment>
-      <Grid item xs={2}>
+      {/* <Grid item xs={2}>
         <img src={pointer} />
       </Grid>
       <Grid item xs={4}>
         <Typography className={classes.labelText}>{question}</Typography>
+      </Grid> */}
+      <Grid item xs={6}>
+        <Box display="flex" alignItems="center">
+          <img src={pointer} alt="pointer" style={{ marginRight: 12 }} />
+          <Typography className={classes.labelText}>{question}</Typography>
+        </Box>
       </Grid>
     </Fragment>
   );
@@ -159,7 +171,8 @@ const DateQuestionType = ({
   questionKey,
   answer,
   onAnswer,
-  isChild
+  isChild,
+  canEdit
 }) => {
   const selectedDate = answer ? new Date(answer) : null;
   const classes = useStyles();
@@ -173,26 +186,31 @@ const DateQuestionType = ({
           <RenderParent classes={classes} question={question} />
         )}
         <Grid item md={6}>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <ThemeProvider theme={dateInputTheme}>
-              <KeyboardDatePicker
-                variant="inline"
-                inputVariant="filled"
-                format="dd/MM/yyyy"
-                margin="normal"
-                
-                id={questionKey}
-                value={selectedDate}
-                onChange={date => onAnswer(questionKey, date)}
-                fullWidth={true}
-                views={['year', 'date', '']}
-                keyboardIcon={<EventAvailable style={{color: '#fff'}} />}
-                animateYearScrolling
-                autoOk
-                maxDate={new Date()}
-              />
-            </ThemeProvider>
-          </MuiPickersUtilsProvider>
+          {canEdit ? (
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <ThemeProvider theme={dateInputTheme}>
+                <KeyboardDatePicker
+                  variant="inline"
+                  inputVariant="filled"
+                  format="dd/MM/yyyy"
+                  margin="normal"
+                  id={questionKey}
+                  value={selectedDate}
+                  onChange={date => onAnswer(questionKey, date)}
+                  fullWidth={true}
+                  views={['year', 'date', '']}
+                  keyboardIcon={<EventAvailable style={{ color: '#fff' }} />}
+                  animateYearScrolling
+                  autoOk
+                  maxDate={new Date()}
+                />
+              </ThemeProvider>
+            </MuiPickersUtilsProvider>
+          ) : (
+            <Typography align={'right'} className={classes.answerText}>
+              {moment(answer).format('DD MMM, h:mm A')}
+            </Typography>
+          )}
         </Grid>
       </Grid>
     </Fragment>
@@ -228,21 +246,36 @@ const InputTextComp = (classes, input) => {
   );
 };
 
-const StringQuestionType = ({ question, answer, questionKey, onAnswer }) => {
+const StringQuestionType = ({
+  question,
+  answer,
+  questionKey,
+  onAnswer,
+  canEdit,
+  isChild
+}) => {
   const classes = useStyles();
   return (
     <Fragment>
       <Grid container spacing={10}>
-        <Grid item xs={6}>
-          <Typography className={classes.labelText}>{question}</Typography>
-        </Grid>
+        {isChild ? (
+          <RenderChild classes={classes} question={question} />
+        ) : (
+          <RenderParent classes={classes} question={question} />
+        )}
         <Grid item md={6}>
-          {InputTextComp(classes, {
-            type: 'text',
-            answer,
-            questionKey,
-            onAnswer
-          })}
+          {canEdit ? (
+            InputTextComp(classes, {
+              type: 'text',
+              answer,
+              questionKey,
+              onAnswer
+            })
+          ) : (
+            <Typography align={'right'} className={classes.answerText}>
+              {answer}
+            </Typography>
+          )}
         </Grid>
       </Grid>
     </Fragment>
@@ -259,7 +292,8 @@ const SelectQuestionType = ({
   answer,
   questionKey,
   onAnswer,
-  isChild
+  isChild,
+  canEdit
 }) => {
   const classes = useStyles();
   const values = [
@@ -278,28 +312,34 @@ const SelectQuestionType = ({
           <RenderParent classes={classes} question={question} />
         )}
         <Grid item md={6}>
-          <TextField
-            select
-            fullWidth
-            value={answer}
-            onChange={e => onAnswer(questionKey, e.target.value)}
-            InputProps={{
-              className: classes.select
-            }}
-            SelectProps={{
-              native: false,
-              IconComponent: TransformIcon,
-              icon: classes.icon
-            }}
-            variant="outlined">
-            {values.map(option => (
-              <MenuItem
-                key={`${option.value}--${questionKey}`}
-                value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
+          {canEdit ? (
+            <TextField
+              select
+              fullWidth
+              value={answer}
+              onChange={e => onAnswer(questionKey, e.target.value)}
+              InputProps={{
+                className: classes.select
+              }}
+              SelectProps={{
+                native: false,
+                IconComponent: TransformIcon,
+                icon: classes.icon
+              }}
+              variant="outlined">
+              {values.map(option => (
+                <MenuItem
+                  key={`${option.value}--${questionKey}`}
+                  value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
+          ) : (
+            <Typography align={'right'} className={classes.answerText}>
+              {answer}
+            </Typography>
+          )}
         </Grid>
       </Grid>
     </Fragment>
@@ -316,7 +356,8 @@ const MultiChoiceQuestionType = ({
   options,
   questionKey,
   answer,
-  onAnswer
+  onAnswer,
+  canEdit
 }) => {
   const classes = useStyles();
 
@@ -327,32 +368,38 @@ const MultiChoiceQuestionType = ({
           <Typography className={classes.labelText}>{question}</Typography>
         </Grid>
         <Grid item md={6}>
-          <RadioGroup
-            style={{ display: 'flex', flexDirection: 'row' }}
-            name={questionKey}
-            value={answer}
-            onChange={e => onAnswer(questionKey, e.target.value)}>
-            <Grid container justify="space-between">
-              {options.map(option => (
-                <FormControlLabel
-                  key={`${questionKey}-${option}`}
-                  value={option}
-                  control={
-                    <Radio
-                      color="primary"
-                      classes={{
-                        colorPrimary: classes.radio
-                      }}
-                    />
-                  }
-                  label={option}
-                  classes={{
-                    root: classes.radio
-                  }}
-                />
-              ))}
-            </Grid>
-          </RadioGroup>
+          {canEdit ? (
+            <RadioGroup
+              style={{ display: 'flex', flexDirection: 'row' }}
+              name={questionKey}
+              value={answer}
+              onChange={e => onAnswer(questionKey, e.target.value)}>
+              <Grid container justify="space-between">
+                {options.map(option => (
+                  <FormControlLabel
+                    key={`${questionKey}-${option}`}
+                    value={option}
+                    control={
+                      <Radio
+                        color="primary"
+                        classes={{
+                          colorPrimary: classes.radio
+                        }}
+                      />
+                    }
+                    label={option}
+                    classes={{
+                      root: classes.radio
+                    }}
+                  />
+                ))}
+              </Grid>
+            </RadioGroup>
+          ) : (
+            <Typography align={'right'} className={classes.answerText}>
+              {answer}
+            </Typography>
+          )}
         </Grid>
       </Grid>
     </Fragment>
