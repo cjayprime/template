@@ -36,8 +36,8 @@ const StaffCreateView = props => {
       ...(!parent
         ? { [name]: value }
         : {
-            [parent.field]: {
-              ...(accessLevels[parent.field] || {}),
+            [parent.key]: {
+              ...(accessLevels[parent.key] || {}),
               [name]: value
             }
           })
@@ -47,7 +47,7 @@ const StaffCreateView = props => {
 
   const yieldValueFromState = (key, parent) => {
     if (!parent) return accessLevels[key];
-    return (accessLevels[parent.field] || {})[key];
+    return (accessLevels[parent.key] || {})[key];
   };
 
   const buildCreateInput = () => {
@@ -60,13 +60,27 @@ const StaffCreateView = props => {
         }
         return s;
       }, {});
-    const opts = { ...formState, ...buildPayloadFromAccessLevels() };
+    const opts = {
+      ...formState,
+      userAccessLevels: { create: buildPayloadFromAccessLevels() }
+    };
     return opts;
   };
 
   const handleSave = () => {
-    console.log(buildCreateInput());
-    console.log({ ...formState, accessLevels: accessLevels });
+    const input = buildCreateInput();
+    const { createStaffPG } = props;
+    createStaffPG({
+      variables: {
+        input: {
+          user: input
+        }
+      }
+    })
+      .then(result => {
+        props.onSaveComplete();
+      })
+      .catch(e => console.log(e));
   };
 
   const buildAccessLevels = ({ accessLevels }) => {
@@ -101,9 +115,9 @@ const StaffCreateView = props => {
                 row
                 name={level.field}
                 onChange={e =>
-                  handleAccessLevelChange(level.field, e.target.value, parent)
+                  handleAccessLevelChange(level.key, e.target.value, parent)
                 }
-                value={yieldValueFromState(level.field, parent)}>
+                value={yieldValueFromState(level.key, parent)}>
                 {DEFAULT_RADIO_OPTIONS.map(node => (
                   <FormControlLabel
                     value={node}
@@ -154,7 +168,12 @@ const StaffCreateView = props => {
                   {level.children.map(child => (
                     <Grid item className={classes.LevelItem}>
                       <LevelItem
-                        level={{ field: child, icon: null, parent: level }}
+                        level={{
+                          field: child,
+                          icon: null,
+                          parent: level,
+                          key: child
+                        }}
                         child
                         parent={level}
                       />
@@ -237,7 +256,7 @@ const StaffCreateView = props => {
                       type: 'select',
                       label: 'Title',
                       labelDirection: 'column',
-                      fields: []
+                      fields: ['Dr', 'Mr', 'Mrs', 'Ms']
                     }}
                     formState={formState}
                     setFormState={handleChange('title')}
@@ -327,7 +346,7 @@ const StaffCreateView = props => {
                       fields: ['']
                     }}
                     formState={formState}
-                    setFormState={handleChange('specialty')}
+                    setFormState={handleChange('speciality')}
                   />
                 </Grid>
                 <Grid item xs={5} className={classes.FormGroupItem}>
@@ -336,10 +355,10 @@ const StaffCreateView = props => {
                       type: 'select',
                       label: 'Sex',
                       labelDirection: 'column',
-                      fields: ['Male', 'Female']
+                      fields: ['MALE', 'FEMALE']
                     }}
                     formState={formState}
-                    setFormState={handleChange('Sex')}
+                    setFormState={handleChange('sex')}
                   />
                 </Grid>
               </Grid>
@@ -363,7 +382,9 @@ const StaffCreateView = props => {
       </Grid>
       <Grid className={classes.ButtonContainer} container>
         <Grid item xs={2} className={classes.ButtonContainerItem}>
-          <Typography className={classes.ButtonText}>{'Cancel'}</Typography>
+          <Typography className={classes.ButtonText} onClick={props.onCancel}>
+            {'Cancel'}
+          </Typography>
         </Grid>
         <Grid item xs={2}>
           <Button className={classes.Button} onClick={handleSave}>
