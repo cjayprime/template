@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import {
   Container,
   Grid,
@@ -22,20 +22,20 @@ import { StaffCreateStyles } from './index.style';
 const DEFAULT_RADIO_OPTIONS = ['Yes', 'No'];
 
 const StaffCreateView = props => {
-  const { user } = props;
   const classes = StaffCreateStyles();
+  const { user } = props;
   const buildAccessLevelsFromInitialUser = () => {
     if (!user) return {};
     const accessLevel = { ...user.accessLevel };
     delete accessLevel['__typename'];
-    return Object.entries(accessLevel).reduce((sum, [k, v]) => {
-      if (typeof v === 'string') {
-        sum[k] = v.split(',').reduce((acc, current) => {
+    return Object.entries(accessLevel).reduce((sum, [key, value]) => {
+      if (typeof value === 'string') {
+        sum[key] = value.split(',').reduce((acc, current) => {
           acc[current] = 'Yes';
           return acc;
         }, {});
       } else {
-        sum[k] = v ? 'Yes' : 'No';
+        sum[key] = value ? 'Yes' : 'No';
       }
       return sum;
     }, {});
@@ -45,6 +45,7 @@ const StaffCreateView = props => {
   const [accessLevels, setAccessLevel] = useState(
     buildAccessLevelsFromInitialUser()
   );
+
   const handleChange = name => newValue => {
     const newState = { ...formState, [name]: Object.values(newValue)[0] };
     setFormState(newState);
@@ -70,8 +71,12 @@ const StaffCreateView = props => {
     return (accessLevels[parent.key] || {})[key];
   };
 
+  const purgeInput = () => {
+    setFormState({});
+    setAccessLevel({});
+  };
+
   const buildCreateInput = () => {
-    const { user } = props;
     const buildPayloadFromAccessLevels = () =>
       Object.entries(accessLevels).reduce((s, [k, v]) => {
         if (typeof v === 'string') {
@@ -102,7 +107,7 @@ const StaffCreateView = props => {
   const handleSave = async () => {
     try {
       const input = buildCreateInput();
-      const { createStaffPG, updateStaffPG, user } = props;
+      const { createStaffPG, updateStaffPG } = props;
       if (!user) {
         await createStaffPG({ variables: { input: { user: input } } });
       } else {
@@ -112,6 +117,7 @@ const StaffCreateView = props => {
           }
         });
       }
+      purgeInput();
       props.onSaveComplete();
     } catch (e) {
       // handle error here
@@ -428,7 +434,12 @@ const StaffCreateView = props => {
       </Grid>
       <Grid className={classes.ButtonContainer} container>
         <Grid item xs={2} className={classes.ButtonContainerItem}>
-          <Typography className={classes.ButtonText} onClick={props.onCancel}>
+          <Typography
+            className={classes.ButtonText}
+            onClick={() => {
+              purgeInput();
+              props.onCancel();
+            }}>
             {'Cancel'}
           </Typography>
         </Grid>

@@ -6,6 +6,8 @@ import kpi from 'images/rectangle5.png';
 import appointment from 'images/rectangle6.png';
 import setting from 'images/rectangle8.png';
 import bedmanagement from 'images/rectangle7.png';
+import contact from 'images/triageinfo.png';
+import lookup from 'images/icon3.png';
 
 export const accessLevelIconMap = {
   lab: <img src={lab} />,
@@ -13,7 +15,10 @@ export const accessLevelIconMap = {
   dashboard: <img src={dashboard} />,
   admitDischarge: <img src={bedmanagement} />,
   reports: <img src={kpi} />,
-  queues: <img src={queue} />
+  queues: <img src={queue} />,
+  contactInfo: <img src={contact} />,
+  notes: <img src={lookup} />,
+  patientProfile: <img src={setting} />
 };
 
 export const accessLevels = [
@@ -26,7 +31,7 @@ export const accessLevels = [
   { field: 'Log Call', icon: accessLevelIconMap.logCall, key: 'logCall' },
   {
     field: 'Contact Information',
-    icon: accessLevelIconMap['contactInfo'],
+    icon: accessLevelIconMap.contactInfo,
     key: 'contactInfo'
   },
   {
@@ -46,7 +51,7 @@ export const accessLevels = [
   { field: 'Reports', icon: accessLevelIconMap.reports, key: 'reports' },
   {
     field: 'Admit/Discharge',
-    icon: accessLevelIconMap.BedManagement,
+    icon: accessLevelIconMap.admitDischarge,
     key: 'admitDischarge'
   }
 ];

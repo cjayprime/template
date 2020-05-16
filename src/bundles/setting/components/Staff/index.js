@@ -125,8 +125,14 @@ const Staff = props => {
       {editState ? (
         <CreateStaff
           accessLevels={accessLevels}
-          onSaveComplete={() => setEditState(false)}
-          onCancel={() => setEditState(false)}
+          onSaveComplete={() => {
+            setEditState(false);
+            setUserContext(null);
+          }}
+          onCancel={() => {
+            setEditState(false);
+            setUserContext(null);
+          }}
           user={userContext}
         />
       ) : (
