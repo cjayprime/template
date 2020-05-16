@@ -24,6 +24,7 @@ const DEFAULT_RADIO_OPTIONS = ['Yes', 'No'];
 const StaffCreateView = props => {
   const classes = StaffCreateStyles();
   const { user } = props;
+
   const buildAccessLevelsFromInitialUser = () => {
     if (!user) return {};
     const accessLevel = { ...user.accessLevel };
@@ -42,9 +43,7 @@ const StaffCreateView = props => {
   };
 
   const [formState, setFormState] = useState({});
-  const [accessLevels, setAccessLevel] = useState(
-    buildAccessLevelsFromInitialUser()
-  );
+  const [accessLevels, setAccessLevel] = useState(buildAccessLevelsFromInitialUser());
 
   const handleChange = name => newValue => {
     const newState = { ...formState, [name]: Object.values(newValue)[0] };
@@ -77,6 +76,7 @@ const StaffCreateView = props => {
   };
 
   const buildCreateInput = () => {
+
     const buildPayloadFromAccessLevels = () =>
       Object.entries(accessLevels).reduce((s, [k, v]) => {
         if (typeof v === 'string') {
@@ -88,6 +88,7 @@ const StaffCreateView = props => {
       }, {});
 
     const createAccessLevel = { create: buildPayloadFromAccessLevels() };
+
     const updateAccessLevel = {
       updateById: {
         id: user.accessLevel.id,
@@ -97,11 +98,11 @@ const StaffCreateView = props => {
         }
       }
     };
-    const opts = {
+
+    return {
       ...formState,
       userAccessLevels: user ? updateAccessLevel : createAccessLevel
     };
-    return opts;
   };
 
   const handleSave = async () => {
@@ -121,6 +122,7 @@ const StaffCreateView = props => {
       props.onSaveComplete();
     } catch (e) {
       // handle error here
+      console.log(e)
     }
   };
 
