@@ -1,13 +1,46 @@
 import Immutable from 'immutable';
-import { searchFilter } from 'bundles/patient/selectors';
+import { searchFilter } from 'bundles/appointment/selectors';
 import { SORT_ENUM } from 'bundles/patient/constants';
 
 export const buildOrder = state => {
   let sortEnum = [SORT_ENUM];
 
   return sortEnum;
-};
+}; 
 
+export const buildLabQuery = state => {
+
+  let pgQuery = Immutable.Map({});
+
+  const addOrClause = clause => {
+    let presentList = pgQuery.get('or') || clause;
+
+    if (presentList) {
+      presentList = presentList.concat(clause);
+    }
+
+    pgQuery = pgQuery.set('or', presentList);
+  };
+
+  const status = searchFilter.getStatus(state);
+
+  if(status.length) {
+    
+    const statusFilters = status.map((data) => {
+      return Immutable.Map({
+        'status': Immutable.Map({
+          like: `%${data}%`
+        })
+      })
+    })
+
+    addOrClause(statusFilters);
+  }
+
+  return pgQuery.toJS();
+
+}
+ 
 export const buildQuery = state => {
   let pgQuery = Immutable.Map({});
 
@@ -50,7 +83,7 @@ export const buildQuery = state => {
       });
     });
 
-    addOrClause(startsWithFilters);
+   // addOrClause(startsWithFilters);
 
     const equalsToFilter = searchFields.map(data => {
       return Immutable.Map({
@@ -60,24 +93,27 @@ export const buildQuery = state => {
       });
     });
 
-    addOrClause(equalsToFilter);
+    // addOrClause(equalsToFilter);
   }
 
-  const lga = searchFilter.getLGA(state);
 
-  if (lga.length) {
-    const hasLGA = lga.map((data) => {
+  const status = searchFilter.getStatus(state);
+
+  if(status.length) {
+    
+    const statusFilters = status.map((data) => {
       return Immutable.Map({
-         'lga': Immutable.Map({
-          equalTo: data
+        'status': Immutable.Map({
+          like: `%${data}%`
         })
       })
     })
-    addOrClause(hasLGA)
+
+    addOrClause(statusFilters);
   }
 
 
-  console.log(pgQuery.toJS());
+
 
   return pgQuery.toJS();
 };

@@ -1,4 +1,5 @@
 import React, { Fragment, useState, useEffect } from 'react';
+import { withRouter } from 'react-router';
 import withLocations from 'bundles/location/hoc/withLocation';
 import {
   Grid,
@@ -12,9 +13,10 @@ import {
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { DataTable } from '../../shared/components';
-import { addBedLocation } from 'bundles/location/actions';
+import { addBedLocation, addSelectedLocation } from 'bundles/location/actions';
+import updateLocationMutation from 'bundles/location/hoc/updateLocation'
 import createLocationMutation from 'bundles/location/hoc/createLocation';
-
+ 
 import { makeStyles } from '@material-ui/styles';
 const compose = require('lodash')?.flowRight;
 
@@ -41,7 +43,7 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: 'transparent',
       color: '#8EE2E5',
       fontSize: 13,
-      cursor: 'pointer',
+      cursor: 'pointer !important',
       boxShadow: 'none',
     }
   },
@@ -143,17 +145,22 @@ const formatData = locationData => {
   });
 };
 
-const Location = ({ locationData, createLocation, addBed }) => {
+const Location = ({ locationData, createLocation, addBed, addSelected, history, updateLocation }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [formInput, setFormInput] = useState({});
   const [tableData, setTableData] = useState([]);
+  const [editMode,setEditMode] = useState(false);
+  const [currentEditingLocation, setCurrentEditingLocation] = useState({});
 
   const handleClickOpen = () => {
+    setEditMode(false)
     setOpen(true);
   };
 
   const handleClose = () => {
+    setFormInput({}); // Fix this from throwing react controlled input error
+    setEditMode(false)
     setOpen(false);
   };
 
@@ -161,9 +168,46 @@ const Location = ({ locationData, createLocation, addBed }) => {
     setFormInput({ ...formInput, [key]: value });
   };
 
-  const handleEdit = (key) => {
-    
+  const handleEdit = (id) => {
+    const locationValue = locationData.filter((item) => item.id == id)[0]
+    const minimum = locationValue.patientLocationsByLocationId.totalCount;
+    const nodeId = locationValue.nodeId;
+    setCurrentEditingLocation(locationValue)
+    setFormInput({ ...formInput, ['name']: locationValue.name , 
+      ['numberOfBeds']: locationValue.numberOfBeds, minimum, nodeId });
+    setEditMode(true)
+    setOpen(true);  
   }
+
+  const handleShow = (id) => {
+    addSelected(id)
+    history.push('/BedManagement')
+  }
+
+  const handleEditSave = async() => {
+    if(formInput.numberOfBeds < formInput.minimum)
+    return
+
+    var response = await updateLocation({
+      variables: {
+        input: {
+          nodeId: formInput.nodeId,
+          locationPatch: {
+            name: formInput.name,
+            numberOfBeds: formInput.numberOfBeds
+          }
+        }
+      }
+    })
+
+    if(response) {
+      const newTableData = formatData(
+        response.data.updateLocation.query.allLocations.nodes
+      );
+      setTableData(newTableData);
+      handleClose();
+    }
+  } 
 
   const createBed = async () => {
     const response = await createLocation({
@@ -192,7 +236,7 @@ const Location = ({ locationData, createLocation, addBed }) => {
             root: classes.actionButtons,
             focusVisible: classes.actionButtons
           }}
-          onClick={handleClose}
+          onClick={() =>  handleShow(row.location.id)}
           variant="contained">
           {'SHOW'}
         </Button>
@@ -283,6 +327,7 @@ const Location = ({ locationData, createLocation, addBed }) => {
             <div style={{ marginTop: 10 }}>
               <OutlinedInput
                 fullWidth
+                value={formInput.name}
                 classes={{
                   root: classes.cssOutlinedInput,
                   focused: classes.cssFocused,
@@ -294,11 +339,15 @@ const Location = ({ locationData, createLocation, addBed }) => {
             </div>
           </div>
           <div style={{ marginTop: 25 }}>
-            <Typography className={classes.text}>Number of beds</Typography>
+            <Typography className={classes.text}>
+              Number of beds { formInput.minimum ? <Typography style={{color: 'rgb(255, 91, 103)'}}> 
+                * bed(s) cannot be less than {formInput.minimum} </Typography> : ''}
+            </Typography>
             <div style={{ marginTop: 10 }}>
               <OutlinedInput
                 fullWidth
                 type="number"
+                value={formInput.numberOfBeds}
                 classes={{
                   root: classes.cssOutlinedInput,
                   focused: classes.cssFocused,
@@ -316,9 +365,9 @@ const Location = ({ locationData, createLocation, addBed }) => {
             <Button
               variant="contained"
               color="primary"
-              onClick={createBed}
+              onClick={editMode ? handleEditSave :  createBed}
               classes={{ root: classes.primaryButton }}>
-              ADD
+               {editMode ? 'UPDATE' : 'ADD'}
             </Button>
           </Box>
           <Box display="flex" justifyContent="center" style={{ marginTop: 15 }}>
@@ -339,10 +388,15 @@ const Location = ({ locationData, createLocation, addBed }) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  addBed: value => dispatch(addBedLocation(value))
+  addBed: value => dispatch(addBedLocation(value)),
+  addSelected: value => dispatch(addSelectedLocation(value))
 });
  
-export default compose(connect(null, mapDispatchToProps),withLocations, createLocationMutation)(Location);
+export default withRouter(compose(connect(null, 
+    mapDispatchToProps),
+    withLocations, 
+    updateLocationMutation, 
+    createLocationMutation)(Location));
 
 
 

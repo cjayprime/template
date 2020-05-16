@@ -8,6 +8,7 @@ export const ALL_LOCATION = gql`
         numberOfBeds
         createdAt
         id
+        nodeId
         patientsByPatientLocationLocationIdAndPatientId {
           nodes {
             firstname

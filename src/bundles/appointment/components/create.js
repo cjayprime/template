@@ -31,13 +31,16 @@ const NewAppointment = ({
   }
 
   if ((data && data.status) == PATIENT_PICKED_UP) {
-    config = { availableRooms: locations.map(item => item.name) , nextState: SUBMIT_ADMITTED };
+    config = {
+      availableRooms: locations.map(item => item.name),
+      nextState: SUBMIT_ADMITTED
+    };
   }
 
-  const findId = (name) => {
-    if(!name) return undefined
-    return locations.filter(item => item.name == name)[0].id 
-  }
+  const findId = name => {
+    if (!name) return undefined;
+    return locations.filter(item => item.name == name)[0].id;
+  };
 
   return (
     <Grid
@@ -130,7 +133,6 @@ const NewAppointment = ({
       ) : null}
       {config.time ? (
         <Grid item style={{ width: 660 }}>
-          
           <FormBuilder
             formInput={{
               type: 'date',
@@ -142,12 +144,10 @@ const NewAppointment = ({
             formState={formState}
             setFormState={setFormState}
           />
-          
         </Grid>
       ) : null}
       {config.queue ? (
         <Grid item style={{ width: 660 }}>
-          
           <FormBuilder
             formInput={{
               type: 'select',
@@ -158,12 +158,10 @@ const NewAppointment = ({
             formState={formState}
             setFormState={setFormState}
           />
-          
         </Grid>
       ) : null}
       {config.reason ? (
         <Grid item style={{ width: 660 }}>
-          
           <FormBuilder
             formInput={{
               type: 'select',
@@ -174,12 +172,10 @@ const NewAppointment = ({
             formState={formState}
             setFormState={setFormState}
           />
-          
         </Grid>
       ) : null}
       {config.availableRooms ? (
         <Grid item style={{ width: 660 }}>
-          
           <FormBuilder
             formInput={{
               type: 'select',
@@ -190,7 +186,6 @@ const NewAppointment = ({
             formState={formState}
             setFormState={setFormState}
           />
-          
         </Grid>
       ) : null}
 

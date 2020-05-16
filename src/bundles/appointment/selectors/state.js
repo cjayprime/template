@@ -1,0 +1,1 @@
+export const getAppointmentState = state => state.appointment || state 

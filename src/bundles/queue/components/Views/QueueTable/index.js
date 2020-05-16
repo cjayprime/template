@@ -13,7 +13,7 @@ import {
   TeamMetadatum,
   FilterList
 } from 'bundles/shared/components';
-import { capitalizeFirstWord } from 'bundles/patient/components/custom/formBuilder'
+import { capitalizeFirstWord } from 'bundles/patient/components/custom/formBuilder';
 
 import { QueuePageStyles } from './index.style';
 
@@ -103,8 +103,8 @@ export const QueueTableView = ({ accepted, owner, pending, apiCalls }) => {
             tabItems: ['EPID / Surviellence', 'My Tasks'],
             defaultTab: 'RRT',
             handleTabChange: _selectedTab => {
-              handleChange(_selectedTab);
-            }
+              handleChange(_selectedTab); 
+            } 
           },
           dateSelect: {
             defaultValue: 'TODAY',

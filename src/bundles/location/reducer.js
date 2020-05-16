@@ -7,13 +7,17 @@ const initialSearchFilters = Immutable.Map({
 
 const initialState = Immutable.Map({
   searchFilters: initialSearchFilters,
-  availableBedLocation: Immutable.List([])
+  availableBedLocation: Immutable.List([]),
+  selectedLocation: 0
 }); 
  
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.SEARCH_FILTERS_CLEAR_ALL:
       return handleClearAllSearch(state, action);
+
+    case actionTypes.ADD_SELECTED_LOCATION:
+      return handleSelectedLocation(state, action)
 
     case actionTypes.ADD_SEARCH:
       return handleAddSearch(state, action);
@@ -26,8 +30,13 @@ const reducer = (state = initialState, action) => {
   }
 };
 
+const handleSelectedLocation = (state, action) => {
+  const { value } = action.payload;
+  return state.set('selectedLocation', value)
+}
+
 const handleAvailableBedLocation = (state, action) => {
-  const { value } = action.payload
+  const { value } = action.payload;
   return state.set('availableBedLocation', value)
 } 
  

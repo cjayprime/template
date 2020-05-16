@@ -154,7 +154,7 @@ const parseFilter = (array = []) => {
           }
         }
     });
-
+ 
     return { or: [...mappedFilters]}
 }
 

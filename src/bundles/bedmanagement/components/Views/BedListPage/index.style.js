@@ -9,7 +9,7 @@ export const BedListPageStyles = makeStyles(theme => ({
   },
   TableContainer: {},
   HeaderTabsContainer: {
-    width: '80% !important',
+    width: '100% !important',
     height: '50px !important'
   },
   ActionButton: {

@@ -1,0 +1,1 @@
+export const getKPIState = state => state.kpi || state
