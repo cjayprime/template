@@ -2,7 +2,8 @@ import { makeStyles } from '@material-ui/styles';
 
 export const StaffCreateStyles = makeStyles(_theme => ({
   PageContainer: {
-    color: 'white'
+    color: 'white',
+    height: '120vh'
   },
   FormContainer: {
     height: '100vh'
@@ -53,28 +54,20 @@ export const StaffCreateStyles = makeStyles(_theme => ({
   },
   FormGroupLabel: {
     color: 'white',
-    fontSize: '13px',
+    fontSize: '13px'
   },
   Form: {
     color: 'white'
   },
-  AccessLevelContainer: {
-
-  },
-  AccessHeaderSection: {
-
-  },
+  AccessLevelContainer: {},
+  AccessHeaderSection: {},
   AccessHeadertext: {
     color: 'white',
     fontSize: '14px',
     marginBottom: '5%'
   },
-  AccessLevelItemContainer: {
-
-  },
-  AccessLevelLabel: {
-
-  },
+  AccessLevelItemContainer: {},
+  AccessLevelLabel: {},
   AccessLevelIconsContainer: {
     justifyContent: 'flex-start',
     paddingLeft: '20px',
@@ -82,7 +75,7 @@ export const StaffCreateStyles = makeStyles(_theme => ({
     bottom: '12px'
   },
   AccessLevelIcon: {
-    marginRight: '2%',
+    marginRight: '2%'
   },
   AccessLevelText: {
     fontSize: '12.5px',
@@ -93,12 +86,50 @@ export const StaffCreateStyles = makeStyles(_theme => ({
   },
   LevelChildrenContainer: {
     position: 'relative',
-    left: '3%'
+    left: '3%',
+    marginTop: '4%'
   },
   LevelItemContainer: {
-    maxWidth: '100%',
+    maxWidth: '100%'
   },
   LevelItem: {
-    maxWidth: '100%'
+    maxWidth: '100%',
+    height: '60px'
+  },
+  Radio: {
+    color: 'white !important'
+  },
+  RadioChecked: {
+    color: '#79BCC2 !important'
+  },
+  ButtonContainer: {
+    justifyContent: 'flex-end',
+    position: 'absolute',
+    bottom: 0
+  },
+  ButtonContainerItem: {
+    textAlign: 'end',
+    paddingTop: '.5%'
+  },
+  ButtonText: {
+    fontSize: '14px',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    '&:hover': {
+      color: '#E74C3C',
+      cursor: 'pointer'
+    }
+  },
+  Button: {
+    height: '100%',
+    width: '100%',
+    color: 'white',
+    backgroundColor: '#79BCC2',
+    fontSize: '14px',
+    fontWeight: 'bold',
+    '&:hover': {
+      backgroundColor: 'white',
+      color: '#79BCC2'
+    }
   }
 }));
