@@ -75,7 +75,9 @@ export const StaffCreateStyles = makeStyles(_theme => ({
     bottom: '12px'
   },
   AccessLevelIcon: {
-    marginRight: '2%'
+    marginRight: '2%',
+    position: 'relative',
+    bottom: '4px'
   },
   AccessLevelText: {
     fontSize: '12.5px',
@@ -86,7 +88,7 @@ export const StaffCreateStyles = makeStyles(_theme => ({
   },
   LevelChildrenContainer: {
     position: 'relative',
-    left: '3%',
+    left: '5%',
     marginTop: '4%'
   },
   LevelItemContainer: {
@@ -109,7 +111,8 @@ export const StaffCreateStyles = makeStyles(_theme => ({
   },
   ButtonContainerItem: {
     textAlign: 'end',
-    paddingTop: '.5%'
+    paddingTop: '.5%',
+    paddingRight: '5%'
   },
   ButtonText: {
     fontSize: '14px',
@@ -122,7 +125,7 @@ export const StaffCreateStyles = makeStyles(_theme => ({
   },
   Button: {
     height: '100%',
-    width: '100%',
+    width: '150px',
     color: 'white',
     backgroundColor: '#79BCC2',
     fontSize: '14px',

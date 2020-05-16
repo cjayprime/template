@@ -4,11 +4,19 @@ export const ALL_STAFF = gql`
   query allStaff($filter: UserFilter, $offset: Int, $orderBy: [UsersOrderBy!]) {
     allUsers(filter: $filter, offset: $offset, orderBy: $orderBy) {
       nodes {
+        nodeId
         id
         firstname
         lastname
         title
         team
+        email
+        phoneNumber
+        role
+        sex
+        speciality
+        jobTitle
+        department
         userAccessLevelsByUserId {
           nodes {
             id

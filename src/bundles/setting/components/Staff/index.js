@@ -11,6 +11,8 @@ import { CreateStaff } from './components/Create';
 
 const Staff = props => {
   const [editState, setEditState] = useState(false);
+  const [userContext, setUserContext] = useState(null);
+
   const classes = StaffPageStyles();
 
   const renderAvatar = props => (
@@ -36,13 +38,19 @@ const Staff = props => {
         ))}
       </Grid>
     );
-    return null;
   };
 
-  const renderActionComponent = () => (
+  const handleEdit = user => {
+    setUserContext(user);
+    setEditState(true);
+  };
+
+  const renderActionComponent = props => (
     <Grid container className={classes.ActionContainer}>
       <Grid item xs={2}>
-        <Typography className={clsx(classes.ActionContainerItem)}>
+        <Typography
+          className={clsx(classes.ActionContainerItem)}
+          onClick={() => handleEdit(props)}>
           {'EDIT'}
         </Typography>
       </Grid>
@@ -96,12 +104,17 @@ const Staff = props => {
 
   const store = () => {
     return props.staffData.map(node => {
+      const TYPE_NAME = '__typename';
+      const ACCESS_LEVEL_KEY = 'userAccessLevelsByUserId';
+      const newNode = Object.keys(node)
+        .filter(item => item != TYPE_NAME && item != ACCESS_LEVEL_KEY)
+        .reduce((s, k) => {
+          s[k] = node[k];
+          return s;
+        }, {});
+
       return {
-        firstname: node.firstname,
-        lastname: node.lastname,
-        team: node.team,
-        title: node.title,
-        profilePictureUrl: '',
+        ...newNode,
         accessLevel: node.userAccessLevelsByUserId.nodes[0]
       };
     });
@@ -114,6 +127,7 @@ const Staff = props => {
           accessLevels={accessLevels}
           onSaveComplete={() => setEditState(false)}
           onCancel={() => setEditState(false)}
+          user={userContext}
         />
       ) : (
         <Fragment>

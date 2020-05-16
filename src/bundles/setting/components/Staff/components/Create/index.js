@@ -13,6 +13,7 @@ import {
 } from '@material-ui/core';
 import clsx from 'clsx';
 import FormBuilder from 'bundles/patient/components/custom/formBuilder';
+import pointer from 'images/pointer.png';
 import { Input } from 'bundles/shared/components';
 import { createStaff as createStaffHoc } from 'bundles/setting/hoc/createStaff';
 import { flowRight as compose } from 'lodash';
@@ -21,10 +22,29 @@ import { StaffCreateStyles } from './index.style';
 const DEFAULT_RADIO_OPTIONS = ['Yes', 'No'];
 
 const StaffCreateView = props => {
-  const [formState, setFormState] = useState({});
-  const [accessLevels, setAccessLevel] = useState({});
+  const { user } = props;
   const classes = StaffCreateStyles();
+  const buildAccessLevelsFromInitialUser = () => {
+    if (!user) return {};
+    const accessLevel = { ...user.accessLevel };
+    delete accessLevel['__typename'];
+    return Object.entries(accessLevel).reduce((sum, [k, v]) => {
+      if (typeof v === 'string') {
+        sum[k] = v.split(',').reduce((acc, current) => {
+          acc[current] = 'Yes';
+          return acc;
+        }, {});
+      } else {
+        sum[k] = v ? 'Yes' : 'No';
+      }
+      return sum;
+    }, {});
+  };
 
+  const [formState, setFormState] = useState({});
+  const [accessLevels, setAccessLevel] = useState(
+    buildAccessLevelsFromInitialUser()
+  );
   const handleChange = name => newValue => {
     const newState = { ...formState, [name]: Object.values(newValue)[0] };
     setFormState(newState);
@@ -51,6 +71,7 @@ const StaffCreateView = props => {
   };
 
   const buildCreateInput = () => {
+    const { user } = props;
     const buildPayloadFromAccessLevels = () =>
       Object.entries(accessLevels).reduce((s, [k, v]) => {
         if (typeof v === 'string') {
@@ -60,27 +81,41 @@ const StaffCreateView = props => {
         }
         return s;
       }, {});
+
+    const createAccessLevel = { create: buildPayloadFromAccessLevels() };
+    const updateAccessLevel = {
+      updateById: {
+        id: user.accessLevel.id,
+        userAccessLevelPatch: {
+          ...buildPayloadFromAccessLevels(),
+          id: user.accessLevel.id
+        }
+      }
+    };
     const opts = {
       ...formState,
-      userAccessLevels: { create: buildPayloadFromAccessLevels() }
+      userAccessLevels: user ? updateAccessLevel : createAccessLevel
     };
     return opts;
   };
 
-  const handleSave = () => {
-    const input = buildCreateInput();
-    const { createStaffPG } = props;
-    createStaffPG({
-      variables: {
-        input: {
-          user: input
-        }
+  const handleSave = async () => {
+    try {
+      const input = buildCreateInput();
+      const { createStaffPG, updateStaffPG, user } = props;
+      if (!user) {
+        await createStaffPG({ variables: { input: { user: input } } });
+      } else {
+        await updateStaffPG({
+          variables: {
+            input: { nodeId: user.nodeId, userPatch: { id: user.id, ...input } }
+          }
+        });
       }
-    })
-      .then(result => {
-        props.onSaveComplete();
-      })
-      .catch(e => console.log(e));
+      props.onSaveComplete();
+    } catch (e) {
+      // handle error here
+    }
   };
 
   const buildAccessLevels = ({ accessLevels }) => {
@@ -92,10 +127,10 @@ const StaffCreateView = props => {
           className={classes.AccessLevelLabel}
           xs={5}
           wrap="nowrap">
-          <Grid item xs={3} className={classes.AccessLevelIcon}>
-            {level.icon}
+          <Grid item xs={2} className={classes.AccessLevelIcon}>
+            {child ? <img src={pointer} /> : level.icon}
           </Grid>
-          <Grid item xs={9} className={classes.AccessLevelTextContainer}>
+          <Grid item xs={10} className={classes.AccessLevelTextContainer}>
             <Typography className={classes.AccessLevelText}>
               {level.field}
             </Typography>
@@ -107,7 +142,7 @@ const StaffCreateView = props => {
             item
             className={classes.AccessLevelIconsContainer}
             style={{
-              ...(!child ? { position: 'relative', left: '3%' } : {})
+              ...(!child ? { position: 'relative', left: '5%' } : {})
             }}
             container>
             <Grid item xs={12}>
@@ -230,7 +265,8 @@ const StaffCreateView = props => {
                       type: 'select',
                       label: 'Role',
                       fields: ['staff'],
-                      labelDirection: 'column'
+                      labelDirection: 'column',
+                      defaultValue: user?.role
                     }}
                     formState={formState}
                     setFormState={handleChange('role')}
@@ -242,7 +278,8 @@ const StaffCreateView = props => {
                       type: 'select',
                       label: 'Team',
                       labelDirection: 'column',
-                      fields: ['RRT', 'Evac & Decon']
+                      fields: ['RRT', 'Evac & Decon'],
+                      defaultValue: user?.team
                     }}
                     formState={formState}
                     setFormState={handleChange('team')}
@@ -256,7 +293,8 @@ const StaffCreateView = props => {
                       type: 'select',
                       label: 'Title',
                       labelDirection: 'column',
-                      fields: ['Dr', 'Mr', 'Mrs', 'Ms']
+                      fields: ['Dr', 'Mr', 'Mrs', 'Ms'],
+                      defaultValue: user?.title
                     }}
                     formState={formState}
                     setFormState={handleChange('title')}
@@ -267,7 +305,8 @@ const StaffCreateView = props => {
                     formInput={{
                       type: 'text',
                       label: 'First name',
-                      labelDirection: 'column'
+                      labelDirection: 'column',
+                      defaultValue: user?.firstname
                     }}
                     key="firstName"
                     formState={formState}
@@ -281,7 +320,8 @@ const StaffCreateView = props => {
                     formInput={{
                       type: 'text',
                       label: 'Surname',
-                      labelDirection: 'column'
+                      labelDirection: 'column',
+                      defaultValue: user?.lastname
                     }}
                     formState={formState}
                     setFormState={handleChange('lastname')}
@@ -294,7 +334,8 @@ const StaffCreateView = props => {
                     formInput={{
                       type: 'text',
                       label: 'Phone no',
-                      labelDirection: 'column'
+                      labelDirection: 'column',
+                      defaultValue: user?.phoneNumber
                     }}
                     formState={formState}
                     setFormState={handleChange('phoneNumber')}
@@ -305,7 +346,8 @@ const StaffCreateView = props => {
                     formInput={{
                       type: 'text',
                       label: 'Email',
-                      labelDirection: 'column'
+                      labelDirection: 'column',
+                      defaultValue: user?.email
                     }}
                     formState={formState}
                     setFormState={handleChange('email')}
@@ -318,7 +360,8 @@ const StaffCreateView = props => {
                     formInput={{
                       type: 'text',
                       label: 'Job Title',
-                      labelDirection: 'column'
+                      labelDirection: 'column',
+                      defaultValue: user?.jobTitle
                     }}
                     formState={formState}
                     setFormState={handleChange('jobTitle')}
@@ -329,7 +372,8 @@ const StaffCreateView = props => {
                     formInput={{
                       type: 'text',
                       label: 'Department',
-                      labelDirection: 'column'
+                      labelDirection: 'column',
+                      defaultValue: user?.department
                     }}
                     formState={formState}
                     setFormState={handleChange('department')}
@@ -343,7 +387,8 @@ const StaffCreateView = props => {
                       type: 'select',
                       label: 'Specialty',
                       labelDirection: 'column',
-                      fields: ['']
+                      fields: [''],
+                      defaultValue: user?.speciality
                     }}
                     formState={formState}
                     setFormState={handleChange('speciality')}
@@ -355,7 +400,8 @@ const StaffCreateView = props => {
                       type: 'select',
                       label: 'Sex',
                       labelDirection: 'column',
-                      fields: ['MALE', 'FEMALE']
+                      fields: ['MALE', 'FEMALE'],
+                      defaultValue: user?.sex
                     }}
                     formState={formState}
                     setFormState={handleChange('sex')}
@@ -388,7 +434,7 @@ const StaffCreateView = props => {
         </Grid>
         <Grid item xs={2}>
           <Button className={classes.Button} onClick={handleSave}>
-            {'Save'}
+            {user ? 'Update' : 'Save'}
           </Button>
         </Grid>
       </Grid>
