@@ -79,7 +79,7 @@ const loginQuestions = [
   },
 ]
 
-export const Login = () => {
+export const Login = ({ userLoginPG }) => {
   const classes = useStyle();
   const [loginData, setLoginData] = useState({});
 
@@ -144,6 +144,7 @@ export const Login = () => {
           item 
           style={{
             backgroundImage: `url(${hero})`,
+            clipPath: 'polygon(23% 0, 100% 0%, 100% 100%, 0 100%)'
           }}
         >
         </Grid>
