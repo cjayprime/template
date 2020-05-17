@@ -401,21 +401,24 @@ export const CreateTriage = ({
                 <Grid item xs={12}>
                   <Grid container>
                     <Grid item xs={6} style={{ marginBottom: 20 }}>
-                      <Grid container direction="column">
-                        <Typography
-                          style={{
-                            fontWeight: 'bold',
-                            color: '#fff',
-                            fontSize: 18
-                          }}>
-                          {' '}
-                          Please select all the statements that apply to you
-                        </Typography>
-                        <Typography style={{ color: '#716A9E', fontSize: 15 }}>
-                          {' '}
-                          Select one answer in each row
-                        </Typography>
-                      </Grid>
+                      {canEdit && (
+                        <Grid container direction="column">
+                          <Typography
+                            style={{
+                              fontWeight: 'bold',
+                              color: '#fff',
+                              fontSize: 18
+                            }}>
+                            {' '}
+                            Please select all the statements that apply to you
+                          </Typography>
+                          <Typography
+                            style={{ color: '#716A9E', fontSize: 15 }}>
+                            {' '}
+                            Select one answer in each row
+                          </Typography>
+                        </Grid>
+                      )}
                     </Grid>
                     <Grid item xs={6}>
                       <Grid

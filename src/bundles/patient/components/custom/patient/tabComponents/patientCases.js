@@ -6,14 +6,16 @@ import {
   DialogContent,
   DialogTitle,
   IconButton,
-  Grid
+  Grid,
+  Typography
 } from '@material-ui/core';
 import { DataTable } from 'bundles/shared/components/Datatable';
 import moment from 'moment';
 import CloseIcon from '@material-ui/icons/Close';
 import { CreateTriage } from 'bundles/caseTriage/CreateTriage';
+import { PatientMetadatum } from 'bundles/shared/components/PatientMetadatum';
 
-export const PatientCases = ({ patientCase }) => {
+export const PatientCases = ({ patientCase, patient }) => {
   const useStyle = makeStyles(theme => ({
     Table: {
       backgroundColor: 'transparent'
@@ -79,10 +81,9 @@ export const PatientCases = ({ patientCase }) => {
   }));
   const classes = useStyle();
   const [showTriageAnswers, setShowTriageAnswers] = useState(false);
-  const [selectedTriageAnswers, setSelectedTriageANswers] = useState({});
+  const [selectedTriageAnswers, setSelectedTriageAnswers] = useState({});
 
   const renderCaseActionComponent = row => {
-    console.log(row, 'row');
     let answers;
     try {
       answers = JSON.parse(row.triageAnswerByTriageAnswerId.answers) || {};
@@ -101,12 +102,12 @@ export const PatientCases = ({ patientCase }) => {
 
   const displayCaseTriageAnswerDialog = triageAnswers => {
     setShowTriageAnswers(true);
-    setSelectedTriageANswers(triageAnswers);
+    setSelectedTriageAnswers(triageAnswers);
   };
 
   const hideCaseTriageAnswerDialog = () => {
     setShowTriageAnswers(false);
-    setSelectedTriageANswers(null);
+    setSelectedTriageAnswers(null);
   };
 
   const renderCaseDateComponent = row => (
@@ -147,7 +148,39 @@ export const PatientCases = ({ patientCase }) => {
           onClick={hideCaseTriageAnswerDialog}>
           <CloseIcon />
         </IconButton>
-        <DialogTitle id="form-dialog-title"></DialogTitle>
+        <DialogTitle id="form-dialog-title">
+          <Grid container justify="center">
+            <Grid item xs={6}>
+              <Grid container>
+                <Grid item xs={3}></Grid>
+                <Grid item xs={4}>
+                  <PatientMetadatum
+                    name={`${patient.firstName} ${patient.lastName}`}
+                    sex={patient.sex}
+                    age={patient.age}
+                    riskLevel={patientCase.riskLevel}
+                  />
+                </Grid>
+                <Grid xs={2}>
+                  <Typography style={{ color: '#BDB8D9', fontSize: 15 }}>
+                    Date
+                  </Typography>
+                  <Typography style={{ color: '#fff', fontSize: 13 }}>
+                    Date
+                  </Typography>
+                </Grid>
+                <Grid xs={2}>
+                  <Typography style={{ color: '#BDB8D9', fontSize: 15 }}>
+                    Epid No.
+                  </Typography>
+                  <Typography style={{ color: '#fff', fontSize: 13 }}>
+                    {patient.epidNumber}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+        </DialogTitle>
         <DialogContent>
           <Grid container justify="center">
             <Grid xs={6}>
