@@ -101,7 +101,7 @@ const compose = require('lodash')?.flowRight;
         else {
           objectMapper[node.patientId] = { ...node, locationId: current.id}
         }
-      })
+      })  
 
       current.patientsByPatientLocationLocationIdAndPatientId.nodes.forEach((node) => { // Get the child nodes and spread to parent Object
         if(objectMapper[node.id]) objectMapper[node.id] = { ...objectMapper[node.id], ...node }

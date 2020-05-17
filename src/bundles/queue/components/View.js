@@ -39,16 +39,17 @@ const Queue = ({
 }) => {
     
   const classes = useStyles();
-  const subs = useSubscription(QUEUE_SUBSCRIPTION, { 
-    onSubscriptionData: (e) => {
-      console.log(e.subscriptionData)
-    }, 
-   })
+  // const subs = useSubscription(QUEUE_SUBSCRIPTION, { 
+  //   onSubscriptionData: (e) => {
+  //     console.log(e.subscriptionData)
+  //   }, 
+  //  })
   const [queueState, setQueueState] = useState({});
   const [dialogState, setDialogState] = useState(false);
   const [patientInfo, setPatientInfo] = useState({});
   const [formState, setFormState] = useState({});
   const [apiData, setSaveApiData] = useState(() => ''); 
+  // const data = withQueueHoc()
 
 
   const handleSave = async (queueText, locationId) => {

@@ -12,6 +12,7 @@ import SidebarUserbox from '../../layout-components/SidebarUserbox';
 import SidebarMenu from '../../layout-components/SidebarMenu';
 import SidebarFooter from '../../layout-components/SidebarFooter';
 
+
 import navItems from './navItems';
 
 import {
@@ -40,6 +41,8 @@ const Sidebar = props => {
   const toggleHoverOff = () => setSidebarHover(false);
 
   const closeDrawer = () => setSidebarToggleMobile(!sidebarToggleMobile);
+
+  // const data = withQueueHoc();
 
   const sidebarMenuContent = (
     <div

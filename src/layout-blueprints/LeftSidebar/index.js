@@ -7,6 +7,7 @@ import {
   setShowFooter,
   setShowHeader 
 } from 'reducers/ThemeOptions';
+import withQueueHoc  from 'bundles/subscription/hoc/withQueueSubscription'
 import { dispatchRouteFunc } from 'layout-blueprints/LeftSidebar/custom/routeDispatch';
 import { Sidebar, Header, Footer } from '../../layout-components';
 
@@ -32,6 +33,10 @@ const LeftSidebar = props => {
     publishRoute(location.pathname);
     console.log('on route change', location, action);
   });
+  
+  const data = withQueueHoc();
+
+  console.log(data, 'Was triggered')
 
   return (
     <Fragment>
