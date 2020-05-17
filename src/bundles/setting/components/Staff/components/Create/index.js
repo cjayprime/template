@@ -25,6 +25,13 @@ const StaffCreateView = props => {
   const classes = StaffCreateStyles();
   const { user } = props;
 
+  const defaultFormState = () => {
+    if (!user) return {};
+    const userObj = { ...user };
+    [('__typename', 'accesslevel')].forEach(key => delete userObj[key]);
+    return userObj;
+  };
+
   const buildAccessLevelsFromInitialUser = () => {
     if (!user) return {};
     const accessLevel = { ...user.accessLevel };
@@ -42,8 +49,10 @@ const StaffCreateView = props => {
     }, {});
   };
 
-  const [formState, setFormState] = useState({});
-  const [accessLevels, setAccessLevel] = useState(buildAccessLevelsFromInitialUser());
+  const [formState, setFormState] = useState(defaultFormState());
+  const [accessLevels, setAccessLevel] = useState(
+    buildAccessLevelsFromInitialUser()
+  );
 
   const handleChange = name => newValue => {
     const newState = { ...formState, [name]: Object.values(newValue)[0] };
@@ -76,7 +85,6 @@ const StaffCreateView = props => {
   };
 
   const buildCreateInput = () => {
-
     const buildPayloadFromAccessLevels = () =>
       Object.entries(accessLevels).reduce((s, [k, v]) => {
         if (typeof v === 'string') {
@@ -122,7 +130,7 @@ const StaffCreateView = props => {
       props.onSaveComplete();
     } catch (e) {
       // handle error here
-      console.log(e)
+      console.log(e);
     }
   };
 
@@ -272,6 +280,7 @@ const StaffCreateView = props => {
                     formInput={{
                       type: 'select',
                       label: 'Role',
+                      key: 'role',
                       fields: ['staff'],
                       labelDirection: 'column',
                       defaultValue: user?.role
@@ -285,6 +294,7 @@ const StaffCreateView = props => {
                     formInput={{
                       type: 'select',
                       label: 'Team',
+                      key: 'team',
                       labelDirection: 'column',
                       fields: ['RRT', 'Evac & Decon'],
                       defaultValue: user?.team
@@ -300,6 +310,7 @@ const StaffCreateView = props => {
                     formInput={{
                       type: 'select',
                       label: 'Title',
+                      key: 'title',
                       labelDirection: 'column',
                       fields: ['Dr', 'Mr', 'Mrs', 'Ms'],
                       defaultValue: user?.title
@@ -313,6 +324,7 @@ const StaffCreateView = props => {
                     formInput={{
                       type: 'text',
                       label: 'First name',
+                      key: 'firstname',
                       labelDirection: 'column',
                       defaultValue: user?.firstname
                     }}
@@ -328,6 +340,7 @@ const StaffCreateView = props => {
                     formInput={{
                       type: 'text',
                       label: 'Surname',
+                      lastname: 'lastname',
                       labelDirection: 'column',
                       defaultValue: user?.lastname
                     }}
@@ -342,6 +355,7 @@ const StaffCreateView = props => {
                     formInput={{
                       type: 'text',
                       label: 'Phone no',
+                      key: 'phoneNumber',
                       labelDirection: 'column',
                       defaultValue: user?.phoneNumber
                     }}
@@ -354,6 +368,7 @@ const StaffCreateView = props => {
                     formInput={{
                       type: 'text',
                       label: 'Email',
+                      key: 'email',
                       labelDirection: 'column',
                       defaultValue: user?.email
                     }}
@@ -368,6 +383,7 @@ const StaffCreateView = props => {
                     formInput={{
                       type: 'text',
                       label: 'Job Title',
+                      key: 'email',
                       labelDirection: 'column',
                       defaultValue: user?.jobTitle
                     }}
@@ -380,6 +396,7 @@ const StaffCreateView = props => {
                     formInput={{
                       type: 'text',
                       label: 'Department',
+                      key: 'department',
                       labelDirection: 'column',
                       defaultValue: user?.department
                     }}
@@ -394,6 +411,7 @@ const StaffCreateView = props => {
                     formInput={{
                       type: 'select',
                       label: 'Specialty',
+                      key: 'speciality',
                       labelDirection: 'column',
                       fields: [''],
                       defaultValue: user?.speciality
@@ -407,6 +425,7 @@ const StaffCreateView = props => {
                     formInput={{
                       type: 'select',
                       label: 'Sex',
+                      key: 'sex',
                       labelDirection: 'column',
                       fields: ['MALE', 'FEMALE'],
                       defaultValue: user?.sex
