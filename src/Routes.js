@@ -197,7 +197,7 @@ const ListGroups = lazy(() => import('./example-pages/ListGroups'));
 
 
 const Routes = ({history}) => {
-  
+
   const location = useLocation();
 
   const pageVariants = {
@@ -275,12 +275,12 @@ const Routes = ({history}) => {
                 '/BedManagement',
                 '/Appointment',
                 '/Dashboard',
-                '/Lab'
+                '/Lab',
               ]}>
 
               <LeftSidebar history={history}>
                 {/* <CollapsedSidebar> */}
-    
+
               { /* <CollapsedSidebar> */}
 
                 <Switch location={location} key={location.pathname}>
@@ -634,4 +634,4 @@ const Routes = ({history}) => {
   );
 };
 
-export default withRouter(Routes); 
+export default withRouter(Routes);
