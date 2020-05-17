@@ -14,6 +14,8 @@ import { connect } from 'react-redux';
 import { searchFilter } from 'bundles/queue/selectors';
 import { addBedLocation } from 'bundles/location/actions';
 import { dispatchEvent, remap } from 'bundles/queue/utilities/queue';
+import { useSubscription } from '@apollo/react-hooks';
+import { QUEUE_SUBSCRIPTION } from 'graphql/Subscription/queueSubscription';
 const compose = require('lodash')?.flowRight;
 
 const useStyles = makeStyles({
@@ -37,6 +39,11 @@ const Queue = ({
 }) => {
     
   const classes = useStyles();
+  const subs = useSubscription(QUEUE_SUBSCRIPTION, { 
+    onSubscriptionData: (e) => {
+      console.log(e.subscriptionData)
+    }, 
+   })
   const [queueState, setQueueState] = useState({});
   const [dialogState, setDialogState] = useState(false);
   const [patientInfo, setPatientInfo] = useState({});

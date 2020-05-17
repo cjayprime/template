@@ -1,14 +1,31 @@
 import { ApolloLink } from 'apollo-link';
-import httpLink from './http';
+import { getMainDefinition } from 'apollo-utilities';
+import { split } from 'apollo-link';
+import http from './http';
 import errorLink from './error';
 import authLink from './auth';
 import loggerLink from './logger';
+import wsLink from './ws';
 
-const link = ApolloLink.from([
+
+const httpLink = ApolloLink.from([
     loggerLink,
     errorLink,
     authLink,
-    httpLink
+    http,
 ])
+ 
+const wsHTTPLink = split(
+    // split based on operation type
+    ({ query }) => {
+      const definition = getMainDefinition(query);
+      return (
+        definition.kind === 'OperationDefinition' &&
+        definition.operation === 'subscription'
+      );
+    },
+    wsLink,
+    httpLink,
+  ); 
 
-export default link;
+export default wsHTTPLink;

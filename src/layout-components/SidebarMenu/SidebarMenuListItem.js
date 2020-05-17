@@ -1,11 +1,30 @@
 import React, { useState, forwardRef } from 'react';
 import { NavLink as RouterLink } from 'react-router-dom';
+import { useSubscription } from '@apollo/react-hooks';
+import { Subscription } from 'react-apollo';
+
+import { QUEUE_SUBSCRIPTION } from 'graphql/Subscription/queueSubscription';
+//import withQueueSubscription from 'bundles/subscription/hoc/withQueueSubscription';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
+import Badge from '@material-ui/core/Badge';
 
 import { ListItem, Button, Collapse } from '@material-ui/core';
 
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+
+const SubRender = () => {
+  return (
+    <Subscription subscription={QUEUE_SUBSCRIPTION}> 
+    {
+      ({data}) => {
+        console.log(data)
+        return <p> hello  </p> 
+      }
+    }
+    </Subscription>
+  )
+}
 
 const CustomRouterLink = forwardRef(function CustomLink(props, ref) {
   return (
@@ -88,6 +107,7 @@ const SidebarMenuListItem = props => {
         {...rest}
         className={clsx('app-sidebar-item', className)}
         disableGutters>
+      <Badge color="primary" badgeContent={3}>
         <Button
           activeClassName="active-item"
           disableRipple
@@ -107,6 +127,8 @@ const SidebarMenuListItem = props => {
             </span>
           )}
         </Button>
+        </Badge>
+
       </ListItem>
     );
   }
@@ -129,3 +151,5 @@ SidebarMenuListItem.defaultProps = {
 };
 
 export default SidebarMenuListItem;
+
+//export default compose(withPatient)(SidebarMenuListItem);
