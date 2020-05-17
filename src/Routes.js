@@ -101,7 +101,7 @@ const BedManagement = lazy(() =>
 const Appointment = lazy(() => import('./bundles/appointment/components/View'));
 const Lab = lazy(() => import('./bundles/lab/components/View'));
 const Dashboard = lazy(() => import('./bundles/dashboard'))
-
+const LoginPage = lazy(() => import('./bundles/login'));
 /*
 const Queue = lazy(() => import('./bundles/queue/components/View'))
 const Location = lazy(() => import('./bundles/location/components/View'))
@@ -256,6 +256,21 @@ const Routes = ({history}) => {
                     variants={pageVariants}
                     transition={pageTransition}>
                     <Route path="/LandingPage" component={LandingPage} />
+                  </motion.div>
+                </Switch>
+              </PresentationLayout>
+            </Route>
+
+            <Route path={['/Login']}>
+              <PresentationLayout>
+                <Switch location={location} key={location.pathname}>
+                  <motion.div
+                    initial="initial"
+                    animate="in"
+                    exit="out"
+                    variants={pageVariants}
+                    transition={pageTransition}>
+                    <Route path="/Login" component={LoginPage} />
                   </motion.div>
                 </Switch>
               </PresentationLayout>
