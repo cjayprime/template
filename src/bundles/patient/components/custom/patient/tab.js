@@ -1,28 +1,46 @@
-import React, { Fragment } from 'react';
-import { Grid, Tabs, Tab, Typography, Box, Button, Chip } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import { Grid, Tabs, Tab, Box } from '@material-ui/core';
 import Formbuilder from 'bundles/patient/components/custom/formBuilder';
 import { makeStyles } from '@material-ui/core/styles';
-import { DataTable } from 'bundles/shared/components/Datatable'
+import {
+  PatientDetails,
+  PatientCallHistory,
+  PatientCases,
+  PatientLabRequests,
+  OtherPatientDetails,
+  InpatientComponent,
+  PatientAppointment
+} from './tabComponents';
 
-const HeaderStyles = makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
   HeaderContainer: {
-    position: 'fixed',
-    top: '-103px' //TODO{H.Ezekiel} we should not need to do this
+    position: 'fixed'
   },
   TabIndicator: {
-    height: 5
+    height: 4,
+    backgroundColor: '#FFFEFD',
+    width: '70px !important'
   },
   TabContainer: {
-    paddingBottom: 10
-
-    // fontSize: '14px'
+    paddingLeft: 16
+  },
+  TabButtons: {
+    textTransform: 'capitalize',
+    fontSize: 15,
+    fontWeight: 500,
+    paddingRight: 15,
+    paddingLeft: 0,
+    minWidth: 70,
+    marginRight: 10
+  },
+  TabButtonWrapper: {
+    alignItems: 'flex-start',
+    paddingLeft: 2
   },
   SelectedTabContainer: {
     color: 'white'
   }
 }));
-
-
 
 export const PATIENT_DETAILS = [
   {
@@ -107,66 +125,18 @@ export const patientStore = [
   }
 ];
 
+const PatientTab = ({ patientData, markPatientDeceased, newCallLog }) => {
+  const [value, setValue] = useState(0);
+  const [patientInfo, setPatientInfo] = useState({});
+  const classes = useStyles();
 
-/*
-const caseHeader = [
-  { name: 'DATE', accessor: 'sampleNumber' },
-  { name: 'SUBMITTED BY', accessor: 'requestDate' },
-  { name: 'EPID NO', accessor: 'testName' },
-  { name: 'TYPE', accessor: 'type' },
-  { name: 'NOTES', accessor: 'requestedBy' },
-  { name: 'ACTION', accessor: renderActionComponent }
-]; */
-
-
-
-const PatientTab = () => {
-  const [value, setValue] = React.useState(0);
-  const classes = HeaderStyles();
+  useEffect(() => {
+    setPatientInfo(patientData);
+  }, [patientData]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
-  const renderActionComponent = (row) => (
-    <Button className={classes.actionButton}>Submit Result</Button>
-  );
-
-  const labHeader = [
-    { name: 'DATE REQUESTED.', accessor: 'dateRequested' },
-    { name: 'NAME OF TEST', accessor: 'requestDate' },
-    { name: 'STATUS', accessor: 'status' },
-    { name: 'RESULT', accessor: 'result' },
-    { name: 'CREATED BY', accessor: 'createdBy' },
-    { name: 'ACTION', accessor: renderActionComponent }
-  ];
-  
-  
-  const testStore = [
-    {
-      dateRequested: '400',
-      requestDate: '20-20-10',
-      status: 'Completed',
-      result: 'Dr. G. Jenkins',
-      createdBy: '4 hours',
-      requestDate: '31 Mar, 7:34PM'
-    },
-    {
-      dateRequested: '400',
-      requestDate: '20-20-10',
-      status: 'Completed',
-      result: 'Dr. G. Jenkins',
-      createdBy: '4 hours',
-      requestDate: '31 Mar, 7:34PM'
-    },
-  ];
-
- 
-  
-  const renderStatusComponent = row => (
-    <Chip label={row.status} variant="default" size="small" />
-  );
-  
 
   function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -183,37 +153,100 @@ const PatientTab = () => {
     );
   }
 
+  const CustomTab = (label, classes) => {
+    return (
+      <Tab
+        disableRipple
+        classes={{
+          root: classes.TabButtons,
+          wrapper: classes.TabButtonWrapper
+        }}
+        label={label}
+      />
+    );
+  };
+
+  const createNewCallLog = async newLog => {
+    try {
+      const response = await newCallLog({
+        variables: {
+          input: {
+            callLog: {
+              ...newLog
+            }
+          }
+        }
+      });
+
+      setPatientInfo({
+        ...patientInfo,
+        callLogs: [response.data.createCallLog.callLog, ...patientInfo.callLogs]
+      });
+    } catch (err) {
+      // do something with error here
+    }
+  };
+
+  const setPatientAsDead = async info => {
+    try {
+      const response = await markPatientDeceased({
+        variables: {
+          input: {
+            deceasedPatient: {
+              ...info,
+              patientId: patientInfo.patient.id
+            }
+          }
+        }
+      });
+
+      setPatientInfo({
+        ...patientInfo,
+        deceasedPatient: {
+          ...response.data.createDeceasedPatient.deceasedPatient,
+          ...info
+        }
+      });
+    } catch (err) {
+      // do something with the error
+    }
+  };
+
   return (
-    <Grid container style={{ paddingLeft: 2, paddingRight: 2 }}>
-      <Grid item xs={9}>
+    <Grid
+      container
+      style={{
+        paddingLeft: 2,
+        paddingRight: 2,
+        borderRadius: 8,
+        backgroundColor: 'rgba(113, 106, 158, 0.1)'
+      }}>
+      <Grid item xs={12}>
         <Tabs
           value={value}
           onChange={handleChange}
           indicatorColor="primary"
           style={{
-            backgroundColor: '#474562',
-            color: '#28BAC0',
-            borderTopLeftRadius: 5,
+            color: '#fff',
             borderBottomWidth: 5
           }}
-          inkBarStyle={{ height: 10 }}
           classes={{
             indicator: classes.TabIndicator,
-            //root: clsx(classes.TabContainer),
             flexContainer: classes.TabContainer
-          }}
-          //textColor="primary"
-          left>
-          <Tab label="Patient Details" />
-          <Tab label="Call history" />
-          <Tab label="Case" />
-          <Tab label="Laboratory" />
-          <Tab label="Appointments" />
-          <Tab label="Others" />
-          <Tab label="In patient" />
+          }}>
+          {[
+            'Patient Details',
+            'Call history',
+            'Case',
+            'Laboratory',
+            'Appointments',
+            'Others',
+            'In patient'
+          ].map(label => CustomTab(label, classes))}
         </Tabs>
       </Grid>
-      <Grid
+      {/* <Grid
+        item
         container
         xs={3}
         style={{
@@ -226,41 +259,51 @@ const PatientTab = () => {
         <Grid item xs={12}>
           <Typography> Log Call</Typography>
         </Grid>
-      </Grid>
+      </Grid> */}
       <Grid item xs={12}>
         <Grid>
           <TabPanel value={value} index={0}>
-            <Grid container xs={12}>
-              <Fragment>
-                {PATIENT_DETAILS.map(data => {
-                  return <Formbuilder formInput={data} />;
-                })}
-              </Fragment>
+            <Grid container spacing={2}>
+              <PatientDetails {...patientInfo} />
             </Grid>
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <Grid container xs={12}>
-              <Fragment>
-                {CALL_SUMMARY.map(data => {
-                  return <Formbuilder formInput={data} />;
-                })}
-              </Fragment>
+            <Grid container spacing={2}>
+              <PatientCallHistory
+                {...patientInfo}
+                newCallLog={createNewCallLog}
+              />
             </Grid>
           </TabPanel>
           <TabPanel value={value} index={2}>
-              <DataTable headers={labHeader} noBorder={true}  data={testStore} />
+            <Grid container spacing={2}>
+              <PatientCases {...patientInfo} />
+            </Grid>
           </TabPanel>
           <TabPanel value={value} index={3}>
-            <DataTable headers={labHeader}  noBorder={true} data={testStore} />
+            <Grid container spacing={2}>
+              <PatientLabRequests {...patientInfo} />
+            </Grid>
           </TabPanel>
           <TabPanel value={value} index={4}>
-            Appointments
+            <Grid container spacing={2}>
+              <Grid item xs={10}>
+                <PatientAppointment />
+              </Grid>
+            </Grid>
           </TabPanel>
           <TabPanel value={value} index={5}>
-            Others
+            <Grid container spacing={2}>
+              <OtherPatientDetails
+                {...patientInfo}
+                markPatientAsDead={setPatientAsDead}
+              />
+            </Grid>
           </TabPanel>
           <TabPanel value={value} index={6}>
-            In patients
+            <Grid container spacing={2}>
+              <InpatientComponent {...patientData} />
+            </Grid>
           </TabPanel>
         </Grid>
       </Grid>

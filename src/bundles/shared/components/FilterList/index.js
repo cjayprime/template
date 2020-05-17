@@ -5,7 +5,7 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import { FilterListStyles } from './index.style';
 
 export const FilterList = props => {
-  const { selector, options, dafaultValue, selectorText, styles = {} } = props;
+  const { selector, options, defaultValue, selectorText, styles = {} } = props;
   const classes = FilterListStyles();
   return (
     <Container
@@ -25,7 +25,7 @@ export const FilterList = props => {
             InputProps={{
               classes: { root: classes.InputView },
               disableUnderline: true,
-              defaultValue: dafaultValue || 'Choose from list'
+              defaultValue: defaultValue || 'Choose from list'
             }}
             SelectProps={{
               IconComponent: () => (

@@ -23,7 +23,12 @@ export const DataTable = props => {
     return (
       <Fragment>
         {headers.map(item => (
-          <TableCell className={clsx(classes.TableCell, styles.TableCell)}>
+          <TableCell
+            className={clsx(
+              classes.TableCell,
+              styles.tableCell,
+              styles.HeaderTableCell
+            )}>
             {item.name}
           </TableCell>
         ))}
@@ -39,7 +44,7 @@ export const DataTable = props => {
 
     const reduceResponse = str => {
       const indices = str.split('.');
-      if (indices.length < 2) return row[str];
+      if (indices.length < 2) return row[str] || '-';
       return indices.reduce((sum, current) => {
         if (indices.indexOf(current) === 0) {
           sum = row[current];
@@ -58,7 +63,7 @@ export const DataTable = props => {
         case 'function':
           return accessor(row);
         default:
-          return row[name];
+          return row[name] || '-';
       }
     };
     const CustomTableRow = renderCollapsible ? CollapsibleRow : TableRow;
@@ -68,6 +73,7 @@ export const DataTable = props => {
           customRowRender(row)
         ) : (
           <CustomTableRow
+            styles={styles}
             collapsibleComponent={renderCollapsible && renderCollapsible(row)}>
             {headers.map(header => {
               return (
@@ -96,11 +102,11 @@ export const DataTable = props => {
             {buildHeaderCells()}
           </TableRow>
         </TableHead>
-        <TableBody>
-          {data.map((row, i) => (
-            <Row key={`item-${i}`} row={row} />
-          ))}
-        </TableBody>
+        {/* <TableBody> */}
+        {data.map((row, i) => (
+          <Row key={`item-${i}`} row={row} />
+        ))}
+        {/* </TableBody> */}
       </Table>
     </Fragment>
   );
