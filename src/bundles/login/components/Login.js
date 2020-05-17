@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Grid,
   Typography,
@@ -6,11 +6,12 @@ import {
   FormControlLabel,
   makeStyles
 } from '@material-ui/core';
+import { flowRight as compose } from 'lodash';
 import { DefaultCheckbox } from 'bundles/patient/components/custom/formBuilder';
 import FormBuilder from 'bundles/patient/components/custom/formBuilder';
 import hero from 'assets/images/hero-bg/hero-5.jpg';
 import logo from 'images/lagos_logo.png';
-// import logo from 'assets/images/stock-logos/1.svg';
+import { userLogin } from 'bundles/login/hoc/userLogin';
 
 const useStyle = makeStyles(theme => ({
   headerText: {
@@ -80,6 +81,11 @@ const loginQuestions = [
 
 export const Login = () => {
   const classes = useStyle();
+  const [loginData, setLoginData] = useState({});
+
+  const setFormInitialState = value => {
+    setLoginData({ ...loginData, ...value });
+  };
 
   return (
     <>
@@ -103,8 +109,8 @@ export const Login = () => {
                   <FormBuilder
                     key={index}
                     formInput={question}
-                    // setFormState={setFormInitialState}
-                    // formState={formState}
+                    setFormState={setFormInitialState}
+                    formState={loginData}
                   />
                 )
               }
@@ -145,3 +151,5 @@ export const Login = () => {
     </>
   );
 };
+
+export default compose(userLogin)(Login);
