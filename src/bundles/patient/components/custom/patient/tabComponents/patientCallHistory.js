@@ -79,8 +79,8 @@ export const PatientCallHistory = ({ callLogs, patient, newCallLog }) => {
   const newLogObject = {
     callSummary: '',
     callTime: new Date(),
-    submittedBy: 2,
-    callOrigin: 'direct_contact',
+    submittedBy: 1, // TODO: link this up with a real user
+    callOrigin: 'DIRECT_CONTACT',
     patientId: patient.id
   };
   const [newLog, setNewLog] = useState(newLogObject);

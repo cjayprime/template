@@ -202,7 +202,7 @@ const DateQuestionType = ({
             </MuiPickersUtilsProvider>
           ) : (
             <Typography align={'right'} className={classes.answerText}>
-              {moment(answer).format('DD MMM, h:mm A')}
+              {answer ? moment(answer).format('DD MMM, h:mm A') : '-'}
             </Typography>
           )}
         </Grid>
@@ -366,7 +366,7 @@ const MultiChoiceQuestionType = ({
             <RadioGroup
               style={{ display: 'flex', flexDirection: 'row' }}
               name={questionKey}
-              value={answer}
+              value={answer ? answer.toLowerCase() : ''}
               onChange={e => onAnswer(questionKey, e.target.value)}>
               <Grid container justify="space-between">
                 {options.map(option => (
@@ -391,7 +391,7 @@ const MultiChoiceQuestionType = ({
             </RadioGroup>
           ) : (
             <Typography align={'right'} className={classes.answerText}>
-              {answer}
+              {answer ? answer.toLowerCase() : ''}
             </Typography>
           )}
         </Grid>
