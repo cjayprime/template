@@ -7,12 +7,10 @@ export const OverviewPageStyles = makeStyles(theme => ({
     justifyContent: 'center',
     alignItems: 'center',
     paddingTop: '5%',
-    backgroundColor: '#3A3C4F',
+    backgroundColor: '#fff',
     boxShadow: `5px 5px 10px 10px ${SHADOW_BACKDROP}`
   },
-  dataCardRow: {
-    height: 160
-  },
+  dataCardRow: {},
   dataCard: {
     padding: 20
   },
@@ -44,12 +42,9 @@ export const OverviewPageStyles = makeStyles(theme => ({
     height: '100%'
   },
   ConfirmedCasesSection: {
-    height: '22vh',
     marginBottom: '2%'
   },
-  DailyAdmissionsSection: {
-    height: '26vh'
-  },
+  DailyAdmissionsSection: {},
   AdmissionLegend: {
     position: 'relative',
     width: '10%',
