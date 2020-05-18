@@ -95,7 +95,7 @@ export const Login = ({ userLoginPG }) => {
           <Grid xs={7} item style={{ paddingTop: 140 }}>
             <img src={logo} alt="logo"/>
             <Typography className={classes.headerText} style={{ marginTop: 30 }}>
-              Lagos State Public Health
+              Lagos State
             </Typography>
             <Typography className={classes.headerText}>
               Emergency Response System
