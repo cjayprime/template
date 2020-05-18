@@ -6,7 +6,7 @@ export const DataContainerStyles = makeStyles(theme => ({
     borderRadius: `${theme.spacing(0.7)}px`,
     padding: 10,
     backgroundColor: '#fff',
-    boxShadow: `5px 5px 10px 10px ${SHADOW_BACKDROP}`
+    boxShadow: `0px 4px 8px 0px #CACACA`
   }
 }));
 

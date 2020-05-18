@@ -8,7 +8,7 @@ export const OverviewPageStyles = makeStyles(theme => ({
     alignItems: 'center',
     paddingTop: '5%',
     backgroundColor: '#fff',
-    boxShadow: `5px 5px 10px 10px ${SHADOW_BACKDROP}`
+    boxShadow: `0px 4px 8px 0px #CACACA`
   },
   dataCardRow: {},
   dataCard: {

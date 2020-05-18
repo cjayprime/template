@@ -222,7 +222,7 @@ const useStyles = makeStyles(theme => ({
     border: '1px solid #3A3C4F',
     borderRadius: 10,
     padding: 20,
-    boxShadow: `5px 5px 10px 10px ${SHADOW_BACKDROP}`,
+    boxShadow: `0px 4px 8px 0px #CACACA`,
     backgroundColor: '#3A3C4F',
     margin: 10,
     color: '#fff'
@@ -249,7 +249,7 @@ const useStyles = makeStyles(theme => ({
     overflowX: 'auto',
     backgroundColor: '#3A3C4F',
     borderRadius: 10,
-    boxShadow: `5px 5px 10px 10px ${SHADOW_BACKDROP}`
+    boxShadow: `0px 4px 8px 0px #CACACA`
   }
 }));
 

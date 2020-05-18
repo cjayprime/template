@@ -9,7 +9,7 @@ export const ChartHolderStyles = makeStyles(theme => ({
     padding: '3%',
     // marginRight: `${theme.spacing(1.5)}px`,
     backgroundColor: '#3A3C4F',
-    boxShadow: `5px 5px 10px 10px ${SHADOW_BACKDROP}`,
+    boxShadow: `0px 4px 8px 0px #CACACA`,
     flexDirection: 'column',
     flexWrap: 'nowrap'
   },

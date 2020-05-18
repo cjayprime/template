@@ -51,11 +51,11 @@ const DashboardPageView = () => {
           TabContainer: classes.TabContainer
         }}
       />
-      <Container className={classes.MainPageContainer}>
+      <div className={classes.MainPageContainer}>
         {pages.map((Section, index) => {
           return <Fragment>{selectedView === index && <Section />}</Fragment>;
         })}
-      </Container>
+      </div>
     </Fragment>
   );
 };
