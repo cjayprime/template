@@ -14,17 +14,17 @@ import { DefaultCheckbox } from 'bundles/patient/components/custom/formBuilder';
 
 const useStyles = makeStyles(theme => ({
   CallHistoryHeaders: {
-    color: '#BDB8D9',
+    color: '#8F8D8C',
     fontSize: 13,
     textTransform: 'uppercase'
   },
   CallHistoryDateDisplay: {
-    color: '#fff',
+    color: '#231E1E',
     fontWeight: 'bold',
     fontSize: 14
   },
   CallHistoryNotes: {
-    color: '#fff',
+    color: '#231E1E',
     fontSize: 14,
     paddingRight: 20
   },
@@ -32,8 +32,8 @@ const useStyles = makeStyles(theme => ({
     '&$cssFocused $notchedOutline': {
       borderColor: `${theme.palette.primary.main} !important`
     },
-    backgroundColor: '#474562',
-    color: '#fff'
+    backgroundColor: '#E9E8E8',
+    color: '#8F8D8C'
   },
   CallSummaryNotesInputFocused: {},
   CallSummaryNotesInputNotch: {
@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
     },
     borderWidth: '1px',
     borderColor: 'transparent !important',
-    color: 'white'
+    // color: 'white'
   },
   regLabelText: {
     fontSize: 15,
@@ -53,21 +53,22 @@ const useStyles = makeStyles(theme => ({
     borderRadius: 20,
     textTransform: 'none',
     border: 'none',
-    color: 'white',
+    color: '#EFA14B',
     lineHeight: 1.5,
     fontSize: 16,
     padding: '10px 50px 10px'
   },
   formButtonTS: {
-    backgroundColor: '#28BAC0',
+    color: '#FFF',
+    backgroundColor: '#BF6E27',
     boxShadow:
-      '0 6px 16px rgba(39, 186, 192, 0.20), 0 2px 10px rgba(39, 186, 192, 0.10)',
+      '0 6px 16px rgba(239, 161, 75, 0.20), 0 2px 10px rgba(239, 161, 75, 0.10)',
     '&:hover': {
-      backgroundColor: '#28BAC0',
+      backgroundColor: '#BF6E27',
       border: 'none'
     },
     '&:active': {
-      backgroundColor: '#28BAC0',
+      backgroundColor: '#BF6E27',
       border: 'none'
     }
   }

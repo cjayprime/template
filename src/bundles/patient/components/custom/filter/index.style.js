@@ -5,27 +5,27 @@ export const useStyles = makeStyles(theme => ({
   input: {
     padding: 20,
     fontSize: 20,
-    color: '#fff',
+    color: '#231E1E',
     fontWeight: 'bold',
   },
   searchIcon: {
-    color: '#fff',
+    color: '#231E1E',
     fontSize: 35
   },
   textPatient: {
-    color: '#fff',
+    color: '#231E1E',
     fontSize: 24,
     textAlign: 'center'
   },
   text: {
-    color: '#6A6981',
+    color: '#231E1E',
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center'
   },
   button: {
     color: '#fff',
-    backgroundColor: '#7768CB',
+    backgroundColor: '#6EA915',
     borderRadius: 32,
     width: 300,
     height: 60
@@ -51,13 +51,13 @@ export const useStyles = makeStyles(theme => ({
   underline: {
     
     '&:before': {
-      borderBottom: '2px solid #6A6981'
+      borderBottom: '2px solid #231E1E'
     },
     '&:hover': {
-      borderBottom: '2px solid #6A6981'
+      borderBottom: '2px solid #231E1E'
     },
     '&:after': {
-      borderBottom: '2px solid #6A6981'
+      borderBottom: '2px solid #231E1E'
     },
     '&:hover:not($disabled):not($focused):not($error):before': {
       borderBottom: 'none !important'

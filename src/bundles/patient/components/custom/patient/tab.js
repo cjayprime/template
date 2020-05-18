@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
   },
   TabIndicator: {
     height: 4,
-    backgroundColor: '#FFFEFD',
+    backgroundColor: '#231E1E',
     width: '70px !important'
   },
   TabContainer: {
@@ -31,99 +31,21 @@ const useStyles = makeStyles(theme => ({
     paddingRight: 15,
     paddingLeft: 0,
     minWidth: 70,
-    marginRight: 10
+    marginRight: 10,
+    color: '#EFA14B',
+    opacity: 1
   },
   TabButtonWrapper: {
     alignItems: 'flex-start',
     paddingLeft: 2
   },
+  SelectedTabButtons: {
+    color: '#231E1E',
+  },
   SelectedTabContainer: {
     color: 'white'
   }
 }));
-
-export const PATIENT_DETAILS = [
-  {
-    title: 'Contact Information',
-    type: 'detail',
-    content: [
-      { 'Phone Number': '09097438705' },
-      { Email: 'jbadewale@yahoo.com' }
-    ]
-  },
-  {
-    title: '',
-    type: 'detail',
-    content: [{ Address: '31 Adebiyi street, Adress 2, State, City' }]
-  },
-  {
-    title: 'Other',
-    type: 'detail',
-    content: [{ LGA: 'Lores ipsum', 'Country of Residence': 'Nigeria' }]
-  },
-  {
-    type: 'detail',
-    content: [{ Nationality: 'Nigeria', Occupation: 'Health Worker' }]
-  },
-  {
-    type: 'detail',
-    content: [{ Location: 'Location Name', Other: 'Other info' }]
-  }
-];
-
-export const CALL_SUMMARY = [
-  {
-    title: '21 March , 2015',
-    fullWidth: true,
-    type: 'detail',
-    content: [{ key: '09097438705' }]
-  },
-  {
-    title: '23 March , 2015',
-    fullWidth: true,
-    type: 'detail',
-    content: [{ key: '31 Adebiyi street, Adress 2, State, City' }]
-  },
-  {
-    title: '28 March , 2015',
-    fullWidth: true,
-    type: 'detail',
-    content: [{ key: 'Lores ipsum' }]
-  },
-  {
-    title: '28 March , 2015',
-    fullWidth: true,
-    type: 'detail',
-    content: [{ key: 'Nigeria' }]
-  }
-];
-
-export const patientStore = [
-  {
-    sampleNumber: '400',
-    testName: 'Test 1',
-    status: 'Completed',
-    requestedBy: 'Dr. G. Jenkins',
-    waitTime: '4 hours',
-    requestDate: '31 Mar, 7:34PM'
-  },
-  {
-    sampleNumber: '430',
-    testName: 'Test 1',
-    status: 'Completed',
-    requestedBy: 'Jolade Adewale',
-    waitTime: '4 hours',
-    requestDate: '31 Mar, 7:34PM'
-  },
-  {
-    sampleNumber: '404',
-    testName: 'Test 1',
-    status: 'Completed',
-    requestedBy: 'Dr. G. Jenkins',
-    waitTime: '4 hours',
-    requestDate: '31 Mar, 7:34PM'
-  }
-];
 
 const PatientTab = ({ patientData, markPatientDeceased, newCallLog }) => {
   const [value, setValue] = useState(0);
@@ -159,7 +81,8 @@ const PatientTab = ({ patientData, markPatientDeceased, newCallLog }) => {
         disableRipple
         classes={{
           root: classes.TabButtons,
-          wrapper: classes.TabButtonWrapper
+          wrapper: classes.TabButtonWrapper,
+          selected: classes.SelectedTabButtons
         }}
         label={label}
       />
@@ -219,7 +142,7 @@ const PatientTab = ({ patientData, markPatientDeceased, newCallLog }) => {
         paddingLeft: 2,
         paddingRight: 2,
         borderRadius: 8,
-        backgroundColor: 'rgba(113, 106, 158, 0.1)'
+        // backgroundColor: 'rgba(113, 106, 158, 0.1)'
       }}>
       <Grid item xs={12}>
         <Tabs

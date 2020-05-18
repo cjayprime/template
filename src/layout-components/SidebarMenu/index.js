@@ -87,13 +87,13 @@ const reduceChildRoutes = props => {
         key={page.label}
         label={page.badge}
         open={Boolean(open)}
-        textColor={activeNavbar == `navbar-${index}` ? '#fff' : '#BDB8D9'}
+        textColor={( activeNavbar == `navbar-${index}`) ? '#fff' : '#A9A6A6'}
         title={page.label}>
         <div className="sidebar-menu-children py-2">
           <SidebarMenuList
             depth={depth + 1}
             pages={page.content}
-            textColor={activeNavbar == `navbar-${index}` ? '#fff' : '#BDB8D9'}
+            textColor={( activeNavbar == `navbar-${index}`) ? '#fff' : '#A9A6A6'}
             router={router}
           />
         </div>
@@ -122,7 +122,7 @@ const reduceChildRoutes = props => {
         key={page.label}
         label={page.badge}
         title={page.label}
-        textColor={activeNavbar == `navbar-${index}` ? '#fff' : '#BDB8D9'}
+        textColor={ ( activeNavbar == `navbar-${index}`) ? '#fff' : '#A9A6A6' }
       />
     );
   }

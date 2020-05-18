@@ -52,7 +52,7 @@ const SidebarHeader = props => {
             </IconButton>
           </Link> */}
           <Box className="header-logo-text">
-            Emmergency Reponse
+            Emergency Reponse
           </Box>
         </Box>
         <Box

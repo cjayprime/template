@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export const tableStyles = makeStyles(theme => ({
   TableContainer: {
-    backgroundColor: '#ffffff'
+    backgroundColor: '#F6F6F6'
   },
   root: {
     borderBottom: 'none'
@@ -11,19 +11,19 @@ export const tableStyles = makeStyles(theme => ({
     borderBottom: 'none'
   },
   Table: {
-    backgroundColor: '#2C2E42',
-    border: 'none'
+    backgroundColor: '#F6F6F6',
+    border: 'none',
   },
   TableCell: {
-    color: '#8E8CA7',
-    borderBottom: '.5px solid #3A3B4F'
+    color: '#8F8D8C',
+    borderBottom: '.5px solid #E5E5E5'
   },
   TableCellNoBorder: {
     color: '#8E8CA7',
     borderBottom: 'none'
   },
   TableItem: {
-    color: '#FDFDFE'
+    color: '#231E1E'
   }
 }));
 

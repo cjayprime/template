@@ -33,17 +33,17 @@ export const HeaderStyles = makeStyles(theme => ({
     width: '40%'
   },
   TabIndicator: {
-    color: 'white',
-    backgroundColor: 'white'
+    color: '#231E1E',
+    backgroundColor: '#231E1E'
   },
   TabContainer: {
-    color: DEFAULT_GREEN,
+    color: '#EFA14B',
     textTransform: 'none',
     minWidth: '32px',
     fontSize: '14px'
   },
   SelectedTabContainer: {
-    color: 'white'
+    color: '#231E1E'
   },
   SelectInput: {
     justifyContent: 'flex-end',

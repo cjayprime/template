@@ -9,7 +9,8 @@ const useStyles = makeStyles(theme => ({
   card: {
     transition: '0.3s',
     overflow: 'initial',
-    background: 'rgb(58, 60, 78)',
+    background: '#fff',
+    // background: 'rgb(58, 60, 78)',
     padding: '1em',
     paddingLeft: 6,
     paddingRight: 6
@@ -20,12 +21,13 @@ const useStyles = makeStyles(theme => ({
     width: '100%'
   },
   textBody: {
-    color: 'white',
+    color: '#231E1E',
     paddingBottom: 20,
     minHeight: 80
   },
   textCount: {
-    color: 'white',
+    color: '#6EA915',
+    // color: 'white',
     fontWeight: 700,
     fontSize: 50
   },

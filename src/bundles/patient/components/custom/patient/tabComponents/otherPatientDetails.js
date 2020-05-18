@@ -25,7 +25,7 @@ import { DefaultCheckbox } from 'bundles/patient/components/custom/formBuilder';
 const useStyles = makeStyles(theme => ({
   regLabelText: {
     fontSize: 15,
-    color: '#fff'
+    color: '#231E1E'
   },
   LabelText: {
     fontSize: 13,
@@ -37,21 +37,22 @@ const useStyles = makeStyles(theme => ({
     borderRadius: 20,
     textTransform: 'none',
     border: 'none',
-    color: 'white',
+    color: '#EFA14B',
     lineHeight: 1.5,
     fontSize: 16,
     padding: '10px 50px 10px'
   },
   formButtonTS: {
-    backgroundColor: '#28BAC0',
+    color: '#FFF',
+    backgroundColor: '#BF6E27',
     boxShadow:
-      '0 6px 16px rgba(39, 186, 192, 0.20), 0 2px 10px rgba(39, 186, 192, 0.10)',
+      '0 6px 16px rgba(239, 161, 75, 0.20), 0 2px 10px rgba(239, 161, 75, 0.10)',
     '&:hover': {
-      backgroundColor: '#28BAC0',
+      backgroundColor: '#BF6E27',
       border: 'none'
     },
     '&:active': {
-      backgroundColor: '#28BAC0',
+      backgroundColor: '#BF6E27',
       border: 'none'
     }
   },
@@ -61,8 +62,8 @@ const useStyles = makeStyles(theme => ({
     '&$cssFocused $notchedOutline': {
       borderColor: `${theme.palette.primary.main} !important`
     },
-    backgroundColor: '#474562',
-    color: '#fff'
+    backgroundColor: '#E9E8E8',
+    color: '#8F8D8C'
   },
   inputFocused: {},
   inputNotch: {
@@ -75,31 +76,34 @@ const useStyles = makeStyles(theme => ({
   },
   sectionHeader: {
     fontSize: 17,
-    color: '#fff'
+    color: '#231E1E'
   },
   radio: {
-    color: '#FFFFFF'
-  }
+    color: '#CACACA'
+  },
+  radioChecked: {
+    color: '#6EA915 !important'
+  },
 }));
 
 const dateInputTheme = createMuiTheme({
   overrides: {
     MuiFilledInput: {
       root: {
-        backgroundColor: '#474562',
-        color: '#fff',
+        backgroundColor: '#E9E8E8',
+        color: '#8F8D8C',
         borderRadius: '8px !important',
         border: '2px solid transparent',
         '&:hover': {
-          backgroundColor: '#474562'
+          backgroundColor: '#E9E8E8'
         },
         '&$focused': {
-          borderColor: '#fff',
-          backgroundColor: '#474562'
+          borderColor: '#8F8D8C',
+          backgroundColor: '#E9E8E8'
         }
       },
       underline: {
-        backgroundColor: '#474562',
+        backgroundColor: '#E9E8E8',
         '&:before, &:after': {
           display: 'none'
         }
@@ -151,14 +155,13 @@ const radioOptionButton = (
                 <Radio
                   color="primary"
                   classes={{
-                    colorPrimary: classes.radio
+                    colorPrimary: classes.radio,
+                    checked: classes.radioChecked
                   }}
                 />
               }
               label={option}
-              classes={{
-                root: classes.radio
-              }}
+              style={{color: '#231E1E'}}
             />
           ))}
           {/* </Grid> */}

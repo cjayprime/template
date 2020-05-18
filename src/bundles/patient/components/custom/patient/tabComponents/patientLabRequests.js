@@ -9,7 +9,7 @@ export const PatientLabRequests = ({ labRequest }) => {
       backgroundColor: 'transparent'
     },
     HeaderTableCell: {
-      color: '#BDB8D9',
+      color: '#685E5E',
       fontSize: 13,
       textTransform: 'uppercase',
       fontWeight: 400,
@@ -32,26 +32,26 @@ export const PatientLabRequests = ({ labRequest }) => {
       }
     },
     ActionButton: {
-      color: '#EEBEC2',
+      color: '#ED666B',
       fontSize: 13,
       fontWeight: 'bold',
       padding: '5px 0'
     },
     AwaitingSample: {
-      color: '#2C2E42',
-      backgroundColor: '#FFEFD8'
+      color: '#fff',
+      backgroundColor: '#E4E4E4'
     },
     SampleCollected: {
-      color: '#2C2E42',
-      backgroundColor: '#8EE2E5'
+      color: '#fff',
+      backgroundColor: '#E4A35B'
     },
     AwaitingResult: {
       color: '#2C2E42',
-      backgroundColor: '#BDB8D9'
+      backgroundColor: '#516E22'
     },
     Completed: {
       color: '#fff',
-      backgroundColor: '#2C2E42'
+      backgroundColor: '#3E3939'
     }
   }));
   const classes = useStyle();

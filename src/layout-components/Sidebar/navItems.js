@@ -7,6 +7,7 @@ import appointment from 'images/rectangle6.png';
 import setting from 'images/rectangle8.png';
 import bedmanagement from 'images/rectangle7.png';
 import dashboard2 from 'images/icon3.png';
+import Icon from '@material-ui/core/Icon';
 
 const allowedViews = [
   {
@@ -15,49 +16,49 @@ const allowedViews = [
       {
         key: 'dashboard',
         label: 'Dashboard',
-        icon: <img className="app-sidebar-icon" src={dashboard} />,
+        icon: <Icon className="fas fa-chart-pie" style={{color: '#E4A35B', fontSize: 18, marginRight: 20}} />,
         to: '/Dashboard'
       },
       {
         key: 'patientProfile',
         label: 'Patient',
-        icon: <img className="app-sidebar-icon" src={dashboard2} />,
-        to: '/Patient'
+        icon: <Icon className="fas fa-search" style={{color: '#E4A35B', fontSize: 18, marginRight: 20}} />,
+        to: "/Patient"
       },
       {
         key: 'queues',
         label: 'Queue',
-        icon: <img className="app-sidebar-icon" src={queue} />,
-        to: '/Queue'
+        icon: <Icon className="fas fa-th-list" style={{color: '#E4A35B', fontSize: 18, marginRight: 20}} />,
+        to: "/Queue"
       },
       {
         key: 'kpi',
         label: 'KPI',
-        icon: <img className="app-sidebar-icon" src={kpi} />,
-        to: '/Kpi'
+        icon: <Icon className="fas fa-user-tie" style={{color: '#E4A35B', fontSize: 18, marginRight: 20}} />,
+        to: "/Kpi"
       },
       {
         key: 'appointments',
         label: 'Appointment',
-        icon: <img className="app-sidebar-icon" src={appointment} />,
-        to: '/Appointment'
+        icon: <Icon className="fas fa-calendar-day" style={{color: '#E4A35B', fontSize: 18, marginRight: 20}} />,
+        to: "/Appointment"
       },
       {
         key: 'lab',
         label: 'Lab',
-        icon: <img className="app-sidebar-icon" src={lab} />,
-        to: '/Lab'
+        icon: <Icon className="fas fa-flask" style={{color: '#E4A35B', fontSize: 18, marginRight: 20}} />,
+        to: "/Lab"
       },
       {
         key: 'bedManagement',
         label: 'Bed Management',
-        icon: <img className="app-sidebar-icon" src={bedmanagement} />,
-        to: '/BedManagement'
+        icon: <Icon className="fas fa-bed" style={{color: '#E4A35B', fontSize: 18, marginRight: 20}} />,
+        to: "/BedManagement"
       },
       {
         label: 'Settings',
         // key: 'settings',
-        icon: <img className="app-sidebar-icon" src={setting} />,
+        icon: <Icon className="fas fa-sliders-h" style={{color: '#E4A35B', fontSize: 18, marginRight: 20}} />,
         content: [
           {
             // key: 'location',

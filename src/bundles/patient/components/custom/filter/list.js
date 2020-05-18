@@ -22,7 +22,7 @@ import {
 import { useStyles } from 'bundles/patient/components/custom/filter/index.style';
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
 import PatientTab from 'bundles/patient/components/custom/patient/tab';
-import notfound from 'images/notfound.png';
+import notfound from 'images/notfound_alt.png';
 import moment from 'moment';
 import { makeStyles } from '@material-ui/styles';
 import CloseIcon from '@material-ui/icons/Close';
@@ -37,11 +37,11 @@ const ownStyles = makeStyles(theme => ({
   },
   dialogheaderText: {
     fontSize: 24,
-    color: '#fff',
+    color: '#231E1E',
     textAlign: 'center'
   },
   dialogContainer: {
-    backgroundColor: 'rgba(44, 46, 65, 0.7)',
+    backgroundColor: 'rgba(246, 246, 246, 0.7)',
     backdropFilter: 'blur(4px)'
   },
   dialogCloseButton: {
@@ -51,10 +51,13 @@ const ownStyles = makeStyles(theme => ({
     color: '#fff'
   },
   radio: {
-    color: '#FFFFFF'
+    color: '#231E1E'
+  },
+  radioChecked: {
+    color: '#6EA915 !important'
   },
   primaryButton: {
-    backgroundColor: '#27BAC0',
+    backgroundColor: '#6EA915',
     color: '#fff',
     fontSize: 13,
     fontWeight: 'bold',
@@ -63,16 +66,16 @@ const ownStyles = makeStyles(theme => ({
     textTransform: 'uppercase',
     maxWidth: 270,
     boxShadow:
-      '0 6px 16px rgba(39, 186, 192, 0.20), 0 2px 10px rgba(39, 186, 192, 0.10)',
+      '0 6px 16px rgba(110, 169, 21, 0.20), 0 2px 10px rgba(110, 169, 21, 0.10)',
     '&:hover': {
-      backgroundColor: '#27BAC0',
+      backgroundColor: '#6EA915',
       color: '#fff',
       fontSize: 13
     }
   },
   secondaryButton: {
     backgroundColor: 'transparent',
-    color: '#fff',
+    color: '#231E1E',
     fontSize: 13,
     fontWeight: 'bold',
     padding: '11.5px 34px',
@@ -106,7 +109,7 @@ const List = ({ header, data, markPatientDeceased, newCallLog }) => {
     collapseRowGroup: {},
     collapseRowParent: {
       '&.open td': {
-        backgroundColor: '#3A3C4F'
+        backgroundColor: '#FFFFFF'
       },
       '&.open td:first-child': {
         borderTopLeftRadius: 8
@@ -117,7 +120,7 @@ const List = ({ header, data, markPatientDeceased, newCallLog }) => {
     },
     collapseRowChild: {
       '& > td': {
-        backgroundColor: '#3A3C4F',
+        backgroundColor: '#F9F9F9',
         borderBottomLeftRadius: 8,
         borderBottomRightRadius: 8
       }
@@ -300,7 +303,7 @@ const RenderList = ({ patients = [], markPatientDeceased, newCallLog }) => {
           style={{
             textTransform: 'uppercase',
             marginRight: 5,
-            color: '#6C64B4',
+            color: '#6EA915',
             fontWeight: 'bold'
           }}>
           Forward
@@ -361,9 +364,9 @@ const RenderList = ({ patients = [], markPatientDeceased, newCallLog }) => {
                     value={option}
                     control={
                       <Radio
-                        color="primary"
                         classes={{
-                          colorPrimary: classes.radio
+                          colorPrimary: classes.radio,
+                          checked: classes.radioChecked,
                         }}
                       />
                     }
@@ -385,7 +388,7 @@ const RenderList = ({ patients = [], markPatientDeceased, newCallLog }) => {
               onClick={closeForwardDialog}
               color="primary"
               classes={{ root: classes.primaryButton }}>
-              ADD
+              FORWARD
             </Button>
           </Box>
           <Box display="flex" justifyContent="center" style={{ marginTop: 15 }}>

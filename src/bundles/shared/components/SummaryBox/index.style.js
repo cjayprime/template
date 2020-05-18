@@ -7,20 +7,22 @@ export const SummaryBoxStyles = makeStyles(theme => ({
     justifyContent: 'center',
     alignItems: 'center',
     height: '130px',
-    // width: '90%',
-    // marginRight: `${theme.spacing(1.5)}px`,
-    backgroundColor: '#3A3C4F',
-    boxShadow: `5px 5px 10px 10px ${SHADOW_BACKDROP}`
+    width: '90%',
+    marginRight: `${theme.spacing(1.5)}px`,
+    backgroundColor: '#fff',
+    boxShadow: `0px 4px 8px 0px #cacaca`
   },
   ContainerItem: {
     fontWeight: '800'
   },
   Header: props => ({
     fontSize: `${theme.spacing(1.5)}px`,
-    color: props.colors.header
+    color:'#231E1E'
+    // color: props.colors.header
   }),
   Caption: props => ({
     fontSize: `${theme.spacing(8)}px`,
-    color: props.colors.caption
+    color: '#231E1E'
+    // color: props.colors.caption
   })
 }));

@@ -8,6 +8,7 @@ body {
     align-items: center;
     //#background: rgba(255, 255, 255, 1);
     background-color: $background-color-primary;
+    background-image: linear-gradient(to right, $background-color-primary, $background-color-primary-light);
     padding-left: ($spacer);
     padding-right: ($spacer);
     justify-content: space-between;

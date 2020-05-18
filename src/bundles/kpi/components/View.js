@@ -152,7 +152,7 @@ const Kpi = ({
             <KPICard
               text="High risk patients awaiting pickup"
               count={highRiskNodeCount}
-              buttonColor="rgb(101, 80, 190)"
+              buttonColor="#6EA915"
               buttonContent={<ExpandMore />}
               buttonOnClick={() => setCurrentState('hRNodes')}
             />
@@ -161,7 +161,7 @@ const Kpi = ({
             <KPICard
               text="Lab results pending for more than a day"
               count={labResultCount}
-              buttonColor="rgb(88, 184, 190)"
+              buttonColor="#BF6E27"
               buttonContent="show"
               buttonOnClick={() => setCurrentState('labResult')}
             />
@@ -170,7 +170,7 @@ const Kpi = ({
             <KPICard
               text="high risk patients awaiting pickup for more than a day"
               count={highRiskNodeCount}
-              buttonColor="rgb(88, 184, 190)"
+              buttonColor="#BF6E27"
               buttonContent="show"
               buttonOnClick={() => setCurrentState('hRNodes')}
             />
@@ -179,7 +179,7 @@ const Kpi = ({
             <KPICard
               text="Patients awaiting sample collection for more than a day"
               count={sampleCollectionCount}
-              buttonColor="rgb(88, 184, 190)"
+              buttonColor="#BF6E27"
               buttonContent="show"
               buttonOnClick={() => setCurrentState('sampleNodes')}
             />

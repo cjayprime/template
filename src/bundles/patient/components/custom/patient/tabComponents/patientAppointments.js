@@ -8,7 +8,7 @@ export const PatientAppointment = () => {
       backgroundColor: 'transparent'
     },
     HeaderTableCell: {
-      color: '#BDB8D9',
+      color: '#685E5E',
       fontSize: 13,
       textTransform: 'uppercase',
       fontWeight: 400,
@@ -30,9 +30,9 @@ export const PatientAppointment = () => {
         fontWeight: 600
       }
     },
-    AwaitingSamplePicup: {
-      color: '#2C2E42',
-      backgroundColor: '#FFEFD8'
+    AwaitingSamplePickup: {
+      color: '#fff',
+      backgroundColor: '#E4E4E4'
     },
     SampleCollected: {
       color: '#2C2E42',
@@ -44,7 +44,7 @@ export const PatientAppointment = () => {
     },
     Completed: {
       color: '#fff',
-      backgroundColor: '#2C2E42'
+      backgroundColor: '#3E3939'
     }
   }));
   const classes = useStyle();
@@ -52,7 +52,7 @@ export const PatientAppointment = () => {
   const getChipClass = status => {
     switch (status) {
       case 'Awaiting Sample Pickup':
-        return 'AwaitingSamplePicup';
+        return 'AwaitingSamplePickup';
       case 'Awaiting Pickup':
         return 'AwaitingPickup';
       case 'Completed':

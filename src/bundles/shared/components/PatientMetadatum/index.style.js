@@ -7,15 +7,15 @@ export const PatientMetadatumStyles = makeStyles(theme => {
   const backdropColor = props => {
     const { riskLevel } = props;
     const statusColorMap = {
-      High: '#FF5B67',
-      Medium: '#EEBEC2',
-      No: '#3A3C4F'
+      high: '#ED666B',
+      medium: '#9D3732',
+      no: '#CACACA'
     };
-    return statusColorMap[riskLevel] || DEFAULT_GREY
+    return statusColorMap[riskLevel.toLowerCase()] || DEFAULT_GREY
   };
   return {
     Nametext: {
-      color: DEFAULT_GREEN,
+      color: '#EFA14B',
       fontWeight: 'bold',
       fontSize: `14px`,
       cursor: 'pointer'
@@ -32,7 +32,7 @@ export const PatientMetadatumStyles = makeStyles(theme => {
       justifyContent: 'center',
       fontWeight: 'bold',
       maxWidth: '70px',
-      color: props.riskLevel === 'Medium' ? '#2C2E42' : 'white'
+      color: props.riskLevel.toLowerCase() === 'no' ? '#231E1E' : 'white',
     })
   };
 });
