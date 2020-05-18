@@ -1,15 +1,17 @@
 import React from 'react';
 import clsx from 'clsx';
-import { Grid } from '@material-ui/core';
-import { Line } from 'react-chartjs-2';
+import { Grid, Paper } from '@material-ui/core';
+import { Line, Bar } from 'react-chartjs-2';
+import parseToDate from 'date-fns/parse';
 
 import {
-  ChartHolder,
   DataContainerWithMetadata,
   DataContainer,
   DataTable
 } from '../../../../../shared/components/';
 import { OverviewPageStyles } from './index.style';
+import LagosMap from '../../../utilities/LagosMap';
+import { groupBy, formatDate } from '../../../utilities';
 
 import WithDashboardData from 'bundles/dashboard/hoc/WithDashboardData';
 const compose = require('lodash')?.flowRight;
@@ -36,20 +38,11 @@ const Overview = props => {
       currentICU,
       newICU,
       positiveCasesByDate,
-      fatalitiesByDate
+      fatalitiesByDate,
+      admissionByDate,
+      recoveredByDate
     }
   } = props;
-
-  const groupBy = (objectArray, property) => {
-    return objectArray.reduce(function(total, obj) {
-      let key = obj[property];
-      if (!total[key]) {
-        total[key] = [];
-      }
-      total[key].push(obj);
-      return total;
-    }, {});
-  };
 
   const patientGroupByLGA = groupBy(positivePatientByLGA.nodes, 'lga');
   const LGATableData = Object.keys(patientGroupByLGA).map((LGA, i) => ({
@@ -57,15 +50,6 @@ const Overview = props => {
     count: patientGroupByLGA[LGA].length,
     LGA
   }));
-
-  const formatDate = dateString => {
-    const dateObject = new Date(Date.parse(dateString));
-    const addLeadingZero = d => (d < 10 ? `0${d}` : d);
-    var dd = dateObject.getDate();
-    var mm = dateObject.getMonth() + 1;
-    var yyyy = dateObject.getFullYear();
-    return `${addLeadingZero(dd)}/${addLeadingZero(mm)}/${yyyy}`;
-  };
 
   const positiveCasesByFormatedDate = positiveCasesByDate.nodes.map(node => ({
     ...node,
@@ -76,6 +60,7 @@ const Overview = props => {
     'resultUpdateDate'
   );
 
+  // TODO: Have a function for this.
   const fatalitiesByFormatedDate = fatalitiesByDate.nodes.map(node => ({
     ...node,
     dateOfDeath: formatDate(node.dateOfDeath)
@@ -85,10 +70,25 @@ const Overview = props => {
     'dateOfDeath'
   );
 
+  const recoveredByFormatedDate = recoveredByDate.nodes.map(node => ({
+    ...node,
+    dateDischarged: formatDate(node.dateDischarged)
+  }));
+  const recoveredGroupByDate = groupBy(
+    recoveredByFormatedDate,
+    'dateDischarged'
+  );
+
+  const admissionByFormatedDate = admissionByDate.nodes.map(node => ({
+    ...node,
+    dateAdmitted: formatDate(node.dateAdmitted)
+  }));
+  const admissionGroupByDate = groupBy(admissionByFormatedDate, 'dateAdmitted');
+
   const classes = OverviewPageStyles();
   const headers = [
     { name: 'S/M', accessor: 'S/M' },
-    { name: 'LGA', accessor: 'LGA' },
+    { name: 'LCDA', accessor: 'LGA' },
     { name: 'Number', accessor: 'count' }
   ];
 
@@ -97,8 +97,8 @@ const Overview = props => {
       title: 'Call Centre Details',
       entries: {
         'Total calls': totalCalls.totalCount,
-        'Valid calls': 1500,
-        'Red Flagged': 200
+        'Valid calls': totalCalls.totalCount,
+        'Red Flagged': 20
       }
     },
     {
@@ -161,8 +161,21 @@ const Overview = props => {
     }
   };
 
-  const data = {
-    labels: Object.keys(positiveCasesGroupByDate),
+  const epidemiologyDataLabel = [
+    ...Object.keys(positiveCasesGroupByDate),
+    ...Object.keys(fatalitiesGroupByDate),
+    ...Object.keys(recoveredGroupByDate)
+  ]
+    .unique()
+    .slice()
+    .sort(
+      (a, b) =>
+        parseToDate(a, 'dd/MM/yyyy', new Date()) -
+        parseToDate(b, 'dd/MM/yyyy', new Date())
+    );
+
+  const epidemiologyData = {
+    labels: epidemiologyDataLabel,
     datasets: [
       {
         label: 'Positive tests',
@@ -225,17 +238,80 @@ const Overview = props => {
         pointHoverBorderWidth: 2,
         pointRadius: 1,
         pointHitRadius: 10,
-        data: [1, 2, 1, 4]
+        data: Object.values(recoveredGroupByDate).map(d => d.length)
       }
     ]
   };
+
+  const admissionBarOption = {
+    barRoundness: 1,
+    scales: {
+      xAxes: [
+        {
+          gridLines: {
+            display: false
+          }
+        }
+      ],
+      yAxes: [
+        {
+          gridLines: {
+            display: false
+          },
+          ticks: {
+            beginAtZero: true,
+            stepSize: 1 // This should be calculated based on the minimum and maximum charts
+          }
+        }
+      ]
+    }
+  };
+
+  const admissionChartdata = {
+    labels: Object.keys(admissionGroupByDate),
+    datasets: [
+      {
+        label: 'Admission',
+        backgroundColor: 'rgba(235,148,72,1)',
+        borderColor: 'rgba(235,148,72,1)',
+        borderWidth: 1,
+        barThickness: 'flex',
+        hoverBackgroundColor: 'rgba(235,148,72,0.4)',
+        hoverBorderColor: 'rgba(235,148,72,1)',
+        data: Object.values(admissionGroupByDate).map(d => d.length)
+      }
+    ]
+  };
+
+  const lgaData = [
+    { LGA_UID: '24_01', lganame: 'Agege', value: 66 },
+    { LGA_UID: '24_02', lganame: 'Ajeromi/Ifelodun', value: 109 },
+    { LGA_UID: '24_03', lganame: 'Alimosho', value: 359 },
+    { LGA_UID: '24_04', lganame: 'Amuwo Odofin', value: 103 },
+    { LGA_UID: '24_05', lganame: 'Apapa', value: 61 },
+    { LGA_UID: '24_06', lganame: 'Badagry', value: 84 },
+    { LGA_UID: '24_07', lganame: 'Epe', value: 28 },
+    { LGA_UID: '24_08', lganame: 'Eti Osa', value: 160 },
+    { LGA_UID: '24_09', lganame: 'Ibeju Lekki', value: 61 },
+    { LGA_UID: '24_10', lganame: 'Ifako/Ijaye', value: 97 },
+    { LGA_UID: '24_11', lganame: 'Ikeja', value: 124 },
+    { LGA_UID: '24_12', lganame: 'Ikorodu', value: 201 },
+    { LGA_UID: '24_13', lganame: 'Kosofe', value: 140 },
+    { LGA_UID: '24_14', lganame: 'Lagos Island', value: 58 },
+    { LGA_UID: '24_15', lganame: 'Lagos Mainland', value: 61 },
+    { LGA_UID: '24_16', lganame: 'Mushin', value: 98 },
+    { LGA_UID: '24_17', lganame: 'Ojo', value: 119 },
+    { LGA_UID: '24_18', lganame: 'Oshodi/Isolo', value: 170 },
+    { LGA_UID: '24_19', lganame: 'Shomolu', value: 75 },
+    { LGA_UID: '24_20', lganame: 'Surulere', value: 159 }
+  ];
 
   return (
     <>
       <Grid
         container
         direction="row"
-        wrap="nowrap"
+        wrap="wrap"
         spacing={2}
         className={clsx(
           classes.PageItem,
@@ -243,7 +319,7 @@ const Overview = props => {
           classes.dataCardRow
         )}>
         {dataStoreInfo.map(info => (
-          <Grid item xs={12} md={2}>
+          <Grid item sm={12} md={4} lg={2}>
             <DataContainerWithMetadata {...info} />
           </Grid>
         ))}
@@ -288,44 +364,35 @@ const Overview = props => {
             </Grid>
           </Grid>
           <Grid item xs={12} className={classes.EpidInfoContainer}>
-            {/* <ChartHolder
-              title="Epidemiology curve"
-              styles={{
-                BaseContainer: classes.EpidInfoLegend
-              }}
-              legend={{
-                entries: Legends.epidCurve,
-                position: 'top'
-              }}
-            /> */}
-            <Line data={data} />
+            <Paper elevation={3} style={{ padding: '10px 5px 20px' }}>
+              <Line data={epidemiologyData} options={admissionBarOption} />
+            </Paper>
           </Grid>
         </Grid>
       </Grid>
       <Grid
         item
         className={clsx(classes.PageItem, classes.ConfirmedCasesSection)}>
-        <ChartHolder
-          title="Distribution of confirmed cases"
-          styles={{
-            BaseContainer: classes.BaseSection
-          }}
-        />
+        <Paper elevation={3} style={{ padding: '10px 5px 20px' }}>
+          <LagosMap
+            data={lgaData}
+            title="Distribution of Confirmed Cases"
+            OnLGAClick={a => {
+              console.log(a);
+            }}
+          />
+        </Paper>
       </Grid>
       <Grid
         item
         className={clsx(classes.PageItem, classes.DailyAdmissionsSection)}>
-        <ChartHolder
-          title="Daily Admissions"
-          legend={{
-            entries: [{ name: 'Admissions', color: '#8EE2E5' }],
-            position: 'top'
-          }}
-          styles={{
-            BaseContainer: classes.BaseSection,
-            HeaderLegendContainer: classes.AdmissionLegend
-          }}
-        />
+        <Paper elevation={3} style={{ padding: '10px 5px 20px' }}>
+          <Bar
+            data={admissionChartdata}
+            height="100px"
+            options={admissionBarOption}
+          />
+        </Paper>
       </Grid>
     </>
   );

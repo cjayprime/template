@@ -1,19 +1,18 @@
-
 import { makeStyles } from '@material-ui/core/styles';
 
 export const tableStyles = makeStyles(theme => ({
   TableContainer: {
-    backgroundColor: '#2C2E42'
+    backgroundColor: '#ffffff'
   },
   root: {
-    borderBottom: "none"
+    borderBottom: 'none'
   },
   HeaderRow: {
     borderBottom: 'none'
   },
   Table: {
-    backgroundColor: '#2C2E42',
-    border: 'none',
+    backgroundColor: '#ffffff',
+    border: 'none'
   },
   TableCell: {
     color: '#8E8CA7',

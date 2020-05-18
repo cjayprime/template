@@ -2,23 +2,20 @@ import React, { Fragment, useState } from 'react';
 import { Header } from '../../../shared/components';
 import { Container } from '@material-ui/core';
 import { DashboardPageStyles } from './index.style';
-import * as sections from './sections';
-import Overview from "./sections/Overview";
+
+import Overview from './sections/Overview';
 import CaseManagement from './sections/CaseManagement';
 import Laboratory from './sections/Laboratory';
 import Surveillance from './sections/Surveillance';
 
-
-import WithDashboardData from 'bundles/dashboard/hoc/WithDashboardData';
 const compose = require('lodash')?.flowRight;
 
 const DashboardPageView = () => {
-
   const headerTabs = [
     'Overview',
-    'Surveillance',
-    'Case Management',
-    'Laboratory '
+    'Surveillance'
+    // 'Case Management',
+    // 'Laboratory '
   ];
   const dateSelectOptions = ['23 Apr 2020', '24 Apr 2020'];
   const [selectedView, setSelectView] = useState(0);
@@ -28,12 +25,8 @@ const DashboardPageView = () => {
   const handleDateChange = _ => {};
 
   const classes = DashboardPageStyles();
-  const pages = [
-    Overview,
-    Surveillance,
-    CaseManagement,
-    Laboratory
-  ];
+  // const pages = [Overview, Surveillance, CaseManagement, Laboratory];
+  const pages = [Overview, Surveillance];
   return (
     <Fragment>
       <Header
@@ -60,9 +53,7 @@ const DashboardPageView = () => {
       />
       <Container className={classes.MainPageContainer}>
         {pages.map((Section, index) => {
-          return <Fragment>
-            {selectedView === index && <Section />}
-          </Fragment>;
+          return <Fragment>{selectedView === index && <Section />}</Fragment>;
         })}
       </Container>
     </Fragment>

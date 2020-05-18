@@ -5,7 +5,8 @@ export const DashboardPageStyles = makeStyles(theme => ({
     top: '-30px !important'
   },
   MainPageContainer: {
-    paddingTop: '5%'
+    paddingTop: '5%',
+    marginBottom: 30
   },
   TabsContainer: {
     width: '70% !important'
