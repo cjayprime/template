@@ -26,6 +26,7 @@ import TriageImage from 'images/triage.png';
 import triageInfo from 'images/triageinfo.png';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import Icon from '@material-ui/core/Icon';
 // Mutations
 import createTriageMutation from 'bundles/patient/hoc/createTriageAnswers';
 import createPatientCaseTriage from 'bundles/patient/hoc/createPatientCase';
@@ -40,16 +41,16 @@ const QontoConnector = withStyles({
   alternativeLabel: {},
   active: {
     '& $line': {
-      borderColor: '#8EE2E5'
+      borderColor: '#EFA14B'
     }
   },
   completed: {
     '& $line': {
-      borderColor: '#8EE2E5'
+      borderColor: '#EFA14B'
     }
   },
   line: {
-    borderColor: '#716A9E',
+    borderColor: '#CACACA',
     borderWidth: 3,
     borderRadius: 1,
     marginLeft: 0
@@ -68,17 +69,17 @@ const useQontoStepIconStyles = makeStyles({
     height: 15,
     width: 15,
     borderRadius: '50%',
-    backgroundColor: '#716A9E',
+    backgroundColor: '#CACACA',
     cursor: 'pointer',
     position: 'relative'
   },
   active: {
-    backgroundColor: '#fff',
+    backgroundColor: '#BF6E27',
     '&:after': {
       content: '""',
       width: 25,
       height: 25,
-      border: '2px solid #8EE2E5',
+      border: '2px solid #EFA14B',
       display: 'block',
       borderRadius: '50%',
       position: 'absolute',
@@ -87,7 +88,7 @@ const useQontoStepIconStyles = makeStyles({
     }
   },
   completed: {
-    backgroundColor: '#8EE2E5',
+    backgroundColor: '#EFA14B',
     zIndex: 1,
     fontSize: 18
   }
@@ -98,7 +99,7 @@ steps.push('Result');
 
 const useStyles = makeStyles(theme => ({
   nextButton: {
-    backgroundColor: '#27BAC0',
+    backgroundColor: '#BF6E27',
     color: '#fff',
     width: 300,
     fontSize: 13,
@@ -108,22 +109,10 @@ const useStyles = makeStyles(theme => ({
     borderRadius: 50,
     textTransform: 'uppercase',
     boxShadow:
-      '0 6px 16px rgba(39, 186, 192, 0.20), 0 2px 10px rgba(39, 186, 192, 0.10)',
+      '0 6px 16px rgba(190, 110, 39, 0.20), 0 2px 10px rgba(39, 186, 192, 0.10)',
     '&:hover': {
-      backgroundColor: '#27BAC0'
+      backgroundColor: '#BF6E27'
     }
-  },
-  backButton: {
-    backgroundColor: 'transparent',
-    color: '#fff',
-    width: 300,
-    marginRight: 20,
-    fontSize: 13,
-    fontWeight: 'bold',
-    padding: '11.5px 34px',
-    borderRadius: 50,
-    textTransform: 'uppercase',
-    boxShadow: 'none'
   },
   resultText: {
     color: '#fff',
@@ -139,9 +128,9 @@ const useStyles = makeStyles(theme => ({
   },
   roundedButton: {
     borderRadius: 50,
-    backgroundColor: '#28BAC0',
+    backgroundColor: '#BF6E27',
     '&:hover': {
-      backgroundColor: '#28BAC0'
+      backgroundColor: '#BF6E27'
     }
   },
   roundedButtonBack: {
@@ -161,20 +150,20 @@ const useStyles = makeStyles(theme => ({
     color: '#fff'
   },
   stepLabel: {
-    color: '#716A9E',
+    color: '#685E5E',
     fontWeight: 500,
     cursor: 'pointer',
     fontSize: 16
   },
   stepLabelActive: {
     '&.MuiStepLabel-label.MuiStepLabel-active': {
-      color: '#fff',
+      color: '#EFA14B',
       fontWeight: 500
     }
   },
   stepLabelCompleted: {
     '&.MuiStepLabel-label.MuiStepLabel-completed': {
-      color: '#8EE2E5',
+      color: '#EFA14B',
       fontWeight: 500
     }
   }
@@ -218,14 +207,14 @@ const ResultContainer = ({ classes, triageScore = 0, canEdit }) => {
       <Grid item xs={5} md={5} style={{ textAlign: 'center' }}>
         <Typography
           style={{
-            color: '#fff',
+            color: '#231E1E',
             fontWeight: 'bold',
             fontSize: 25,
             textTransform: 'capitalize'
           }}>
           {riskLevel}
         </Typography>
-        <Typography style={{ color: '#fff', fontSize: 20 }}>
+        <Typography style={{ color: '#231E1E', fontSize: 20 }}>
           {' '}
           The patient has been classified as {riskLevel}
         </Typography>
@@ -233,8 +222,9 @@ const ResultContainer = ({ classes, triageScore = 0, canEdit }) => {
       {canEdit && (
         <>
           <Grid item xs={5} md={5} style={{ textAlign: 'center' }}>
-            <img src={triageInfo} />
-            <Typography style={{ color: '#fff', fontSize: 20 }}>
+            {/* <img src={triageInfo} /> */}
+            <Icon className="fas fa-exclamation-circle" style={{color: '#E4A35B', fontSize: 36}} />
+            <Typography style={{ color: '#231E1E', fontSize: 20 }}>
               {' '}
               {message}
             </Typography>
@@ -597,15 +587,15 @@ export const CreateTriage = ({
                         <Grid container direction="column">
                           <Typography
                             style={{
-                              fontWeight: 'bold',
-                              color: '#fff',
+                              fontWeight: '500',
+                              color: '#231E1E',
                               fontSize: 18
                             }}>
                             {' '}
                             Please select all the statements that apply to you
                           </Typography>
                           <Typography
-                            style={{ color: '#716A9E', fontSize: 15 }}>
+                            style={{ color: '#685E5E', fontSize: 15 }}>
                             {' '}
                             Select one answer in each row
                           </Typography>
@@ -641,7 +631,7 @@ export const CreateTriage = ({
                 <PerfectScrollbar
                   options={{ suppressScrollX: true }}
                   style={{
-                    borderRight: '4px solid #716A9E',
+                    borderRight: '4px solid #EFA14B',
                     height: '70vh',
                     paddingRight: 10
                   }}>

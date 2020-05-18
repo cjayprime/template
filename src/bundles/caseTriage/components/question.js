@@ -31,15 +31,15 @@ const useStyles = makeStyles(theme => ({
   },
   labelText: {
     fontSize: 16,
-    color: '#FFFFFF',
+    color: '#231E1E',
     paddingTop: 10
   },
   container: {
     marginBottom: 10
   },
   select: {
-    color: '#fff',
-    backgroundColor: '#474562',
+    color: '#231E1E',
+    backgroundColor: '#E8E6E6',
     '&:focus': {
       borderColor: 'transparent !important'
     },
@@ -51,18 +51,21 @@ const useStyles = makeStyles(theme => ({
     }
   },
   radio: {
-    color: '#FFFFFF'
+    color: '#CACACA'
+  },
+  radioChecked: {
+    color: '#6EA915 !important'
   },
   selectElement: {
     borderColor: 'transparent !important',
-    backgroundColor: '#474562'
+    backgroundColor: '#E8E6E6'
   },
   cssOutlinedInput: {
     '&$cssFocused $notchedOutline': {
       borderColor: `${theme.palette.primary.main} !important`
     },
-    backgroundColor: '#474562',
-    color: '#fff'
+    backgroundColor: '#E8E6E6',
+    color: '#685E5E'
   },
   cssFocused: {},
   notchedOutline: {
@@ -71,22 +74,22 @@ const useStyles = makeStyles(theme => ({
     },
     borderWidth: '1px',
     borderColor: 'transparent !important',
-    color: 'white'
+    color: '#685E5E'
   },
   underline: {
-    backgroundColor: '#474562'
+    backgroundColor: '#E8E6E6'
   },
   dateCssOutlinedInput: {
     '&$cssFocused $notchedOutline': {
       borderColor: `${theme.palette.primary.main} !important`
     },
-    backgroundColor: '#474562',
-    color: '#fff',
+    backgroundColor: '#E8E6E6',
+    color: '#685E5E',
     // padding: '18.5px 14px;',
     borderRadius: 10
   },
   answerText: {
-    color: '#fff',
+    color: '#685E5E',
     fontSize: 15
   }
 }));
@@ -95,20 +98,20 @@ const dateInputTheme = createMuiTheme({
   overrides: {
     MuiFilledInput: {
       root: {
-        backgroundColor: '#474562',
-        color: '#fff',
+        backgroundColor: '#E8E6E6',
+        color: '#685E5E',
         borderRadius: '8px !important',
         border: '2px solid transparent',
         '&:hover': {
-          backgroundColor: '#474562'
+          backgroundColor: '#E8E6E6'
         },
         '&$focused': {
-          borderColor: '#fff',
-          backgroundColor: '#474562'
+          borderColor: 'transparent',
+          backgroundColor: '#E8E6E6'
         }
       },
       underline: {
-        backgroundColor: '#474562',
+        backgroundColor: '#E8E6E6',
         '&:before, &:after': {
           display: 'none'
         }
@@ -377,14 +380,16 @@ const MultiChoiceQuestionType = ({
                       <Radio
                         color="primary"
                         classes={{
-                          colorPrimary: classes.radio
+                          colorPrimary: classes.radio,
+                          checked: classes.radioChecked
                         }}
                       />
                     }
                     label={option}
-                    classes={{
-                      root: classes.radio
-                    }}
+                    // classes={{
+                    //   root: classes.radio
+                    // }}
+                    style={{color: '#231E1E'}}
                   />
                 ))}
               </Grid>

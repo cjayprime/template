@@ -6,21 +6,25 @@ import {
   OutlinedInput,
   FormControlLabel,
   Typography,
-  Button
+  Button,
+  TextField,
+  MenuItem
 } from '@material-ui/core';
 import { DataTable } from 'bundles/shared/components/Datatable';
 import moment from 'moment';
+import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
 
 import { DefaultCheckbox } from 'bundles/patient/components/custom/formBuilder';
+import { SelectTransform } from 'bundles/patient/components/custom/formBuilder';
 
 const useStyles = makeStyles(theme => ({
   regLabelText: {
     fontSize: 15,
-    color: '#fff'
+    color: '#231E1E'
   },
   LabelText: {
     fontSize: 13,
-    color: '#fff',
+    color: '#231E1E',
     marginBottom: 9
   },
   formButton: {
@@ -28,21 +32,22 @@ const useStyles = makeStyles(theme => ({
     borderRadius: 20,
     textTransform: 'none',
     border: 'none',
-    color: 'white',
+    color: '#EFA14B',
     lineHeight: 1.5,
     fontSize: 16,
     padding: '10px 50px 10px'
   },
   formButtonTS: {
-    backgroundColor: '#28BAC0',
+    color: '#FFF',
+    backgroundColor: '#BF6E27',
     boxShadow:
-      '0 6px 16px rgba(39, 186, 192, 0.20), 0 2px 10px rgba(39, 186, 192, 0.10)',
+      '0 6px 16px rgba(239, 161, 75, 0.20), 0 2px 10px rgba(239, 161, 75, 0.10)',
     '&:hover': {
-      backgroundColor: '#28BAC0',
+      backgroundColor: '#BF6E27',
       border: 'none'
     },
     '&:active': {
-      backgroundColor: '#28BAC0',
+      backgroundColor: '#BF6E27',
       border: 'none'
     }
   },
@@ -50,8 +55,8 @@ const useStyles = makeStyles(theme => ({
     '&$cssFocused $notchedOutline': {
       borderColor: `${theme.palette.primary.main} !important`
     },
-    backgroundColor: '#474562',
-    color: '#fff'
+    backgroundColor: '#E9E8E8',
+    color: '#8F8D8C'
   },
   inputFocused: {},
   inputNotch: {
@@ -64,13 +69,13 @@ const useStyles = makeStyles(theme => ({
   },
   sectionHeader: {
     fontSize: 17,
-    color: '#fff'
+    color: '#231E1E'
   },
   Table: {
     backgroundColor: 'transparent'
   },
   HeaderTableCell: {
-    color: '#BDB8D9',
+    color: '#8F8D8C',
     fontSize: 13,
     textTransform: 'uppercase',
     fontWeight: 400,
@@ -91,15 +96,44 @@ const useStyles = makeStyles(theme => ({
       paddingLeft: 0,
       fontWeight: 600
     }
-  }
+  },
+  select: {
+    color: '#231E1E',
+    backgroundColor: '#E8E6E6',
+    '&:focus': {
+      borderColor: 'transparent !important'
+    },
+    '&$cssFocused': {
+      borderColor: 'transparent !important'
+    },
+    '&:hover': {
+      borderColor: 'transparent !important'
+    }
+  },
+  ActionButton: {
+    color: '#ED666B',
+    fontSize: 13,
+    fontWeight: 'bold',
+    padding: '5px 0'
+  },
 }));
+
+const TransformIcon = () => <KeyboardArrowDown color="primary" />;
 
 export const InpatientComponent = ({ inpatient }) => {
   const classes = useStyles();
   const [displayForm, setDisplayForm] = useState(false);
+  const [patientAdmittanceData, setPatientAdmittanceData] = useState({});
 
   const onValueChange = () => {
     setDisplayForm(!displayForm);
+  };
+
+  const onPatientAdmittanceValueChange = (questionName, answerValue) => {
+    setPatientAdmittanceData({
+      ...patientAdmittanceData,
+      [questionName]: answerValue
+    });
   };
 
   const renderDaysInAdmission = row => {
@@ -110,11 +144,15 @@ export const InpatientComponent = ({ inpatient }) => {
     <>{moment(row.createdAt).format('DD MMM, h:mm A')}</>
   );
 
-  const inpatienttHeader = [
+  const renderActionComponent = () => (
+    <Button className={classes.ActionButton}>Discharge</Button>
+  );
+
+  const inpatientHeader = [
     { name: 'DATE ADMITTED', accessor: renderDateComponent },
     { name: 'ADMITTED BY', accessor: 'admittedBy' },
     { name: 'DAYS IN ADMISSION', accessor: renderDaysInAdmission },
-    { name: 'ACTION', accessor: 'createdBy' }
+    { name: 'ACTION', accessor: renderActionComponent }
   ];
 
   return (
@@ -144,17 +182,28 @@ export const InpatientComponent = ({ inpatient }) => {
                 Center
               </Typography>
               <div>
-                <OutlinedInput
+                <TextField
+                  select
                   fullWidth
-                  variant="outlined"
-                  value={'ooo'}
-                  onChange={() => {}}
-                  classes={{
-                    root: classes.input,
-                    focused: classes.inputFocused,
-                    notchedOutline: classes.inputNotch
+                  onChange={e => onPatientAdmittanceValueChange('locationId', e.target.value)}
+                  value={patientAdmittanceData['locationId']}
+                  InputProps={{
+                    className: classes.select
                   }}
-                />
+                  SelectProps={{
+                    native: false,
+                    IconComponent: TransformIcon,
+                    icon: classes.icon
+                  }}
+                  variant="outlined">
+                  {['label'].map(option => (
+                    <MenuItem
+                      key={`${option}`}
+                      value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
+                </TextField>
               </div>
             </Grid>
           </Grid>
@@ -167,10 +216,10 @@ export const InpatientComponent = ({ inpatient }) => {
                 <OutlinedInput
                   fullWidth
                   variant="outlined"
-                  value={'ooo'}
+                  value={patientAdmittanceData['notes']}
                   multiline
                   rows={3}
-                  onChange={() => {}}
+                  onChange={e => onPatientAdmittanceValueChange('notes', e.target.value)}
                   classes={{
                     root: classes.input,
                     focused: classes.inputFocused,
@@ -193,7 +242,7 @@ export const InpatientComponent = ({ inpatient }) => {
       {inpatient.length >= 1 && (
         <Grid container style={{ marginTop: 24 }}>
           <DataTable
-            headers={inpatienttHeader}
+            headers={inpatientHeader}
             noBorder={true}
             data={inpatient}
             styles={classes}

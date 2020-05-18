@@ -4,10 +4,10 @@ export const useStyles = makeStyles(theme => ({
   filterSelected: {
       borderColor: 'rgb(189, 184, 217)',
       border: '1px solid',
-      color: '#fff'
+      color: '#685E5E'
   },
   filterNonSelected: {
-    color: '#fff'
+    color: '#685E5E'
   },
   navBarDefault: {
 

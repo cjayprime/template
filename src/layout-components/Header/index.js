@@ -105,17 +105,17 @@ const Header = props => {
   return (
     <Fragment>
       <AppBar
-        color="secondary"
+        color="primary"
         className={clsx('app-header', {
           'app-header-collapsed-sidebar': props.isCollapsedLayout
         })}
         position={headerFixed ? 'fixed' : 'absolute'}
-        elevation={headerShadow ? 11 : 0}>
+        elevation={0}>
         {!props.isCollapsedLayout && <HeaderLogo />}
         <Box className="app-header-toolbar">
           <Box className="d-flex align-items-center">
             <img src={caseIcon} width={20} height={20} />
-            <Typography style={{ marginLeft: 24, fontSize: 20, color: '#fff' }}>
+            <Typography style={{ marginLeft: 24, fontSize: 20, color: '#231E1E' }}>
               {config.title}
             </Typography>
           </Box>

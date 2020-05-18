@@ -4,17 +4,17 @@ import { Grid, Typography, makeStyles } from '@material-ui/core';
 const useStyles = makeStyles(() => ({
   PatientDetailsSectionHeader: {
     fontSize: 15,
-    color: '#fff',
+    color: '#231E1E',
     fontWeight: 500
   },
   PatientDetailValueHeader: {
-    color: '#BDB8D9',
+    color: '#8F8D8C',
     fontSize: 11,
     textTransform: 'uppercase',
     fontWeight: 600
   },
   PatientDetailValueContent: {
-    color: '#fff',
+    color: '#231E1E',
     fontSize: 14,
     fontWeight: 400,
     paddingRight: 20,

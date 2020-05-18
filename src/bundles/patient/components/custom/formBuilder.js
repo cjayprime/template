@@ -56,9 +56,9 @@ const year = [
 
 export const DefaultCheckbox = withStyles({
   root: {
-    color: '#fff',
+    color: '#CACACA',
     '&$checked': {
-      color: '#fff'
+      color: '#6EA915'
     }
   },
   checked: {}
@@ -71,15 +71,15 @@ const useStyles = makeStyles(theme => ({
   },
   labelText: {
     fontSize: 16,
-    color: '#fff',
+    color: '#685E5E',
     paddingTop: 10
   },
   container: {
     marginBottom: 10
   },
   select: {
-    color: '#fff',
-    backgroundColor: '#474562',
+    color: '#8F8D8C',
+    backgroundColor: '#E9E8E8',
     '&:focus': {
       borderColor: 'transparent !important'
     },
@@ -95,14 +95,14 @@ const useStyles = makeStyles(theme => ({
   },
   selectElement: {
     borderColor: 'transparent !important',
-    backgroundColor: '#474562'
+    backgroundColor: '#E9E8E8'
   },
   cssOutlinedInput: {
     '&$cssFocused $notchedOutline': {
       borderColor: `${theme.palette.primary.main} !important`
     },
-    backgroundColor: '#474562',
-    color: '#fff'
+    backgroundColor: '#E9E8E8',
+    color: '#8F8D8C'
   },
   cssFocused: {},
   notchedOutline: {
@@ -114,7 +114,7 @@ const useStyles = makeStyles(theme => ({
     color: 'white'
   },
   underline: {
-    backgroundColor: '#474562'
+    backgroundColor: '#E9E8E8'
   }
 }));
 
@@ -402,7 +402,7 @@ const generateSelectType = (input, classes, setFormState, formState) => {
   );
 };
 
-const SelectTransform = ({ input, setFormState, formState }) => {
+export const SelectTransform = ({ input, setFormState, formState }) => {
   const classes = useStyles();
 
   const selectType = {

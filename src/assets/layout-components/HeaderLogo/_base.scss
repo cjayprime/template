@@ -10,11 +10,13 @@ body {
 
     display: flex;
     align-items: center;
-    // background: rgba(255,255,255,.08); //test
     padding-left: ($spacer);
     padding-right: ($spacer);
     justify-content: space-between;
     transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
+    background-color: $background-color-primary !important;
+    background-image: linear-gradient(to right, $background-color-primary, $background-color-primary-light) !important;
+    color: $white !important;
   }
 
   .app-header-logo-close {

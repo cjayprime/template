@@ -225,7 +225,7 @@ const Routes = ({history}) => {
   const SuspenseLoading = () => {
     return (
       <Fragment>
-        <div className="d-flex align-items-center flex-column vh-100 justify-content-center text-center py-3" style={{backgroundColor: "#2D2E42"}}>
+        <div className="d-flex align-items-center flex-column vh-100 justify-content-center text-center py-3" style={{backgroundColor: "#685E5E3"}}>
           <div className="d-flex align-items-center flex-column px-4">
             { /*<ClimbingBoxLoader color={'#5383ff'} loading={true} /> */}
             <img src={logo} width={50} height={50}/>

@@ -13,6 +13,7 @@ body {
   .app-sidebar-menu {
     height: calc(100vh - #{$header-height});
     background-color: $background-color-primary;
+    background-image: linear-gradient(to right, $background-color-primary, $background-color-primary-light);
   }
 
   .app-sidebar-wrapper {

@@ -30,6 +30,7 @@ import dashboard2 from 'images/icon3.png'
 // import dashboard3 from 'images/icon4.png'
 // import dashboard4 from 'images/icon5.png'
 // import dashboard5 from 'images/icon6.png'
+import Icon from '@material-ui/core/Icon';
 
 var iconsMap = {
   BarChartIcon: BarChartIcon,
@@ -59,42 +60,42 @@ const allowedViews = [
     content: [
       {
         label: 'Dashboard',
-        icon: <img className="app-sidebar-icon" src={dashboard} />,
+        icon: <Icon className="fas fa-chart-pie" style={{color: '#E4A35B', fontSize: 18, marginRight: 20}} />,
         to: '/Dashboard'
       },
       {
         label: 'Patient',
-        icon: <img className="app-sidebar-icon" src={dashboard2} />,
+        icon: <Icon className="fas fa-search" style={{color: '#E4A35B', fontSize: 18, marginRight: 20}} />,
         to: "/Patient"
       },
       {
         label: 'Queue',
-        icon: <img className="app-sidebar-icon" src={queue} />,
+        icon: <Icon className="fas fa-th-list" style={{color: '#E4A35B', fontSize: 18, marginRight: 20}} />,
         to: "/Queue"
       },
       {
         label: 'KPI',
-        icon: <img className="app-sidebar-icon" src={kpi} />,
+        icon: <Icon className="fas fa-user-tie" style={{color: '#E4A35B', fontSize: 18, marginRight: 20}} />,
         to: "/Kpi"
       },
       {
         label: 'Appointment',
-        icon: <img className="app-sidebar-icon" src={appointment} />,
+        icon: <Icon className="fas fa-calendar-day" style={{color: '#E4A35B', fontSize: 18, marginRight: 20}} />,
         to: "/Appointment"
       },
       {
         label: 'Lab',
-        icon: <img className="app-sidebar-icon" src={lab} />,
+        icon: <Icon className="fas fa-flask" style={{color: '#E4A35B', fontSize: 18, marginRight: 20}} />,
         to: "/Lab"
       },
       {
         label: 'Bed Management',
-        icon: <img className="app-sidebar-icon" src={bedmanagement} />,
+        icon: <Icon className="fas fa-bed" style={{color: '#E4A35B', fontSize: 18, marginRight: 20}} />,
         to: "/BedManagement"
       },
       {
         label: 'Settings',
-        icon: <img className="app-sidebar-icon" src={setting} />,
+        icon: <Icon className="fas fa-sliders-h" style={{color: '#E4A35B', fontSize: 18, marginRight: 20}} />,
         content: [
           {
             label: "Location",

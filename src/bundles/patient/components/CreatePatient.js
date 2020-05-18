@@ -119,7 +119,7 @@ const CreatePatient = ({ createPatientPG, addQueue, history, savePatient }) => {
             label={
               <Typography className={classes.regLabelText}>
                 {' '}
-                Send Emmergency Number to caller{' '}
+                Send Emergency Number to caller{' '}
               </Typography>
             }
           />

@@ -21,7 +21,7 @@ export const PatientCases = ({ patientCase, patient }) => {
       backgroundColor: 'transparent'
     },
     HeaderTableCell: {
-      color: '#BDB8D9',
+      color: '#8F8D8C',
       fontSize: 13,
       textTransform: 'uppercase',
       fontWeight: 400,
@@ -53,7 +53,7 @@ export const PatientCases = ({ patientCase, patient }) => {
       }
     },
     ActionButton: {
-      color: '#EEBEC2',
+      color: '#ED666B',
       fontSize: 13,
       fontWeight: 'bold',
       padding: '5px 0'
@@ -65,18 +65,18 @@ export const PatientCases = ({ patientCase, patient }) => {
     },
     dialogheaderText: {
       fontSize: 24,
-      color: '#fff',
+      color: '#231E1E',
       textAlign: 'center'
     },
     dialogContainer: {
-      backgroundColor: 'rgba(44, 46, 65, 0.7)',
+      backgroundColor: 'rgba(246, 246, 246, 0.7)',
       backdropFilter: 'blur(4px)'
     },
     dialogCloseButton: {
       position: 'fixed',
       right: theme.spacing(1),
       top: theme.spacing(1),
-      color: '#fff'
+      color: '#231E1E'
     }
   }));
   const classes = useStyle();
@@ -162,18 +162,18 @@ export const PatientCases = ({ patientCase, patient }) => {
                   />
                 </Grid>
                 <Grid xs={2}>
-                  <Typography style={{ color: '#BDB8D9', fontSize: 15 }}>
+                  <Typography style={{ color: '#685E5E', fontSize: 15 }}>
                     Date
                   </Typography>
-                  <Typography style={{ color: '#fff', fontSize: 13 }}>
+                  <Typography style={{ color: '#231E1E', fontSize: 13 }}>
                     Date
                   </Typography>
                 </Grid>
                 <Grid xs={2}>
-                  <Typography style={{ color: '#BDB8D9', fontSize: 15 }}>
+                  <Typography style={{ color: '#685E5E', fontSize: 15 }}>
                     Epid No.
                   </Typography>
-                  <Typography style={{ color: '#fff', fontSize: 13 }}>
+                  <Typography style={{ color: '#231E1E', fontSize: 13 }}>
                     {patient.epidNumber}
                   </Typography>
                 </Grid>
