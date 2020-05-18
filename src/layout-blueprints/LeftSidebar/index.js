@@ -36,7 +36,7 @@ const LeftSidebar = props => {
   
   const data = withQueueHoc();
 
-  console.log(data, 'Was triggered')
+
 
   return (
     <Fragment>

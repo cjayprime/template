@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Grid, Typography } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import clsx from 'clsx';
 import {
   SectionOneData,
@@ -14,7 +14,7 @@ import {
 } from '../../../../../shared/components';
 import { LaboratoryStyles } from './index.style';
 
-export const Laboratory = () => {
+const Laboratory = () => {
   const classes = LaboratoryStyles();
   return (
     <div className={classes.PageContainer}>
@@ -30,6 +30,7 @@ export const Laboratory = () => {
       <Grid
         container
         wrap="nowrap"
+        spacing={2}
         className={clsx(classes.PageItem, classes.SectionTwo)}>
         {SectionTwoData.map(node => {
           return (
@@ -60,6 +61,7 @@ export const Laboratory = () => {
         </Grid>
         <Grid
           container
+          spacing={2}
           wrap="nowrap"
           className={clsx(classes.SectionThreeItem, classes.MetaInfoContainer)}>
           {SectionThreeData.map(node => {
@@ -79,6 +81,7 @@ export const Laboratory = () => {
         </Grid>
         <Grid
           container
+          spacing={2}
           wrap="nowrap"
           className={clsx(
             classes.SectionThreeItem,
@@ -112,3 +115,5 @@ export const Laboratory = () => {
     </div>
   );
 };
+
+export default Laboratory;

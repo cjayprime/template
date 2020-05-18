@@ -4,10 +4,10 @@ const SHADOW_BACKDROP = '#282A3D';
 export const ChartHolderStyles = makeStyles(theme => ({
   BaseContainer: {
     borderRadius: `${theme.spacing(0.7)}px`,
-    height: '130px',
+    height: '100%',
     width: '100%',
     padding: '3%',
-    marginRight: `${theme.spacing(1.5)}px`,
+    // marginRight: `${theme.spacing(1.5)}px`,
     backgroundColor: '#3A3C4F',
     boxShadow: `5px 5px 10px 10px ${SHADOW_BACKDROP}`,
     flexDirection: 'column',

@@ -1,14 +1,14 @@
 import React from 'react';
-import { Container, Grid, Typography } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import clsx from 'clsx';
 import { ChartHolder } from '../../../../../shared/components';
 import { CaseManagementStyles } from './index.style';
 import { SectionTwoRows, SectionThreeRows } from './store';
 
-export const CaseManagement = () => {
+const CaseManagement = () => {
   const classes = CaseManagementStyles();
   return (
-    <Container className={classes.CaseContainer}>
+    <div className={classes.CaseContainer}>
       <Grid
         container
         direction="column"
@@ -44,6 +44,7 @@ export const CaseManagement = () => {
       <Grid
         container
         wrap="nowrap"
+        spacing={2}
         className={clsx(classes.PageItem, classes.SectionTwo)}>
         {SectionTwoRows.map(node => (
           <Grid item xs={4} className={classes.SectionTwoItem}>
@@ -72,7 +73,12 @@ export const CaseManagement = () => {
             {'Duration of admission'}
           </Typography>
         </Grid>
-        <Grid item container wrap="nowrap" className={classes.SectionThree}>
+        <Grid
+          item
+          spacing={2}
+          container
+          wrap="nowrap"
+          className={classes.SectionThree}>
           {SectionThreeRows.map((node, i) => (
             <Grid
               item
@@ -111,6 +117,8 @@ export const CaseManagement = () => {
           />
         </Grid>
       </Grid>
-    </Container>
+    </div>
   );
 };
+
+export default CaseManagement;

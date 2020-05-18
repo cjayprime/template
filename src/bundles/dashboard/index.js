@@ -1,5 +1,5 @@
 import React from 'react';
-import { DashboardPageView } from './components/Views';
+import DashboardPageView from './components/Views';
 
 const DashboardPage = () => <DashboardPageView />;
 

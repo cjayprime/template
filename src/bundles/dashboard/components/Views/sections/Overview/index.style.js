@@ -6,39 +6,30 @@ export const OverviewPageStyles = makeStyles(theme => ({
     borderRadius: `${theme.spacing(0.7)}px`,
     justifyContent: 'center',
     alignItems: 'center',
-    height: '130px',
-    width: '90%',
     paddingTop: '5%',
-    marginRight: `${theme.spacing(1.5)}px`,
-    backgroundColor: '#3A3C4F',
+    backgroundColor: '#fff',
     boxShadow: `5px 5px 10px 10px ${SHADOW_BACKDROP}`
   },
+  dataCardRow: {},
+  dataCard: {
+    padding: 20
+  },
   PageItem: {
-    marginBottom: '3%'
+    marginBottom: '1%'
   },
-  SectionTwo: {
-    height: '40vh'
-  },
-  LargeSummaryHolder: {
-    left: '35px !important'
-  },
-  LargeEntryHolder: {
-    left: '35px !important'
-  },
+  SectionTwo: {},
+  LargeSummaryHolder: {},
+  LargeEntryHolder: {},
   EpidInfoContainer: {
-    height: '60%',
     marginTop: '2%'
   },
   EpidInfoLegend: {
     height: '100%',
-    width: '94%',
-    position: 'relative',
-    left: '4.5%'
+    position: 'relative'
   },
   TableContainer: {
-    height: '97%',
-    paddingTop: '0',
-    marginRight: '8%'
+    height: '100%',
+    paddingTop: '0'
   },
   Table: {
     backgroundColor: '#3A3C4F'
@@ -51,12 +42,9 @@ export const OverviewPageStyles = makeStyles(theme => ({
     height: '100%'
   },
   ConfirmedCasesSection: {
-    height: '22vh',
     marginBottom: '2%'
   },
-  DailyAdmissionsSection: {
-    height: '26vh'
-  },
+  DailyAdmissionsSection: {},
   AdmissionLegend: {
     position: 'relative',
     width: '10%',

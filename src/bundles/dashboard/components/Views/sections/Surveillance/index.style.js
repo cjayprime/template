@@ -5,7 +5,7 @@ export const SurveillanceSectionStyles = makeStyles(theme => ({
     height: '100%'
   },
   PageItem: {
-    marginBottom: '3%'
+    marginBottom: '2%'
   },
   SummaryContent: {
     height: '5vh',
@@ -44,25 +44,16 @@ export const SurveillanceSectionStyles = makeStyles(theme => ({
     borderRadius: '5px'
   },
   initialSection: {
-    height: '140px'
+    height: '200px'
   },
-  BaseSectionHolder: {
-    height: '140px'
-  },
-  EpidSectionHolder: {
-    width: '95%'
-  },
-  EpidContainer: {
-    width: '90%',
-    marginLeft: '10px'
-  },
+  BaseSectionHolder: {},
+  EpidSectionHolder: {},
+  EpidContainer: {},
   SectionTwo: {
+    marginTop: '1%',
     height: '250px'
   },
-  SectionTwoItem: {
-    height: '250px',
-    marginRight: `${theme.spacing(2.2)}px`
-  },
+  SectionTwoItem: {},
   SectionTwoNode: {
     height: '250px',
     paddingTop: '5%',
