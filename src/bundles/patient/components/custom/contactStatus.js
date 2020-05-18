@@ -9,9 +9,11 @@ const ContactStatus = ({ classes, caller, setSelected, selected }) => {
           <Button
             style={{ width: '100%' }}
             key={index.toString()}
-            className={selected == item ? classes.buttons : classes.button}
+            className={selected == item ? classes.selectedButton : classes.button}
             onClick={() => setSelected(item)}>
-            <Typography style={{color: '#fff', fontSize: 16}} > {item} </Typography>
+            <Typography
+              className={selected == item ? classes.selectedButtonText : classes.buttonText}
+              style={{fontSize: 16}}> {item} </Typography>
           </Button>
         );
       })}

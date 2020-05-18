@@ -143,7 +143,7 @@ const remapLab = (user) => ({
       <Header
         pageTitle={'Appointment'}
         actionButton= {
-            <ButtonBase to="/CreateAppointment" component={Link} style={{color: '#80C9CE'}}>
+            <ButtonBase to="/CreateAppointment" component={Link} style={{color: '#EFA14B'}}>
                  Create Appointment
             </ButtonBase>
         }
@@ -159,7 +159,7 @@ const remapLab = (user) => ({
           },
         }}
       />
-      <div style={{ marginTop: 50 }}>
+      <div /*style={{ marginTop: 50 }}*/>
         <TabPanel value={value} index={0}>
             <Grid container direction="column" className={classes.TableContainer}>
             <DataTable

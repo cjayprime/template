@@ -39,15 +39,15 @@ const useStyles = makeStyles(theme => ({
   },
   formButtonTS: {
     color: '#FFF',
-    backgroundColor: '#BF6E27',
+    backgroundColor: '#CB6A00',
     boxShadow:
       '0 6px 16px rgba(239, 161, 75, 0.20), 0 2px 10px rgba(239, 161, 75, 0.10)',
     '&:hover': {
-      backgroundColor: '#BF6E27',
+      backgroundColor: '#CB6A00',
       border: 'none'
     },
     '&:active': {
-      backgroundColor: '#BF6E27',
+      backgroundColor: '#CB6A00',
       border: 'none'
     }
   },

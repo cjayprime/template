@@ -283,7 +283,7 @@ const StaffCreateView = props => {
               </Typography>
               <Grid container item className={classes.ProfileSectionContainer}>
                 <Grid item className={classes.Avatar} xs={2}>
-                  <Avatar className={classes.AvatarIcon} />
+                  <Avatar className={classes.AvatarIcon}/>
                 </Grid>
                 <Grid item xs={7} className={classes.InfoContainer}>
                   <Typography className={classes.InfoContainerText}>

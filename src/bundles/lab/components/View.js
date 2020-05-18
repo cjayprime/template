@@ -16,13 +16,13 @@ const compose = require('lodash')?.flowRight;
 
 const useStyles = makeStyles(theme => ({
   tableTitle: {
-    color: 'white'
+    color: '#231E1E'
   },
   tableContainer: {
     marginBottom: theme.spacing(6)
   },
   actionButton: {
-    color: '#80C9CE',
+    color: '#EFA14B',
     fontWeight: '700',
     textTransform: 'uppercase'
   },
@@ -31,24 +31,26 @@ const useStyles = makeStyles(theme => ({
     padding: 10
   },
   formButton: {
+    color: '#EFA14B',
     boxShadow: 'none',
     borderRadius: 20,
     textTransform: 'none',
     border: 'none',
-    color: 'white',
+    // color: 'white',
     lineHeight: 1.5,
     fontSize: 16,
     padding: '10px 50px 10px'
   },
   formButtonTS: {
-    backgroundColor: '#80C9CE',
+    backgroundColor: '#EFA14B',
+    color: '#fff',
     '&:hover': {
-      backgroundColor: '#80C9CE',
+      backgroundColor: '#EFA14B',
       border: 'none',
       boxShadow: 'none'
-    },
+  },
     '&:active': {
-      backgroundColor: '#80C9CE',
+      backgroundColor: '#EFA14B',
       border: 'none',
       boxShadow: 'none'
     }

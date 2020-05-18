@@ -7,8 +7,9 @@ export const OverviewPageStyles = makeStyles(theme => ({
     justifyContent: 'center',
     alignItems: 'center',
     paddingTop: '5%',
+    marginRight: `${theme.spacing(1.5)}px`,
     backgroundColor: '#fff',
-    boxShadow: `0px 4px 8px 0px #CACACA`
+    boxShadow: `0px 4px 8px 0px #cacaca`
   },
   dataCardRow: {},
   dataCard: {
@@ -32,11 +33,11 @@ export const OverviewPageStyles = makeStyles(theme => ({
     paddingTop: '0'
   },
   Table: {
-    backgroundColor: '#3A3C4F'
+    backgroundColor: '#fff'
   },
   TableCell: {
     fontSize: '11.5px',
-    color: 'white'
+    color: '#685E5E'
   },
   BaseSection: {
     height: '100%'

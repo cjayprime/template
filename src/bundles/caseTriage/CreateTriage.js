@@ -75,7 +75,7 @@ const useQontoStepIconStyles = makeStyles({
     position: 'relative'
   },
   active: {
-    backgroundColor: '#BF6E27',
+    backgroundColor: '#CB6A00',
     '&:after': {
       content: '""',
       width: 25,
@@ -100,7 +100,7 @@ steps.push('Result');
 
 const useStyles = makeStyles(theme => ({
   nextButton: {
-    backgroundColor: '#BF6E27',
+    backgroundColor: '#CB6A00',
     color: '#fff',
     width: 300,
     fontSize: 13,
@@ -112,7 +112,23 @@ const useStyles = makeStyles(theme => ({
     boxShadow:
       '0 6px 16px rgba(190, 110, 39, 0.20), 0 2px 10px rgba(39, 186, 192, 0.10)',
     '&:hover': {
-      backgroundColor: '#BF6E27'
+      backgroundColor: '#CB6A00'
+    }
+  },
+  backButton: {
+    backgroundColor: 'transparent',
+    color: '#CB6A00',
+    width: 300,
+    fontSize: 13,
+    fontWeight: 'bold',
+    padding: '11.5px 34px',
+    marginRight: 10, //fix
+    borderRadius: 50,
+    boxShadow: 'none',
+    textTransform: 'uppercase',
+    '&:hover': {
+      backgroundColor: 'transparent',
+      boxShadow: 'none',
     }
   },
   resultText: {
@@ -129,9 +145,9 @@ const useStyles = makeStyles(theme => ({
   },
   roundedButton: {
     borderRadius: 50,
-    backgroundColor: '#BF6E27',
+    backgroundColor: '#CB6A00',
     '&:hover': {
-      backgroundColor: '#BF6E27'
+      backgroundColor: '#CB6A00'
     }
   },
   roundedButtonBack: {
@@ -707,7 +723,7 @@ export const CreateTriage = ({
           disabled={activeStep === 0}
           classes={{
             root: classes.backButton,
-            focusVisible: classes.BackButton
+            focusVisible: classes.backButton
           }}
           onClick={handleBack}
           variant="contained">

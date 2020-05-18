@@ -9,9 +9,11 @@ import {
   DialogContent,
   DialogTitle,
   OutlinedInput,
+  IconButton,
   Button
 } from '@material-ui/core';
 import { connect } from 'react-redux';
+import CloseIcon from '@material-ui/icons/Close';
 import { DataTable } from '../../shared/components';
 import { addBedLocation, addSelectedLocation } from 'bundles/location/actions';
 import updateLocationMutation from 'bundles/location/hoc/updateLocation'
@@ -23,7 +25,7 @@ const compose = require('lodash')?.flowRight;
 const useStyles = makeStyles(theme => ({
   text: {
     fontSize: 15,
-    color: '#fff'
+    color: '#231E1E'
   },
   headerText: {
     fontSize: 20,
@@ -32,7 +34,7 @@ const useStyles = makeStyles(theme => ({
   },
   newLocation: {
     backgroundColor: 'transparent',
-    color: '#8EE2E5',
+    color: '#EFA14B',
     fontSize: 13,
     fontWeight: 'bold',
    // padding: '11.5px 34px',
@@ -41,14 +43,14 @@ const useStyles = makeStyles(theme => ({
     textTransform: 'uppercase',
     '&:hover': {
       backgroundColor: 'transparent',
-      color: '#8EE2E5',
+      color: '#EFA14B',
       fontSize: 13,
       cursor: 'pointer !important',
       boxShadow: 'none',
     }
   },
   primaryButton: {
-    backgroundColor: '#27BAC0',
+    backgroundColor: '#CB6A00',
     color: '#fff',
     fontSize: 13,
     fontWeight: 'bold',
@@ -56,16 +58,16 @@ const useStyles = makeStyles(theme => ({
     borderRadius: 50,
     textTransform: 'uppercase',
     boxShadow:
-      '0 6px 16px rgba(39, 186, 192, 0.20), 0 2px 10px rgba(39, 186, 192, 0.10)',
+    '0 6px 16px rgba(239, 161, 75, 0.20), 0 2px 10px rgba(239, 161, 75, 0.10)',
     '&:hover': {
-      backgroundColor: '#27BAC0',
+      backgroundColor: '#CB6A00',
       color: '#fff',
       fontSize: 13
     }
   },
   secondaryButton: {
     backgroundColor: 'transparent',
-    color: '#fff',
+    color: '#CB6A00',
     fontSize: 13,
     fontWeight: 'bold',
     padding: '11.5px 34px',
@@ -74,7 +76,7 @@ const useStyles = makeStyles(theme => ({
     boxShadow: 'none',
     '&:hover': {
       backgroundColor: 'transparent',
-      color: '#fff',
+      color: '#CB6A00',
       fontSize: 13,
       boxShadow: 'none'
     }
@@ -84,12 +86,27 @@ const useStyles = makeStyles(theme => ({
     // backgroundColor: '#2B2D40',
     boxShadow: 'none'
   },
+  dialogheaderText: {
+    fontSize: 24,
+    color: '#231E1E',
+    textAlign: 'center'
+  },
+  dialogContainer: {
+    backgroundColor: 'rgba(246, 246, 246, 0.7)',
+    backdropFilter: 'blur(4px)'
+  },
+  dialogCloseButton: {
+    position: 'fixed',
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: '#231E1E'
+  },
   cssOutlinedInput: {
     '&$cssFocused $notchedOutline': {
       borderColor: `${theme.palette.primary.main} !important`
     },
-    backgroundColor: '#474562',
-    color: '#fff'
+    backgroundColor: '#E8E6E6',
+    color: '#685E5E'
   },
   cssFocused: {},
   notchedOutline: {
@@ -108,10 +125,10 @@ const useStyles = makeStyles(theme => ({
     borderRadius: 50,
     marginRight: 5,
     textTransform: 'uppercase',
-    color: '#8EE2E5',
+    color: '#CB6A00',
     '&:hover': {
       backgroundColor: 'transparent',
-      color: '#8EE2E5'
+      color: '#CB6A00'
     }
   },
   actionDeleteButton: {
@@ -122,10 +139,10 @@ const useStyles = makeStyles(theme => ({
     borderRadius: 50,
     marginRight: 5,
     textTransform: 'uppercase',
-    color: '#EEBEC2',
+    color: '#ED666B',
     '&:hover': {
       backgroundColor: 'transparent',
-      color: '#EEBEC2'
+      color: '#ED666B'
     }
   }
 }));
@@ -313,11 +330,18 @@ const Location = ({ locationData, createLocation, addBed, addSelected, history, 
         fullWidth={true}
         classes={{
           paper: classes.dialog,
-          root: classes.dialogRoot
+          root: classes.dialogRoot,
+          container: classes.dialogContainer
         }}
         maxWidth={'sm'}>
+          <IconButton
+            aria-label="close"
+            className={classes.dialogCloseButton}
+            onClick={handleClose}>
+            <CloseIcon />
+          </IconButton>
         <DialogTitle id="form-dialog-title">
-          <Typography className={classes.headerText}>
+          <Typography className={classes.dialogheaderText}>
             Add new location
           </Typography>
         </DialogTitle>

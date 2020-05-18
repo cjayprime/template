@@ -120,7 +120,7 @@ export const Header = ({ pageTitle, contexts, pageIcon, styles = {}, actionButto
   };
 
   return (
-    <Grid container className={clsx(classes.HeaderContainer, styles.root)}>
+    <Grid container className={clsx(classes.HeaderContainer, styles.root)} style={{ marginBottom: 26 }} alignItems="flex-end">
       <Grid container item xs={3}>
         <Grid item xs={3} className={classes.HeaderItem}>
           {pageIcon && pageIcon}

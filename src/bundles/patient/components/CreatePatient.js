@@ -193,7 +193,7 @@ const CreatePatient = ({ createPatientPG, addQueue, history, savePatient }) => {
                   selected={selected}
                   setSelected={setSelected}
                 />
-                <PerfectScrollbar style={{ height: '80vh', borderRight: '4px solid #716A9E', padding: 20}}>
+                <PerfectScrollbar style={{ height: '80vh', borderRight: '4px solid #EFA14B', padding: 20}} >
                   {QUESTIONS.map(item => {
                     return (
                       <Grid key={item.title}>

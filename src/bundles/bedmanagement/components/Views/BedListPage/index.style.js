@@ -11,10 +11,10 @@ export const BedListPageStyles = makeStyles(theme => ({
   HeaderTabsContainer: {
     width: '80% !important',
     height: '50px !important',
-    marginBottom: 36
+    // marginBottom: 36
   },
   ActionButton: {
-    color: DEFAULT_GREEN,
+    color: '#EFA14B',
     fontWeight: '800',
     '&:hover': {
       cursor: 'pointer'

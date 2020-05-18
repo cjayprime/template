@@ -2,11 +2,12 @@ import { makeStyles } from '@material-ui/styles';
 
 export const StaffCreateStyles = makeStyles(_theme => ({
   PageContainer: {
-    color: 'white',
-   // height: '120vh'
+    color: '#231E1E',
+    minHeight: '120vh'
   },
   FormContainer: {
-   // height: '100vh'
+    minHeight: '100vh',
+    height: 'auto'
   },
   FormContainerItem: {
     maxWidth: '100%',
@@ -22,8 +23,8 @@ export const StaffCreateStyles = makeStyles(_theme => ({
     height: '20px'
   },
   AvatarIcon: {
-    height: '70px',
-    width: '70px'
+    width: _theme.spacing(12),
+    height: _theme.spacing(12),
   },
   InfoContainer: {
     position: 'relative',
@@ -33,13 +34,13 @@ export const StaffCreateStyles = makeStyles(_theme => ({
     fontSize: '12.5px',
     fontWeight: 'bold',
     marginBottom: '3%',
-    color: 'rgb(189, 184, 217)'
+    color: '#685E5E'
   },
   UploadButton: {
     width: '100%',
     fontSize: '15px',
     fontWeight: 'bold',
-    color: '#79BCC2',
+    color: '#EFA14B',
     '&:hover': {
       cursor: 'pointer',
       textDecoration: 'underline'
@@ -62,7 +63,7 @@ export const StaffCreateStyles = makeStyles(_theme => ({
   AccessLevelContainer: {},
   AccessHeaderSection: {},
   AccessHeadertext: {
-    color: 'white',
+    color: '#231E1E',
     fontSize: '14px',
     marginBottom: '5%'
   },
@@ -81,10 +82,11 @@ export const StaffCreateStyles = makeStyles(_theme => ({
   },
   AccessLevelText: {
     fontSize: '12.5px',
-    color: 'white'
+    color: '#231E1E'
   },
   AccessLevelForm: {
-   // height: '100vh'
+    minHeight: '100vh',
+    height: 'auto'
   },
   LevelChildrenContainer: {
     position: 'relative',
@@ -99,15 +101,15 @@ export const StaffCreateStyles = makeStyles(_theme => ({
     height: '60px'
   },
   Radio: {
-    color: 'white !important'
+    color: '#CACACA !important'
   },
   RadioChecked: {
-    color: '#79BCC2 !important'
+    color: '#6EA915 !important'
   },
   ButtonContainer: {
     justifyContent: 'flex-end',
-    position: 'absolute',
-    bottom: 0
+    // position: 'absolute',
+    // bottom: 0
   },
   ButtonContainerItem: {
     textAlign: 'end',
@@ -127,12 +129,12 @@ export const StaffCreateStyles = makeStyles(_theme => ({
     height: '100%',
     width: '150px',
     color: 'white',
-    backgroundColor: '#79BCC2',
+    backgroundColor: '#EFA14B',
     fontSize: '14px',
     fontWeight: 'bold',
     '&:hover': {
-      backgroundColor: 'white',
-      color: '#79BCC2'
+      backgroundColor: '#EFA14B',
+      color: '#fff'
     }
   }
 }));

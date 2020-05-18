@@ -7,15 +7,15 @@ export const ChartHolderStyles = makeStyles(theme => ({
     height: '100%',
     width: '100%',
     padding: '3%',
-    // marginRight: `${theme.spacing(1.5)}px`,
-    backgroundColor: '#3A3C4F',
-    boxShadow: `0px 4px 8px 0px #CACACA`,
+    marginRight: `${theme.spacing(1.5)}px`,
+    backgroundColor: '#fff',
+    boxShadow: `0px 4px 8px 0px #cacaca`,
     flexDirection: 'column',
     flexWrap: 'nowrap'
   },
   HeaderSection: {
     height: '20%',
-    color: 'white'
+    color: '#685E5E'
   },
   HeaderText: {
     fontSize: '13.5px',
@@ -53,7 +53,7 @@ export const ChartHolderStyles = makeStyles(theme => ({
   FooterTextContainer: { textAlign: 'center', paddingRight: '15px' },
   FooterText: {
     fontSize: '9.5px',
-    color: 'white',
+    color: '#685E5E',
     textAlign: 'center',
     paddingRight: '15px'
   }

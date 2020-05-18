@@ -57,14 +57,14 @@ const NewAppointment = ({
         {!data ? (
           <Button
             style={{
-              border: '1px solid #3A3C4F',
+              border: '1px solid #EFA14B',
               borderRadius: 10,
               justifyContent: 'left',
               width: 650,
               height: 85,
               padding: 10,
-              boxShadow: `5px 5px 9px 3px #282a3d`,
-              backgroundColor: '#3A3C4F',
+              boxShadow: `0px 4px 6px 0px #cacaca`,
+              backgroundColor: '#EFA14B',
               margin: 10,
               color: '#fff'
             }}>
@@ -77,14 +77,14 @@ const NewAppointment = ({
         ) : (
           <Button
             style={{
-              border: '1px solid #3A3C4F',
+              border: '1px solid #EFA14B',
               borderRadius: 10,
               justifyContent: 'left',
               width: 650,
               height: 85,
               padding: 10,
-              boxShadow: `5px 5px 9px 3px #282a3d`,
-              backgroundColor: '#3A3C4F',
+              boxShadow: `0px 4px 6px 0px #cacaca`,
+              backgroundColor: '#EFA14B',
               margin: 10,
               color: '#fff'
             }}>
@@ -194,7 +194,7 @@ const NewAppointment = ({
           onClick={() => save(config.nextState, findId(formState['rooms']))}
           className={classes.regButtons}
           style={{
-            boxShadow: `5px 5px 9px 3px #282a3d`,
+            boxShadow: `0px 4px 6px 0px #cacaca`,
             width: 650,
             marginTop: 10,
             height: 58,

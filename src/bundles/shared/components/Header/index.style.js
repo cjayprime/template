@@ -10,11 +10,11 @@ export const HeaderStyles = makeStyles(theme => ({
     // top: '-103px' //TODO{H.Ezekiel} we should not need to do this
   },
   HeaderItem: {
-    padding: `${theme.spacing(2)}px`,
-    color: 'white'
+    // padding: `${theme.spacing(2)}px`,
+    color: '#231E1E'
   },
   HeaderItemContent: {
-    padding: '1.5%'
+    // padding: '1.5%'
   },
   HeaderCaption: {
     fontSize: '15px',
@@ -53,12 +53,12 @@ export const HeaderStyles = makeStyles(theme => ({
   },
   DateContextInput: {
     width: '90%',
-    color: DEFAULT_GREEN,
+    color: '#EFA14B',
     paddingRight: `${theme.spacing(1)}px`,
     borderRight: `.5px solid #FDFDFE70`
   },
   DateContextInputBase: {
-    color: DEFAULT_GREEN,
+    color: '#EFA14B',
     fontWeight: '800',
     fontSize: '14px',
     textTransform: 'uppercase',

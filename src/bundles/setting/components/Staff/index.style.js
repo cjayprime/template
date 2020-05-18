@@ -14,14 +14,15 @@ export const StaffPageStyles = makeStyles(theme => ({
   },
   StaffNumberText: {
     fontWeight: 'bold',
-    fontSize: '16px'
+    fontSize: '16px',
+    color: '#231E1E'
   },
   AddNewStaffButton: {
     width: '20%',
     float: 'right',
     fontSize: '15px',
     fontWeight: 'bold',
-    color: '#79BCC2',
+    color: '#EFA14B',
     '&:hover': {
       cursor: 'pointer',
       textDecoration: 'underline'
@@ -31,14 +32,14 @@ export const StaffPageStyles = makeStyles(theme => ({
   ActionContainerItem: {
     fontSize: '13px',
     fontWeight: 'bold',
-    color: '#79BCC2',
+    color: '#EFA14B',
     '&:hover': {
       cursor: 'pointer',
       textDecoration: 'underline'
     }
   },
   DeactivateButton: {
-    color: '#DDB3B7'
+    color: '#ED666B'
   },
   ListContainer: {}
 }));

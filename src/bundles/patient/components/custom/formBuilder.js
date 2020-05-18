@@ -24,12 +24,12 @@ import { ThemeProvider } from '@material-ui/styles';
 // import EventAvailable from '@material-ui/icons/EventAvailable';
 
 const TransformIcon = () => (
-  <KeyboardArrowDown color="primary" style={{ color: '#fff' }} />
+  <KeyboardArrowDown color="primary" style={{ color: '#685E5E' }} />
 );
 
 const TransformButtonIcon = ({ props }) => (
   <Button {...props}>
-    <KeyboardArrowDown color="primary" style={{ color: '#fff' }} />
+    <KeyboardArrowDown color="primary" style={{ color: '#685E5E' }} />
   </Button>
 );
 
@@ -60,7 +60,7 @@ export const DefaultCheckbox = withStyles({
   root: {
     color: '#CACACA',
     '&$checked': {
-      color: '#6EA915'
+      color: '#6EA915 !important'
     }
   },
   checked: {}
@@ -72,7 +72,7 @@ const useStyles = makeStyles(theme => ({
     marginBottom: 10,
   },
   icon: {
-    color: '#fff',
+    color: '#685E5E',
     borderColor: 'white'
   },
   labelText: {
@@ -97,7 +97,10 @@ const useStyles = makeStyles(theme => ({
     }
   },
   radio: {
-    color: '#8E8CA7'
+    color: '#CACACA'
+  },
+  radioChecked: {
+    color: '#6EA915 !important'
   },
   selectElement: {
     borderColor: 'transparent !important',
@@ -117,7 +120,7 @@ const useStyles = makeStyles(theme => ({
     },
     borderWidth: '1px',
     borderColor: 'transparent !important',
-    color: 'white'
+    color: '#685E5E'
   },
   underline: {
     backgroundColor: '#E9E8E8'
@@ -128,27 +131,27 @@ const dateInputTheme = createMuiTheme({
   overrides: {
     MuiFilledInput: {
       root: {
-        backgroundColor: '#474562',
-        color: '#fff',
+        backgroundColor: '#E8E6E6',
+        color: '#685E5E',
         borderRadius: '8px !important',
         border: '2px solid transparent',
         '&:hover': {
-          backgroundColor: '#474562'
+          backgroundColor: '#E8E6E6'
         },
         '&$focused': {
-          borderColor: '#fff',
-          backgroundColor: '#474562'
+          borderColor: 'transparent',
+          backgroundColor: '#E8E6E6'
         }
       },
       underline: {
-        backgroundColor: '#474562',
+        backgroundColor: '#E8E6E6',
         '&:before, &:after': {
           display: 'none'
         }
       },
       adornedEnd: {
         paddingRight: 5,
-        color: '#fff'
+        color: '#685E5E'
       },
       input: {
         paddingTop: 18.5,
@@ -203,7 +206,7 @@ const InputTextComp = (
       fullWidth
       placeholder={input.placeholder || ''}
       type={input.type == 'password'? 'password': undefined}
-      style={{ color: 'white' }}
+      style={{ color: '#685E5E' }}
       defaultValue={input.defaultValue || ''}
       error={nonValid}
       multiline={multiline}
@@ -238,7 +241,7 @@ const CheckBoxComp = (
           onChange={e => setFormState({ [input.key]: e.target.checked })}
         />
       }
-      label={<Typography style={{ color: '#fff' }}> {input.label}</Typography>}
+      label={<Typography style={{ color: '#685E5E' }}> {input.label}</Typography>}
     />
   );
 };
@@ -354,7 +357,7 @@ const generateDateTypes = (
             value={formState[input.key]}
             onChange={date => setFormState({ [input.key]: date })}
             fullWidth={true}
-            keyboardIcon={<TransformIcon style={{ color: '#fff' }} />}
+            keyboardIcon={<TransformIcon style={{ color: '#685E5E' }} />}
             animateYearScrolling
             autoOk
           />
@@ -406,11 +409,13 @@ const generateRadioType = (input, classes, setFormState) => {
                 onChange={e => setFormState({ [input.key]: e.target.value })}
                 color="primary"
                 classes={{
-                  colorPrimary: classes.radio
+                  colorPrimary: classes.radio,
+                  checked: classes.radioChecked
                 }}
               />
             }
             label={field}
+            style={{color: '#231E1E'}}
           />
         );
       })}
