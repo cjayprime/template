@@ -29,6 +29,7 @@ import PropTypes from 'prop-types';
 // Mutations
 import createTriageMutation from 'bundles/patient/hoc/createTriageAnswers';
 import createPatientCaseTriage from 'bundles/patient/hoc/createPatientCase';
+import sendSMS from 'bundles/sms/hoc/sendSms'
 import createQueueHoc from 'bundles/queue/hoc/createQueue';
 
 // Assets
@@ -199,6 +200,7 @@ const ResultContainer = ({ classes, triageScore = 0, canEdit }) => {
   if (triageScore >= 5 && triageScore <= 9) {
     message =
       'Advice patient to hydrate properly, use over the counter medication, maintain good hygiene. Observe and re-evaluate after 2 days';
+      riskLevel = 'Medium Risk';
   } else if (triageScore >= 10 && triageScore <= 39) {
     riskLevel = 'High Risk';
     message =
@@ -264,6 +266,7 @@ export const CreateTriage = ({
   currentPatient,
   addQueue,
   createPatientCase,
+  sendSms
 }) => 
 {
   const [activeStep, setActiveStep] = useState(0);
@@ -322,6 +325,7 @@ export const CreateTriage = ({
       variables: {
         input: {
           triageAnswer: {
+
             triageQuestionId: 1,
             patientId: id,
             answers
@@ -391,6 +395,18 @@ export const CreateTriage = ({
       } 
       return;
     }
+    
+
+    // const response = await sendSms({
+    //   variables: {
+    //     input: {
+    //         name: 'John Doe',
+    //         phoneNumber: currentPatient.phoneNumber,
+    //         message: ''
+    //     }
+    //   }
+    // });
+
   
     // send sms
   }; 
@@ -742,5 +758,6 @@ export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   createTriageMutation,
   createQueueHoc,
+  sendSMS,
   createPatientCaseTriage
 )(CreateTriage);

@@ -16,6 +16,7 @@ export const ALL_LAB_REQUEST = gql`
         patientByPatientId {
           id
           epidNumber
+          phoneNumber
         }
         userByAcceptedBy {
           firstname
@@ -34,6 +35,7 @@ export const ALL_LAB_REQUEST = gql`
         patientByPatientId {
           firstname
           lastname
+          phoneNumber
           queuesByPatientId {
             nodes {
               id

@@ -9,6 +9,7 @@ import updateLabRequestLab from 'bundles/lab/hoc/updateLabRequest';
 import createQueueTask from 'bundles/queue/hoc/createQueueTask';
 import updateQueue from 'bundles/queue/hoc/updateQueue';
 import ExpanderComponent from 'bundles/lab/components/ExpanderComponent';
+import sendSMS from 'bundles/sms/hoc/sendSms'
 import { DataTable, Header } from '../../../bundles/shared/components';
 
 const compose = require('lodash')?.flowRight;
@@ -61,6 +62,7 @@ const LabRequest = ({
   createLabRequest,
   createQueueTaskStatus,
   createLabRequestStatus,
+  sendSms,
   labRequests,
   updateLabRequest
 }) => {
@@ -223,7 +225,7 @@ const LabRequest = ({
     const nodeId = data[`${key}-nodeId`];
     const labId = data[`${key}-id`];
 
-    const { epidNumber, id } = data['row'].patientByPatientId;
+    const { epidNumber, id, phoneNumber } = data['row'].patientByPatientId;
 
     const response = await updateResult({
       nodeId,
@@ -246,8 +248,17 @@ const LabRequest = ({
         });
         if (queueAdd) {
         }
-      } else {
-        //Send SMS
+      } else {  
+        const response = await sendSms({
+          variables: {
+            input: {
+                name: 'John Doe',
+                phoneNumber: phoneNumber,
+                message: 'Covid 19 Result came back Negative'
+            }
+          }
+      });
+
       }
     }
   };
@@ -513,5 +524,6 @@ export default compose(
   createLabRequestStatus,
   updateLabRequestLab,
   withLabRequests,
+  sendSMS,
   updateQueue
 )(LabRequest); 
