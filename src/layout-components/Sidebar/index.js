@@ -55,7 +55,7 @@ const Sidebar = props => {
         />
       ))}
     </div>
-  ); 
+  );
 
   return (
     <Fragment>
@@ -65,9 +65,9 @@ const Sidebar = props => {
           open={sidebarToggleMobile}
           onClose={closeDrawer}
           variant="temporary"
-          
+          elevation={4}
           className="app-sidebar-wrapper-lg">
-           { /*<SidebarHeader /> */}
+          <SidebarHeader />
           <PerfectScrollbar>
             {sidebarUserbox && <SidebarUserbox />}
             {sidebarMenuContent}
@@ -86,9 +86,8 @@ const Sidebar = props => {
             'app-sidebar-wrapper-fixed': sidebarFixed
           })}
           square
-          elevation={sidebarShadow ? 8 : 3}
           open={sidebarToggle}
-          >
+          elevation={sidebarShadow ? 11 : 3}>
           <SidebarHeader />
           <div
             className={clsx({
@@ -96,7 +95,7 @@ const Sidebar = props => {
               'app-sidebar-collapsed': sidebarToggle && !sidebarHover
             })}>
             <PerfectScrollbar options={{ wheelPropagation: false }}>
-               {sidebarUserbox && <SidebarUserbox /> } 
+              {sidebarUserbox && <SidebarUserbox />}
               {sidebarMenuContent}
               {sidebarFooter && <SidebarFooter />}
             </PerfectScrollbar>

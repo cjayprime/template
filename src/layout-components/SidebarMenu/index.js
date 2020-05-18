@@ -79,19 +79,21 @@ const reduceChildRoutes = props => {
         className={
           navbarHover[`navbar-${index}`]
             ? classes.navBarHover
-            : ( activeNavbar == `navbar-${index}`) ? classes.navBarClicked  : classes.navBarDefault
+            : activeNavbar == `navbar-${index}`
+            ? classes.navBarClicked
+            : classes.navBarDefault
         }
         icon={page.icon}
         key={page.label}
         label={page.badge}
         open={Boolean(open)}
-        textColor={( activeNavbar == `navbar-${index}`) ? '#fff' : '#BDB8D9'}
+        textColor={activeNavbar == `navbar-${index}` ? '#fff' : '#BDB8D9'}
         title={page.label}>
         <div className="sidebar-menu-children py-2">
           <SidebarMenuList
             depth={depth + 1}
             pages={page.content}
-            textColor={( activeNavbar == `navbar-${index}`) ? '#fff' : '#BDB8D9'}
+            textColor={activeNavbar == `navbar-${index}` ? '#fff' : '#BDB8D9'}
             router={router}
           />
         </div>
@@ -110,7 +112,9 @@ const reduceChildRoutes = props => {
         className={
           navbarHover[`navbar-${index}`]
             ? classes.navBarHover
-            : ( activeNavbar == `navbar-${index}`) ? classes.navBarClicked  : classes.navBarDefault
+            : activeNavbar == `navbar-${index}`
+            ? classes.navBarClicked
+            : classes.navBarDefault
         }
         depth={depth}
         href={page.to}
@@ -118,7 +122,7 @@ const reduceChildRoutes = props => {
         key={page.label}
         label={page.badge}
         title={page.label}
-        textColor={ ( activeNavbar == `navbar-${index}`) ? '#fff' : '#BDB8D9' }
+        textColor={activeNavbar == `navbar-${index}` ? '#fff' : '#BDB8D9'}
       />
     );
   }
