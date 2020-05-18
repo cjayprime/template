@@ -19,7 +19,7 @@ export const ALL_DASHBOARD_DATA = gql`
     positiveCasesNew: allLabRequests(
       filter: {
         and: [
-          { result: { equalTo: positive } }
+          { result: { equalTo: POSITIVE } }
           {
             requestDate: {
               ##new field auto update
@@ -32,7 +32,7 @@ export const ALL_DASHBOARD_DATA = gql`
       totalCount
     }
 
-    positiveCases: allLabRequests(filter: { result: { equalTo: positive } }) {
+    positiveCases: allLabRequests(filter: { result: { equalTo: POSITIVE } }) {
       totalCount
     }
 
@@ -81,14 +81,14 @@ export const ALL_DASHBOARD_DATA = gql`
     }
 
     dischargedPatients: allPatientLocations(
-      filter: { and: [{ status: { equalTo: discharged } }] }
+      filter: { and: [{ status: { equalTo: DISCHARGED } }] }
     ) {
       totalCount
     }
     newDischargedPatients: allPatientLocations(
       filter: {
         and: [
-          { status: { equalTo: discharged } }
+          { status: { equalTo: DISCHARGED } }
           {
             dateDischarged: { greaterThan: "${last24}" }
           }
@@ -99,7 +99,7 @@ export const ALL_DASHBOARD_DATA = gql`
     }
     positivePatientByLGA: allPatients(
       filter: {
-        labRequestsByPatientId: { some: { result: { equalTo: positive } } }
+        labRequestsByPatientId: { some: { result: { equalTo: POSITIVE } } }
       }
     ) {
       nodes {
@@ -110,8 +110,8 @@ export const ALL_DASHBOARD_DATA = gql`
       filter: {
         patientLocationsByPatientId: {
           some: {
-            status: { equalTo: admitted }
-            locationByLocationId: { locationType: { equalTo: icu } }
+            status: { equalTo: ADMITTED }
+            locationByLocationId: { locationType: { equalTo: ICU } }
           }
         }
       }
@@ -123,8 +123,8 @@ export const ALL_DASHBOARD_DATA = gql`
       filter: {
         patientLocationsByPatientId: {
           some: {
-            status: { equalTo: admitted }
-            locationByLocationId: { locationType: { equalTo: icu } }
+            status: { equalTo: ADMITTED }
+            locationByLocationId: { locationType: { equalTo: ICU } }
             dateAdmitted: { greaterThan: "${last24}" }
           }
         }
@@ -137,8 +137,8 @@ export const ALL_DASHBOARD_DATA = gql`
       filter: {
         patientLocationsByPatientId: {
           some: {
-            status: { equalTo: admitted }
-            locationByLocationId: { locationType: { equalTo: isolation } }
+            status: { equalTo: ADMITTED }
+            locationByLocationId: { locationType: { equalTo: ISOLATION } }
           }
         }
       }
@@ -150,8 +150,8 @@ export const ALL_DASHBOARD_DATA = gql`
       filter: {
         patientLocationsByPatientId: {
           some: {
-            status: { equalTo: admitted }
-            locationByLocationId: { locationType: { equalTo: isolation } }
+            status: { equalTo: ADMITTED }
+            locationByLocationId: { locationType: { equalTo: ISOLATION } }
             dateAdmitted: { greaterThan: "${last24}" }
           }
         }
@@ -169,7 +169,7 @@ export const ALL_DASHBOARD_DATA = gql`
       totalCount
     }
     positiveCasesByDate: allLabRequests(
-      filter: { result: { equalTo: positive } }
+      filter: { result: { equalTo: POSITIVE } }
     ) {
       nodes {
         resultUpdateDate
@@ -181,7 +181,7 @@ export const ALL_DASHBOARD_DATA = gql`
       }
     }
     admissionByDate: allPatientLocations(
-      filter: { status: { equalTo: admitted } }
+      filter: { status: { equalTo: ADMITTED } }
     ) {
       totalCount
       nodes {
@@ -191,7 +191,7 @@ export const ALL_DASHBOARD_DATA = gql`
 
     todayPositiveCases: allLabRequests(
       filter: {
-        result: { equalTo: positive }
+        result: { equalTo: POSITIVE }
         resultUpdateDate: { greaterThan: "${startOfTodayISO}" }
       }
     ) {
@@ -199,7 +199,7 @@ export const ALL_DASHBOARD_DATA = gql`
     }
     todayDischaredCases: allPatientLocations(
       filter: {
-        status: { equalTo: discharged }
+        status: { equalTo: DISCHARGED }
         dateDischarged: { greaterThan: "${startOfTodayISO}" }
       }
     ) {
@@ -215,14 +215,14 @@ export const ALL_DASHBOARD_DATA = gql`
     }
     allPositivePatient: allPatients(
       filter: {
-        labRequestsByPatientId: { some: { result: { equalTo: positive } } }
+        labRequestsByPatientId: { some: { result: { equalTo: POSITIVE } } }
       }
     ) {
       totalCount
     }
     allDischargedPatients: allPatients(
       filter: {
-        patientLocationsByPatientId: { some: { status: { equalTo: discharged } } }
+        patientLocationsByPatientId: { some: { status: { equalTo: DISCHARGED } } }
       }
     ) {
       totalCount
@@ -231,11 +231,10 @@ export const ALL_DASHBOARD_DATA = gql`
     allActiveCases: allPatients(
       filter: {
         and: {
-          deceasedPatientsByPatientIdExist: false
           patientLocationsByPatientId: {
-            some: { status: { notEqualTo: discharged } }
+            some: { status: { notEqualTo: DISCHARGED } }
           }
-          labRequestsByPatientId: { some: { result: { equalTo: positive } } }
+          labRequestsByPatientId: { some: { result: { equalTo: POSITIVE } } }
         }
       }
     ) {
@@ -252,7 +251,7 @@ export const ALL_DASHBOARD_DATA = gql`
       }
     }
     positiveTestSamples: allLabRequests(
-      filter: { result: { equalTo: positive } }
+      filter: { result: { equalTo: POSITIVE } }
     ) {
       nodes {
         resultUpdateDate
@@ -268,9 +267,9 @@ export const ALL_DASHBOARD_DATA = gql`
 
     recoveredByDate: allPatientLocations(
       filter: {
-        status: { equalTo: discharged }
+        status: { equalTo: DISCHARGED }
         patientByPatientId: {
-          labRequestsByPatientId: { some: { result: { equalTo: negative } } }
+          labRequestsByPatientId: { some: { result: { equalTo: NEGATIVE } } }
         }
       }
     ) {

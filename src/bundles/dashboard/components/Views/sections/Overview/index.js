@@ -44,8 +44,8 @@ const Overview = props => {
     }
   } = props;
 
-  const patientGroupByLGA = groupBy(positivePatientByLGA.nodes, 'lga');
-  const LGATableData = Object.keys(patientGroupByLGA).map((LGA, i) => ({
+  const patientGroupByLGA = groupBy(positivePatientByLGA?.nodes, 'lga');
+  const LGATableData = Object.keys(patientGroupByLGA || []).map((LGA, i) => ({
     'S/M': i + 1,
     count: patientGroupByLGA[LGA].length,
     LGA
