@@ -18,7 +18,7 @@ export const PatientMetadatum = props => {
             }>{`${sex}, ${age} years old`}</Typography>
         </Grid>
       </Grid>
-      <Grid container item direction="column" xs={5}>
+      <Grid container item direction="column" xs={5} justify="center">
         <Chip
           variant="default"
           size="small"

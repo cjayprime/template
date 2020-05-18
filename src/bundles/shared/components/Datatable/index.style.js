@@ -11,7 +11,7 @@ export const tableStyles = makeStyles(theme => ({
     borderBottom: 'none'
   },
   Table: {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#2C2E42',
     border: 'none'
   },
   TableCell: {

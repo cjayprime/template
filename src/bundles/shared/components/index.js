@@ -7,3 +7,4 @@ export * from './SummaryBox';
 export * from './TeamMetadatum';
 export * from './ChartHolder';
 export * from './DataBox';
+export * from './Input';

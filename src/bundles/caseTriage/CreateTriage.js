@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect, useCallback } from 'react';
 import clsx from 'clsx';
 import {
   Grid,
@@ -7,7 +7,6 @@ import {
   Typography,
   IconButton,
   ButtonBase,
-  Radio,
   makeStyles
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/styles';
@@ -22,6 +21,7 @@ import Question from './components/question';
 import TriageImage from 'images/triage.png';
 import triageInfo from 'images/triageinfo.png';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 // Mutations
 import createTriageMutation from 'bundles/patient/hoc/createTriageAnswers';
 
@@ -31,11 +31,7 @@ import { triageQuestions, triageQuestionWeights } from './triageQuestions.js';
 const compose = require('lodash')?.flowRight;
 
 const QontoConnector = withStyles({
-  alternativeLabel: {
-    //top: 10,
-    //left: 'calc(-50% + 16px)',
-    // right: 'calc(50% + 16px)'
-  },
+  alternativeLabel: {},
   active: {
     '& $line': {
       borderColor: '#8EE2E5'
@@ -43,47 +39,51 @@ const QontoConnector = withStyles({
   },
   completed: {
     '& $line': {
-      borderColor: '#8EE2E5',
-      borderWidth: 5
+      borderColor: '#8EE2E5'
     }
   },
   line: {
-    padding: '0 0 8px',
-    marginLeft: 6,
-    //marginTop: 7,
     borderColor: '#716A9E',
-    borderTopWidth: 3,
-    borderWidth: 5,
-    borderRadius: 1
+    borderWidth: 3,
+    borderRadius: 1,
+    marginLeft: 0
+  },
+  vertical: {
+    marginLeft: 6,
+    padding: 0
+  },
+  lineVertical: {
+    minHeight: 36
   }
 })(StepConnector);
 
 const useQontoStepIconStyles = makeStyles({
   root: {
-    color: '#eaeaf0',
-    display: 'flex',
-    height: 22,
-    alignItems: 'center'
-  },
-  radio: {
-    color: '#8EE2E5'
+    height: 15,
+    width: 15,
+    borderRadius: '50%',
+    backgroundColor: '#716A9E',
+    cursor: 'pointer',
+    position: 'relative'
   },
   active: {
-    color: '#784af4'
-  },
-  circle: {
-    width: 8,
-    height: 8,
-    borderRadius: '50%',
-    backgroundColor: 'currentColor'
+    backgroundColor: '#fff',
+    '&:after': {
+      content: '""',
+      width: 25,
+      height: 25,
+      border: '2px solid #8EE2E5',
+      display: 'block',
+      borderRadius: '50%',
+      position: 'absolute',
+      left: -5,
+      top: -5
+    }
   },
   completed: {
-    color: '#784af4',
+    backgroundColor: '#8EE2E5',
     zIndex: 1,
     fontSize: 18
-  },
-  green: {
-    backgroundColor: '#28BAC0'
   }
 });
 
@@ -153,6 +153,24 @@ const useStyles = makeStyles(theme => ({
   roundedIcon: {
     fontSize: 15,
     color: '#fff'
+  },
+  stepLabel: {
+    color: '#716A9E',
+    fontWeight: 500,
+    cursor: 'pointer',
+    fontSize: 16
+  },
+  stepLabelActive: {
+    '&.MuiStepLabel-label.MuiStepLabel-active': {
+      color: '#fff',
+      fontWeight: 500
+    }
+  },
+  stepLabelCompleted: {
+    '&.MuiStepLabel-label.MuiStepLabel-completed': {
+      color: '#8EE2E5',
+      fontWeight: 500
+    }
   }
 }));
 
@@ -166,7 +184,7 @@ function getStepContent(step) {
   return triageQuestions[questionCategory];
 }
 
-const ResultContainer = ({ classes, triageScore = 0 }) => {
+const ResultContainer = ({ classes, triageScore = 0, canEdit }) => {
   let riskLevel = 'no risk';
   let message =
     'Advise patient to self medicate and observe signs and symptoms';
@@ -206,28 +224,38 @@ const ResultContainer = ({ classes, triageScore = 0 }) => {
           The patient has been classified as {riskLevel}
         </Typography>
       </Grid>
-      <Grid item xs={5} md={5} style={{ textAlign: 'center' }}>
-        <img src={triageInfo} />
-        <Typography style={{ color: '#fff', fontSize: 20 }}>
-          {' '}
-          {message}
-        </Typography>
-      </Grid>
-      <Grid item md={5} xs={5}>
-        <ButtonBase
-          variant="contained"
-          to="/Patient"
-          component={Link}
-          color="primary"
-          classes={{ root: classes.nextButton }}>
-          Close the Case
-        </ButtonBase>
-      </Grid>
+      {canEdit && (
+        <>
+          <Grid item xs={5} md={5} style={{ textAlign: 'center' }}>
+            <img src={triageInfo} />
+            <Typography style={{ color: '#fff', fontSize: 20 }}>
+              {' '}
+              {message}
+            </Typography>
+          </Grid>
+          <Grid item md={5} xs={5}>
+            <ButtonBase
+              variant="contained"
+              to="/Patient"
+              component={Link}
+              color="primary"
+              classes={{ root: classes.nextButton }}>
+              Close the Case
+            </ButtonBase>
+          </Grid>
+        </>
+      )}
     </Grid>
   );
 };
 
-const CreateTriage = ({ createTriage, showFooter, setDispatchFunc }) => {
+export const CreateTriage = ({
+  createTriage,
+  showFooter,
+  setDispatchFunc,
+  canEdit,
+  triageAnswers
+}) => {
   const [activeStep, setActiveStep] = useState(0);
   const [completed] = useState({});
   const [answers, setAnswers] = useState({});
@@ -235,6 +263,25 @@ const CreateTriage = ({ createTriage, showFooter, setDispatchFunc }) => {
   const [triageScore, setTriageScore] = useState(0);
   const questionCategory = steps;
   const classes = useStyles();
+
+  // Set state to the answers pssed if canEdit is false
+  // Also calculate risk score from the answers passed
+  useEffect(() => {
+    if (!canEdit && triageAnswers) {
+      setAnswers(triageAnswers);
+
+      const triageScore = Reflect.ownKeys(triageQuestionWeights).reduce(
+        (agg, question) => {
+          const answerValue =
+            triageAnswers[question].toLowerCase() === 'yes' ? 1 : 0;
+          agg += triageQuestionWeights[question] * answerValue;
+          return agg;
+        },
+        0
+      );
+      setTriageScore(triageScore);
+    }
+  }, [canEdit, triageAnswers]);
 
   useEffect(() => {
     showFooter(true);
@@ -247,39 +294,23 @@ const CreateTriage = ({ createTriage, showFooter, setDispatchFunc }) => {
     return (
       <div
         className={clsx(classes.root, {
-          [classes.active]: active
-        })}>
-        {completed ? (
-          <Radio
-            color="primary"
-            classes={{
-              colorPrimary: classes.radio
-            }}
-          />
-        ) : (
-          <Radio
-            color="primary"
-            classes={{
-              colorPrimary: classes.radio,
-              root: classes.green
-            }}
-          />
-        )}
-      </div>
+          [classes.active]: active,
+          [classes.completed]: completed
+        })}></div>
     );
   };
 
-  const totalSteps = () => {
+  const totalSteps = useCallback(() => {
     return questionCategory.length;
-  };
+  }, [questionCategory]);
 
   const completedSteps = () => {
     return Object.keys(completed).length;
   };
 
-  const isLastStep = () => {
+  const isLastStep = useCallback(() => {
     return activeStep === totalSteps() - 1;
-  };
+  }, [activeStep, totalSteps]);
 
   const allStepsCompleted = () => {
     return completedSteps() === totalSteps();
@@ -321,7 +352,7 @@ const CreateTriage = ({ createTriage, showFooter, setDispatchFunc }) => {
 
   // calculate the triage score
   useEffect(() => {
-    if (isLastStep()) {
+    if (isLastStep() && canEdit) {
       const score = Reflect.ownKeys(triageAnswerResult).reduce((agg, curr) => {
         agg += parseInt(triageAnswerResult[curr], 10);
         return agg;
@@ -329,7 +360,7 @@ const CreateTriage = ({ createTriage, showFooter, setDispatchFunc }) => {
 
       setTriageScore(score);
     }
-  }, [activeStep, triageScore, triageAnswerResult, isLastStep]);
+  }, [activeStep, triageScore, triageAnswerResult, isLastStep, canEdit]);
 
   return (
     <Fragment>
@@ -343,54 +374,58 @@ const CreateTriage = ({ createTriage, showFooter, setDispatchFunc }) => {
             {questionCategory.map((label, index) => (
               <Step key={label}>
                 <StepLabel
-                  completed={completed[index]}
+                  classes={{
+                    label: classes.stepLabel,
+                    active: classes.stepLabelActive,
+                    completed: classes.stepLabelCompleted
+                  }}
                   StepIconComponent={QontoStepIcon}
                   disabled={label === 'Result'}
                   onClick={handleStep(index)}>
-                  <Typography
-                    style={{
-                      color: completed[index] ? '#8EE2E5' : '#8EE2E5',
-                      fontWeight: 'bold'
-                    }}>
-                    {label}
-                  </Typography>
+                  {label}
                 </StepLabel>
               </Step>
             ))}
           </Stepper>
         </Grid>
-        <Grid item md={8} lg={7} style={{ padding: 33, overflowX: 'hidden' }}>
+        <Grid item md={8} lg={9} style={{ padding: 33, overflowX: 'hidden' }}>
           <Fragment>
             {steps[activeStep] === 'Result' ? (
-              <ResultContainer classes={classes} triageScore={triageScore} />
+              <ResultContainer
+                classes={classes}
+                triageScore={triageScore}
+                canEdit={canEdit}
+              />
             ) : (
               <div>
                 <Grid item xs={12}>
                   <Grid container>
                     <Grid item xs={6} style={{ marginBottom: 20 }}>
-                      <Grid container direction="column">
-                        <Typography
-                          style={{
-                            fontWeight: 'bold',
-                            color: '#fff',
-                            fontSize: 18
-                          }}>
-                          {' '}
-                          Please select all the statements that apply to you
-                        </Typography>
-                        <Typography style={{ color: '#716A9E', fontSize: 15 }}>
-                          {' '}
-                          Select one answer in each row
-                        </Typography>
-                      </Grid>
+                      {canEdit && (
+                        <Grid container direction="column">
+                          <Typography
+                            style={{
+                              fontWeight: 'bold',
+                              color: '#fff',
+                              fontSize: 18
+                            }}>
+                            {' '}
+                            Please select all the statements that apply to you
+                          </Typography>
+                          <Typography
+                            style={{ color: '#716A9E', fontSize: 15 }}>
+                            {' '}
+                            Select one answer in each row
+                          </Typography>
+                        </Grid>
+                      )}
                     </Grid>
                     <Grid item xs={6}>
                       <Grid
                         container
                         justify="flex-end"
                         alignItems="flex-end"
-                        className="p-4"
-                        spacing={4}>
+                        className="p-4">
                         <Fragment>
                           <IconButton
                             disabled={activeStep === 0}
@@ -425,6 +460,7 @@ const CreateTriage = ({ createTriage, showFooter, setDispatchFunc }) => {
                           {...questions}
                           onAnswer={handleInputChange}
                           answer={answers[questions.questionKey]}
+                          canEdit={canEdit}
                         />
                         {questions.children &&
                         questions.children.length > 0 &&
@@ -434,6 +470,7 @@ const CreateTriage = ({ createTriage, showFooter, setDispatchFunc }) => {
                             {questions.children.map(childQuestion => (
                               <Fragment key={childQuestion.questionKey}>
                                 <Question
+                                  canEdit={canEdit}
                                   {...childQuestion}
                                   isChild={true}
                                   onAnswer={handleInputChange}
@@ -487,6 +524,20 @@ const CreateTriage = ({ createTriage, showFooter, setDispatchFunc }) => {
       </Grid>
     </Fragment>
   );
+};
+
+CreateTriage.propTypes = {
+  createTriage: PropTypes.func,
+  showFooter: PropTypes.func,
+  setDispatchFunc: PropTypes.func,
+  canEdit: PropTypes.bool
+};
+
+CreateTriage.defaultProps = {
+  createTriage: () => {},
+  showFooter: () => {},
+  setDispatchFunc: () => {},
+  canEdit: true
 };
 
 const mapDispatchToProps = dispatch => ({

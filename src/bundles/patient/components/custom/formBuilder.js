@@ -128,6 +128,7 @@ const InputTextComp = (
       fullWidth
       placeholder={input.placeholder || ''}
       style={{ color: 'white' }}
+      defaultValue={input.defaultValue || ''}
       error={nonValid}
       multiline={multiline}
       onChange={e =>
@@ -206,13 +207,11 @@ const SelectFieldComp = (
   keyValue
 ) => {
   const value = mappedValue || (input.fields && remapField(input));
-
-  let enteredValue = '';
+  let enteredValue = ''
   let addedValue = '';
   if (keyValue) {
     addedValue = `-${keyValue}`;
   }
-
   if (formState && formState[`${input.key}${addedValue}`]) {
     enteredValue = formState[`${input.key}${addedValue}`];
   }

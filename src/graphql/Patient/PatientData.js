@@ -7,21 +7,105 @@ export const ALL_PATIENTS = gql`
         id
         firstname
         lastname
-        epidNumber
-        phoneNumber
-        epidNumber
-        email
         birthDate
         sex
+        phoneNumber
+        city
+        countryOfResidence
+        email
+        epidNumber
+        lga
+        location
+        nationality
+        occupation
+        streetName
+        state
+        notes
+        streetName2
         patientCasesByPatientId {
-           nodes {
+          nodes {
             id
             status
             riskLevel
+            userBySubmittedBy {
+              title
+              firstname
+              lastname
+            }
+            notes
+            createdAt
+            triageAnswerByTriageAnswerId {
+              id
+              answers
+            }
           }
+        }
+        callLogsByPatientId(orderBy: CALL_TIME_DESC) {
+          nodes {
+            id
+            callSummary
+            callTime
+          }
+        }
+        labRequestsByPatientId {
+          nodes {
+            id
+            userByAcceptedBy {
+              title
+              firstname
+              lastname
+            }
+            userByRequestedBy {
+              title
+              firstname
+              lastname
+            }
+            result
+            testName
+            requestDate
+            labRequestStatusesByLabRequestId(last: 1) {
+              nodes {
+                id
+                status
+              }
+            }
+          }
+        }
+        patientLocationsByPatientId {
+          nodes {
+            userByAdmittedBy {
+              firstname
+              title
+              lastname
+            }
+            dateAdmitted
+            id
+          }
+        }
+        deceasedPatientByPatientId {
+          auscultatoryBreathSounds
+          autopsy
+          causeOfDeath
+          centralPulses
+          cornealReflex
+          dateOfDeath
+          examinationFindings
+          familyNotified
+          id
+          interventionAndOutcome
+          locationOfDeath
+          nodeId
+          heartSounds
+          organDonor
+          patientId
+          peripheralPulses
+          plan
+          pupils
+          responseToStimuli
+          spontaneousRespiration
         }
       }
       totalCount
     }
   }
-`; 
+`;
