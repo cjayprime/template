@@ -1,4 +1,3 @@
-
 import { makeStyles } from '@material-ui/core/styles';
 
 export const tableStyles = makeStyles(theme => ({
@@ -6,14 +5,14 @@ export const tableStyles = makeStyles(theme => ({
     backgroundColor: '#2C2E42'
   },
   root: {
-    borderBottom: "none"
+    borderBottom: 'none'
   },
   HeaderRow: {
     borderBottom: 'none'
   },
   Table: {
     backgroundColor: '#2C2E42',
-    border: 'none',
+    border: 'none'
   },
   TableCell: {
     color: '#8E8CA7',
