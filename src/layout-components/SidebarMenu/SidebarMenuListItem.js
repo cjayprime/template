@@ -30,7 +30,6 @@ const SidebarMenuListItem = props => {
   } = props;
 
   const [open, setOpen] = useState(openProp);
-  
 
   const handleToggle = () => {
     setOpen(open => !open);
@@ -41,7 +40,7 @@ const SidebarMenuListItem = props => {
 
   if (depth > 0) {
     paddingLeft = 32 + 20 * depth;
-    paddingLeftParent = 32 + 20 * depth
+    paddingLeftParent = 32 + 20 * depth;
   }
 
   const style = {
@@ -52,7 +51,6 @@ const SidebarMenuListItem = props => {
     paddingLeft: paddingLeftParent
   };
 
-
   if (children) {
     return (
       <ListItem
@@ -62,14 +60,11 @@ const SidebarMenuListItem = props => {
         <Button
           color="primary"
           disableRipple
-          
-      
           className={clsx('app-sidebar-button', { active: open })}
           onClick={handleToggle}
           style={parentStyle}>
-             {Icon}
-          {/*Icon && <Icon className="app-sidebar-icon" />*/}
-          <span style={{color: textColor}}>{title}</span>
+          {Icon}
+          <span style={{ color: textColor }}>{title}</span>
           {open ? (
             <ExpandLessIcon className="sidebar-expand-icon" color="inherit" />
           ) : (
@@ -98,12 +93,11 @@ const SidebarMenuListItem = props => {
           exact
           style={style}
           to={href}>
-            {Icon}
-          {/*Icon && <Icon className="app-sidebar-icon" />*/}
-          <span style={{color: textColor}}>{title}</span>
+          {Icon}
+          <span style={{ color: textColor }}>{title}</span>
           {Label && (
             <span className="menu-item-label">
-              <Label  />
+              <Label />
             </span>
           )}
         </Button>

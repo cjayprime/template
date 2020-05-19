@@ -208,14 +208,13 @@ const SelectFieldComp = (
   keyValue
 ) => {
   const value = mappedValue || (input.fields && remapField(input));
-  const [enteredValue, setEnteredValue] = useState(input.defaultValue || '');
+  let enteredValue = ''
   let addedValue = '';
   if (keyValue) {
     addedValue = `-${keyValue}`;
   }
-
   if (formState && formState[`${input.key}${addedValue}`]) {
-    setEnteredValue(formState[`${input.key}${addedValue}`]);
+    enteredValue = formState[`${input.key}${addedValue}`];
   }
 
   return (
@@ -226,7 +225,6 @@ const SelectFieldComp = (
         className: classes.select
       }}
       onChange={e =>
-        setEnteredValue(e.target.value) &&
         setFormState({ [`${input.key}${addedValue}`]: e.target.value })
       }
       value={enteredValue}
