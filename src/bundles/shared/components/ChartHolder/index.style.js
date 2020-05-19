@@ -7,7 +7,7 @@ export const ChartHolderStyles = makeStyles(theme => ({
     height: '100%',
     width: '100%',
     padding: '3%',
-    marginRight: `${theme.spacing(1.5)}px`,
+    // marginRight: `${theme.spacing(1.5)}px`,
     backgroundColor: '#fff',
     boxShadow: `0px 4px 8px 0px #cacaca`,
     flexDirection: 'column',
