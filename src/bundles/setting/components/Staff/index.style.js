@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/styles';
 export const StaffPageStyles = makeStyles(theme => ({
   PageContainer: {
     color: 'white',
-    width: '100vw'
+    //width: '100vw'
   },
   ButtonContainer: {
     marginBottom: '3%'

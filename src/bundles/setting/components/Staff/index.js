@@ -121,7 +121,7 @@ const Staff = props => {
   };
 
   return (
-    <Container className={classes.PageContainer}>
+    <div className={classes.PageContainer}>
       {editState ? (
         <CreateStaff
           accessLevels={accessLevels}
@@ -156,7 +156,7 @@ const Staff = props => {
           </Grid>
         </Fragment>
       )}
-    </Container>
+    </div>
   );
 };
 
