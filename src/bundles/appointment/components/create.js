@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Typography, Button } from '@material-ui/core';
+import { Grid, Typography, Button, Icon } from '@material-ui/core';
 import Chip from '@material-ui/core/Chip';
 import select from 'images/iconnew.png';
 import FormBuilder from 'bundles/patient/components/custom/formBuilder';
@@ -57,18 +57,18 @@ const NewAppointment = ({
         {!data ? (
           <Button
             style={{
-              border: '1px solid #EFA14B',
+              // border: '1px solid #EFA14B',
               borderRadius: 10,
               justifyContent: 'left',
               width: 650,
               height: 85,
               padding: 10,
               boxShadow: `0px 4px 6px 0px #cacaca`,
-              backgroundColor: '#EFA14B',
+              backgroundColor: '#fff',
               margin: 10,
-              color: '#fff'
+              color: '#231E1E'
             }}>
-            <img src={select} />
+            <Icon className="fas fa-plus-circle" style={{color: '#CB6A00', fontSize: 36}} />
             <Typography style={{ fontSize: 18, marginLeft: 20 }}>
               {' '}
               Add patient
@@ -77,18 +77,18 @@ const NewAppointment = ({
         ) : (
           <Button
             style={{
-              border: '1px solid #EFA14B',
+              // border: '1px solid #EFA14B',
               borderRadius: 10,
               justifyContent: 'left',
               width: 650,
               height: 85,
               padding: 10,
               boxShadow: `0px 4px 6px 0px #cacaca`,
-              backgroundColor: '#EFA14B',
+              backgroundColor: '#fff',
               margin: 10,
-              color: '#fff'
+              color: '#231E1E'
             }}>
-            <img src={select} />
+            <Icon className="fas fa-plus-circle" style={{color: '#CB6A00', fontSize: 36}} />
 
             <Grid style={{ marginLeft: 45 }}>
               <Typography

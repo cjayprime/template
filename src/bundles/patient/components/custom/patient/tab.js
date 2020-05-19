@@ -75,7 +75,7 @@ const PatientTab = ({ patientData, markPatientDeceased, newCallLog }) => {
     );
   }
 
-  const CustomTab = (label, classes) => {
+  const CustomTab = (label, classes, key) => {
     return (
       <Tab
         disableRipple
@@ -85,6 +85,7 @@ const PatientTab = ({ patientData, markPatientDeceased, newCallLog }) => {
           selected: classes.SelectedTabButtons
         }}
         label={label}
+        key={key}
       />
     );
   };
@@ -165,7 +166,7 @@ const PatientTab = ({ patientData, markPatientDeceased, newCallLog }) => {
             'Appointments',
             'Others',
             'In patient'
-          ].map(label => CustomTab(label, classes))}
+          ].map((label, index) => CustomTab(label, classes, `${label}-${index}`))}
         </Tabs>
       </Grid>
       {/* <Grid

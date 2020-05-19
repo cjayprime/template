@@ -145,7 +145,7 @@ const saveState = (
   newTeam,
   addQueue
 ) => {
-  if (reason == DRIVE_THROUGH) {
+  if (reason === DRIVE_THROUGH) {
     submitLabrequestAndSaveNextSate(
       reason,
       user,
@@ -162,7 +162,7 @@ const saveState = (
     );
   }
 
-  if (reason == HOME_PICK_UP) {
+  if (reason === HOME_PICK_UP) {
     saveLabRquestAddQueueAndAddQueueStatus(
       epidNumber,
       patientId,
@@ -182,7 +182,7 @@ const saveState = (
     ); 
     // lab // add to queu // addtoQueuStatus
   }
-  // 'Drive through' == 'Lab request and add queueSTate'
+  // 'Drive through' === 'Lab request and add queueSTate'
 };
 
 export const parseEpidSurveillance = (row, action, api, nextStatus) => {

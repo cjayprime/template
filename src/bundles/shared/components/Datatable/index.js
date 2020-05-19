@@ -22,13 +22,13 @@ export const DataTable = props => {
   const buildHeaderCells = () => {
     return (
       <Fragment>
-        {headers.map(item => (
+        {headers.map((item, index) => (
           <TableCell
             className={clsx(
               classes.TableCell,
               styles.tableCell,
               styles.HeaderTableCell
-            )}>
+            )} key={`${item}-${index}`}>
             {item.name}
           </TableCell>
         ))}
@@ -74,7 +74,7 @@ export const DataTable = props => {
         ) : (
           <CustomTableRow
             styles={styles}
-            collapsibleComponent={renderCollapsible && renderCollapsible(row)}>
+            collapsiblecomponent={renderCollapsible && renderCollapsible(row)}>
             {headers.map(header => {
               return (
                 <TableCell
