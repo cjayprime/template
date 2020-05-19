@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { withRouter } from 'react-router';
 import { ThemeProvider } from '@material-ui/styles';
 import MuiTheme from './theme';
-import { LeftSidebar } from './layout-blueprints';
+import { LeftSidebar, PresentationLayout } from './layout-blueprints';
 import logo from 'images/lagos.png';
 
 const PatientPanel = lazy(() => import('./bundles/patient/components/Panel'));

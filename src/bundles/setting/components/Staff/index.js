@@ -8,6 +8,7 @@ import { Header, DataTable } from 'bundles/shared/components';
 import { StaffPageStyles } from './index.style.js';
 import { accessLevels, accessLevelIconMap } from './store';
 import { CreateStaff } from './components/Create';
+import { SetPasswordDialog } from './components/SetPasswordDialog';
 
 const Staff = props => {
   const [editState, setEditState] = useState(false);
@@ -137,6 +138,7 @@ const Staff = props => {
         />
       ) : (
         <Fragment>
+          <SetPasswordDialog open={true} />
           <Grid container className={classes.ButtonContainer}>
             <Grid item xs={6}>
               <Typography className={classes.StaffNumberText}>
