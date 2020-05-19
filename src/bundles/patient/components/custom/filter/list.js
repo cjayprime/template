@@ -253,7 +253,7 @@ const RenderList = ({ patients = [], markPatientDeceased, newCallLog }) => {
             }${labRequest.userByRequestedBy.firstname} ${
               labRequest.userByRequestedBy.lastname
             }`,
-            status: labRequest.labRequestStatusesByLabRequestId.nodes[0].status
+            status: labRequest.labRequestStatusesByLabRequestId.nodes.length > 0 ? labRequest.labRequestStatusesByLabRequestId.nodes[0].status : ''
           };
         }) || [],
       inpatient:

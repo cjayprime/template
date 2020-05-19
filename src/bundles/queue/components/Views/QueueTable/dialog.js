@@ -54,9 +54,13 @@ const useStyles = makeStyles(theme => ({
     }
   },
   dialog: {
-    // backgroundColor: 'transparent',
-    backgroundColor: '#2B2D40'
-    //boxShadow: 'none'
+    backgroundColor: 'transparent',
+    // backgroundColor: '#2B2D40',
+    boxShadow: 'none'
+  },
+  dialogContainer: {
+    backgroundColor: 'rgba(246, 246, 246, 0.7)',
+    backdropFilter: 'blur(4px)'
   },
   cssOutlinedInput: {
     '&$cssFocused $notchedOutline': {
@@ -114,7 +118,8 @@ const QueueDialog = ({ open, handleClose, render }) => {
       fullWidth={true}
       classes={{
         paper: classes.dialog,
-        root: classes.dialogRoot
+        root: classes.dialogRoot,
+        container: classes.dialogContainer
       }}
       maxWidth={'md'}>
       <DialogTitle id="form-dialog-title">

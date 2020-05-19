@@ -74,7 +74,7 @@ export const DataTable = props => {
         ) : (
           <CustomTableRow
             styles={styles}
-            collapsiblecomponent={renderCollapsible && renderCollapsible(row)}>
+            collapsibleComponent={renderCollapsible && renderCollapsible(row)}>
             {headers.map(header => {
               return (
                 <TableCell
