@@ -297,7 +297,7 @@ const Surveillance = props => {
           <Paper elevation={3} style={{ padding: '10px 5px 20px' }}>
             <Bar
               data={epidemiologicalData}
-              height={80}
+              height={50}
               options={{
                 scales: {
                   xAxes: [
