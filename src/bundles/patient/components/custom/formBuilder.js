@@ -207,6 +207,7 @@ const InputTextComp = (
       defaultValue={input.defaultValue || ''}
       error={nonValid}
       multiline={multiline}
+      type={input.type}
       onChange={e =>
         input.capitalize
           ? setFormState({ [input.key]: capitalizeFirstWord(e.target.value) })
@@ -293,7 +294,6 @@ const SelectFieldComp = (
   if (keyValue) {
     addedValue = `-${keyValue}`;
   }
-
   if (formState && formState[`${input.key}${addedValue}`]) {
     enteredValue = formState[`${input.key}${addedValue}`];
   }
@@ -524,7 +524,7 @@ const TextFormDetail = ({ input }) => {
 
 const renderType = (input, setFormState, formState) => {
   switch (input.type) {
-    case 'text':
+    case 'text' || 'password' || 'email':
       return (
         <TextTransform
           setFormState={setFormState}

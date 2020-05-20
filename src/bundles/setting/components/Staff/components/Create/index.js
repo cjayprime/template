@@ -20,10 +20,18 @@ import { flowRight as compose } from 'lodash';
 import { StaffCreateStyles } from './index.style';
 
 const DEFAULT_RADIO_OPTIONS = ['Yes', 'No'];
+const PLACEHOLDER_PASSWORD = 'lashpers-password#';
 
 const StaffCreateView = props => {
   const classes = StaffCreateStyles();
   const { user } = props;
+
+  const defaultFormState = () => {
+    if (!user) return {};
+    const userObj = { ...user };
+    [('__typename', 'accesslevel')].forEach(key => delete userObj[key]);
+    return userObj;
+  };
 
   const buildAccessLevelsFromInitialUser = () => {
     if (!user) return {};
@@ -42,8 +50,10 @@ const StaffCreateView = props => {
     }, {});
   };
 
-  const [formState, setFormState] = useState({});
-  const [accessLevels, setAccessLevel] = useState(buildAccessLevelsFromInitialUser());
+  const [formState, setFormState] = useState(defaultFormState());
+  const [accessLevels, setAccessLevel] = useState(
+    buildAccessLevelsFromInitialUser()
+  );
 
   const handleChange = (value) => {
     setFormState({ ...formState, ...value });
@@ -81,7 +91,6 @@ const StaffCreateView = props => {
   };
 
   const buildCreateInput = () => {
-
     const buildPayloadFromAccessLevels = () =>
       Object.entries(accessLevels).reduce((s, [k, v]) => {
         if (typeof v === 'string') {
@@ -96,16 +105,17 @@ const StaffCreateView = props => {
 
     const updateAccessLevel = {
       updateById: {
-        id: user.accessLevel.id,
+        id: user?.accessLevel?.id,
         userAccessLevelPatch: {
           ...buildPayloadFromAccessLevels(),
-          id: user.accessLevel.id
+          id: user?.accessLevel?.id
         }
       }
     };
 
     return {
       ...formState,
+      pass: PLACEHOLDER_PASSWORD, // till we have thee password form working
       userAccessLevels: user ? updateAccessLevel : createAccessLevel
     };
   };
@@ -134,6 +144,7 @@ const StaffCreateView = props => {
     debugger
     try {
       const input = buildCreateInput();
+      ['accessLevel', 'nodeId'].forEach(key => delete input[key]);
       const { createStaffPG, updateStaffPG } = props;
       if (!user) {
         await createStaffPG({ variables: { input: { user: input } } });
@@ -148,7 +159,7 @@ const StaffCreateView = props => {
       props.onSaveComplete();
     } catch (e) {
       // handle error here
-      console.log(e)
+      console.log(e);
     }
   };
 
@@ -330,6 +341,7 @@ const StaffCreateView = props => {
                     formInput={{
                       type: 'select',
                       label: 'Title',
+                      key: 'title',
                       labelDirection: 'column',
                       key: 'title',
                       fields: ['Dr', 'Mr', 'Mrs', 'Ms'],
@@ -377,6 +389,7 @@ const StaffCreateView = props => {
                     formInput={{
                       type: 'text',
                       label: 'Phone no',
+                      key: 'phoneNumber',
                       labelDirection: 'column',
                       key: 'phoneNumber',
                       required: true,
@@ -437,6 +450,7 @@ const StaffCreateView = props => {
                     formInput={{
                       type: 'select',
                       label: 'Specialty',
+                      key: 'speciality',
                       labelDirection: 'column',
                       key: 'speciality',
                       fields: [''],

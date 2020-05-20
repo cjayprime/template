@@ -2,8 +2,9 @@ import React from 'react';
 import { graphql } from '@apollo/react-hoc';
 import {
   CREATE_STAFF,
-  UPDATE_STAFF
-} from '../../../graphql/mutations/Staff/CreateStaff';
+  UPDATE_STAFF,
+  SET_PASSWORD
+} from 'graphql/mutations/Staff/CreateStaff';
 const compose = require('lodash').flowRight;
 
 export const createStaff = WrappedComponent => {
@@ -23,6 +24,5 @@ export const createStaff = WrappedComponent => {
   const updateStaffPG = graphql(UPDATE_STAFF, {
     name: 'updateStaff'
   });
-
   return compose(createStaffPG, updateStaffPG)(createStaff);
 };

@@ -9,6 +9,7 @@ export const CREATE_STAFF = gql`
         lastname
         title
         team
+        pass
         userAccessLevelsByUserId {
           nodes {
             id
@@ -37,7 +38,7 @@ export const UPDATE_STAFF = gql`
         firstname
         lastname
         title
-        team
+        team    
         userAccessLevelsByUserId {
           nodes {
             id
@@ -57,3 +58,11 @@ export const UPDATE_STAFF = gql`
     }
   }
 `;
+
+export const SET_PASSWORD = gql`
+  mutation($input: UserInputPayload!) {
+    saveUserPassword(input: $input) {
+      token
+    }
+  }
+`
