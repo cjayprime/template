@@ -68,7 +68,10 @@ const NewAppointment = ({
               margin: 10,
               color: '#231E1E'
             }}>
-            <Icon className="fas fa-plus-circle" style={{color: '#CB6A00', fontSize: 36}} />
+            <Icon
+              className="fas fa-plus-circle"
+              style={{ color: '#CB6A00', fontSize: 36 }}
+            />
             <Typography style={{ fontSize: 18, marginLeft: 20 }}>
               {' '}
               Add patient
@@ -88,7 +91,10 @@ const NewAppointment = ({
               margin: 10,
               color: '#231E1E'
             }}>
-            <Icon className="fas fa-plus-circle" style={{color: '#CB6A00', fontSize: 36}} />
+            <Icon
+              className="fas fa-plus-circle"
+              style={{ color: '#CB6A00', fontSize: 36 }}
+            />
 
             <Grid style={{ marginLeft: 45 }}>
               <Typography
@@ -96,7 +102,7 @@ const NewAppointment = ({
                   fontSize: 18
                 }}>{`${data.firstName} ${data.lastName}`}</Typography>
               <Typography style={{ fontSize: 18 }}>
-                {`${data.sex}, ${data.age}`}
+                {`${data.sex ? `${data.sex},` : ''} ${data.age || ''}`}
               </Typography>
             </Grid>
 
@@ -107,7 +113,7 @@ const NewAppointment = ({
             <Grid style={{ marginLeft: 45 }}>
               <Typography style={{ fontSize: 18 }}>Phone Number</Typography>
               <Typography style={{ fontSize: 18 }}>
-                {data.phoneNumber}
+                {data.phoneNumber || '-'}
               </Typography>
             </Grid>
           </Button>
@@ -116,7 +122,6 @@ const NewAppointment = ({
 
       {config.date ? (
         <Grid item style={{ width: 660 }}>
-          (
           <FormBuilder
             formInput={{
               type: 'date',
@@ -128,7 +133,6 @@ const NewAppointment = ({
             formState={formState}
             setFormState={setFormState}
           />
-          )
         </Grid>
       ) : null}
       {config.time ? (
