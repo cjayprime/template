@@ -6,6 +6,7 @@ import {
   FormControlLabel,
   makeStyles
 } from '@material-ui/core';
+import { withRouter } from 'react-router-dom';
 import { flowRight as compose } from 'lodash';
 import { DefaultCheckbox } from 'bundles/patient/components/custom/formBuilder';
 import FormBuilder from 'bundles/patient/components/custom/formBuilder';
@@ -67,7 +68,7 @@ const loginQuestions = [
     type: 'email',
     key: 'email',
     required: true,
-    labelDirection: 'column',
+    labelDirection: 'column'
   },
   {
     label: 'Password',
@@ -75,48 +76,70 @@ const loginQuestions = [
     type: 'password',
     key: 'password',
     required: true,
-    labelDirection: 'column',
-  },
-]
+    labelDirection: 'column'
+  }
+];
 
-export const Login = ({ userLoginPG }) => {
+export const Login = props => {
   const classes = useStyle();
-  const [loginData, setLoginData] = useState({});
+  const [loginData, setLoginData] = useState({ email: '', password: '' });
 
   const setFormInitialState = value => {
     setLoginData({ ...loginData, ...value });
   };
 
+  const handleSubmit = async () => {
+    if ( // Basic validation
+      !Object.keys(loginData).length ||
+      Object.values(loginData).some(node => !node.trim().length)
+    ) {
+      return;
+    }
+    const resp = await props.userLoginPG({ variables: { input: loginData } });
+    // TODO {H.Ezekiel} depending on our authorization strategy we could cache resp.data.loginUser.token
+    const {
+      data: {
+        loginUser: { token }
+      }
+    } = resp;
+    if (token) {
+      props.history.push('/Dashboard');
+    }
+  };
+
   return (
-    <>
-      <Grid container spacing={0} style={{ minHeight: '100vh', backgroundColor: '#2C2E40' }}>
+    <Grid>
+      <Grid
+        container
+        spacing={0}
+        style={{ minHeight: '100vh', backgroundColor: '#2C2E40' }}>
         <Grid xs={6} item>
-         <Grid container justify="center" style={{ height: '100%' }}>
-          <Grid xs={7} item style={{ paddingTop: 140 }}>
-            <img src={logo} alt="logo"/>
-            <Typography className={classes.headerText} style={{ marginTop: 30 }}>
-              Lagos State
-            </Typography>
-            <Typography className={classes.headerText}>
-              Emergency Response System
-            </Typography>
-            <Typography className={classes.subHeaderText}>
-              Welcome back, please login to your account
-            </Typography>
-            <div className={classes.loginForm}>
-              {
-                loginQuestions.map((question, index) => 
+          <Grid container justify="center" style={{ height: '100%' }}>
+            <Grid xs={7} item style={{ paddingTop: 140 }}>
+              <img src={logo} alt="logo" />
+              <Typography
+                className={classes.headerText}
+                style={{ marginTop: 30 }}>
+                Lagos State
+              </Typography>
+              <Typography className={classes.headerText}>
+                Emergency Response System
+              </Typography>
+              <Typography className={classes.subHeaderText}>
+                Welcome back, please login to your account
+              </Typography>
+              <div className={classes.loginForm}>
+                {loginQuestions.map((question, index) => (
                   <FormBuilder
                     key={index}
                     formInput={question}
                     setFormState={setFormInitialState}
                     formState={loginData}
                   />
-                )
-              }
-            </div>
-            <Grid container justify="flex-end">
-              {/* <FormControlLabel
+                ))}
+              </div>
+              <Grid container justify="flex-end">
+                {/* <FormControlLabel
                 control={<DefaultCheckbox name="rememberMe" />}
                 label={
                   <Typography className={classes.regLabelText}>
@@ -125,32 +148,31 @@ export const Login = ({ userLoginPG }) => {
                   </Typography>
                 }
               /> */}
-              <Button
-                className={classes.actionButton}>
-                Forgot password?
-              </Button>
+                <Button className={classes.actionButton}>
+                  Forgot password?
+                </Button>
+              </Grid>
+              <div style={{ marginTop: 30 }}>
+                <Button
+                  disableElevation={false}
+                  onClick={handleSubmit}
+                  className={classes.formButton}>
+                  Login
+                </Button>
+              </div>
             </Grid>
-            <div style={{ marginTop: 30 }}>
-            <Button
-              disableElevation={false}
-              className={classes.formButton}>
-              Login
-            </Button>
-            </div>
           </Grid>
-         </Grid>
         </Grid>
-        <Grid xs={6}
-          item 
+        <Grid
+          xs={6}
+          item
           style={{
             backgroundImage: `url(${hero})`,
             clipPath: 'polygon(23% 0, 100% 0%, 100% 100%, 0 100%)'
-          }}
-        >
-        </Grid>
+          }}></Grid>
       </Grid>
-    </>
+    </Grid>
   );
 };
 
-export default compose(userLogin)(Login);
+export default compose(userLogin, withRouter)(Login);

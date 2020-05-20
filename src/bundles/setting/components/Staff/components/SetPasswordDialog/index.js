@@ -9,9 +9,14 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { SetPasswordDialogStyles } from './index.style'
 import FormBuilder from 'bundles/patient/components/custom/formBuilder';
 
-export const SetPasswordDialog = ({ open, user, handleSubmit, handleClose }) => {
+export const SetPasswordDialog = ({ open, handleSubmit, handleClose }) => {
   const classes = SetPasswordDialogStyles()
   const [formState, setFormState] = useState({})
+  const onSave = () => {
+    if (!formState.password) return;
+    handleSubmit(formState.password);
+  }
+
   return (
     <div>
       <Dialog
@@ -35,8 +40,8 @@ export const SetPasswordDialog = ({ open, user, handleSubmit, handleClose }) => 
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleClose} color="primary">
-            Change
+          <Button onClick={onSave} color="primary">
+            Save
           </Button>
         </DialogActions>
       </Dialog>

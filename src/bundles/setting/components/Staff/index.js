@@ -8,12 +8,12 @@ import { Header, DataTable } from 'bundles/shared/components';
 import { StaffPageStyles } from './index.style.js';
 import { accessLevels, accessLevelIconMap } from './store';
 import { CreateStaff } from './components/Create';
-import { SetPasswordDialog } from './components/SetPasswordDialog';
+import { SetPasswordDialog as PasswordDialog } from './components/SetPasswordDialog';
 
 const Staff = props => {
   const [editState, setEditState] = useState(false);
+  const [passwordDialogVisible, setPasswordDialogVisible] = useState(false);
   const [userContext, setUserContext] = useState(null);
-
   const classes = StaffPageStyles();
 
   const renderAvatar = props => (
@@ -46,6 +46,26 @@ const Staff = props => {
     setEditState(true);
   };
 
+  const togglePasswordDialog = user => {
+    setUserContext(user);
+    setPasswordDialogVisible(true);
+  };
+
+  const handlePasswordReset = async password => {
+    try {
+      await props.setPasswordPG({
+        variables: {
+          input: { id: userContext.id, email: userContext.email, password }
+        }
+      });
+      setUserContext(null);
+      setPasswordDialogVisible(false);
+    } catch (e) {
+      setUserContext(null);
+      setPasswordDialogVisible(false);
+    }
+  };
+
   const renderActionComponent = props => (
     <Grid container className={classes.ActionContainer}>
       <Grid item xs={2}>
@@ -56,7 +76,9 @@ const Staff = props => {
         </Typography>
       </Grid>
       <Grid item xs={5}>
-        <Typography className={clsx(classes.ActionContainerItem)}>
+        <Typography
+          className={clsx(classes.ActionContainerItem)}
+          onClick={() => togglePasswordDialog(props)}>
           {'RESET PASSWORD'}
         </Typography>
       </Grid>
@@ -138,7 +160,11 @@ const Staff = props => {
         />
       ) : (
         <Fragment>
-          <SetPasswordDialog open={true} />
+          <PasswordDialog
+            open={passwordDialogVisible}
+            handleClose={() => setPasswordDialogVisible(false)}
+            handleSubmit={handlePasswordReset}
+          />
           <Grid container className={classes.ButtonContainer}>
             <Grid item xs={6}>
               <Typography className={classes.StaffNumberText}>
