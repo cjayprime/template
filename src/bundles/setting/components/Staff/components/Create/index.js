@@ -111,6 +111,27 @@ const StaffCreateView = props => {
   };
 
   const handleSave = async () => {
+    /*
+      let nonValidState = {}
+    QUESTIONS.forEach((item) => {
+      item.content.forEach((field) => {
+        if((field.required && !formState[field.key]) || ( field.required && formState[field.key] && formState[field.key].length < 1)) {
+          nonValidState[field.key] = ''
+        }
+
+      })
+    })
+
+    if(Object.keys(nonValidState).length > 0) {
+      setSnackBar({...snackBar, message: 
+        `Invalid form Input, Please Enter
+        ${Object.keys(nonValidState).map((item) => capitalizeFirstWord(`${item} `)).join(',')}`, open: true, state: 'error'})
+      setFormState({...formState, ...nonValidState})
+      return
+    }
+
+    */
+    debugger
     try {
       const input = buildCreateInput();
       const { createStaffPG, updateStaffPG } = props;
@@ -447,6 +468,7 @@ const StaffCreateView = props => {
                     formInput={{
                       type: 'password',
                       label: 'Password',
+                      required: true,
                       labelDirection: 'column',
                       key: 'password',
                       fields: [''],
