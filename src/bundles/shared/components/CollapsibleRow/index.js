@@ -9,7 +9,11 @@ const useStyles = makeStyles(theme => ({
     padding: 0,
     borderBottom: 'none'
   },
-  collapseRowGroup: {}
+  collapseRowGroup: {
+    '&.open': {
+      boxShadow: `0px 4px 6px 0px #cacaca`
+    }
+  }
 }));
 
 export const CollapsibleRow = ({

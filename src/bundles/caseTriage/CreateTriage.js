@@ -385,7 +385,7 @@ export const CreateTriage = ({
       return;
     } 
 
-    if (riskLevel == MEDIUM) { 
+    if (riskLevel == MEDIUM) {
       const patientCase = await addPatienCase(currentPatient.id, MEDIUM);
 
       if (patientCase) {
@@ -398,10 +398,9 @@ export const CreateTriage = ({
         if (queue) {
           const triage = await addTriage(currentPatient.id, JSON.stringify(answers)) 
         }
-      } 
+      }
       return;
     }
-    
 
     // const response = await sendSms({
     //   variables: {
@@ -412,72 +411,8 @@ export const CreateTriage = ({
     //     }
     //   }
     // });
-
-  
     // send sms
-  }; 
-
-  // const ResultContainer = ({ classes, triageScore = 0 }) => {
-  //   let riskLevel = 'no risk';
-  //   let message =
-  //     'Advise patient to self medicate and observe signs and symptoms';
-
-  //   // set the message accordingly based on the score
-  //   if (triageScore >= 5 && triageScore <= 9) {
-  //     message =
-  //       'Advice patient to hydrate properly, use over the counter medication, maintain good hygiene. Observe and re-evaluate after 2 days';
-  //     riskLevel = 'Medium Risk';
-  //   } else if (triageScore >= 10 && triageScore <= 39) {
-  //     riskLevel = 'High Risk';
-  //     message =
-  //       'The Evacuation & Decon has been notified of this case. Please transfer the call to the Evacuation & Decon team and close call log.';
-  //   }
-  
-  //   return (
-  //     <Grid
-  //       container
-  //       spacing={8}
-  //       alignItems="center"
-  //       direction="column"
-  //       justify="center">
-  //       <Grid item xs={4} md={4} style={{ marginTop: 100 }}>
-  //         <img src={TriageImage} />
-  //       </Grid>
-  //       <Grid item xs={5} md={5} style={{ textAlign: 'center' }}>
-  //         <Typography
-  //           style={{
-  //             color: '#fff',
-  //             fontWeight: 'bold',
-  //             fontSize: 25,
-  //             textTransform: 'capitalize'
-  //           }}>
-  //           {riskLevel}
-  //         </Typography>
-  //         <Typography style={{ color: '#fff', fontSize: 20 }}>
-  //           {' '}
-  //           The patient has been classified as {riskLevel}
-  //         </Typography>
-  //       </Grid>
-  //       <Grid item xs={5} md={5} style={{ textAlign: 'center' }}>
-  //         <img src={triageInfo} />
-  //         <Typography style={{ color: '#fff', fontSize: 20 }}>
-  //           {' '}
-  //           {message}
-  //         </Typography>
-  //       </Grid>
-  //       <Grid item md={5} xs={5}>
-  //         <ButtonBase
-  //           variant="contained"
-  //           to="/Patient"
-  //           component={Link}
-  //           color="primary"
-  //           classes={{ root: classes.nextButton }}>
-  //           Close the Case
-  //         </ButtonBase>
-  //       </Grid>
-  //     </Grid>
-  //   );
-  // };
+  };
 
   const QontoStepIcon = props => {
     const classes = useQontoStepIconStyles();

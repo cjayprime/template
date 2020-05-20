@@ -1,12 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Grid,
-  Typography,
-  Button,
-  FormControlLabel,
-  makeStyles,
-  Snackbar
-} from '@material-ui/core';
+import { Grid, Typography, Button, makeStyles } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
 import { signOut } from 'bundles/client/components/Apollo/Link/auth';
 import { flowRight as compose } from 'lodash';
@@ -17,9 +10,10 @@ import * as searchFilter from 'bundles/setting/selectors';
 import MuiAlert from '@material-ui/lab/Alert';
 import { DefaultCheckbox } from 'bundles/patient/components/custom/formBuilder';
 import FormBuilder from 'bundles/patient/components/custom/formBuilder';
-import hero from 'assets/images/hero-bg/hero-5.jpg';
+// import hero from 'assets/images/hero-bg/hero-5.jpg';
 import logo from 'images/lagos_logo.png';
 import Loader from 'bundles/shared/components/Loader';
+import loginImage from 'images/login_image.png';
 import { userLogin } from 'bundles/login/hoc/userLogin';
 
 
@@ -29,11 +23,11 @@ const ERROR_STAR_CONSTANT = '#f44336'
 
 const useStyle = makeStyles(theme => ({
   headerText: {
-    color: '#fff',
+    color: '#231E1E',
     fontSize: 36
   },
   subHeaderText: {
-    color: '#BDB8D9',
+    color: '#685E5E',
     fontSize: 20,
     marginTop: 10,
     marginBottom: 10
@@ -53,16 +47,16 @@ const useStyle = makeStyles(theme => ({
     textTransform: 'uppercase'
   },
   actionButton: {
-    color: '#27BAC0',
+    color: '#EFA14B',
     fontSize: 15,
     fontWeight: 'bold',
     padding: '5px 0',
     textTransform: 'uppercase'
   },
   formButton: {
-    backgroundColor: '#28BAC0',
+    backgroundColor: '#CB6A00',
     boxShadow:
-      '0 6px 16px rgba(39, 186, 192, 0.20), 0 2px 10px rgba(39, 186, 192, 0.10)',
+      '0 6px 16px rgba(203, 106, 0, 0.20), 0 2px 10px rgba(39, 186, 192, 0.10)',
     borderRadius: 20,
     textTransform: 'uppercase',
     border: 'none',
@@ -71,11 +65,11 @@ const useStyle = makeStyles(theme => ({
     fontSize: 16,
     padding: '10px 50px 10px',
     '&:hover': {
-      backgroundColor: '#28BAC0',
+      backgroundColor: '#CB6A00',
       border: 'none'
     },
     '&:active': {
-      backgroundColor: '#28BAC0',
+      backgroundColor: '#CB6A00',
       border: 'none'
     }
   }
@@ -197,7 +191,7 @@ export const Login = ({saveId, user, staff, logOutUser, ...props}) => {
         container
         spacing={0}
         onKeyPress={(e) => submitForm(e)}
-        style={{ minHeight: '100vh', backgroundColor: '#2C2E40' }}>
+        style={{ minHeight: '100vh', backgroundColor: '#F6F6F6' }}>
         <Grid xs={6} item>
           <Grid container justify="center" style={{ height: '100%' }}>
             <Grid xs={7} item style={{ paddingTop: 140 }}>
@@ -227,15 +221,6 @@ export const Login = ({saveId, user, staff, logOutUser, ...props}) => {
                 <Typography className={classes.errorText}>
                   {error}
                 </Typography>
-                {/* <FormControlLabel
-                control={<DefaultCheckbox name="rememberMe" />}
-                label={
-                  <Typography className={classes.regLabelText}>
-                    {' '}
-                    Remember me
-                  </Typography>
-                }
-              /> */}
                 <Button className={classes.actionButton}>
                   Forgot password?
                 </Button>
@@ -258,9 +243,12 @@ export const Login = ({saveId, user, staff, logOutUser, ...props}) => {
           xs={6}
           item
           style={{
-            backgroundImage: `url(${hero})`,
+            backgroundImage: `url(${loginImage})`,
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: 'cover',
             clipPath: 'polygon(23% 0, 100% 0%, 100% 100%, 0 100%)'
           }}></Grid>
+        {/* <Grid item xs={6}></Grid> */}
       </Grid>
     </Grid>
   );

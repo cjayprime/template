@@ -389,7 +389,7 @@ const Overview = props => {
         <Paper elevation={3} style={{ padding: '10px 5px 20px' }}>
           <Bar
             data={admissionChartdata}
-            height="100px"
+            height={100}
             options={admissionBarOption}
           />
         </Paper>

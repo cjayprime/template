@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import { SetPasswordDialogStyles } from './index.style'
 import FormBuilder from 'bundles/patient/components/custom/formBuilder';
 
@@ -15,16 +12,22 @@ export const SetPasswordDialog = ({ open, handleSubmit, handleClose }) => {
   const onSave = () => {
     if (!formState.password) return;
     handleSubmit(formState.password);
-  }
+  };
 
   return (
     <div>
       <Dialog
+        fullWidth={true}
         open={open}
         onClose={handleClose}
-        className={classes.MainContainer}
+        classes={{
+          paper: classes.dialog,
+          root: classes.dialogRoot,
+          container: classes.dialogContainer
+        }}
+        maxWidth={'sm'}
         aria-labelledby="form-dialog-title">
-        <DialogContent className={classes.ContentContainer}>
+        <DialogContent>
           <FormBuilder
             formInput={{
               type: 'text',
@@ -36,11 +39,21 @@ export const SetPasswordDialog = ({ open, handleSubmit, handleClose }) => {
             setFormState={setFormState}
           />
         </DialogContent>
-        <DialogActions className={classes.DialogAction}>
-          <Button onClick={handleClose} color="primary">
+        <DialogActions>
+          <Button
+            // fullWidth={true}
+            variant="contained"
+            onClick={handleClose}
+            classes={{
+              root: classes.secondaryButton,
+              focusVisible: classes.secondaryButton
+            }}>
             Cancel
           </Button>
-          <Button onClick={onSave} color="primary">
+          <Button
+            variant="contained"
+            onClick={onSave}
+            classes={{ root: classes.primaryButton }}>
             Save
           </Button>
         </DialogActions>
