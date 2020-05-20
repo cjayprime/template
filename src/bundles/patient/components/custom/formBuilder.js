@@ -58,7 +58,7 @@ const year = [
 
 export const DefaultCheckbox = withStyles({
   root: {
-    color: '#CACACA',
+    color: '#231E1E',
     '&$checked': {
       color: '#6EA915 !important'
     }

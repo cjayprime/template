@@ -1,6 +1,6 @@
 import React, { useState, forwardRef } from 'react';
 import { NavLink as RouterLink } from 'react-router-dom';
-import { useSubscription } from '@apollo/react-hooks';
+
 import { Subscription } from 'react-apollo';
 
 import { QUEUE_SUBSCRIPTION } from 'graphql/Subscription/queueSubscription';
@@ -15,16 +15,14 @@ import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 
 const SubRender = () => {
   return (
-    <Subscription subscription={QUEUE_SUBSCRIPTION}> 
-    {
-      ({data}) => {
-        console.log(data)
-        return <p> hello  </p> 
-      }
-    }
+    <Subscription subscription={QUEUE_SUBSCRIPTION}>
+      {({ data }) => {
+        console.log(data);
+        return <p> hello </p>;
+      }}
     </Subscription>
-  )
-}
+  );
+};
 
 const CustomRouterLink = forwardRef(function CustomLink(props, ref) {
   return (
@@ -72,29 +70,31 @@ const SidebarMenuListItem = props => {
 
   if (children) {
     return (
-      <ListItem
-        {...rest}
-        className={clsx('app-sidebar-item', className)}
-        disableGutters>
-        <Button
-          color="primary"
-          disableRipple
-          className={clsx('app-sidebar-button', { active: open })}
-          onClick={handleToggle}
-          style={parentStyle}>
-          {Icon}
-          <span style={{ color: textColor }}>{title}</span>
-          {open ? (
-            <ExpandLessIcon className="sidebar-expand-icon" color="inherit" />
-          ) : (
-            <ExpandLessIcon
-              className="sidebar-expand-icon sidebar-expand-icon-rotate"
-              color="inherit"
-            />
-          )}
-        </Button>
+      <>
+        <ListItem
+          {...rest}
+          className={clsx('app-sidebar-item', className)}
+          disableGutters>
+          <Button
+            color="primary"
+            disableRipple
+            className={clsx('app-sidebar-button', { active: open })}
+            onClick={handleToggle}
+            style={parentStyle}>
+            {Icon}
+            <span style={{ color: textColor }}>{title}</span>
+            {open ? (
+              <ExpandLessIcon className="sidebar-expand-icon" color="inherit" />
+            ) : (
+              <ExpandLessIcon
+                className="sidebar-expand-icon sidebar-expand-icon-rotate"
+                color="inherit"
+              />
+            )}
+          </Button>
+        </ListItem>
         <Collapse in={open}>{children}</Collapse>
-      </ListItem>
+      </>
     );
   } else {
     return (
@@ -122,7 +122,6 @@ const SidebarMenuListItem = props => {
           )}
         </Button>
         </Badge>
-
       </ListItem>
     );
   }

@@ -28,11 +28,11 @@ const useStyles = makeStyles(theme => ({
   },
   headerText: {
     fontSize: 20,
-    color: '#fff',
+    color: '#231E1E',
     textAlign: 'center'
   },
   primaryButton: {
-    backgroundColor: '#27BAC0',
+    backgroundColor: '#CB6A00',
     color: '#fff',
     fontSize: 13,
     fontWeight: 'bold',
@@ -40,16 +40,16 @@ const useStyles = makeStyles(theme => ({
     borderRadius: 50,
     textTransform: 'uppercase',
     boxShadow:
-      '0 6px 16px rgba(39, 186, 192, 0.20), 0 2px 10px rgba(39, 186, 192, 0.10)',
+      '0 6px 16px rgba(203, 106, 0, 0.20), 0 2px 10px rgba(203, 106, 0, 0.10)',
     '&:hover': {
-      backgroundColor: '#27BAC0',
+      backgroundColor: '#CB6A00',
       color: '#fff',
       fontSize: 13
     }
   },
   secondaryButton: {
     backgroundColor: 'transparent',
-    color: '#fff',
+    color: '#CB6A00',
     fontSize: 13,
     fontWeight: 'bold',
     padding: '11.5px 34px',
@@ -58,15 +58,30 @@ const useStyles = makeStyles(theme => ({
     boxShadow: 'none',
     '&:hover': {
       backgroundColor: 'transparent',
-      color: '#fff',
+      color: '#CB6A00',
       fontSize: 13,
       boxShadow: 'none'
     }
   },
   dialog: {
-    // backgroundColor: 'transparent',
-    backgroundColor: '#2B2D40'
-    //boxShadow: 'none'
+    backgroundColor: 'transparent',
+    // backgroundColor: '#2B2D40',
+    boxShadow: 'none'
+  },
+  dialogheaderText: {
+    fontSize: 24,
+    color: '#231E1E',
+    textAlign: 'center'
+  },
+  dialogContainer: {
+    backgroundColor: 'rgba(246, 246, 246, 0.7)',
+    backdropFilter: 'blur(4px)'
+  },
+  dialogCloseButton: {
+    position: 'fixed',
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: '#231E1E'
   },
   cssOutlinedInput: {
     '&$cssFocused $notchedOutline': {
@@ -115,7 +130,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const renderFilter = (type, selection, setSelection, routerType) => {
-
   if (!type) return null;
 
   let renderData = {
@@ -129,13 +143,13 @@ const renderFilter = (type, selection, setSelection, routerType) => {
   };
 
   let selectedNodes = {}
-  if(selection[routerType] && selection[routerType][type]) {
+  if (selection[routerType] && selection[routerType][type]) {
     selectedNodes = selection[routerType][type]
   }
- 
+
   return (
     <Fragment>
-      {renderData[type].map((item, index) => {
+      {renderData[type].map(item => {
         return (
           <Grid key={item.key}>
             <Grid container alignItems="center" justify="center">
@@ -179,7 +193,8 @@ const FilterDialog = ({
       fullWidth={true}
       classes={{
         paper: classes.dialog,
-        root: classes.dialogRoot
+        root: classes.dialogRoot,
+        container: classes.dialogContainer
       }}
       maxWidth={'sm'}>
       <DialogTitle id="form-dialog-title">
