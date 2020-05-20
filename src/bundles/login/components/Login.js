@@ -15,6 +15,7 @@ import logo from 'images/lagos_logo.png';
 import { userLogin } from 'bundles/login/hoc/userLogin';
 
 const AUTHORIZATION_KEY = "Tokens::Authorization"
+const USER_PAYLOAD_KEY = "Users::Current"
 
 const useStyle = makeStyles(theme => ({
   headerText: {
@@ -101,11 +102,12 @@ export const Login = props => {
     // TODO {H.Ezekiel} depending on our authorization strategy we could cache resp.data.loginUser.token
     const {
       data: {
-        loginUser: { token }
+        loginUser: { token, payload }
       }
     } = resp;
     if (token) {
       localStorage.setItem(AUTHORIZATION_KEY, token);
+      localStorage.setItem(USER_PAYLOAD_KEY, JSON.stringify(payload))
       props.history.push('/Dashboard');
     }
   };
