@@ -8,7 +8,7 @@ export const SurveillanceSectionStyles = makeStyles(theme => ({
     marginBottom: '2%'
   },
   SummaryContent: {
-    height: '5vh',
+    // height: '5vh',
     color: 'white',
     justifyContent: 'center',
     alignItems: 'center'
@@ -17,23 +17,28 @@ export const SurveillanceSectionStyles = makeStyles(theme => ({
   SummaryTextContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    height: '30px',
+    // height: '30px',
     marginRight: '2px'
   },
   SummaryText: {
-    fontSize: '12px',
+    color: '#231E1E',
+    fontSize: '15px',
     fontWeight: 'bold'
   },
   TvContainer: {
-    borderRadius: '12px',
-    height: '30px',
-    border: '.5px solid #8E8CA790',
+    borderRadius: '50px',
+    // height: '30px',
+    border: '.5px solid #EFA14B',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingTop: 7.5,
+    paddingBottom: 7.5
   },
   TvContainerText: {
-    fontSize: '10.5px',
-    fontWeight: 'bold'
+    fontSize: '15px',
+    textTransform: 'uppercase',
+    fontWeight: 'bold',
+    color: '#EFA14B'
   },
   GapContainer: {},
   FilterContainer: {

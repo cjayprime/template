@@ -1,11 +1,13 @@
 import React from 'react';
-import { Grid, Paper, Typography } from '@material-ui/core';
+import { Grid, Paper, Typography, Button } from '@material-ui/core';
 import clsx from 'clsx';
 
 import {
   FilterList,
   DataContainerWithMetadata
 } from '../../../../../shared/components';
+
+import tvicon from 'images/icons/ic_tv.svg';
 
 import WithDashboardData from 'bundles/dashboard/hoc/WithDashboardData';
 import { Bar, Doughnut } from 'react-chartjs-2';
@@ -250,11 +252,17 @@ const Surveillance = props => {
           <Grid item xs={4} container className={classes.SummaryTextContainer}>
             <Typography className={classes.SummaryText}>{'Summary'}</Typography>
           </Grid>
-          <Grid item xs={8} container className={classes.TvContainer}>
+          <Button
+            item
+            container
+            className={classes.TvContainer}
+            alignItems="center"
+            justify="space-around">
+            <img src={tvicon} alt="enter tv mode" style={{ marginRight: 5 }} />
             <Typography className={classes.TvContainerText}>
               {'Enter TV Mode'}
             </Typography>
-          </Grid>
+          </Button>
         </Grid>
         <Grid item xs={4} className={classes.GapContainer}></Grid>
         <Grid item xs={5} className={classes.FilterContainer}>
