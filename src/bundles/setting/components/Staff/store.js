@@ -1,13 +1,13 @@
 import React from 'react';
-import queue from 'images/rectangle.png';
-import dashboard from 'images/rectangle1.png';
-import lab from 'images/rectangle3.png';
-import kpi from 'images/rectangle5.png';
-import appointment from 'images/rectangle6.png';
-import setting from 'images/rectangle8.png';
-import bedmanagement from 'images/rectangle7.png';
-import contact from 'images/triageinfo.png';
-import lookup from 'images/icon3.png';
+import queue from 'images/icons/ic_queue.svg';
+import dashboard from 'images/icons/ic_dashboard.svg';
+import lab from 'images/icons/ic_lab.svg';
+import kpi from 'images/icons/ic_kpi.svg';
+import appointment from 'images/icons/ic_appointments.svg';
+import setting from 'images/icons/ic_settings.svg';
+import bedmanagement from 'images/icons/ic_admit_discharge.svg';
+import contact from 'images/icons/ic_info.svg';
+import lookup from 'images/icons/ic_search.svg';
 
 export const accessLevelIconMap = {
   lab: <img src={lab} />,

@@ -14,9 +14,9 @@ import { toggleFilter as patientToggleFilter } from 'bundles/patient/actions';
 
 import HeaderLogo from '../../layout-components/HeaderLogo';
 import { useStyles } from 'layout-components/Header/custom/index.styles';
-import caseIcon from 'images/briefcase-25.png';
+import caseIcon from 'images/icons/ic_records_case.svg';
 import SearchField from 'layout-components/Header/custom/searchField';
-import filterIcon from 'images/filter.png';
+import filterIcon from 'images/icons/ic_filter.svg';
 import FilterToggler from 'layout-components/Header/custom/FilterDialog';
 
 const Header = props => {

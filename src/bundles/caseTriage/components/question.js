@@ -21,7 +21,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
 import { ThemeProvider } from '@material-ui/styles';
 import EventAvailable from '@material-ui/icons/EventAvailable';
-import pointer from 'images/pointer.png';
+import pointer from 'images/icons/ic_branch.svg';
 import moment from 'moment';
 
 const useStyles = makeStyles(theme => ({

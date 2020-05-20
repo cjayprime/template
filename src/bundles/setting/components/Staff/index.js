@@ -3,7 +3,7 @@ import { Container, Grid, Typography, Avatar } from '@material-ui/core';
 import { withStaff } from 'bundles/setting/hoc';
 import { flowRight as compose } from 'lodash';
 import clsx from 'clsx';
-import img from 'images/rectangle.png';
+import img from 'images/icons/ic_queue.svg';
 import { Header, DataTable } from 'bundles/shared/components';
 import { StaffPageStyles } from './index.style.js';
 import { accessLevels, accessLevelIconMap } from './store';
@@ -67,7 +67,7 @@ const Staff = props => {
   };
 
   const renderActionComponent = props => (
-    <Grid container className={classes.ActionContainer}>
+    <Grid container className={classes.ActionContainer} justify="space-between">
       <Grid item xs={2}>
         <Typography
           className={clsx(classes.ActionContainerItem)}

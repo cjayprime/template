@@ -13,7 +13,7 @@ import {
 } from '@material-ui/core';
 import clsx from 'clsx';
 import FormBuilder from 'bundles/patient/components/custom/formBuilder';
-import pointer from 'images/pointer.png';
+import pointer from 'images/icons/ic_branch.svg';
 import { Input } from 'bundles/shared/components';
 import { createStaff as createStaffHoc } from 'bundles/setting/hoc/createStaff';
 import { flowRight as compose } from 'lodash';
