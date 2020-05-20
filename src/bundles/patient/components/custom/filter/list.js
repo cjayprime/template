@@ -220,9 +220,10 @@ const RenderList = ({ patients = [], markPatientDeceased, newCallLog }) => {
       },
       callLogs: patient.callLogsByPatientId.nodes || [],
       patientCase: {
-        riskLevel: patient.patientCasesByPatientId.nodes.length
-          ? patient.patientCasesByPatientId.nodes[0].riskLevel
-          : '',
+        riskLevel:
+          patient.patientCasesByPatientId.nodes.length > 0
+            ? patient.patientCasesByPatientId.nodes[0].riskLevel
+            : '',
         status:
           patient.patientCasesByPatientId.nodes.length > 0
             ? patient.patientCasesByPatientId.nodes[0].status
@@ -233,11 +234,11 @@ const RenderList = ({ patients = [], markPatientDeceased, newCallLog }) => {
               ...patientCase,
               epidNumber: patient.epidNumber,
               submittedBy: `${
-                patientCase.userBySubmittedBy.title
-                  ? `${patientCase.userBySubmittedBy.title} `
+                patientCase?.userBySubmittedBy?.title
+                  ? `${patientCase?.userBySubmittedBy?.title} `
                   : ''
-              }${patientCase.userBySubmittedBy.firstname} ${
-                patientCase.userBySubmittedBy.lastname
+              }${patientCase?.userBySubmittedBy?.firstname} ${
+                patientCase?.userBySubmittedBy?.lastname
               }`
             };
           }) || []
@@ -253,7 +254,10 @@ const RenderList = ({ patients = [], markPatientDeceased, newCallLog }) => {
             }${labRequest.userByRequestedBy.firstname} ${
               labRequest.userByRequestedBy.lastname
             }`,
-            status: labRequest.labRequestStatusesByLabRequestId.nodes.length > 0 ? labRequest.labRequestStatusesByLabRequestId.nodes[0].status : ''
+            status:
+              labRequest.labRequestStatusesByLabRequestId.nodes.length > 0
+                ? labRequest.labRequestStatusesByLabRequestId.nodes[0].status
+                : ''
           };
         }) || [],
       inpatient:
