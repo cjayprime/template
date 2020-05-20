@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { withRouter } from 'react-router';
 import { ThemeProvider } from '@material-ui/styles';
 import MuiTheme from './theme';
-import { LeftSidebar } from './layout-blueprints';
+import { LeftSidebar, PresentationLayout } from './layout-blueprints';
 import logo from 'images/lagos.png';
 
 const PatientPanel = lazy(() => import('./bundles/patient/components/Panel'));
@@ -24,6 +24,7 @@ const BedManagement = lazy(() =>
 );
 const Appointment = lazy(() => import('./bundles/appointment/components/View'));
 const Lab = lazy(() => import('./bundles/lab/components/View'));
+const LoginPage = lazy(() => import('./bundles/login'));
 const Dashboard = lazy(() => import('./bundles/dashboard'));
 
 const Routes = ({ history }) => {
@@ -78,6 +79,21 @@ const Routes = ({ history }) => {
         <Suspense fallback={<SuspenseLoading />}>
           <Switch>
             <Redirect exact from="/" to="/Dashboard" />
+
+            <Route path={['/Login']}>
+              <PresentationLayout>
+                <Switch location={location} key={location.pathname}>
+                  <motion.div
+                    initial="initial"
+                    animate="in"
+                    exit="out"
+                    variants={pageVariants}
+                    transition={pageTransition}>
+                    <Route path="/Login" component={LoginPage} />
+                  </motion.div>
+                </Switch>
+              </PresentationLayout>
+            </Route>
 
             <Route
               path={[

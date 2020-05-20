@@ -20,6 +20,7 @@ import { flowRight as compose } from 'lodash';
 import { StaffCreateStyles } from './index.style';
 
 const DEFAULT_RADIO_OPTIONS = ['Yes', 'No'];
+const PLACEHOLDER_PASSWORD = 'lashpers-password#';
 
 const StaffCreateView = props => {
   const classes = StaffCreateStyles();
@@ -99,16 +100,17 @@ const StaffCreateView = props => {
 
     const updateAccessLevel = {
       updateById: {
-        id: user.accessLevel.id,
+        id: user?.accessLevel?.id,
         userAccessLevelPatch: {
           ...buildPayloadFromAccessLevels(),
-          id: user.accessLevel.id
+          id: user?.accessLevel?.id
         }
       }
     };
 
     return {
       ...formState,
+      pass: PLACEHOLDER_PASSWORD, // till we have thee password form working
       userAccessLevels: user ? updateAccessLevel : createAccessLevel
     };
   };
@@ -116,6 +118,7 @@ const StaffCreateView = props => {
   const handleSave = async () => {
     try {
       const input = buildCreateInput();
+      ['accessLevel', 'nodeId'].forEach(key => delete input[key]);
       const { createStaffPG, updateStaffPG } = props;
       if (!user) {
         await createStaffPG({ variables: { input: { user: input } } });

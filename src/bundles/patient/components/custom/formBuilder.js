@@ -131,6 +131,7 @@ const InputTextComp = (
       defaultValue={input.defaultValue || ''}
       error={nonValid}
       multiline={multiline}
+      type={input.type}
       onChange={e =>
         input.capitalize
           ? setFormState({ [input.key]: capitalizeFirstWord(e.target.value) })
@@ -173,10 +174,10 @@ const TextTransform = ({ input, setFormState, formState }) => {
       container
       style={{ marginBottom: 15 }}
       direction={input.labelDirection}>
-      <Grid xs={!input.labelDirection && 4}>
+      <Grid item xs={!input.labelDirection && 4}>
         <Typography className={classes.labelText}>{input.label}</Typography>
       </Grid>
-      <Grid xs={!input.labelDirection && 8} className={classes.container}>
+      <Grid item xs={!input.labelDirection && 8} className={classes.container}>
         {InputTextComp(classes, input, setFormState, formState)}
       </Grid>
     </Grid>
@@ -404,7 +405,7 @@ const TextFormDetail = ({ input }) => {
 
 const renderType = (input, setFormState, formState) => {
   switch (input.type) {
-    case 'text':
+    case 'text' || 'password' || 'email':
       return (
         <TextTransform
           setFormState={setFormState}
