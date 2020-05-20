@@ -5,6 +5,13 @@ export const USER_LOGIN = gql`
     loginUser(input: $input) {
       status
       token
+      payload {
+        id
+        firstname
+        lastname
+        role
+        team
+      }
     }
   }
 `;

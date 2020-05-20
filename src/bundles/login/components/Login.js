@@ -14,6 +14,8 @@ import hero from 'assets/images/hero-bg/hero-5.jpg';
 import logo from 'images/lagos_logo.png';
 import { userLogin } from 'bundles/login/hoc/userLogin';
 
+const AUTHORIZATION_KEY = "Tokens::Authorization"
+
 const useStyle = makeStyles(theme => ({
   headerText: {
     color: '#fff',
@@ -103,6 +105,7 @@ export const Login = props => {
       }
     } = resp;
     if (token) {
+      localStorage.setItem(AUTHORIZATION_KEY, token);
       props.history.push('/Dashboard');
     }
   };
