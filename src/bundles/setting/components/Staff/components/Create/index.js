@@ -55,10 +55,15 @@ const StaffCreateView = props => {
     buildAccessLevelsFromInitialUser()
   );
 
-  const handleChange = name => newValue => {
-    const newState = { ...formState, [name]: Object.values(newValue)[0] };
-    setFormState(newState);
-  };
+  const handleChange = (value) => {
+    setFormState({ ...formState, ...value });
+  }
+
+  // const handleChange = name => newValue => {
+  //   debugger
+  //   const newState = { ...formState, [name]: Object.values(newValue)[0] };
+  //   setFormState(newState);
+  // };
 
   const handleAccessLevelChange = (name, value, parent) => {
     const newAccessLevelState = {
@@ -110,12 +115,32 @@ const StaffCreateView = props => {
 
     return {
       ...formState,
-      pass: PLACEHOLDER_PASSWORD, // till we have thee password form working
       userAccessLevels: user ? updateAccessLevel : createAccessLevel
     };
   };
 
   const handleSave = async () => {
+    /*
+      let nonValidState = {}
+    QUESTIONS.forEach((item) => {
+      item.content.forEach((field) => {
+        if((field.required && !formState[field.key]) || ( field.required && formState[field.key] && formState[field.key].length < 1)) {
+          nonValidState[field.key] = ''
+        }
+
+      })
+    })
+
+    if(Object.keys(nonValidState).length > 0) {
+      setSnackBar({...snackBar, message: 
+        `Invalid form Input, Please Enter
+        ${Object.keys(nonValidState).map((item) => capitalizeFirstWord(`${item} `)).join(',')}`, open: true, state: 'error'})
+      setFormState({...formState, ...nonValidState})
+      return
+    }
+
+    */
+   
     try {
       const input = buildCreateInput();
       ['accessLevel', 'nodeId'].forEach(key => delete input[key]);
@@ -243,7 +268,7 @@ const StaffCreateView = props => {
   };
 
   return (
-    <Container className={classes.PageContainer}>
+    <div className={classes.PageContainer}>
       <Grid container className={classes.FormContainer} direction="row">
         <Grid container item xs={7} direction="column" wrap="nowrap">
           <Grid
@@ -283,13 +308,14 @@ const StaffCreateView = props => {
                     formInput={{
                       type: 'select',
                       label: 'Role',
+                      required: true,
                       key: 'role',
-                      fields: ['staff'],
+                      fields: ['Admin','Staff'],
                       labelDirection: 'column',
                       defaultValue: user?.role
                     }}
                     formState={formState}
-                    setFormState={handleChange('role')}
+                    setFormState={handleChange}
                   />
                 </Grid>
                 <Grid item xs={5} className={classes.FormGroupItem}>
@@ -297,13 +323,14 @@ const StaffCreateView = props => {
                     formInput={{
                       type: 'select',
                       label: 'Team',
+                      required: true,
                       key: 'team',
                       labelDirection: 'column',
                       fields: ['RRT', 'Evac & Decon'],
                       defaultValue: user?.team
                     }}
                     formState={formState}
-                    setFormState={handleChange('team')}
+                    setFormState={handleChange}
                   />
                 </Grid>
               </Grid>
@@ -315,11 +342,12 @@ const StaffCreateView = props => {
                       label: 'Title',
                       key: 'title',
                       labelDirection: 'column',
+                      key: 'title',
                       fields: ['Dr', 'Mr', 'Mrs', 'Ms'],
                       defaultValue: user?.title
                     }}
                     formState={formState}
-                    setFormState={handleChange('title')}
+                    setFormState={handleChange}
                   />
                 </Grid>
                 <Grid item xs={8} className={classes.FormGroupItem}>
@@ -327,13 +355,14 @@ const StaffCreateView = props => {
                     formInput={{
                       type: 'text',
                       label: 'First name',
+                      required: true,
                       key: 'firstname',
                       labelDirection: 'column',
                       defaultValue: user?.firstname
                     }}
                     key="firstName"
                     formState={formState}
-                    setFormState={handleChange('firstname')}
+                    setFormState={handleChange}
                   />
                 </Grid>
               </Grid>
@@ -343,12 +372,13 @@ const StaffCreateView = props => {
                     formInput={{
                       type: 'text',
                       label: 'Surname',
-                      lastname: 'lastname',
+                      key: 'lastname',
+                      required: true,
                       labelDirection: 'column',
                       defaultValue: user?.lastname
                     }}
                     formState={formState}
-                    setFormState={handleChange('lastname')}
+                    setFormState={handleChange}
                   />
                 </Grid>
               </Grid>
@@ -360,10 +390,12 @@ const StaffCreateView = props => {
                       label: 'Phone no',
                       key: 'phoneNumber',
                       labelDirection: 'column',
+                      key: 'phoneNumber',
+                      required: true,
                       defaultValue: user?.phoneNumber
                     }}
                     formState={formState}
-                    setFormState={handleChange('phoneNumber')}
+                    setFormState={handleChange}
                   />
                 </Grid>
                 <Grid item xs={5} className={classes.FormGroupItem}>
@@ -371,12 +403,13 @@ const StaffCreateView = props => {
                     formInput={{
                       type: 'text',
                       label: 'Email',
+                      required: true,
                       key: 'email',
                       labelDirection: 'column',
                       defaultValue: user?.email
                     }}
                     formState={formState}
-                    setFormState={handleChange('email')}
+                    setFormState={handleChange}
                   />
                 </Grid>
               </Grid>
@@ -386,12 +419,13 @@ const StaffCreateView = props => {
                     formInput={{
                       type: 'text',
                       label: 'Job Title',
-                      key: 'email',
+                      required: true,
+                      key: 'jobTitle',
                       labelDirection: 'column',
                       defaultValue: user?.jobTitle
                     }}
                     formState={formState}
-                    setFormState={handleChange('jobTitle')}
+                    setFormState={handleChange}
                   />
                 </Grid>
                 <Grid item xs={5} className={classes.FormGroupItem}>
@@ -399,12 +433,13 @@ const StaffCreateView = props => {
                     formInput={{
                       type: 'text',
                       label: 'Department',
+                      required: true,
                       key: 'department',
                       labelDirection: 'column',
                       defaultValue: user?.department
                     }}
                     formState={formState}
-                    setFormState={handleChange('department')}
+                    setFormState={handleChange}
                   />
                 </Grid>
               </Grid>
@@ -416,11 +451,12 @@ const StaffCreateView = props => {
                       label: 'Specialty',
                       key: 'speciality',
                       labelDirection: 'column',
+                      key: 'speciality',
                       fields: [''],
                       defaultValue: user?.speciality
                     }}
                     formState={formState}
-                    setFormState={handleChange('speciality')}
+                    setFormState={handleChange}
                   />
                 </Grid>
                 <Grid item xs={5} className={classes.FormGroupItem}>
@@ -428,13 +464,44 @@ const StaffCreateView = props => {
                     formInput={{
                       type: 'select',
                       label: 'Sex',
+                      required: true,
                       key: 'sex',
                       labelDirection: 'column',
                       fields: ['MALE', 'FEMALE'],
                       defaultValue: user?.sex
                     }}
                     formState={formState}
-                    setFormState={handleChange('sex')}
+                    setFormState={handleChange}
+                  />
+                </Grid>
+              </Grid>
+              <Grid className={classes.FormGroupContainer} container>
+                <Grid item xs={5} className={classes.FormGroupItem}>
+                  <FormBuilder
+                    formInput={{
+                      type: 'password',
+                      label: 'Password',
+                      required: true,
+                      labelDirection: 'column',
+                      key: 'pass',
+                      fields: [''],
+                      
+                    }}
+                    formState={formState}
+                    setFormState={handleChange}
+                  />
+                </Grid>
+                <Grid item xs={5} className={classes.FormGroupItem}>
+                  <FormBuilder
+                    formInput={{
+                      type: 'password',
+                      label: 'Re- Password',
+                      required: true,
+                      key: 'repassword',
+                      labelDirection: 'column',
+                    }}
+                    formState={formState}
+                    setFormState={handleChange}
                   />
                 </Grid>
               </Grid>
@@ -473,7 +540,7 @@ const StaffCreateView = props => {
           </Button>
         </Grid>
       </Grid>
-    </Container>
+    </div>
   );
 };
 

@@ -98,6 +98,13 @@ const triageFilter = Immutable.Map({
 
 const defaultFilter = Immutable.Map({
   filters: Immutable.List([
+    'TEAM',
+    'LGA',
+    'STATUS',
+    'UNDERLYING ILLNESS',
+    'TRAVEL HISTORY',
+    'GENDER',
+    'AGE'
   ]),
   title: '',
   icon: '',

@@ -180,7 +180,7 @@ const ErrorContainer = () => {
           <Typography
             color="primary"
             style={{ fontSize: 20, fontWeight: 'bold', color: '#fff' }}>
-            LOG A CALL
+            Register a patient
           </Typography>
         </ButtonBase>
       </Grid>
@@ -382,6 +382,7 @@ const RenderList = ({ patients = [], markPatientDeceased, newCallLog }) => {
             <Button
               fullWidth={true}
               variant="contained"
+              onClick={closeForwardDialog}
               color="primary"
               classes={{ root: classes.primaryButton }}>
               ADD

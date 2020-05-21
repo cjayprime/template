@@ -17,7 +17,8 @@ export const PatientMetadatumStyles = makeStyles(theme => {
     Nametext: {
       color: DEFAULT_GREEN,
       fontWeight: 'bold',
-      fontSize: `14px`
+      fontSize: `14px`,
+      cursor: 'pointer'
     },
     MetaCaption: {
       color: '#8E8CA7',

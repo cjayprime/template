@@ -14,7 +14,6 @@ export const DataTable = props => {
   const {
     headers,
     data,
-    noBorder,
     customRowRender,
     renderCollapsible,
     styles = {}
@@ -80,7 +79,7 @@ export const DataTable = props => {
               return (
                 <TableCell
                   className={clsx(
-                    noBorder ? classes.TableCellNoBorder : classes.TableCell,
+                    classes.TableCell,
                     classes.TableItem,
                     styles.TableCell
                   )}
@@ -99,7 +98,7 @@ export const DataTable = props => {
     <Fragment>
       <Table className={clsx(classes.Table, styles.Table)}>
         <TableHead>
-          <TableRow className={clsx(classes.HeaderRow, styles.HeaderRow)}>
+          <TableRow className={clsx(classes.HeaderRow, styles.HeaderRow)}  >
             {buildHeaderCells()}
           </TableRow>
         </TableHead>

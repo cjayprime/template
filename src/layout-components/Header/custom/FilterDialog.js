@@ -171,7 +171,7 @@ const FilterDialog = ({
 }) => {
   const classes = useStyles();
   const render = renderFilter(type, selection, setSelection, routerType);
-
+ 
   return (
     <Dialog
       open={open}

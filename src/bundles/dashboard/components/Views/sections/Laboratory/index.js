@@ -17,7 +17,7 @@ import { LaboratoryStyles } from './index.style';
 export const Laboratory = () => {
   const classes = LaboratoryStyles();
   return (
-    <Container className={classes.PageContainer}>
+    <div className={classes.PageContainer}>
       <Grid container className={clsx(classes.PageItem, classes.SectionOne)}>
         {SectionOneData.map(node => {
           return (
@@ -109,6 +109,6 @@ export const Laboratory = () => {
           {...{ title: 'Sample testing & test positivity (absolute)' }}
         />
       </Grid>
-    </Container>
+    </div>
   );
 };

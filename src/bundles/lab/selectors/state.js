@@ -1,0 +1,1 @@
+export const getLabState = state => state.lab || state

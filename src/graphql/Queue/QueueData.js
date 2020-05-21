@@ -14,18 +14,34 @@ export const ALL_QUEUES = gql`query allQueues(
           nodes {
             id
             status
+            taskId
+            stateChangeDate
+            taskType
           }
         }
+        nodeId
+        id
         team
         patientByPatientId {
           firstname
+          nodeId
           lastname
+          epidNumber
+          id
+          sex
+          birthDate
+          patientCasesByPatientId {
+            nodes {
+              status
+              riskLevel
+            }
+          }
         }
         requestDate
-          
         userByAcceptedBy {
           firstname
           lastname
+          id
         }
       }
       totalCount

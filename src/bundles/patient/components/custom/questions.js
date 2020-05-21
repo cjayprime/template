@@ -138,7 +138,6 @@ export const QUESTIONS = [
         placeholder: 'No queue',
         fields: ['No queue', 'RRT', 'Psychosocial', 'Evac & Decon', 'EPID/Surveillance'],
         key: 'queue',
-        required: true
       }
     ]
   }

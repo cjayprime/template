@@ -7,12 +7,22 @@ export const ALL_LOCATION = gql`
         name
         numberOfBeds
         createdAt
+        id
+        nodeId
         patientsByPatientLocationLocationIdAndPatientId {
           nodes {
             firstname
             lastname
             phoneNumber
+            epidNumber
             sex
+            id
+            birthDate
+            patientCasesByPatientId {
+              nodes {
+                riskLevel
+              }
+            }
           }
           totalCount
         }
@@ -21,6 +31,7 @@ export const ALL_LOCATION = gql`
             patientId
             status
             dischargeReason
+            dateAdmitted
           }
           totalCount
         }
@@ -28,4 +39,4 @@ export const ALL_LOCATION = gql`
       totalCount
     }
   }
-`;
+`; 

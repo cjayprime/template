@@ -6,14 +6,34 @@ import {
   TextField,
   RadioGroup,
   FormControlLabel,
+  Button,
+  createMuiTheme,
   Checkbox,
   Radio
 } from '@material-ui/core';
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
+import {
+  KeyboardDatePicker,
+  KeyboardTimePicker,
+  MuiPickersUtilsProvider
+} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
+import { ThemeProvider } from '@material-ui/styles';
+// import EventAvailable from '@material-ui/icons/EventAvailable';
 
-const TransformIcon = () => <KeyboardArrowDown color="primary" />;
+const TransformIcon = () => (
+  <KeyboardArrowDown color="primary" style={{ color: '#fff' }} />
+);
+
+const TransformButtonIcon = ({ props }) => (
+  <Button {...props}>
+    <KeyboardArrowDown color="primary" style={{ color: '#fff' }} />
+  </Button>
+);
+
+const ERROR_STAR_CONSTANT = '#f44336'
 
 const days = [
   { label: '1', value: '1' },
@@ -47,6 +67,10 @@ export const DefaultCheckbox = withStyles({
 })(props => <Checkbox color="default" {...props} />);
 
 const useStyles = makeStyles(theme => ({
+  errorText: {
+    color: '#f44336',
+    marginBottom: 10,
+  },
   icon: {
     color: '#fff',
     borderColor: 'white'
@@ -100,7 +124,52 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const capitalizeFirstWord = word =>
+const dateInputTheme = createMuiTheme({
+  overrides: {
+    MuiFilledInput: {
+      root: {
+        backgroundColor: '#474562',
+        color: '#fff',
+        borderRadius: '8px !important',
+        border: '2px solid transparent',
+        '&:hover': {
+          backgroundColor: '#474562'
+        },
+        '&$focused': {
+          borderColor: '#fff',
+          backgroundColor: '#474562'
+        }
+      },
+      underline: {
+        backgroundColor: '#474562',
+        '&:before, &:after': {
+          display: 'none'
+        }
+      },
+      adornedEnd: {
+        paddingRight: 5,
+        color: '#fff'
+      },
+      input: {
+        paddingTop: 18.5,
+        paddingBottom: 18.5,
+        borderRadius: 8,
+        height: 16.625,
+        lineHeight: 1
+      }
+    },
+    MuiFormControl: {
+      root: {
+        border: 0
+      },
+      marginNormal: {
+        margin: '0 !important'
+      }
+    }
+  }
+});
+
+export const capitalizeFirstWord = word =>
   word && word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
 
 const InputTextComp = (
@@ -114,7 +183,6 @@ const InputTextComp = (
   if (multiline) rows = 5;
 
   let nonValid = false;
-
   if (
     formState[input.key] !== undefined &&
     formState[input.key] == '' &&
@@ -124,9 +192,17 @@ const InputTextComp = (
   }
 
   return (
+    <Fragment>
+      {nonValid && input.labelDirection !== "column" ? 
+        <Typography className={classes.errorText}>
+          Enter {capitalizeFirstWord(input.key)}
+        </Typography> 
+        : null
+      }
     <OutlinedInput
       fullWidth
       placeholder={input.placeholder || ''}
+      type={input.type == 'password'? 'password': undefined}
       style={{ color: 'white' }}
       defaultValue={input.defaultValue || ''}
       error={nonValid}
@@ -139,11 +215,12 @@ const InputTextComp = (
       }
       rows={rows}
       classes={{
-        root: classes.cssOutlinedInput,
-        focused: classes.cssFocused,
-        notchedOutline: classes.notchedOutline
+        root: nonValid ? undefined : classes.cssOutlinedInput,
+        focused: nonValid ? undefined:   classes.cssFocused,
+        notchedOutline: nonValid? undefined:  classes.notchedOutline
       }}
     />
+    </Fragment>
   );
 };
 
@@ -175,7 +252,10 @@ const TextTransform = ({ input, setFormState, formState }) => {
       style={{ marginBottom: 15 }}
       direction={input.labelDirection}>
       <Grid item xs={!input.labelDirection && 4}>
-        <Typography className={classes.labelText}>{input.label}</Typography>
+        <Typography className={classes.labelText}>{input.label} {input.required ? 
+        <span style={{color: ERROR_STAR_CONSTANT}}>*</span> : null
+         } 
+      </Typography>
       </Grid>
       <Grid item xs={!input.labelDirection && 8} className={classes.container}>
         {InputTextComp(classes, input, setFormState, formState)}
@@ -208,8 +288,9 @@ const SelectFieldComp = (
   keyValue
 ) => {
   const value = mappedValue || (input.fields && remapField(input));
-  let enteredValue = ''
+  let enteredValue = '';
   let addedValue = '';
+  let nonValid = false;
   if (keyValue) {
     addedValue = `-${keyValue}`;
   }
@@ -217,7 +298,15 @@ const SelectFieldComp = (
     enteredValue = formState[`${input.key}${addedValue}`];
   }
 
+  if (formState && formState[`${input.key}${addedValue}`]?.length < 1 && input.required) {
+    nonValid = true
+  }
+
+  
+
   return (
+    <Fragment>
+      {nonValid ? <Typography className={classes.errorText}>Enter {capitalizeFirstWord(input.key)}</Typography> : null}
     <TextField
       select
       fullWidth
@@ -228,10 +317,12 @@ const SelectFieldComp = (
         setFormState({ [`${input.key}${addedValue}`]: e.target.value })
       }
       value={enteredValue}
+      error={nonValid}
       placeholder={'DD'}
+      disabled={input.disabled}
       SelectProps={{
         native: false,
-        IconComponent: TransformIcon,
+        IconComponent: TransformButtonIcon,
         icon: classes.icon
       }}
       variant="outlined">
@@ -241,40 +332,60 @@ const SelectFieldComp = (
         </MenuItem>
       ))}
     </TextField>
+    </Fragment>
   );
 };
 
-const generateDateTypes = (input, classes, setFormState, formState) => {
-  return input.fields.map((date, index) => {
-    const spacing = index < 2 ? 3 : 6;
-    let value = 'y';
-
-    let mappedValue = year;
-
-    if (date == 'DD') {
-      mappedValue = days;
-      value = 'd';
-    }
-
-    if (date == 'MM') {
-      mappedValue = month;
-      value = 'm';
-    }
-
+const generateDateTypes = (
+  input,
+  classes,
+  setFormState = () => '',
+  formState = {}
+) => {
+  if (input.label == 'Time') {
     return (
-      <Grid key={`${index}--${input.label}`} item xs={spacing}>
-        {' '}
-        {SelectFieldComp(
-          classes,
-          input,
-          mappedValue,
-          setFormState,
-          formState,
-          value
-        )}
-      </Grid>
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <ThemeProvider theme={dateInputTheme}>
+          <KeyboardTimePicker
+            variant="inline"
+            inputVariant="filled"
+            margin="normal"
+            id={input.key}
+            value={formState[input.key]}
+            onChange={date => setFormState({ [input.key]: date })}
+            fullWidth={true}
+            keyboardIcon={<TransformIcon style={{ color: '#fff' }} />}
+            animateYearScrolling
+            autoOk
+          />
+        </ThemeProvider>
+      </MuiPickersUtilsProvider>
     );
-  });
+  }
+
+  return (
+    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+      <ThemeProvider theme={dateInputTheme}>
+        <KeyboardDatePicker
+          variant="inline"
+          inputVariant="filled"
+          format="dd/MM/yyyy"
+          margin="normal"
+          id={input.key}
+          value={formState[input.key]}
+          onChange={date => setFormState({ [input.key]: date })}
+          fullWidth={true}
+          views={['year', 'date', '']}
+          keyboardIcon={<TransformIcon style={{ color: '#fff' }} />}
+          animateYearScrolling
+          autoOk
+          minDate={input.future  ? new Date() : undefined}
+          maxDate={input.future ? undefined : new Date()}
+        />
+      </ThemeProvider>
+    </MuiPickersUtilsProvider>
+  );
+
 };
 
 const generateRadioType = (input, classes, setFormState) => {
@@ -333,11 +444,15 @@ const SelectTransform = ({ input, setFormState, formState }) => {
       container
       style={{ marginBottom: 15 }}
       direction={input.labelDirection}>
-      <Grid xs={!input.labelDirection && 4}>
-        <Typography className={classes.labelText}>{input.label}</Typography>
+      <Grid item xs={!input.labelDirection && 4}>
+        <Typography className={classes.labelText}>{input.label}
+        {input.required ? 
+        <span style={{color: ERROR_STAR_CONSTANT}}>*</span> : null
+        }
+        </Typography>
       </Grid>
-      <Grid xs={!input.labelDirection && 8}>
-        <Grid container direction="row" xs={12} spacing={0}>
+      <Grid item xs={!input.labelDirection && 8}>
+        <Grid item container direction="row" xs={12} spacing={0}>
           {selectType[input.type]}
         </Grid>
       </Grid>
@@ -350,11 +465,15 @@ const PhoneNumber = ({ input, setFormState, formState }) => {
   return (
     <Grid container style={{ marginBottom: 15 }}>
       <Grid xs={4}>
-        <Typography className={classes.labelText}>{input.label}</Typography>
+        <Typography className={classes.labelText}>{input.label}
+        {input.required ? 
+         <span style={{color: ERROR_STAR_CONSTANT}}>*</span> : null
+        }
+        </Typography>
       </Grid>
       <Grid xs={8}>
         <Grid container direction="row" xs={12} spacing={0}>
-          <Grid item xs={3}>
+          { /*<Grid item xs={3}>
             {SelectFieldComp(
               classes,
               input,
@@ -362,8 +481,8 @@ const PhoneNumber = ({ input, setFormState, formState }) => {
               setFormState,
               formState
             )}
-          </Grid>
-          <Grid item xs={9}>
+            </Grid> */}
+          <Grid item xs={12}>
             {InputTextComp(classes, input, setFormState, formState)}
           </Grid>
         </Grid>

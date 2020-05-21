@@ -3,10 +3,10 @@ import { makeStyles } from '@material-ui/styles';
 export const StaffCreateStyles = makeStyles(_theme => ({
   PageContainer: {
     color: 'white',
-    height: '120vh'
+   // height: '120vh'
   },
   FormContainer: {
-    height: '100vh'
+   // height: '100vh'
   },
   FormContainerItem: {
     maxWidth: '100%',
@@ -19,11 +19,11 @@ export const StaffCreateStyles = makeStyles(_theme => ({
   },
   ProfileSectionContainer: {},
   Avatar: {
-    height: '5vh'
+    height: '20px'
   },
   AvatarIcon: {
-    height: '10vh',
-    width: '90%'
+    height: '70px',
+    width: '70px'
   },
   InfoContainer: {
     position: 'relative',
@@ -84,7 +84,7 @@ export const StaffCreateStyles = makeStyles(_theme => ({
     color: 'white'
   },
   AccessLevelForm: {
-    height: '100vh'
+   // height: '100vh'
   },
   LevelChildrenContainer: {
     position: 'relative',

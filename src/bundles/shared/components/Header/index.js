@@ -1,10 +1,11 @@
 import React, { Fragment, useState } from 'react';
 import clsx from 'clsx';
-import { Grid, Tabs, Typography, Tab, TextField } from '@material-ui/core';
+import { Grid, Tabs, Typography, Tab, TextField, ButtonBase } from '@material-ui/core';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import { Link } from 'react-router-dom'
 import { HeaderStyles } from './index.style';
 
-export const Header = ({ pageTitle, contexts, pageIcon, styles = {} }) => {
+export const Header = ({ pageTitle, contexts, pageIcon, styles = {}, actionButton }) => {
   const classes = HeaderStyles();
   const [selectedTab, setSelectedTab] = useState(0);
   const [searchInput, setSearchInput] = useState('');
@@ -78,7 +79,7 @@ export const Header = ({ pageTitle, contexts, pageIcon, styles = {} }) => {
     const handleSelectTab = (_, tab) => {
       setSelectedTab(tab);
       context.handleTabChange(tab);
-    };
+    }; 
 
     return (
       <Fragment>
@@ -129,6 +130,7 @@ export const Header = ({ pageTitle, contexts, pageIcon, styles = {} }) => {
         </Grid>
       </Grid>
       {Object.keys(contexts).map(context => contextsMap[context]())}
+      {actionButton ?  <Grid xs={6} container  justify="flex-end" > {actionButton } </Grid> : null}
     </Grid>
   );
 };

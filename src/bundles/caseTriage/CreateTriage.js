@@ -6,13 +6,17 @@ import {
   Step,
   Typography,
   IconButton,
+  Button,
+  Box,
   ButtonBase,
   makeStyles
 } from '@material-ui/core';
+import { EVAC_AND_DECON, HIGH, MEDIUM, LOW, EPID_SURVEILLANCE } from 'bundles/queue/utilities/stateTransition';
 import { withStyles } from '@material-ui/styles';
 import StepLabel from '@material-ui/core/StepLabel';
 import { connect } from 'react-redux';
 import Arrow from '@material-ui/icons/ChevronRight';
+import { searchFilter } from 'bundles/patient/selectors';
 import ArrowLeft from '@material-ui/icons/ChevronLeft';
 import StepConnector from '@material-ui/core/StepConnector';
 import { setShowFooter, setDispatchFunction } from 'reducers/ThemeOptions';
@@ -24,6 +28,9 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 // Mutations
 import createTriageMutation from 'bundles/patient/hoc/createTriageAnswers';
+import createPatientCaseTriage from 'bundles/patient/hoc/createPatientCase';
+import sendSMS from 'bundles/sms/hoc/sendSms'
+import createQueueHoc from 'bundles/queue/hoc/createQueue';
 
 // Assets
 import { triageQuestions, triageQuestionWeights } from './triageQuestions.js';
@@ -193,6 +200,7 @@ const ResultContainer = ({ classes, triageScore = 0, canEdit }) => {
   if (triageScore >= 5 && triageScore <= 9) {
     message =
       'Advice patient to hydrate properly, use over the counter medication, maintain good hygiene. Observe and re-evaluate after 2 days';
+      riskLevel = 'Medium Risk';
   } else if (triageScore >= 10 && triageScore <= 39) {
     riskLevel = 'High Risk';
     message =
@@ -254,15 +262,23 @@ export const CreateTriage = ({
   showFooter,
   setDispatchFunc,
   canEdit,
-  triageAnswers
-}) => {
+  triageAnswers,
+  currentPatient,
+  addQueue,
+  createPatientCase,
+  sendSms
+}) => 
+{
   const [activeStep, setActiveStep] = useState(0);
   const [completed] = useState({});
   const [answers, setAnswers] = useState({});
   const [triageAnswerResult, setTriageAnswerResult] = useState({});
   const [triageScore, setTriageScore] = useState(0);
+  const [submitted, setSubmitted] = useState(false);
+  const [result, setResult] = useState(false)
   const questionCategory = steps;
   const classes = useStyles();
+ 
 
   // Set state to the answers pssed if canEdit is false
   // Also calculate risk score from the answers passed
@@ -286,6 +302,176 @@ export const CreateTriage = ({
   useEffect(() => {
     showFooter(true);
   }, [showFooter]);
+
+  const addPatienCase = async (id, riskLevel) => {
+    const response = await createPatientCase({
+      variables: {
+        input: {
+          patientCase: {
+            patientId: id,
+            riskLevel,
+            submittedBy: 1
+          }
+        }
+      }
+    });
+
+    if (response) return true;
+    else return false;
+  };
+
+  const addTriage = async (id, answers) => {
+    const response = await createTriage({
+      variables: {
+        input: {
+          triageAnswer: {
+
+            triageQuestionId: 1,
+            patientId: id,
+            answers
+          }
+        }
+      }
+    });
+
+    if (response) return true;
+
+    return false;
+  };
+
+  const addToQueue = async (patientEpidNumber, id, team) => {
+    const response = await addQueue({
+      variables: {
+        input: {
+          queue: {
+            patientEpidNumber,
+            patientId: id,
+            team
+          }
+        }
+      }
+    });
+
+    if (response) return true;
+    else return false;
+  };
+
+  const parseRiskLevel = async riskLevel => {
+    if (!currentPatient?.id) return null
+
+
+    if (riskLevel == HIGH) {
+
+      const patientCase = await addPatienCase(currentPatient.id, HIGH);
+
+      if (patientCase) {
+        const queue = await addToQueue(
+          currentPatient.epidNumber,
+          currentPatient.id,
+          EVAC_AND_DECON
+        );
+
+        if (queue) {
+          const triage = await addTriage(currentPatient.id, JSON.stringify(answers)) 
+        }
+      } 
+
+      return;
+    } 
+
+    if (riskLevel == MEDIUM) { 
+      const patientCase = await addPatienCase(currentPatient.id, MEDIUM);
+
+      if (patientCase) {
+        const queue = await addToQueue(
+          currentPatient.epidNumber,
+          currentPatient.id,
+          EPID_SURVEILLANCE
+        );
+
+        if (queue) {
+          const triage = await addTriage(currentPatient.id, JSON.stringify(answers)) 
+        }
+      } 
+      return;
+    }
+    
+
+    // const response = await sendSms({
+    //   variables: {
+    //     input: {
+    //         name: 'John Doe',
+    //         phoneNumber: currentPatient.phoneNumber,
+    //         message: ''
+    //     }
+    //   }
+    // });
+
+  
+    // send sms
+  }; 
+
+  // const ResultContainer = ({ classes, triageScore = 0 }) => {
+  //   let riskLevel = 'no risk';
+  //   let message =
+  //     'Advise patient to self medicate and observe signs and symptoms';
+
+  //   // set the message accordingly based on the score
+  //   if (triageScore >= 5 && triageScore <= 9) {
+  //     message =
+  //       'Advice patient to hydrate properly, use over the counter medication, maintain good hygiene. Observe and re-evaluate after 2 days';
+  //     riskLevel = 'Medium Risk';
+  //   } else if (triageScore >= 10 && triageScore <= 39) {
+  //     riskLevel = 'High Risk';
+  //     message =
+  //       'The Evacuation & Decon has been notified of this case. Please transfer the call to the Evacuation & Decon team and close call log.';
+  //   }
+  
+  //   return (
+  //     <Grid
+  //       container
+  //       spacing={8}
+  //       alignItems="center"
+  //       direction="column"
+  //       justify="center">
+  //       <Grid item xs={4} md={4} style={{ marginTop: 100 }}>
+  //         <img src={TriageImage} />
+  //       </Grid>
+  //       <Grid item xs={5} md={5} style={{ textAlign: 'center' }}>
+  //         <Typography
+  //           style={{
+  //             color: '#fff',
+  //             fontWeight: 'bold',
+  //             fontSize: 25,
+  //             textTransform: 'capitalize'
+  //           }}>
+  //           {riskLevel}
+  //         </Typography>
+  //         <Typography style={{ color: '#fff', fontSize: 20 }}>
+  //           {' '}
+  //           The patient has been classified as {riskLevel}
+  //         </Typography>
+  //       </Grid>
+  //       <Grid item xs={5} md={5} style={{ textAlign: 'center' }}>
+  //         <img src={triageInfo} />
+  //         <Typography style={{ color: '#fff', fontSize: 20 }}>
+  //           {' '}
+  //           {message}
+  //         </Typography>
+  //       </Grid>
+  //       <Grid item md={5} xs={5}>
+  //         <ButtonBase
+  //           variant="contained"
+  //           to="/Patient"
+  //           component={Link}
+  //           color="primary"
+  //           classes={{ root: classes.nextButton }}>
+  //           Close the Case
+  //         </ButtonBase>
+  //       </Grid>
+  //     </Grid>
+  //   );
+  // };
 
   const QontoStepIcon = props => {
     const classes = useQontoStepIconStyles();
@@ -359,14 +545,35 @@ export const CreateTriage = ({
       }, 0);
 
       setTriageScore(score);
+      
+      console.log('Parables', score)
+      setSubmitted(true)
     }
   }, [activeStep, triageScore, triageAnswerResult, isLastStep, canEdit]);
+
+  useEffect(() => {
+    if(submitted && !result){
+      let risk = LOW
+      if (triageScore >= 5 && triageScore <= 9) {
+        risk = MEDIUM
+      }
+
+      if(triageScore >= 10 && triageScore <= 39)  {
+        risk = HIGH
+      }
+      parseRiskLevel(risk) 
+      setResult(true)
+    }
+  }, [submitted]);
+
+
+
 
   return (
     <Fragment>
       <Grid container spacing={4}>
         <Grid item xs={3}>
-          <Stepper
+        {!isLastStep() ? <Stepper
             activeStep={activeStep}
             style={{ backgroundColor: 'transparent' }}
             connector={<QontoConnector />}
@@ -386,7 +593,8 @@ export const CreateTriage = ({
                 </StepLabel>
               </Step>
             ))}
-          </Stepper>
+          </Stepper> : null
+          }
         </Grid>
         <Grid item md={8} lg={9} style={{ padding: 33, overflowX: 'hidden' }}>
           <Fragment>
@@ -487,7 +695,7 @@ export const CreateTriage = ({
               </div>
             )}
           </Fragment>
-          {/* <Box
+           <Box
         display="flex"
       //  className={'app-footer text-black-50 app-footer---fixed'}
         style={{ padding: 10 }}
@@ -502,14 +710,10 @@ export const CreateTriage = ({
             Next
           </Button>
         ) : (
-          <Button
-            variant="contained"
-            color="primary"
-            classes={{ root: classes.nextButton }}>
-            Close the Case
-          </Button>
+          null
         )}
-        <Button
+         {!isLastStep() ? 
+          <Button
           disabled={activeStep === 0}
           classes={{
             root: classes.backButton,
@@ -519,7 +723,8 @@ export const CreateTriage = ({
           variant="contained">
           Back
         </Button>
-      </Box> */}
+          : null }
+      </Box> 
         </Grid>
       </Grid>
     </Fragment>
@@ -545,7 +750,14 @@ const mapDispatchToProps = dispatch => ({
   setDispatchFunc: value => dispatch(setDispatchFunction(value))
 });
 
+const mapStateToProps = state => ({
+  currentPatient: searchFilter.getCurrentPatient(state)
+});
+
 export default compose(
-  connect(null, mapDispatchToProps),
-  createTriageMutation
+  connect(mapStateToProps, mapDispatchToProps),
+  createTriageMutation,
+  createQueueHoc,
+  sendSMS,
+  createPatientCaseTriage
 )(CreateTriage);

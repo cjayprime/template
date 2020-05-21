@@ -13,16 +13,19 @@ const allowedViews = [
     label: '',
     content: [
       {
+        key: 'dashboard',
         label: 'Dashboard',
         icon: <img className="app-sidebar-icon" src={dashboard} />,
         to: '/Dashboard'
       },
       {
+        key: 'patientProfile',
         label: 'Patient',
         icon: <img className="app-sidebar-icon" src={dashboard2} />,
         to: '/Patient'
       },
       {
+        key: 'queues',
         label: 'Queue',
         icon: <img className="app-sidebar-icon" src={queue} />,
         to: '/Queue'
@@ -33,11 +36,13 @@ const allowedViews = [
         to: '/Kpi'
       },
       {
+        key: 'appointments',
         label: 'Appointment',
         icon: <img className="app-sidebar-icon" src={appointment} />,
         to: '/Appointment'
       },
       {
+        key: 'lab',
         label: 'Lab',
         icon: <img className="app-sidebar-icon" src={lab} />,
         to: '/Lab'
@@ -49,6 +54,7 @@ const allowedViews = [
       },
       {
         label: 'Settings',
+        key: 'settings',
         icon: <img className="app-sidebar-icon" src={setting} />,
         content: [
           {
