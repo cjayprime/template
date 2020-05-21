@@ -144,6 +144,13 @@ export const Login = ({saveId, user, staff, logOutUser, ...props}) => {
   const setFormInitialState = value => {
     setLoginData({ ...loginData, ...value });
   };
+  
+
+  const submitForm = (e) => {
+    if (e.key === 'Enter') {
+      handleSubmit()
+    } 
+  }
 
   const handleSubmit = async () => {
     setError('')
@@ -189,6 +196,7 @@ export const Login = ({saveId, user, staff, logOutUser, ...props}) => {
       <Grid
         container
         spacing={0}
+        onKeyPress={(e) => submitForm(e)}
         style={{ minHeight: '100vh', backgroundColor: '#2C2E40' }}>
         <Grid xs={6} item>
           <Grid container justify="center" style={{ height: '100%' }}>
