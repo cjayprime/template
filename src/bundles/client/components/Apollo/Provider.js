@@ -14,7 +14,7 @@ const client = new ApolloClient({
           },
         query: {
             errorPolicy: "ignore"
-        }
+        },
     },
 });
 

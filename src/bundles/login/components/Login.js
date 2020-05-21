@@ -4,18 +4,28 @@ import {
   Typography,
   Button,
   FormControlLabel,
-  makeStyles
+  makeStyles,
+  Snackbar
 } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
+import { signOut } from 'bundles/client/components/Apollo/Link/auth';
 import { flowRight as compose } from 'lodash';
+import { connect } from 'react-redux';
+import { saveCurrentId, logout } from 'bundles/setting/actions';
+import withSingleStaff from 'bundles/setting/hoc/withSingleStaff';
+import * as searchFilter from 'bundles/setting/selectors';
+import MuiAlert from '@material-ui/lab/Alert';
 import { DefaultCheckbox } from 'bundles/patient/components/custom/formBuilder';
 import FormBuilder from 'bundles/patient/components/custom/formBuilder';
 import hero from 'assets/images/hero-bg/hero-5.jpg';
 import logo from 'images/lagos_logo.png';
+import Loader from 'bundles/shared/components/Loader';
 import { userLogin } from 'bundles/login/hoc/userLogin';
+
 
 const AUTHORIZATION_KEY = "Tokens::Authorization"
 const USER_PAYLOAD_KEY = "Users::Current"
+const ERROR_STAR_CONSTANT = '#f44336'
 
 const useStyle = makeStyles(theme => ({
   headerText: {
@@ -34,6 +44,13 @@ const useStyle = makeStyles(theme => ({
   regLabelText: {
     fontSize: 20,
     color: '#fff'
+  },
+  errorText: {
+    color: ERROR_STAR_CONSTANT,
+    fontSize: 15,
+    fontWeight: 'bold',
+    padding: '5px 0',
+    textTransform: 'uppercase'
   },
   actionButton: {
     color: '#27BAC0',
@@ -83,33 +100,88 @@ const loginQuestions = [
   }
 ];
 
-export const Login = props => {
+export const Login = ({saveId, user, staff, logOutUser, ...props}) => {
   const classes = useStyle();
-  const [loginData, setLoginData] = useState({ email: '', password: '' });
+  const [loginData, setLoginData] = useState({ });
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  //const [snackBar, setSnackBar] = useState({open: false, message: '',  vertical: 'bottom', horizontal: 'left' })
+
+  // function Alert(props) {
+  //   return <MuiAlert elevation={6} variant="filled" {...props} />;
+  // }
+
+
+  if (user.id) {
+    props.history.push('/Patient');
+  }
+
+  const validation = () => {
+    let nonValidState = {}
+    loginQuestions.forEach((field) => {
+      if((field.required && !loginData[field.key]) || ( field.required && loginData[field.key] && loginData[field.key].length < 1)) {
+          nonValidState[field.key] = ''
+      }
+    })
+
+    if(Object.keys(nonValidState).length > 0) {
+      setError('Invalid Username or Password')
+      setLoginData({...loginData, ...nonValidState})
+      return false
+    }
+
+    return true
+
+    // if(Object.keys(nonValidState).length > 0) {
+    //   setSnackBar({...snackBar, message: 
+    //     `Invalid form Input, Please Enter
+    //     ${Object.keys(nonValidState).map((item) => capitalizeFirstWord(`${item} `)).join(',')}`, open: true, state: 'error'})
+    //   setFormState({...loginData, ...nonValidState})
+    //   return
+    // }
+  }
 
   const setFormInitialState = value => {
     setLoginData({ ...loginData, ...value });
   };
 
   const handleSubmit = async () => {
-    if ( // Basic validation
-      !Object.keys(loginData).length ||
-      Object.values(loginData).some(node => !node.trim().length)
-    ) {
-      return;
-    }
-    const resp = await props.userLoginPG({ variables: { input: loginData } });
+    setError('')
+    if (!validation()) return
+
+    // if ( // Basic validation
+    //   !Object.keys(loginData).length ||
+    //   Object.values(loginData).some(node => !node.trim().length)
+    // ) {
+    //   return;
+    // }
+
+    try {
+      const resp = await props.userLoginPG({ variables: { input: loginData } });
     // TODO {H.Ezekiel} depending on our authorization strategy we could cache resp.data.loginUser.token
-    const {
-      data: {
-        loginUser: { token, payload }
+      const {
+        data: {
+          loginUser: { token, payload } }
+        } = resp;
+
+      if (token) {
+        localStorage.setItem(AUTHORIZATION_KEY, token);
+        localStorage.setItem(USER_PAYLOAD_KEY, JSON.stringify(payload))
+        setLoading(true)
+        logOutUser(false) 
+        saveId(payload.id)
+        
+      } else{
+        signOut()
+        logOutUser(true) 
+        setError('Invalid Username or Password')
       }
-    } = resp;
-    if (token) {
-      localStorage.setItem(AUTHORIZATION_KEY, token);
-      localStorage.setItem(USER_PAYLOAD_KEY, JSON.stringify(payload))
-      props.history.push('/Dashboard');
+    } catch(err) {
+      signOut()
+      logOutUser(true) 
+      setError('Invalid Username or Password')
     }
+    
   };
 
   return (
@@ -143,7 +215,10 @@ export const Login = props => {
                   />
                 ))}
               </div>
-              <Grid container justify="flex-end">
+              <Grid container justify="space-between">
+                <Typography className={classes.errorText}>
+                  {error}
+                </Typography>
                 {/* <FormControlLabel
                 control={<DefaultCheckbox name="rememberMe" />}
                 label={
@@ -157,15 +232,18 @@ export const Login = props => {
                   Forgot password?
                 </Button>
               </Grid>
-              <div style={{ marginTop: 30 }}>
+              <div style={{ marginTop: 30 }}>  
+               {loading?  <Loader status={true} /> :
                 <Button
                   disableElevation={false}
                   onClick={handleSubmit}
                   className={classes.formButton}>
                   Login
                 </Button>
+               }                
               </div>
             </Grid>
+         
           </Grid>
         </Grid>
         <Grid
@@ -180,4 +258,14 @@ export const Login = props => {
   );
 };
 
-export default compose(userLogin, withRouter)(Login);
+const mapDispatchToProps = dispatch => ({
+  saveId: value => dispatch(saveCurrentId(value)),
+  logOutUser: value => dispatch(logout(value))
+});
+
+
+const mapStateToProps = state => ({
+  user: searchFilter.getUser(state),
+});
+
+export default compose(connect(mapStateToProps, mapDispatchToProps),userLogin, withSingleStaff, withRouter)(Login);

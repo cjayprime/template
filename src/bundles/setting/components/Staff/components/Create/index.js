@@ -115,7 +115,6 @@ const StaffCreateView = props => {
 
     return {
       ...formState,
-      pass: PLACEHOLDER_PASSWORD, // till we have thee password form working
       userAccessLevels: user ? updateAccessLevel : createAccessLevel
     };
   };
@@ -141,7 +140,7 @@ const StaffCreateView = props => {
     }
 
     */
-    debugger
+   
     try {
       const input = buildCreateInput();
       ['accessLevel', 'nodeId'].forEach(key => delete input[key]);
@@ -311,7 +310,7 @@ const StaffCreateView = props => {
                       label: 'Role',
                       required: true,
                       key: 'role',
-                      fields: ['staff'],
+                      fields: ['Admin','Staff'],
                       labelDirection: 'column',
                       defaultValue: user?.role
                     }}
@@ -484,7 +483,7 @@ const StaffCreateView = props => {
                       label: 'Password',
                       required: true,
                       labelDirection: 'column',
-                      key: 'password',
+                      key: 'pass',
                       fields: [''],
                       
                     }}

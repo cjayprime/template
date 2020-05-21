@@ -102,7 +102,7 @@ const SidebarMenuListItem = props => {
         {...rest}
         className={clsx('app-sidebar-item', className)}
         disableGutters>
-      <Badge color="primary" badgeContent={3}>
+      <Badge color="primary" badgeContent={0}>
         <Button
           activeClassName="active-item"
           disableRipple

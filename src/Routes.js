@@ -6,27 +6,115 @@ import { ThemeProvider } from '@material-ui/styles';
 import MuiTheme from './theme';
 import { LeftSidebar, PresentationLayout } from './layout-blueprints';
 import logo from 'images/lagos.png';
+import PrivateRoute from 'bundles/routeGuard';
+import Authorized from 'bundles/routeGuard/authorized';
+const NOT_AUTHORIZED = 'Not Authorized to view page, Please contact Administrator'
+const PatientPanel = (props) => (
+  <Authorized load={() => import('bundles/patient/components/Panel')}>
+    {Component =>
+      Component === null ? <p style={{color: '#fff'}}>{NOT_AUTHORIZED}</p> : <Component {...props} />
+    }
+  </Authorized>
+); 
+// const CreatePatient = (props) => (
+//   <Authorized load={() => import('bundles/patient/components/CreatePatient')}>
+//     {Component =>
+//       Component === null ? <p style={{color: '#fff'}}>{NOT_AUTHORIZED}</p> : <Component {...props} />
+//     }
+//   </Authorized>
+// );  
 
-const PatientPanel = lazy(() => import('bundles/patient/components/Panel'));
-const CreatePatient = lazy(() =>
-  import('bundles/patient/components/CreatePatient')
-);
-const CreateTriage = lazy(() => import('bundles/caseTriage/CreateTriage'))
-const Queue = lazy(() => import('bundles/queue/components/View'));
-const Location = lazy(() => import('bundles/location/components/View'));
-const CreateLocation = lazy(() =>
-  import('bundles/location/components/Create')
-);
-const Staff = lazy(() => import('bundles/setting/components/Staff'));
-const Kpi = lazy(() => import('bundles/kpi/components/View'));
-const BedManagement = lazy(() =>
-  import('bundles/bedmanagement/components/View')
+const CreatePatient = lazy(() => import('bundles/patient/components/CreatePatient'));
+
+const CreateTriage = (props) => (
+  <Authorized load={() => import('bundles/caseTriage/CreateTriage')}>
+    {Component =>
+      Component === null ? <p style={{color: '#fff'}}>{NOT_AUTHORIZED}</p> : <Component {...props} />
+    }
+  </Authorized>
+);  
+
+const Queue =  (props) => (
+  <Authorized load={() => import('bundles/queue/components/View')}>
+    {Component =>
+      Component === null ? <p style={{color: '#fff'}}>{NOT_AUTHORIZED}</p> : <Component {...props} />
+    }
+  </Authorized>
+);  
+
+const Location =  (props) => (
+  <Authorized load={() => import('bundles/location/components/View')}>
+    {Component =>
+      Component === null ? <p style={{color: '#fff'}}>{NOT_AUTHORIZED}</p> : <Component {...props} />
+    }
+  </Authorized>
+);  
+
+const CreateLocation = (props) => (
+  <Authorized load={() => import('bundles/location/components/Create')}>
+    {Component =>
+      Component === null ? <p style={{color: '#fff'}}>{NOT_AUTHORIZED}</p> : <Component {...props} />
+    }
+  </Authorized>
+);  
+
+const Staff =  (props) => (
+  <Authorized load={() => import('bundles/setting/components/Staff')}>
+    {Component =>
+      Component === null ? <p style={{color: '#fff'}}>{NOT_AUTHORIZED}</p> : <Component {...props} />
+    }
+  </Authorized>
+);  
+
+const Kpi =  (props) => (
+  <Authorized load={() => import('bundles/kpi/components/View')}>
+    {Component =>
+      Component === null ? <p style={{color: '#fff'}}>{NOT_AUTHORIZED}</p> : <Component {...props} />
+    }
+  </Authorized>
 );
 
-const Appointment = lazy(() => import('bundles/appointment/components/View'));
-const Lab = lazy(() => import('bundles/lab/components/View'));
-const Dashboard = lazy(() => import('bundles/dashboard'))
-const CreateAppointment = lazy(() => import('bundles/appointment/components/create'))
+const BedManagement =  (props) => (
+  <Authorized load={() => import('bundles/bedmanagement/components/View')}>
+    {Component =>
+      Component === null ? <p style={{color: '#fff'}}>{NOT_AUTHORIZED}</p> : <Component {...props} />
+    }
+  </Authorized>
+);
+
+const Appointment = (props) => (
+  <Authorized load={() => import('bundles/appointment/components/View')}>
+    {Component =>
+      Component === null ? <p style={{color: '#fff'}}>{NOT_AUTHORIZED}</p> : <Component {...props} />
+    }
+  </Authorized>
+);
+
+const Lab = (props) => (
+  <Authorized load={() => import('bundles/lab/components/View')}>
+    {Component =>
+      Component === null ? <p style={{color: '#fff'}}>{NOT_AUTHORIZED}</p> : <Component {...props} />
+    }
+  </Authorized>
+);
+
+const Dashboard = (props) => (
+  <Authorized load={() => import('bundles/dashboard')}>
+    {Component =>
+      Component === null ? <p style={{color: '#fff'}}>{NOT_AUTHORIZED}</p> : <Component {...props} />
+    }
+  </Authorized>
+);
+
+const CreateAppointment = (props) => (
+  <Authorized load={() => import('bundles/appointment/components/create')}>
+    {Component =>
+      Component === null ? <p style={{color: '#fff'}}>{NOT_AUTHORIZED}</p> : <Component {...props} />
+    }
+  </Authorized>
+);
+
+const LoginPage = lazy(() => import('bundles/login'));
 
 const Routes = ({ history }) => {
   const location = useLocation();
@@ -79,7 +167,7 @@ const Routes = ({ history }) => {
       <AnimatePresence>
         <Suspense fallback={<SuspenseLoading />}>
           <Switch>
-            <Redirect exact from="/" to="/Dashboard" />
+            {<Redirect exact from="/" to="/Login" />}
 
             <Route path={['/Login']}>
               <PresentationLayout>
@@ -121,19 +209,34 @@ const Routes = ({ history }) => {
                     exit="out"
                     variants={pageVariants}
                     transition={pageTransition}>
-                    <Route path="/Dashboard" component={Dashboard} />
-                    <Route path="/Patient" component={PatientPanel} />
-                    <Route path="/CreatePatient" component={CreatePatient} />
-                    <Route path="/CreateTriage" component={CreateTriage} />
-                    <Route path="/Queue" component={Queue} />
-                    <Route path="/Location" component={Location} />
-                    <Route path="/CreateLocation" component={CreateLocation} />
-                    <Route path="/Kpi" component={Kpi} />
-                    <Route path="/BedManagement" component={BedManagement} />
-                    <Route path="/Staff" component={Staff} />
-                    <Route path="/Appointment" component={Appointment} />
-                    <Route path="/CreateAppointment" component={CreateAppointment} />
-                    <Route path="/Lab" component={Lab} />
+                    <PrivateRoute path="/Dashboard" component={Dashboard} />
+                    <PrivateRoute path="/Patient" component={PatientPanel} />
+                    <PrivateRoute
+                      path="/CreatePatient"
+                      component={CreatePatient}
+                    />
+                    <PrivateRoute
+                      path="/CreateTriage"
+                      component={CreateTriage}
+                    />
+                    <PrivateRoute path="/Queue" component={Queue} />
+                    <PrivateRoute path="/Location" component={Location} />
+                    <PrivateRoute
+                      path="/CreateLocation"
+                      component={CreateLocation}
+                    />
+                    <PrivateRoute path="/Kpi" component={Kpi} />
+                    <PrivateRoute
+                      path="/BedManagement"
+                      component={BedManagement}
+                    />
+                    <PrivateRoute path="/Staff" component={Staff} />
+                    <PrivateRoute path="/Appointment" component={Appointment} />
+                    <PrivateRoute
+                      path="/CreateAppointment"
+                      component={CreateAppointment}
+                    />
+                    <PrivateRoute path="/Lab" component={Lab} />
                   </motion.div>
                 </Switch>
                 {/* </CollapsedSidebar> */}

@@ -44,6 +44,7 @@ export const SINGLE_STAFF = gql`
       firstname
       lastname
       title
+      role
       team
       userAccessLevelsByUserId {
         nodes {

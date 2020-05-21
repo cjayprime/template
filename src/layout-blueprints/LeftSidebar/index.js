@@ -46,7 +46,7 @@ const LeftSidebar = props => {
           className={clsx('app-main', {
             'app-main-sidebar-static': !sidebarFixed
           })}>
-          <Sidebar />
+          <Sidebar {...props} />
           <div
             className={clsx('app-content', {
               'app-content-sidebar-collapsed': sidebarToggle,

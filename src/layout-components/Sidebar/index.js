@@ -6,11 +6,13 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Hidden, Drawer, Paper } from '@material-ui/core';
 
 import { connect } from 'react-redux';
-
-import SidebarHeader from '../../layout-components/SidebarHeader';
-import SidebarUserbox from '../../layout-components/SidebarUserbox';
-import SidebarMenu from '../../layout-components/SidebarMenu';
-import SidebarFooter from '../../layout-components/SidebarFooter';
+import * as searchFilter from 'bundles/setting/selectors';
+import SidebarHeader from 'layout-components/SidebarHeader';
+import SidebarUserbox from 'layout-components/SidebarUserbox';
+import SidebarMenu from 'layout-components/SidebarMenu';
+import SidebarFooter from 'layout-components/SidebarFooter';
+import { signOut } from 'bundles/client/components/Apollo/Link/auth';
+import { saveCurrentUser } from 'bundles/setting/actions';
 
 
 import navItems from './navItems';
@@ -28,13 +30,15 @@ const Sidebar = props => {
     setSidebarToggleMobile,
     sidebarToggleMobile,
     sidebarFixed,
-
+    user,
+    logout,
     sidebarHover,
     setSidebarHover,
     sidebarToggle,
     sidebarUserbox,
     sidebarShadow,
-    sidebarFooter
+    sidebarFooter,
+    saveUser
   } = props;
 
   const toggleHoverOn = () => setSidebarHover(true);
@@ -44,12 +48,35 @@ const Sidebar = props => {
 
   // const data = withQueueHoc();
 
+  if(logout) {
+    saveUser({})
+    signOut()
+    props.history.push('/')
+  }
+
+  const filterNavDisplay = () => {
+    const access = user?.userAccessLevelsByUserId?.nodes
+    let roles = []
+    if(access?.length) {
+      const routes = navItems[0].content
+      roles = routes.filter((item) => {
+        if(user?.role == 'Admin') return true
+       
+        return access[0]?.[item.key]
+      })
+    } else{
+      //Bounce user
+    }
+
+    return  [{ label: '', content: roles}]
+  }
+
   const sidebarMenuContent = (
     <div
       className={clsx({
         'app-sidebar-nav-close': sidebarToggle && !sidebarHover
       })}>
-      {navItems.map(list => (
+      {filterNavDisplay().map(list => (
         <SidebarMenu
           component="div"
           key={list.label}
@@ -111,6 +138,8 @@ const Sidebar = props => {
 
 const mapStateToProps = state => ({
   sidebarFixed: state.ThemeOptions.sidebarFixed,
+  user: searchFilter.getUser(state),
+  logout: searchFilter.getLogout(state),
   headerFixed: state.ThemeOptions.headerFixed,
   sidebarToggle: state.ThemeOptions.sidebarToggle,
   sidebarHover: state.ThemeOptions.sidebarHover,
@@ -125,7 +154,9 @@ const mapDispatchToProps = dispatch => ({
   setSidebarToggle: enable => dispatch(setSidebarToggle(enable)),
   setSidebarHover: enable => dispatch(setSidebarHover(enable)),
   setSidebarFooter: enable => dispatch(setSidebarFooter(enable)),
-  setSidebarUserbox: enable => dispatch(setSidebarUserbox(enable))
+  setSidebarUserbox: enable => dispatch(setSidebarUserbox(enable)),
+  saveUser: value => dispatch(saveCurrentUser(value)),
+ 
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);

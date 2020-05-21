@@ -382,6 +382,7 @@ const RenderList = ({ patients = [], markPatientDeceased, newCallLog }) => {
             <Button
               fullWidth={true}
               variant="contained"
+              onClick={closeForwardDialog}
               color="primary"
               classes={{ root: classes.primaryButton }}>
               ADD
