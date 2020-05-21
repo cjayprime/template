@@ -12,14 +12,14 @@ const NOT_AUTHORIZED = 'Not Authorized to view page, Please contact Administrato
 const PatientPanel = (props) => (
   <Authorized load={() => import('bundles/patient/components/Panel')}>
     {Component =>
-      Component === null ? <p style={{color: '#fff'}}>{NOT_AUTHORIZED}</p> : <Component {...props} />
+      Component === null ? <p style={{color: '#685E5E'}}>{NOT_AUTHORIZED}</p> : <Component {...props} />
     }
   </Authorized>
 ); 
 // const CreatePatient = (props) => (
 //   <Authorized load={() => import('bundles/patient/components/CreatePatient')}>
 //     {Component =>
-//       Component === null ? <p style={{color: '#fff'}}>{NOT_AUTHORIZED}</p> : <Component {...props} />
+//       Component === null ? <p style={{color: '#685E5E'}}>{NOT_AUTHORIZED}</p> : <Component {...props} />
 //     }
 //   </Authorized>
 // );  
@@ -29,7 +29,7 @@ const CreatePatient = lazy(() => import('bundles/patient/components/CreatePatien
 const CreateTriage = (props) => (
   <Authorized load={() => import('bundles/caseTriage/CreateTriage')}>
     {Component =>
-      Component === null ? <p style={{color: '#fff'}}>{NOT_AUTHORIZED}</p> : <Component {...props} />
+      Component === null ? <p style={{color: '#685E5E'}}>{NOT_AUTHORIZED}</p> : <Component {...props} />
     }
   </Authorized>
 );  
@@ -37,7 +37,7 @@ const CreateTriage = (props) => (
 const Queue =  (props) => (
   <Authorized load={() => import('bundles/queue/components/View')}>
     {Component =>
-      Component === null ? <p style={{color: '#fff'}}>{NOT_AUTHORIZED}</p> : <Component {...props} />
+      Component === null ? <p style={{color: '#685E5E'}}>{NOT_AUTHORIZED}</p> : <Component {...props} />
     }
   </Authorized>
 );  
@@ -45,7 +45,7 @@ const Queue =  (props) => (
 const Location =  (props) => (
   <Authorized load={() => import('bundles/location/components/View')}>
     {Component =>
-      Component === null ? <p style={{color: '#fff'}}>{NOT_AUTHORIZED}</p> : <Component {...props} />
+      Component === null ? <p style={{color: '#685E5E'}}>{NOT_AUTHORIZED}</p> : <Component {...props} />
     }
   </Authorized>
 );  
@@ -53,7 +53,7 @@ const Location =  (props) => (
 const CreateLocation = (props) => (
   <Authorized load={() => import('bundles/location/components/Create')}>
     {Component =>
-      Component === null ? <p style={{color: '#fff'}}>{NOT_AUTHORIZED}</p> : <Component {...props} />
+      Component === null ? <p style={{color: '#685E5E'}}>{NOT_AUTHORIZED}</p> : <Component {...props} />
     }
   </Authorized>
 );  
@@ -61,7 +61,7 @@ const CreateLocation = (props) => (
 const Staff =  (props) => (
   <Authorized load={() => import('bundles/setting/components/Staff')}>
     {Component =>
-      Component === null ? <p style={{color: '#fff'}}>{NOT_AUTHORIZED}</p> : <Component {...props} />
+      Component === null ? <p style={{color: '#685E5E'}}>{NOT_AUTHORIZED}</p> : <Component {...props} />
     }
   </Authorized>
 );  
@@ -69,7 +69,7 @@ const Staff =  (props) => (
 const Kpi =  (props) => (
   <Authorized load={() => import('bundles/kpi/components/View')}>
     {Component =>
-      Component === null ? <p style={{color: '#fff'}}>{NOT_AUTHORIZED}</p> : <Component {...props} />
+      Component === null ? <p style={{color: '#685E5E'}}>{NOT_AUTHORIZED}</p> : <Component {...props} />
     }
   </Authorized>
 );
@@ -77,7 +77,7 @@ const Kpi =  (props) => (
 const BedManagement =  (props) => (
   <Authorized load={() => import('bundles/bedmanagement/components/View')}>
     {Component =>
-      Component === null ? <p style={{color: '#fff'}}>{NOT_AUTHORIZED}</p> : <Component {...props} />
+      Component === null ? <p style={{color: '#685E5E'}}>{NOT_AUTHORIZED}</p> : <Component {...props} />
     }
   </Authorized>
 );
@@ -85,7 +85,7 @@ const BedManagement =  (props) => (
 const Appointment = (props) => (
   <Authorized load={() => import('bundles/appointment/components/View')}>
     {Component =>
-      Component === null ? <p style={{color: '#fff'}}>{NOT_AUTHORIZED}</p> : <Component {...props} />
+      Component === null ? <p style={{color: '#685E5E'}}>{NOT_AUTHORIZED}</p> : <Component {...props} />
     }
   </Authorized>
 );
@@ -93,7 +93,7 @@ const Appointment = (props) => (
 const Lab = (props) => (
   <Authorized load={() => import('bundles/lab/components/View')}>
     {Component =>
-      Component === null ? <p style={{color: '#fff'}}>{NOT_AUTHORIZED}</p> : <Component {...props} />
+      Component === null ? <p style={{color: '#685E5E'}}>{NOT_AUTHORIZED}</p> : <Component {...props} />
     }
   </Authorized>
 );
@@ -101,7 +101,7 @@ const Lab = (props) => (
 const Dashboard = (props) => (
   <Authorized load={() => import('bundles/dashboard')}>
     {Component =>
-      Component === null ? <p style={{color: '#fff'}}>{NOT_AUTHORIZED}</p> : <Component {...props} />
+      Component === null ? <p style={{color: '#685E5E'}}>{NOT_AUTHORIZED}</p> : <Component {...props} />
     }
   </Authorized>
 );
@@ -109,7 +109,7 @@ const Dashboard = (props) => (
 const CreateAppointment = (props) => (
   <Authorized load={() => import('bundles/appointment/components/create')}>
     {Component =>
-      Component === null ? <p style={{color: '#fff'}}>{NOT_AUTHORIZED}</p> : <Component {...props} />
+      Component === null ? <p style={{color: '#685E5E'}}>{NOT_AUTHORIZED}</p> : <Component {...props} />
     }
   </Authorized>
 );
