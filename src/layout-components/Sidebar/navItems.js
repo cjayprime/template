@@ -56,17 +56,17 @@ const allowedViews = [
       },
       {
         label: 'Settings',
-        key: 'settings',
+        // key: 'settings',
         icon: <img className="app-sidebar-icon" src={setting} />,
         content: [
           {
-            key: 'location',
+            // key: 'location',
             label: 'Location',
             description: 'Center location',
             to: '/Location'
           },
           {
-            key: 'staff',
+            // key: 'staff',
             label: 'Staff',
             description: 'Staff',
             to: '/Staff'
