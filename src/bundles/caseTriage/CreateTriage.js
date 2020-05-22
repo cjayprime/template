@@ -17,6 +17,7 @@ import StepLabel from '@material-ui/core/StepLabel';
 import { connect } from 'react-redux';
 import Arrow from '@material-ui/icons/ChevronRight';
 import { searchFilter } from 'bundles/patient/selectors';
+import * as userFilter from 'bundles/setting/selectors';
 import ArrowLeft from '@material-ui/icons/ChevronLeft';
 import StepConnector from '@material-ui/core/StepConnector';
 import { setShowFooter, setDispatchFunction } from 'reducers/ThemeOptions';
@@ -266,7 +267,8 @@ export const CreateTriage = ({
   currentPatient,
   addQueue,
   createPatientCase,
-  sendSms
+  sendSms,
+  user
 }) => 
 {
   const [activeStep, setActiveStep] = useState(0);
@@ -279,7 +281,6 @@ export const CreateTriage = ({
   const questionCategory = steps;
   const classes = useStyles();
  
-
   // Set state to the answers pssed if canEdit is false
   // Also calculate risk score from the answers passed
   useEffect(() => {
@@ -289,7 +290,7 @@ export const CreateTriage = ({
       const triageScore = Reflect.ownKeys(triageQuestionWeights).reduce(
         (agg, question) => {
           const answerValue =
-            triageAnswers[question].toLowerCase() === 'yes' ? 1 : 0;
+            triageAnswers[question]?.toLowerCase() === 'yes' ? 1 : 0;
           agg += triageQuestionWeights[question] * answerValue;
           return agg;
         },
@@ -303,14 +304,16 @@ export const CreateTriage = ({
     showFooter(true);
   }, [showFooter]);
 
-  const addPatienCase = async (id, riskLevel) => {
+  const addPatienCase = async (id, riskLevel, answerId) => {
+     
     const response = await createPatientCase({
       variables: {
         input: {
           patientCase: {
             patientId: id,
             riskLevel,
-            submittedBy: 1
+            triageAnswerId: answerId,
+            submittedBy: user.id
           }
         }
       }
@@ -325,7 +328,6 @@ export const CreateTriage = ({
       variables: {
         input: {
           triageAnswer: {
-
             triageQuestionId: 1,
             patientId: id,
             answers
@@ -334,7 +336,11 @@ export const CreateTriage = ({
       }
     });
 
-    if (response) return true;
+    if (response)  {
+      return {
+        id: response?.data?.createTriageAnswer?.triageAnswer?.id
+      }
+    }
 
     return false;
   };
@@ -361,38 +367,37 @@ export const CreateTriage = ({
 
 
     if (riskLevel == HIGH) {
+      const triage = await addTriage(currentPatient.id, JSON.stringify(answers)) 
 
-      const patientCase = await addPatienCase(currentPatient.id, HIGH);
+      if(triage && triage.id) {
+        const patientCase = await addPatienCase(currentPatient.id, HIGH, triage.id);
 
-      if (patientCase) {
-        const queue = await addToQueue(
-          currentPatient.epidNumber,
-          currentPatient.id,
-          EVAC_AND_DECON
-        );
-
-        if (queue) {
-          const triage = await addTriage(currentPatient.id, JSON.stringify(answers)) 
+        if(patientCase) {
+          const queue = await addToQueue(
+            currentPatient.epidNumber,
+            currentPatient.id,
+            EVAC_AND_DECON
+          );
         }
-      } 
-
+      }
       return;
-    } 
+    }
 
     if (riskLevel == MEDIUM) { 
-      const patientCase = await addPatienCase(currentPatient.id, MEDIUM);
 
-      if (patientCase) {
-        const queue = await addToQueue(
-          currentPatient.epidNumber,
-          currentPatient.id,
-          EPID_SURVEILLANCE
-        );
+      const triage = await addTriage(currentPatient.id, JSON.stringify(answers)) 
 
-        if (queue) {
-          const triage = await addTriage(currentPatient.id, JSON.stringify(answers)) 
+      if(triage && triage.id) {
+        const patientCase = await addPatienCase(currentPatient.id, MEDIUM, triage.id);
+
+        if(patientCase) {
+          const queue = await addToQueue(
+            currentPatient.epidNumber,
+            currentPatient.id,
+            EPID_SURVEILLANCE
+          );
         }
-      } 
+      }
       return;
     }
     
@@ -750,8 +755,10 @@ const mapDispatchToProps = dispatch => ({
   setDispatchFunc: value => dispatch(setDispatchFunction(value))
 });
 
+
 const mapStateToProps = state => ({
-  currentPatient: searchFilter.getCurrentPatient(state)
+  currentPatient: searchFilter.getCurrentPatient(state),
+  user: userFilter.getUser(state),
 });
 
 export default compose(

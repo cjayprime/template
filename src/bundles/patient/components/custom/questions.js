@@ -1,3 +1,5 @@
+import { LGA, STATES, COUNTRYLIST } from 'bundles/queue/utilities/stateTransition'
+
 export const QUESTIONS = [
   {
     title: 'Enter Patient details',
@@ -75,7 +77,7 @@ export const QUESTIONS = [
         label: 'State',
         type: 'select' ,
         placeholder: 'Choose from dropdown',
-        fields: ['Lagos', 'Kogi', 'Abia'],
+        fields: Object.keys(STATES),
         key: 'state',
         required: true
       }
@@ -89,7 +91,7 @@ export const QUESTIONS = [
         label: 'LGA',
         type: 'select',
         placeholder: 'Choose from dropdown',
-        fields: ['Kosofe', 'Eti-Osa', 'Alimosho', 'Lagos Island'],
+        fields: LGA,
         key: 'lga',
         required: true
       },
@@ -97,14 +99,14 @@ export const QUESTIONS = [
         label: 'Country of residence',
         type: 'select',
         placeholder: 'Choose from dropdown',
-        fields: ['Nigeria', 'England', 'Australia'],
+        fields: COUNTRYLIST,
         key: 'countryOfResidence'
       },
       {
         label: 'Nationality',
         type: 'select',
         placeholder: 'Choose from dropdown',
-        fields: ['Nigeria', 'England', 'Australia'],
+        fields: COUNTRYLIST,
         key: 'nationality'
       },
       {

@@ -2,7 +2,8 @@ import React from 'react';
 import { makeStyles, Chip } from '@material-ui/core';
 import { DataTable } from 'bundles/shared/components/Datatable';
 
-export const PatientAppointment = () => {
+export const PatientAppointment = ({appointment}) => {
+   
   const useStyle = makeStyles(() => ({
     Table: {
       backgroundColor: 'transparent'
@@ -30,6 +31,10 @@ export const PatientAppointment = () => {
         fontWeight: 600
       }
     },
+    AppointmentBooked: {
+      color: '#2C2E42',
+      backgroundColor: '#8EE2E5' 
+    },
     AwaitingSamplePicup: {
       color: '#2C2E42',
       backgroundColor: '#FFEFD8'
@@ -51,6 +56,8 @@ export const PatientAppointment = () => {
 
   const getChipClass = status => {
     switch (status) {
+      case 'Appointment Booked':
+        return 'AppointmentBooked';
       case 'Awaiting Sample Pickup':
         return 'AwaitingSamplePicup';
       case 'Awaiting Pickup':
@@ -58,7 +65,7 @@ export const PatientAppointment = () => {
       case 'Completed':
         return 'Completed';
       default:
-        return '';
+        return 'No Status';
     }
   };
 
@@ -67,31 +74,31 @@ export const PatientAppointment = () => {
       classes={{
         root: classes[getChipClass(row.status)]
       }}
-      label={row.status}
+      label={row.status || 'No Status'}
       size="small"
     />
   );
-
-  const testAppointmentStore = [
-    {
-      scheduledAt: '31 Mar, 3:00 PM',
-      createdBy: 'Vincent Simpson',
-      team: 'RRT',
-      status: 'Awaiting Sample Pickup'
-    },
-    {
-      scheduledAt: '31 Mar, 3:00 PM',
-      createdBy: 'Lucas Cruz',
-      team: 'Evac & Decon',
-      status: 'Awaiting Pickup'
-    },
-    {
-      scheduledAt: '31 Mar, 3:00 PM',
-      createdBy: 'Barbara Norris',
-      team: 'EPID',
-      status: 'Completed'
-    }
-  ];
+ 
+  // const testAppointmentStore = [
+  //   {
+  //     scheduledAt: '31 Mar, 3:00 PM',
+  //     createdBy: 'Vincent Simpson',
+  //     team: 'RRT',
+  //     status: 'Awaiting Sample Pickup'
+  //   },
+  //   {
+  //     scheduledAt: '31 Mar, 3:00 PM',
+  //     createdBy: 'Lucas Cruz',
+  //     team: 'Evac & Decon',
+  //     status: 'Awaiting Pickup'
+  //   },
+  //   {
+  //     scheduledAt: '31 Mar, 3:00 PM',
+  //     createdBy: 'Barbara Norris',
+  //     team: 'EPID',
+  //     status: 'Completed'
+  //   }
+  // ];
 
   const appointmentHeader = [
     { name: 'DATE', accessor: 'scheduledAt' },
@@ -99,12 +106,12 @@ export const PatientAppointment = () => {
     { name: 'STATUS', accessor: renderStatusComponent },
     { name: 'CREATED BY', accessor: 'createdBy' }
   ];
-
+  
   return (
     <DataTable
       headers={appointmentHeader}
       noBorder={true}
-      data={testAppointmentStore}
+      data={appointment}
       styles={classes}
     />
   );

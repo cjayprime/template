@@ -44,7 +44,6 @@ const CreatePatient = ({ createPatientPG, addQueue, history, savePatient }) => {
         if((field.required && !formState[field.key]) || ( field.required && formState[field.key] && formState[field.key].length < 1)) {
           nonValidState[field.key] = ''
         }
-
       })
     })
 

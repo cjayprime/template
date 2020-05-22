@@ -10,12 +10,15 @@ import {
   Typography
 } from '@material-ui/core';
 import { DataTable } from 'bundles/shared/components/Datatable';
+import { withRouter } from 'react-router';
+import { saveCurrentPatient } from 'bundles/patient/actions';
 import moment from 'moment';
+import { connect } from 'react-redux';
 import CloseIcon from '@material-ui/icons/Close';
 import { CreateTriage } from 'bundles/caseTriage/CreateTriage';
 import { PatientMetadatum } from 'bundles/shared/components/PatientMetadatum';
 
-export const PatientCases = ({ patientCase, patient }) => {
+ const PatientCases = ({ patientCase, patient, savePatient, history }) => {
   const useStyle = makeStyles(theme => ({
     Table: {
       backgroundColor: 'transparent'
@@ -82,6 +85,7 @@ export const PatientCases = ({ patientCase, patient }) => {
   const classes = useStyle();
   const [showTriageAnswers, setShowTriageAnswers] = useState(false);
   const [selectedTriageAnswers, setSelectedTriageAnswers] = useState({});
+  const [triageAnswer, setTriageAnswer] = useState(false)
 
   const renderCaseActionComponent = row => {
     let answers;
@@ -90,6 +94,11 @@ export const PatientCases = ({ patientCase, patient }) => {
     } catch (err) {
       answers = {};
     }
+
+
+   
+    setTriageAnswer(row?.triageAnswerByTriageAnswerId ? true: false)
+
     return (
       <Button
         disabled={!row.triageAnswerByTriageAnswerId}
@@ -123,6 +132,11 @@ export const PatientCases = ({ patientCase, patient }) => {
     { name: 'ACTION', accessor: renderCaseActionComponent }
   ];
 
+  const startTriage = () => {
+    savePatient(patient)
+    history.push('/CreateTriage')
+  }
+
   return (
     <>
       <DataTable
@@ -131,6 +145,19 @@ export const PatientCases = ({ patientCase, patient }) => {
         data={patientCase.cases}
         styles={classes}
       />
+      
+      <Grid container >
+       {!triageAnswer  ? 
+         <Button
+          //disabled={!row.triageAnswerByTriageAnswerId}
+          onClick={() => startTriage()}
+          className={classes.ActionButton}
+          >
+          Triage Patient
+        </Button>  : null
+       }
+      </Grid>
+      
       <Dialog
         fullScreen
         open={showTriageAnswers}
@@ -196,3 +223,10 @@ export const PatientCases = ({ patientCase, patient }) => {
     </>
   );
 };
+
+const mapDispatchToProps = dispatch => ({
+  savePatient: value => dispatch(saveCurrentPatient(value)),
+});
+
+
+export default withRouter(connect(null, mapDispatchToProps)(PatientCases));

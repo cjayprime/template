@@ -288,7 +288,7 @@ const PatientTab = ({ patientData, markPatientDeceased, newCallLog }) => {
           <TabPanel value={value} index={4}>
             <Grid container spacing={2}>
               <Grid item xs={10}>
-                <PatientAppointment />
+                <PatientAppointment {...patientInfo} />
               </Grid>
             </Grid>
           </TabPanel>

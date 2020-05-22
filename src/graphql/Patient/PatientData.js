@@ -71,6 +71,25 @@ export const ALL_PATIENTS = gql`
             }
           }
         }
+        appointment: queuesByPatientId {
+          nodes {
+            nodeId
+            team
+            requestDate
+            scheduledDate
+            userByAcceptedBy {
+              firstname
+              lastname
+            }
+            queueTaskStatusesByTaskId(
+              filter: { status: { likeInsensitive: "%oint%" } }
+            ) {
+              nodes {
+                status
+              }
+            }
+          }
+        }
         patientLocationsByPatientId {
           nodes {
             userByAdmittedBy {

@@ -1,10 +1,12 @@
 import React, { Fragment, useState } from 'react';
-import { DataTable, PatientMetadatum } from 'bundles/shared/components';
-
+import { DataTable, PatientMetadatum, CustomSnack } from 'bundles/shared/components';
+import { RRT , PSYCHOSOCIAL , EVAC_AND_DECON , EPID_SURVEILLANCE } from 'bundles/queue/utilities/stateTransition';
 import { Link } from 'react-router-dom';
 import withPatient from 'bundles/patient/hoc/withPatient';
 import markPatientDead from 'bundles/patient/hoc/markPatientDeceased';
 import createNewCallLog from 'bundles/patient/hoc/createNewCallLog';
+import createQueueHoc from 'bundles/queue/hoc/createQueue';
+import { capitalizeFirstWord } from 'bundles/patient/components/custom/formBuilder';
 import {
   Typography,
   ButtonBase,
@@ -94,7 +96,7 @@ const renderPatientCell = row => (
     name={`${row.patient.firstName} ${row.patient.lastName}`}
     sex={row.patient.sex}
     age={row.patient.age}
-    riskLevel={row.patientCase.riskLevel}
+    riskLevel={row.patientCase.riskLevel ? capitalizeFirstWord(row.patientCase.riskLevel) : 'No'}
   />
 );
 
@@ -188,10 +190,13 @@ const ErrorContainer = () => {
   );
 };
 
-const RenderList = ({ patients = [], markPatientDeceased, newCallLog }) => {
+const RenderList = ({ patients = [], markPatientDeceased, newCallLog, addQueue }) => {
   const classes = ownStyles();
   const [openForwardModal, setOpenForwardModal] = useState(false);
-  const [selectedPatientIdId, setSelectedPatient] = useState();
+  const [selectedPatientIdId, setSelectedPatient] = useState({});
+  const [radioState, setRadioState] = useState('')
+  const [snackBar, setSnackBar] = useState({open: false, message: '',  vertical: 'top', horizontal: 'right', duration: 3000 });
+
   const remap = patients.map(patient => {
     return {
       patient: {
@@ -250,7 +255,8 @@ const RenderList = ({ patients = [], markPatientDeceased, newCallLog }) => {
             }${labRequest.userByRequestedBy.firstname} ${
               labRequest.userByRequestedBy.lastname
             }`,
-            status: labRequest.labRequestStatusesByLabRequestId.nodes[0].status
+            status: labRequest.labRequestStatusesByLabRequestId.nodes.length > 0 ? 
+              labRequest.labRequestStatusesByLabRequestId?.nodes[0]?.status : ''
           };
         }) || [],
       inpatient:
@@ -266,7 +272,17 @@ const RenderList = ({ patients = [], markPatientDeceased, newCallLog }) => {
             }`
           };
         }) || [],
-      deceasedPatient: patient.deceasedPatientByPatientId
+      deceasedPatient: patient.deceasedPatientByPatientId,
+      appointment: patient.appointment.nodes.map((appointment) => {
+        return {
+          scheduledAt: new Date( appointment.scheduleDate || appointment.requestDate ).toDateString(),
+           team: appointment.team,
+           createdBy: `${appointment?.userByAcceptedBy?.firstname}  ${appointment?.userByAcceptedBy?.lastname}`,
+           status: appointment.queueTaskStatusesByTaskId.nodes.length > 0 ? 
+            appointment.queueTaskStatusesByTaskId?.nodes[appointment.queueTaskStatusesByTaskId.nodes.length - 1]?.status
+           : ''
+          } 
+        }) || [],
       // task: {
       //   status: patient.patientCasesByPatientId.nodes.length
       //     ? patient.patientCasesByPatientId.nodes[0].status
@@ -279,15 +295,47 @@ const RenderList = ({ patients = [], markPatientDeceased, newCallLog }) => {
     };
   });
 
-  const forwardPatientToTeam = patientId => {
+  const forwardPatientToTeam = (patientId, patientEpidNumber) => {
+    setRadioState('')
     setOpenForwardModal(true);
-    setSelectedPatient(patientId);
+    setSelectedPatient({id: patientId, patientEpidNumber });
   };
 
   const closeForwardDialog = () => {
     setOpenForwardModal(false);
-    setSelectedPatient(null);
+    setSelectedPatient({});
   };
+
+  const handleSnackClose = () => {
+    setSnackBar({...snackBar, message: '', open: false})
+  }
+
+  const addToQueue = async (patientEpidNumber, id, team) => {
+    const response = await addQueue({
+      variables: {
+        input: {
+          queue: {
+            patientEpidNumber,
+            patientId: id,
+            team
+          }
+        }
+      }
+    });
+
+    if (response) return true;
+    else return false;
+  };
+
+  const submitQueue = async () => {
+    const { id, patientEpidNumber } = selectedPatientIdId
+    const response = await addToQueue(patientEpidNumber, id, radioState );
+    if(response)  {
+      closeForwardDialog()
+      setSnackBar({...snackBar, message: `Patient Was Successfully Added to ${radioState} Queue.`,
+           open: true, state: 'success'})
+    } 
+  }
 
   const forward = row => {
     return (
@@ -295,7 +343,7 @@ const RenderList = ({ patients = [], markPatientDeceased, newCallLog }) => {
         <ButtonBase
           onClick={e => {
             e.stopPropagation();
-            forwardPatientToTeam(row.patient.id);
+            forwardPatientToTeam(row.patient.id, row.patient.epidNumber);
           }}
           style={{
             textTransform: 'uppercase',
@@ -320,6 +368,7 @@ const RenderList = ({ patients = [], markPatientDeceased, newCallLog }) => {
 
   return (
     <Fragment>
+      <CustomSnack snackBar={snackBar} handleSnackClose={handleSnackClose} />
       {remap.length > 0 ? (
         <List
           header={headers}
@@ -354,13 +403,14 @@ const RenderList = ({ patients = [], markPatientDeceased, newCallLog }) => {
         <DialogContent>
           <Grid container justify="center" style={{ marginTop: 24 }}>
             <RadioGroup name="stimuli">
-              {['RRT', 'Psychosocial', 'Evac & Decon', 'Epid/Surveillance'].map(
+              {[RRT, PSYCHOSOCIAL, EVAC_AND_DECON, EPID_SURVEILLANCE].map(
                 option => (
                   <FormControlLabel
                     key={`team-${option}`}
                     value={option}
                     control={
                       <Radio
+                        onChange={e => setRadioState(e.target.value)}
                         color="primary"
                         classes={{
                           colorPrimary: classes.radio
@@ -382,7 +432,8 @@ const RenderList = ({ patients = [], markPatientDeceased, newCallLog }) => {
             <Button
               fullWidth={true}
               variant="contained"
-              onClick={closeForwardDialog}
+              onClick={submitQueue}
+              disabled={radioState.length < 1}
               color="primary"
               classes={{ root: classes.primaryButton }}>
               ADD
@@ -401,6 +452,7 @@ const RenderList = ({ patients = [], markPatientDeceased, newCallLog }) => {
           </Box>
         </div>
       </Dialog>
+      
     </Fragment>
   );
 };
@@ -408,5 +460,6 @@ const RenderList = ({ patients = [], markPatientDeceased, newCallLog }) => {
 export default compose(
   withPatient,
   markPatientDead,
-  createNewCallLog
+  createNewCallLog,
+  createQueueHoc
 )(RenderList);
