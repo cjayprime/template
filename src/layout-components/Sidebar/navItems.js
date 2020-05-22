@@ -31,6 +31,7 @@ const allowedViews = [
         to: '/Queue'
       },
       {
+        key: 'kpi',
         label: 'KPI',
         icon: <img className="app-sidebar-icon" src={kpi} />,
         to: '/Kpi'
@@ -48,6 +49,7 @@ const allowedViews = [
         to: '/Lab'
       },
       {
+        key: 'bedManagement',
         label: 'Bed Management',
         icon: <img className="app-sidebar-icon" src={bedmanagement} />,
         to: '/BedManagement'
@@ -58,11 +60,13 @@ const allowedViews = [
         icon: <img className="app-sidebar-icon" src={setting} />,
         content: [
           {
+            key: 'location',
             label: 'Location',
             description: 'Center location',
             to: '/Location'
           },
           {
+            key: 'staff',
             label: 'Staff',
             description: 'Staff',
             to: '/Staff'
