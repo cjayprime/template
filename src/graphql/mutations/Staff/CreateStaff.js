@@ -23,6 +23,12 @@ export const CREATE_STAFF = gql`
             dashboard
             reports
             admitDischarge
+            createTriage
+            settings
+            bedManagement
+            kpi
+            staff
+            location
           }
         }
       }
@@ -38,7 +44,7 @@ export const UPDATE_STAFF = gql`
         firstname
         lastname
         title
-        team    
+        team
         userAccessLevelsByUserId {
           nodes {
             id
@@ -52,6 +58,12 @@ export const UPDATE_STAFF = gql`
             dashboard
             reports
             admitDischarge
+            createTriage
+            settings
+            bedManagement
+            kpi
+            staff
+            location
           }
         }
       }

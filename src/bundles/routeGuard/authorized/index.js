@@ -46,6 +46,16 @@ class Authorized extends Component {
         this.props.logOutUser(true)
       }
     }
+
+    console.log(access)
+    // TODO: dirty hack that needs to be changed, just here for temp
+    if (pathname.replace('/', '') === 'CreateTriage' && access?.length && access[0]?.createTriage) {
+      roles.push({
+        key: "createTriage",
+        to: "/CreateTriage"
+      });
+    }
+
     return roles;
   }; 
 

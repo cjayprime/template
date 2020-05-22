@@ -30,6 +30,12 @@ export const ALL_STAFF = gql`
             dashboard
             reports
             admitDischarge
+            createTriage
+            settings
+            bedManagement
+            kpi
+            staff
+            location
           }
         }
       }
@@ -59,6 +65,12 @@ export const SINGLE_STAFF = gql`
           dashboard
           reports
           admitDischarge
+          createTriage
+          settings
+          bedManagement
+          kpi
+          staff
+          location
         }
       }
     }

@@ -53,5 +53,19 @@ export const accessLevels = [
     field: 'Admit/Discharge',
     icon: accessLevelIconMap.admitDischarge,
     key: 'admitDischarge'
-  }
+  },
+  {
+    field: 'Create Triage',
+    icon: accessLevelIconMap.dashboard,
+    key: 'createTriage'
+  },
+  { field: 'Settings', icon: accessLevelIconMap.dashboard, key: 'settings' },
+  {
+    field: 'Bed Managemnt',
+    icon: accessLevelIconMap.dashboard,
+    key: 'bedManagement'
+  },
+  { field: 'KPI', icon: accessLevelIconMap.dashboard, key: 'kpi' },
+  { field: 'Staff', icon: accessLevelIconMap.dashboard, key: 'staff' },
+  { field: 'Locationss', icon: accessLevelIconMap.dashboard, key: 'location' }
 ];
